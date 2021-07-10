@@ -1,0 +1,6 @@
+framework module RxKakaoSDKTalk {
+  umbrella header "RxKakaoSDKTalk-umbrella.h"
+
+  export *
+  module * { export * }
+}
