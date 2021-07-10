@@ -32,16 +32,17 @@
 		B5F19C162699B13800D1E8BB /* BookMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C152699B13800D1E8BB /* BookMark.swift */; };
 		B5F19C1A2699B15300D1E8BB /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C192699B15300D1E8BB /* MainViewModel.swift */; };
 		B5F19C1D2699B61000D1E8BB /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1C2699B61000D1E8BB /* BookMarkTableViewCell.swift */; };
+		B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */; };
+		B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C232699CFA800D1E8BB /* Environment.swift */; };
+		B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C252699D05200D1E8BB /* APIProvider.swift */; };
 		C72F27CA2699CC1B00104FE3 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C72F27C92699CC1B00104FE3 /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C72F27CC2699CC4700104FE3 /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27CB2699CC4700104FE3 /* OSLog.swift */; };
 		C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27D12699CF1C00104FE3 /* SignInViewController.swift */; };
 		C72F27D62699CF2700104FE3 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27D52699CF2700104FE3 /* SignInViewModel.swift */; };
 		C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27D92699D4EE00104FE3 /* UserSession.swift */; };
-		B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */; };
-		B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C232699CFA800D1E8BB /* Environment.swift */; };
-		B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C252699D05200D1E8BB /* APIProvider.swift */; };
+		C72F28182699FE2B00104FE3 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F28112699FCE000104FE3 /* String+.swift */; };
+		C72F282A269A06D300104FE3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C72F2829269A06D300104FE3 /* MainInterface.storyboard */; };
 		C7692C1C26999C7800A2F699 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7692C1B26999C7800A2F699 /* ShareViewController.swift */; };
-		C7692C1F26999C7800A2F699 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7692C1D26999C7800A2F699 /* MainInterface.storyboard */; };
 		C7692C2326999C7800A2F699 /* TidifyShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -99,17 +100,20 @@
 		B5F19C152699B13800D1E8BB /* BookMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMark.swift; sourceTree = "<group>"; };
 		B5F19C192699B15300D1E8BB /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		B5F19C1C2699B61000D1E8BB /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
+		B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkAPI.swift; sourceTree = "<group>"; };
+		B5F19C232699CFA800D1E8BB /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		B5F19C252699D05200D1E8BB /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
 		C72F27C92699CC1B00104FE3 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		C72F27CB2699CC4700104FE3 /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		C72F27D12699CF1C00104FE3 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		C72F27D52699CF2700104FE3 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		C72F27D92699D4EE00104FE3 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
-		B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkAPI.swift; sourceTree = "<group>"; };
-		B5F19C232699CFA800D1E8BB /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		B5F19C252699D05200D1E8BB /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
+		C72F28112699FCE000104FE3 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		C72F281D269A036E00104FE3 /* Tidify.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tidify.entitlements; sourceTree = "<group>"; };
+		C72F2820269A039F00104FE3 /* TidifyShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TidifyShareExtension.entitlements; sourceTree = "<group>"; };
+		C72F2829269A06D300104FE3 /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TidifyShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7692C1B26999C7800A2F699 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
-		C7692C1E26999C7800A2F699 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		C7692C2026999C7800A2F699 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,9 +163,10 @@
 		B56D82FC269987AB00D5F513 /* Tidify */ = {
 			isa = PBXGroup;
 			children = (
+				B56D82FD269987AB00D5F513 /* AppDelegate.swift */,
+				C72F281D269A036E00104FE3 /* Tidify.entitlements */,
 				B56D8313269989B800D5F513 /* Sources */,
 				B56D8315269989C500D5F513 /* Extensions */,
-				B56D82FD269987AB00D5F513 /* AppDelegate.swift */,
 				B56D8306269987AC00D5F513 /* Assets.xcassets */,
 				B56D8308269987AC00D5F513 /* LaunchScreen.storyboard */,
 				B56D830B269987AC00D5F513 /* Info.plist */,
@@ -284,9 +289,11 @@
 		C7692C1A26999C7800A2F699 /* TidifyShareExtension */ = {
 			isa = PBXGroup;
 			children = (
+				C72F2820269A039F00104FE3 /* TidifyShareExtension.entitlements */,
+				C72F28112699FCE000104FE3 /* String+.swift */,
 				C7692C1B26999C7800A2F699 /* ShareViewController.swift */,
-				C7692C1D26999C7800A2F699 /* MainInterface.storyboard */,
 				C7692C2026999C7800A2F699 /* Info.plist */,
+				C72F2829269A06D300104FE3 /* MainInterface.storyboard */,
 			);
 			path = TidifyShareExtension;
 			sourceTree = "<group>";
@@ -395,7 +402,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7692C1F26999C7800A2F699 /* MainInterface.storyboard in Resources */,
+				C72F282A269A06D300104FE3 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,6 +525,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C72F28182699FE2B00104FE3 /* String+.swift in Sources */,
 				C7692C1C26999C7800A2F699 /* ShareViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,14 +555,6 @@
 				B56D8309269987AC00D5F513 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		C7692C1D26999C7800A2F699 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C7692C1E26999C7800A2F699 /* Base */,
-			);
-			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -683,6 +683,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Tidify/Tidify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GBX2J8EHBY;
 				INFOPLIST_FILE = Tidify/Info.plist;
@@ -690,7 +691,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.duwjdtn.Tidify;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aksmj.Tidify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -704,6 +705,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Tidify/Tidify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GBX2J8EHBY;
 				INFOPLIST_FILE = Tidify/Info.plist;
@@ -711,7 +713,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.duwjdtn.Tidify;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aksmj.Tidify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -721,8 +723,9 @@
 		C7692C2526999C7800A2F699 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TidifyShareExtension/TidifyShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 857J3M5L6B;
+				DEVELOPMENT_TEAM = GBX2J8EHBY;
 				INFOPLIST_FILE = TidifyShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -730,7 +733,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.duwjdtn.Tidify.TidifyShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aksmj.Tidify.TidifyShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -741,8 +744,9 @@
 		C7692C2626999C7800A2F699 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TidifyShareExtension/TidifyShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 857J3M5L6B;
+				DEVELOPMENT_TEAM = GBX2J8EHBY;
 				INFOPLIST_FILE = TidifyShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -750,7 +754,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.duwjdtn.Tidify.TidifyShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aksmj.Tidify.TidifyShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

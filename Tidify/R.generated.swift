@@ -130,6 +130,17 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
+  /// This `R.entitlements` struct is generated, and contains static references to 1 properties.
+  struct entitlements {
+    struct comAppleSecurityApplicationGroups {
+      static let groupComAksmjTidify = infoPlistString(path: ["com.apple.security.application-groups"], key: "group.com.aksmj.Tidify") ?? "group.com.aksmj.Tidify"
+
+      fileprivate init() {}
+    }
+
+    fileprivate init() {}
+  }
+
   /// This `R.file` struct is generated, and contains static references to 1 files.
   struct file {
     /// Resource file `.swiftlint.yml`.

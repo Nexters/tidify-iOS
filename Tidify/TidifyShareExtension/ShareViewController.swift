@@ -8,38 +8,62 @@
 import UIKit
 
 class ShareViewController: UIViewController {
+
+    let urlShareId = "public.url"
+    let newBookMarkNotificationChannelName = "com.duwjdtn.Tidify.newBookMark" as CFString
     
     override func viewDidLoad() {
-            super.viewDidLoad()
+        super.viewDidLoad()
 
-            let extensionItems = extensionContext?.inputItems as! [NSExtensionItem]
+        let extensionItems = extensionContext?.inputItems as! [NSExtensionItem]
 
-            for extensionItem in extensionItems {
-                if let itemProviders = extensionItem.attachments {
-                    for itemProvider in itemProviders {
-                        if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
-                            itemProvider.loadItem(forTypeIdentifier: "public.url", options: nil, completionHandler: { (url, error) -> Void in
-                                if (url as? NSURL) != nil {
-                                    DispatchQueue.main.async {
-
-                                        let alert = UIAlertController(title: "북마크로 저장할까요?", message: "\(String(describing: url!))", preferredStyle: .alert)
-                                        alert.addAction(UIAlertAction(title: "저장", style: .default, handler: {
-                                            (a) -> Void in
-                                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                        }))
-                                        alert.addAction(UIAlertAction(title: "다음에", style: .cancel, handler: {
-                                            (a) -> Void in
-                                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                        }))
-                                        self.present(alert, animated: true, completion: nil)
-
-                                    }
+        for extensionItem in extensionItems {
+            if let itemProviders = extensionItem.attachments {
+                for itemProvider in itemProviders {
+                    if itemProvider.hasItemConformingToTypeIdentifier(urlShareId) {
+                        itemProvider.loadItem(forTypeIdentifier: urlShareId, options: nil, completionHandler: { (url, error) -> Void in
+                            if (url as? NSURL) != nil {
+                                let encodedUrl = String(describing: url!)
+                                
+                                DispatchQueue.main.async {
+                                    self.showAlert(url: encodedUrl)
                                 }
-                            })
-                        }
+                            }
+                        })
                     }
                 }
             }
         }
+    }
+    
+    private func showAlert(url: String) {
+        let alert = UIAlertController(title: "북마크로 저장할까요?", message: "\(url)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "저장", style: .default, handler: {
+            (a) -> Void in
+            self.notifyNewBookMark(url: url)
+            self.complete()
+        }))
+        alert.addAction(UIAlertAction(title: "다음에", style: .cancel, handler: {
+            (a) -> Void in
+            self.complete()
+        }))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func notifyNewBookMark(url: String) {
+//        let notificationName = CFNotificationName(self.newBookMarkNotificationChannelName)
+//        let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
+//        CFNotificationCenterPostNotification(notificationCenter, notificationName, url.toUnsafePointer(), nil, false)
+
+        if let userDefaults = UserDefaults(suiteName: "group.com.aksmj.Tidify") {
+            userDefaults.setValue(url, forKey: "newBookMark")
+            userDefaults.synchronize()
+        }
+    }
+
+    private func complete() {
+        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+    }
 
 }

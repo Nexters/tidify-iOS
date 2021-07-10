@@ -50,7 +50,7 @@ class BookMarkTableViewCell: UITableViewCell {
     func setBookMark(_ bookMark: BookMark) {
         self.bookMark = bookMark
         titleLabel.text = bookMark.title
-        descriptionLabel.text = "Apple SD Gothic Neo"
+        descriptionLabel.text = bookMark.urlString
         // 이미지 처리 필요
     }
 }

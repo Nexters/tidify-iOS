@@ -29,6 +29,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>KAKAO_API_KEY</key>
+	<string>b3fb0d2e51444dfc6dcb4d85938828a2</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaokompassauth</string>
@@ -57,7 +59,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>KAKAO_API_KEY</key>
-	<string>b3fb0d2e51444dfc6dcb4d85938828a2</string>
 </dict>
 </plist>

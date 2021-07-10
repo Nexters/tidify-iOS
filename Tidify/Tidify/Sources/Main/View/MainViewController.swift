@@ -18,7 +18,10 @@ class MainViewController: UIViewController {
     private let viewModel: MainViewModel!
 
     private let cellTapSubject = PublishSubject<BookMark>()
+    private let addListItemSubject = PublishSubject<BookMark>()
     private let disposeBag = DisposeBag()
+
+    private var observer: NSObjectProtocol?
 
     init(_ viewModel: MainViewModel) {
         self.viewModel = viewModel
@@ -32,15 +35,41 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        observer = NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [unowned self] _ in
+            self.viewShown()
+        }
+
         setupViews()
         setupLayoutConstraints()
 
-        let input = MainViewModel.Input(cellTapSubject: cellTapSubject.asObservable())
+        let input = MainViewModel.Input(cellTapSubject: cellTapSubject.asObservable(), addListItemSubject: addListItemSubject.asObserver())
         let output = viewModel.transfrom(input)
 
         output.cellTapEvent
             .drive()
             .disposed(by: disposeBag)
+
+        output.addListItem
+            .do(onNext: { _ in
+                self.tableView.reloadData()
+            })
+            .drive()
+            .disposed(by: disposeBag)
+    }
+
+    deinit {
+        if let observer = observer {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+
+    func viewShown() {
+        if let userDefaults = UserDefaults(suiteName: "group.com.aksmj.Tidify") {
+            if let newBookMark = userDefaults.string(forKey: "newBookMark") {
+                self.addListItemSubject
+                    .onNext(BookMark(urlString: newBookMark, title: "Google"))
+            }
+        }
     }
 }
 
