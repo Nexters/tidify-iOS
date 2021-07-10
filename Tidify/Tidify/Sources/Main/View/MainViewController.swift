@@ -15,6 +15,8 @@ class MainViewController: UIViewController {
     weak var coordinator: MainCoordinator?
 
     private weak var tableView: UITableView!
+    private weak var customHeaderView: UIView!
+    private weak var registerBookMarkButton: UIButton!
     private let viewModel: MainViewModel!
 
     private let cellTapSubject = PublishSubject<BookMark>()
@@ -41,12 +43,19 @@ class MainViewController: UIViewController {
 
         setupViews()
         setupLayoutConstraints()
+        tableView.layoutIfNeeded()
 
         let input = MainViewModel.Input(cellTapSubject: cellTapSubject.asObservable(), addListItemSubject: addListItemSubject.asObserver())
         let output = viewModel.transfrom(input)
 
         output.cellTapEvent
             .drive()
+            .disposed(by: disposeBag)
+
+        registerBookMarkButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.coordinator?.pushRegisterView()
+            })
             .disposed(by: disposeBag)
 
         output.addListItem
@@ -101,19 +110,45 @@ private extension MainViewController {
     func setupViews() {
         view.backgroundColor = .white
 
+        let customHeaderView = UIView().then {
+            $0.backgroundColor = .lightGray
+            view.addSubview($0)
+        }
+        self.customHeaderView = customHeaderView
+
         let tableView = UITableView().then {
             $0.delegate = self
             $0.dataSource = self
+            $0.tableHeaderView = customHeaderView
             $0.separatorStyle = .none
             $0.t_registerCellClass(cellType: BookMarkTableViewCell.self)
             view.addSubview($0)
         }
         self.tableView = tableView
+
+        let registerBookMarkButton = UIButton().then {
+            $0.setTitle("Apple SD Gothic Neo", for: .normal)
+            $0.titleLabel?.font = .t_B(20)
+            $0.backgroundColor = .t_tidiBlue()
+            $0.layer.cornerRadius = 16
+            customHeaderView.addSubview($0)
+        }
+        self.registerBookMarkButton = registerBookMarkButton
     }
 
     func setupLayoutConstraints() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+
+        customHeaderView.snp.makeConstraints {
+            $0.size.equalTo(CGSize(w: view.frame.width, h: 104))
+        }
+
+        registerBookMarkButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().offset(-24)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.size.equalTo(CGSize(w: 233, h: 48))
         }
     }
 }

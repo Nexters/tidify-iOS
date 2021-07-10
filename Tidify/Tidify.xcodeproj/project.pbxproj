@@ -25,6 +25,9 @@
 		B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D831F26998A4E00D5F513 /* UIColor+.swift */; };
 		B56D832226998A5B00D5F513 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D832126998A5B00D5F513 /* UITableView+.swift */; };
 		B56D832426998A7300D5F513 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D832326998A7300D5F513 /* UIView+.swift */; };
+		B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */; };
+		B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0ADB269A117400D8DCF5 /* RegisterViewModel.swift */; };
+		B5AF0AE0269A134A00D8DCF5 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0ADF269A134A00D8DCF5 /* WebViewModel.swift */; };
 		B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */; };
 		B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */; };
 		B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1026999E3700D1E8BB /* MainCoordinator.swift */; };
@@ -93,6 +96,9 @@
 		B56D831F26998A4E00D5F513 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		B56D832126998A5B00D5F513 /* UITableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
 		B56D832326998A7300D5F513 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		B5AF0ADB269A117400D8DCF5 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		B5AF0ADF269A134A00D8DCF5 /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
 		B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+.swift"; sourceTree = "<group>"; };
 		B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
 		B5F19C1026999E3700D1E8BB /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
@@ -177,6 +183,7 @@
 		B56D8313269989B800D5F513 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B5AF0AD6269A0D7200D8DCF5 /* RegisterBookMark */,
 				B5F19C1E2699CB3F00D1E8BB /* Service */,
 				B5F19C0F26999D9200D1E8BB /* Coordinator */,
 				B56D8314269989BF00D5F513 /* Main */,
@@ -215,6 +222,46 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		B5AF0AD6269A0D7200D8DCF5 /* RegisterBookMark */ = {
+			isa = PBXGroup;
+			children = (
+				B5AF0AD8269A0D8300D8DCF5 /* ViewModel */,
+				B5AF0AD7269A0D7B00D8DCF5 /* View */,
+			);
+			path = RegisterBookMark;
+			sourceTree = "<group>";
+		};
+		B5AF0AD7269A0D7B00D8DCF5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B5AF0AD8269A0D8300D8DCF5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B5AF0ADB269A117400D8DCF5 /* RegisterViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B5AF0ADD269A133600D8DCF5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B5AF0ADE269A133B00D8DCF5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B5AF0ADF269A134A00D8DCF5 /* WebViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		B5F19C0F26999D9200D1E8BB /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +274,8 @@
 		B5F19C122699A01700D1E8BB /* WebView */ = {
 			isa = PBXGroup;
 			children = (
+				B5AF0ADE269A133B00D8DCF5 /* ViewModel */,
+				B5AF0ADD269A133600D8DCF5 /* View */,
 				B5F19C132699A04400D1E8BB /* WebViewController.swift */,
 			);
 			path = WebView;
@@ -504,6 +553,7 @@
 				B56D83122699882200D5F513 /* MainViewController.swift in Sources */,
 				C72F27D62699CF2700104FE3 /* SignInViewModel.swift in Sources */,
 				C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */,
+				B5AF0AE0269A134A00D8DCF5 /* WebViewModel.swift in Sources */,
 				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,
 				B5314FB12699E7B800769AB2 /* R.generated.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
@@ -514,8 +564,10 @@
 				B56D831A26998A1300D5F513 /* Optional+.swift in Sources */,
 				B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */,
 				C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */,
+				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
 				B5F19C142699A04400D1E8BB /* WebViewController.swift in Sources */,
+				B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */,
 				B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */,
 				B5F19C162699B13800D1E8BB /* BookMark.swift in Sources */,
 			);
@@ -685,7 +737,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Tidify/Tidify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GBX2J8EHBY;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
 				INFOPLIST_FILE = Tidify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -707,7 +759,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Tidify/Tidify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GBX2J8EHBY;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
 				INFOPLIST_FILE = Tidify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -772,7 +824,7 @@
 				B56D830D269987AC00D5F513 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		B56D830E269987AC00D5F513 /* Build configuration list for PBXNativeTarget "Tidify" */ = {
 			isa = XCConfigurationList;
@@ -781,7 +833,7 @@
 				B56D8310269987AC00D5F513 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C7692C2726999C7800A2F699 /* Build configuration list for PBXNativeTarget "TidifyShareExtension" */ = {
 			isa = XCConfigurationList;
@@ -790,7 +842,7 @@
 				C7692C2626999C7800A2F699 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
