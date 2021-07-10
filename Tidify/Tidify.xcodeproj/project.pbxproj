@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
+		B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B67E8269997150099C46D /* RxSwift+Moya.swift */; };
+		B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B67EA2699972F0099C46D /* ObservableConvertibleType+.swift */; };
 		B56D82FE269987AB00D5F513 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D82FD269987AB00D5F513 /* AppDelegate.swift */; };
 		B56D8307269987AC00D5F513 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56D8306269987AC00D5F513 /* Assets.xcassets */; };
 		B56D830A269987AC00D5F513 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B56D8308269987AC00D5F513 /* LaunchScreen.storyboard */; };
@@ -19,12 +21,15 @@
 		B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D831F26998A4E00D5F513 /* UIColor+.swift */; };
 		B56D832226998A5B00D5F513 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D832126998A5B00D5F513 /* UITableView+.swift */; };
 		B56D832426998A7300D5F513 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D832326998A7300D5F513 /* UIView+.swift */; };
+		B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
+		B56B67E8269997150099C46D /* RxSwift+Moya.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+Moya.swift"; sourceTree = "<group>"; };
+		B56B67EA2699972F0099C46D /* ObservableConvertibleType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableConvertibleType+.swift"; sourceTree = "<group>"; };
 		B56D82FA269987AB00D5F513 /* Tidify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tidify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B56D82FD269987AB00D5F513 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B56D8306269987AC00D5F513 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -38,6 +43,7 @@
 		B56D831F26998A4E00D5F513 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		B56D832126998A5B00D5F513 /* UITableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
 		B56D832326998A7300D5F513 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +115,9 @@
 				B56D831F26998A4E00D5F513 /* UIColor+.swift */,
 				B56D832126998A5B00D5F513 /* UITableView+.swift */,
 				B56D832326998A7300D5F513 /* UIView+.swift */,
+				B56B67E8269997150099C46D /* RxSwift+Moya.swift */,
+				B56B67EA2699972F0099C46D /* ObservableConvertibleType+.swift */,
+				B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -119,7 +128,6 @@
 				8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */,
 				7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -250,9 +258,12 @@
 				B56D82FE269987AB00D5F513 /* AppDelegate.swift in Sources */,
 				B56D83122699882200D5F513 /* MainViewController.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
+				B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */,
 				B56D832426998A7300D5F513 /* UIView+.swift in Sources */,
 				B56D831A26998A1300D5F513 /* Optional+.swift in Sources */,
 				B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */,
+				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
+				B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
