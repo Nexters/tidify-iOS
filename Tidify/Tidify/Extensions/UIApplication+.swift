@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// swiftlint:disable redundant_nil_coalescing
 public extension UIApplication {
     var t_keyWindow: UIWindow? {
         if #available(iOS 13.0, *), responds(to: #selector(getter: connectedScenes)) {

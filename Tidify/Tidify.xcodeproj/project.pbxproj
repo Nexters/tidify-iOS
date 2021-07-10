@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
+		B5314FAB2699DC2300769AB2 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5314FAA2699DC2300769AB2 /* UIFont+.swift */; };
+		B5314FAE2699E38D00769AB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B5314FAD2699E38D00769AB2 /* .swiftlint.yml */; };
+		B5314FB12699E7B800769AB2 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5314FB02699E7B800769AB2 /* R.generated.swift */; };
+		B5314FB52699E85000769AB2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5314FB72699E85000769AB2 /* Localizable.strings */; };
 		B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B67E8269997150099C46D /* RxSwift+Moya.swift */; };
 		B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B67EA2699972F0099C46D /* ObservableConvertibleType+.swift */; };
 		B56D82FE269987AB00D5F513 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D82FD269987AB00D5F513 /* AppDelegate.swift */; };
@@ -33,6 +37,9 @@
 		C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27D12699CF1C00104FE3 /* SignInViewController.swift */; };
 		C72F27D62699CF2700104FE3 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27D52699CF2700104FE3 /* SignInViewModel.swift */; };
 		C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27D92699D4EE00104FE3 /* UserSession.swift */; };
+		B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */; };
+		B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C232699CFA800D1E8BB /* Environment.swift */; };
+		B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C252699D05200D1E8BB /* APIProvider.swift */; };
 		C7692C1C26999C7800A2F699 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7692C1B26999C7800A2F699 /* ShareViewController.swift */; };
 		C7692C1F26999C7800A2F699 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7692C1D26999C7800A2F699 /* MainInterface.storyboard */; };
 		C7692C2326999C7800A2F699 /* TidifyShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -66,6 +73,10 @@
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
+		B5314FAA2699DC2300769AB2 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		B5314FAD2699E38D00769AB2 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		B5314FB02699E7B800769AB2 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		B5314FB62699E85000769AB2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B56B67E8269997150099C46D /* RxSwift+Moya.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+Moya.swift"; sourceTree = "<group>"; };
 		B56B67EA2699972F0099C46D /* ObservableConvertibleType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableConvertibleType+.swift"; sourceTree = "<group>"; };
 		B56D82FA269987AB00D5F513 /* Tidify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tidify.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +104,9 @@
 		C72F27D12699CF1C00104FE3 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		C72F27D52699CF2700104FE3 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		C72F27D92699D4EE00104FE3 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkAPI.swift; sourceTree = "<group>"; };
+		B5F19C232699CFA800D1E8BB /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		B5F19C252699D05200D1E8BB /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
 		C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TidifyShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7692C1B26999C7800A2F699 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		C7692C1E26999C7800A2F699 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -122,6 +136,9 @@
 		B56D82F1269987AB00D5F513 = {
 			isa = PBXGroup;
 			children = (
+				B5314FB72699E85000769AB2 /* Localizable.strings */,
+				B5314FAD2699E38D00769AB2 /* .swiftlint.yml */,
+				B5314FB02699E7B800769AB2 /* R.generated.swift */,
 				B56D82FC269987AB00D5F513 /* Tidify */,
 				C7692C1A26999C7800A2F699 /* TidifyShareExtension */,
 				B56D82FB269987AB00D5F513 /* Products */,
@@ -155,9 +172,11 @@
 		B56D8313269989B800D5F513 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B5F19C1E2699CB3F00D1E8BB /* Service */,
 				B5F19C0F26999D9200D1E8BB /* Coordinator */,
 				B56D8314269989BF00D5F513 /* Main */,
 				B5F19C122699A01700D1E8BB /* WebView */,
+				B5F19C222699CF9B00D1E8BB /* Settings */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -186,6 +205,7 @@
 				B56B67EA2699972F0099C46D /* ObservableConvertibleType+.swift */,
 				B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */,
 				C72F27CB2699CC4700104FE3 /* OSLog.swift */,
+				B5314FAA2699DC2300769AB2 /* UIFont+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -235,6 +255,23 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		B5F19C1E2699CB3F00D1E8BB /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				B5F19C252699D05200D1E8BB /* APIProvider.swift */,
+				B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		B5F19C222699CF9B00D1E8BB /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B5F19C232699CFA800D1E8BB /* Environment.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		C6C02FE7FEF98151B5063570 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,11 +308,13 @@
 			buildConfigurationList = B56D830E269987AC00D5F513 /* Build configuration list for PBXNativeTarget "Tidify" */;
 			buildPhases = (
 				B9CE037148B8B5B3CF50B195 /* [CP] Check Pods Manifest.lock */,
+				B5314FAF2699E71400769AB2 /* ShellScript */,
 				B56D82F6269987AB00D5F513 /* Sources */,
 				B56D82F7269987AB00D5F513 /* Frameworks */,
 				B56D82F8269987AB00D5F513 /* Resources */,
 				59D0644373B4701FE7C48446 /* [CP] Embed Pods Frameworks */,
 				C7692C2426999C7800A2F699 /* Embed App Extensions */,
+				B5314FAC2699E34200769AB2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -345,6 +384,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5314FAE2699E38D00769AB2 /* .swiftlint.yml in Resources */,
+				B5314FB52699E85000769AB2 /* Localizable.strings in Resources */,
 				B56D830A269987AC00D5F513 /* LaunchScreen.storyboard in Resources */,
 				B56D8307269987AC00D5F513 /* Assets.xcassets in Resources */,
 			);
@@ -378,6 +419,42 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tidify/Pods-Tidify-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B5314FAC2699E34200769AB2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+		B5314FAF2699E71400769AB2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$TEMP_DIR/rswift-lastrun",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				$SRCROOT/R.generated.swift,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
+		};
 		B9CE037148B8B5B3CF50B195 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -407,16 +484,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5314FAB2699DC2300769AB2 /* UIFont+.swift in Sources */,
 				B56D831C26998A2900D5F513 /* UIApplication+.swift in Sources */,
 				B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */,
+				B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */,
 				B56D832226998A5B00D5F513 /* UITableView+.swift in Sources */,
 				B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */,
+				B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */,
 				B56D8317269989F600D5F513 /* CGSIze+.swift in Sources */,
 				B5F19C1D2699B61000D1E8BB /* BookMarkTableViewCell.swift in Sources */,
 				B56D82FE269987AB00D5F513 /* AppDelegate.swift in Sources */,
 				B56D83122699882200D5F513 /* MainViewController.swift in Sources */,
 				C72F27D62699CF2700104FE3 /* SignInViewModel.swift in Sources */,
 				C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */,
+				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,
+				B5314FB12699E7B800769AB2 /* R.generated.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
 				B5F19C1A2699B15300D1E8BB /* MainViewModel.swift in Sources */,
 				B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */,
@@ -451,6 +533,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B5314FB72699E85000769AB2 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B5314FB62699E85000769AB2 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		B56D8308269987AC00D5F513 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -24,8 +24,9 @@ public extension UICollectionView {
         register(viewType, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: identifier)
     }
 
+    // swiftlint:disable force_cast
     func t_dequeueReusableCell<T: UICollectionViewCell>(cellType: T.Type = T.self, indexPath: IndexPath) -> T {
-        return dequeueReusableCell(withReuseIdentifier: "\(cellType)" , for: indexPath) as! T
+        return dequeueReusableCell(withReuseIdentifier: "\(cellType)", for: indexPath) as! T
     }
 
     func t_dequeueReusableHeader<T: UICollectionReusableView>(viewType: T.Type = T.self, indexPath: IndexPath) -> T {
