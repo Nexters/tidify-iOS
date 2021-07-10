@@ -16,4 +16,3 @@ struct UserSession: Codable {
         case accessToken = "access_token"
     }
 }
-

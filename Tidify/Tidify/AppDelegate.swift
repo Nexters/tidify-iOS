@@ -5,10 +5,10 @@
 //  Created by 여정수 on 2021/07/10.
 //
 
-import UIKit
+import KakaoSDKAuth
 import RxKakaoSDKCommon
 import RxKakaoSDKAuth
-import KakaoSDKAuth
+import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mainCoordinator: MainCoordinator?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+
         if let kakaoApiKey = Bundle.main.infoDictionary?["KAKAO_API_KEY"] as? String {
             RxKakaoSDKCommon.initSDK(appKey: kakaoApiKey)
         } else {
@@ -33,12 +33,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
-    
-    open func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+
+    open func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+
+        if AuthApi.isKakaoTalkLoginUrl(url) {
             return AuthController.rx.handleOpenUrl(url: url)
         }
-        
+
         return false
     }
 }

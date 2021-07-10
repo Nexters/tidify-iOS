@@ -23,14 +23,13 @@ class SignInViewModel {
 
     func transfrom(_ input: Input) -> Output {
         let userSession = input.clickSignInWithKakaoButton.flatMap {
-                     UserApi.shared.rx.loginWithKakaoAccount()
-                   }
-                    .map { oauthToken in
-                        return UserSession(accessToken: oauthToken.accessToken)
-                    }
-                    .asDriver(onErrorJustReturn: nil)
+             UserApi.shared.rx.loginWithKakaoAccount()
+        }
+        .map { oauthToken in
+            return UserSession(accessToken: oauthToken.accessToken)
+        }
+        .asDriver(onErrorJustReturn: nil)
 
         return Output(userSession: userSession)
     }
-    
 }

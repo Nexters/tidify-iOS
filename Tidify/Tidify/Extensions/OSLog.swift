@@ -23,22 +23,22 @@ struct Log {
         case network
         case error
         case custom(categoryName: String)
-        
+
         fileprivate var category: String {
             switch self {
-                case .debug:
-                    return "Debug"
-                case .info:
-                    return "Info"
-                case .network:
-                    return "Network"
-                case .error:
-                    return "Error"
-                case .custom(let categoryName):
-                    return categoryName
+            case .debug:
+                return "Debug"
+            case .info:
+                return "Info"
+            case .network:
+                return "Network"
+            case .error:
+                return "Error"
+            case .custom(let categoryName):
+                return categoryName
             }
         }
-        
+
         fileprivate var osLog: OSLog {
             switch self {
             case .debug:
@@ -53,7 +53,7 @@ struct Log {
                 return OSLog.debug
             }
         }
-        
+
         fileprivate var osLogType: OSLogType {
             switch self {
             case .debug:
@@ -116,4 +116,3 @@ extension Log {
         log(message, arguments, level: .custom(categoryName: category))
     }
 }
-
