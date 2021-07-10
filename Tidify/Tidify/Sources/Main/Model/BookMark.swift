@@ -9,7 +9,7 @@ import Foundation
 
 struct BookMark: Codable {
     let urlString: String?        // 북마크 URL
-    let title: String       // 북마크 title
+    let title: String             // 북마크 title
 //    let dir
 //    let hashTags: [String]
 
@@ -22,4 +22,3 @@ struct BookMark: Codable {
         case title
     }
 }
-

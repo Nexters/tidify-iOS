@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import WebKit
 import UIKit
+import WebKit
 
 class MainCoordinator: NSObject, Coordinator {
     var childCoordinators: [Coordinator] = []
@@ -21,9 +21,10 @@ class MainCoordinator: NSObject, Coordinator {
         let mainViewModel = MainViewModel()
         let mainViewController = MainViewController(mainViewModel)
         mainViewController.coordinator = self
-        mainViewController.title = "Tidify"
+        mainViewController.title = R.string.localizable.mainTitle()
         navigationController.navigationBar.prefersLargeTitles = true
         navigationController.navigationItem.largeTitleDisplayMode = .never  // 하위 뷰에서는 비활성화
+        navigationController.navigationBar.backgroundColor = .white
         navigationController.pushViewController(mainViewController, animated: true)
     }
 

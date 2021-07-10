@@ -28,4 +28,3 @@ public extension Optional where Wrapped == Int {
         return self ?? 0
     }
 }
-
