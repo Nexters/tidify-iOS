@@ -5,9 +5,9 @@
 //  Created by Manjong Han on 2021/07/10.
 //
 
+import Foundation
 import RxCocoa
 import RxSwift
-import Foundation
 import KakaoSDKAuth
 import KakaoSDKUser
 import RxKakaoSDKUser
