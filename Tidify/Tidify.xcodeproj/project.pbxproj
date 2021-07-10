@@ -25,7 +25,34 @@
 		B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */; };
 		B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1026999E3700D1E8BB /* MainCoordinator.swift */; };
 		B5F19C142699A04400D1E8BB /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C132699A04400D1E8BB /* WebViewController.swift */; };
+		C7692C1C26999C7800A2F699 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7692C1B26999C7800A2F699 /* ShareViewController.swift */; };
+		C7692C1F26999C7800A2F699 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7692C1D26999C7800A2F699 /* MainInterface.storyboard */; };
+		C7692C2326999C7800A2F699 /* TidifyShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C7692C2126999C7800A2F699 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B56D82F2269987AB00D5F513 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7692C1826999C7800A2F699;
+			remoteInfo = TidifyShareExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C7692C2426999C7800A2F699 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C7692C2326999C7800A2F699 /* TidifyShareExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,6 +77,10 @@
 		B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
 		B5F19C1026999E3700D1E8BB /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		B5F19C132699A04400D1E8BB /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TidifyShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7692C1B26999C7800A2F699 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		C7692C1E26999C7800A2F699 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		C7692C2026999C7800A2F699 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +92,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C7692C1626999C7800A2F699 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -68,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				B56D82FC269987AB00D5F513 /* Tidify */,
+				C7692C1A26999C7800A2F699 /* TidifyShareExtension */,
 				B56D82FB269987AB00D5F513 /* Products */,
 				C6C02FE7FEF98151B5063570 /* Pods */,
 				F9C32BA5670FB74E5BEFCDC3 /* Frameworks */,
@@ -78,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				B56D82FA269987AB00D5F513 /* Tidify.app */,
+				C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,6 +196,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C7692C1A26999C7800A2F699 /* TidifyShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				C7692C1B26999C7800A2F699 /* ShareViewController.swift */,
+				C7692C1D26999C7800A2F699 /* MainInterface.storyboard */,
+				C7692C2026999C7800A2F699 /* Info.plist */,
+			);
+			path = TidifyShareExtension;
+			sourceTree = "<group>";
+		};
 		F9C32BA5670FB74E5BEFCDC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,15 +226,34 @@
 				B56D82F7269987AB00D5F513 /* Frameworks */,
 				B56D82F8269987AB00D5F513 /* Resources */,
 				59D0644373B4701FE7C48446 /* [CP] Embed Pods Frameworks */,
+				C7692C2426999C7800A2F699 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C7692C2226999C7800A2F699 /* PBXTargetDependency */,
 			);
 			name = Tidify;
 			productName = Tidify;
 			productReference = B56D82FA269987AB00D5F513 /* Tidify.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C7692C1826999C7800A2F699 /* TidifyShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7692C2726999C7800A2F699 /* Build configuration list for PBXNativeTarget "TidifyShareExtension" */;
+			buildPhases = (
+				C7692C1526999C7800A2F699 /* Sources */,
+				C7692C1626999C7800A2F699 /* Frameworks */,
+				C7692C1726999C7800A2F699 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TidifyShareExtension;
+			productName = TidifyShareExtension;
+			productReference = C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -192,11 +261,14 @@
 		B56D82F2269987AB00D5F513 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					B56D82F9269987AB00D5F513 = {
 						CreatedOnToolsVersion = 12.5;
+					};
+					C7692C1826999C7800A2F699 = {
+						CreatedOnToolsVersion = 12.4;
 					};
 				};
 			};
@@ -214,6 +286,7 @@
 			projectRoot = "";
 			targets = (
 				B56D82F9269987AB00D5F513 /* Tidify */,
+				C7692C1826999C7800A2F699 /* TidifyShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -225,6 +298,14 @@
 			files = (
 				B56D830A269987AC00D5F513 /* LaunchScreen.storyboard in Resources */,
 				B56D8307269987AC00D5F513 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7692C1726999C7800A2F699 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7692C1F26999C7800A2F699 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,7 +376,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C7692C1526999C7800A2F699 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7692C1C26999C7800A2F699 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C7692C2226999C7800A2F699 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7692C1826999C7800A2F699 /* TidifyShareExtension */;
+			targetProxy = C7692C2126999C7800A2F699 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B56D8308269987AC00D5F513 /* LaunchScreen.storyboard */ = {
@@ -304,6 +401,14 @@
 				B56D8309269987AC00D5F513 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		C7692C1D26999C7800A2F699 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C7692C1E26999C7800A2F699 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -429,6 +534,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -449,6 +555,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -460,6 +567,46 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.duwjdtn.Tidify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C7692C2526999C7800A2F699 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
+				INFOPLIST_FILE = TidifyShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.duwjdtn.Tidify.TidifyShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C7692C2626999C7800A2F699 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
+				INFOPLIST_FILE = TidifyShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.duwjdtn.Tidify.TidifyShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -482,6 +629,15 @@
 			buildConfigurations = (
 				B56D830F269987AC00D5F513 /* Debug */,
 				B56D8310269987AC00D5F513 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7692C2726999C7800A2F699 /* Build configuration list for PBXNativeTarget "TidifyShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7692C2526999C7800A2F699 /* Debug */,
+				C7692C2626999C7800A2F699 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
