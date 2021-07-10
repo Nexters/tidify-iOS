@@ -25,8 +25,6 @@ class MainCoordinator: NSObject, Coordinator {
         let mainViewController = MainViewController(mainViewModel)
         mainViewController.coordinator = self
         mainViewController.title = R.string.localizable.mainTitle()
-        navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.navigationItem.largeTitleDisplayMode = .never  // 하위 뷰에서는 비활성화
         navigationController.navigationBar.backgroundColor = .white
         navigationController.setViewControllers([mainViewController], animated: true)
     }
