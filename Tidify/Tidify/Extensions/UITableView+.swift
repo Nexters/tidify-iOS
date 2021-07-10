@@ -19,6 +19,7 @@ public extension UITableView {
         register(viewType, forHeaderFooterViewReuseIdentifier: identifier)
     }
 
+    // swiftlint:disable force_cast
     func t_dequeueReusableCell<T: UITableViewCell>(cellType: T.Type = T.self, indexPath: IndexPath) -> T {
         return dequeueReusableCell(withIdentifier: "\(cellType)", for: indexPath) as! T
     }

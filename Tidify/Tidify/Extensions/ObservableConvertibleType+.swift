@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import Moya
 import RxCocoa
 import RxSwift
-import Moya
 
 extension ObservableConvertibleType {
     func t_asDriverSkipError() -> Driver<Element> {

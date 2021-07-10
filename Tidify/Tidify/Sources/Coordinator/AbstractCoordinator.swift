@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 /// Coordinator 추상화
 protocol Coordinator: AnyObject {
     var childCoordinators: [Coordinator] { get set }

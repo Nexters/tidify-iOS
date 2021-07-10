@@ -7,9 +7,9 @@
 
 import RxCocoa
 import RxSwift
-import UIKit
 import SnapKit
 import Then
+import UIKit
 
 class MainViewController: UIViewController {
     weak var coordinator: MainCoordinator?
@@ -75,6 +75,7 @@ private extension MainViewController {
         let tableView = UITableView().then {
             $0.delegate = self
             $0.dataSource = self
+            $0.separatorStyle = .none
             $0.t_registerCellClass(cellType: BookMarkTableViewCell.self)
             view.addSubview($0)
         }

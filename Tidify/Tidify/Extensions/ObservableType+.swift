@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import Moya
 import RxCocoa
 import RxSwift
-import Moya
 
 extension ObservableType where Element == Response {
     func t_map<D: Decodable>(_ type: D.Type,

@@ -5,9 +5,9 @@
 //  Created by 여정수 on 2021/07/10.
 //
 
+import Foundation
 import RxCocoa
 import RxSwift
-import Foundation
 
 class MainViewModel {
     struct Input {
@@ -26,7 +26,6 @@ class MainViewModel {
     ]
 
     func transfrom(_ input: Input) -> Output {
-
         let cellTapEvent = input.cellTapSubject
             .t_asDriverSkipError()
             .do(onNext: { [weak self] bookMark in
