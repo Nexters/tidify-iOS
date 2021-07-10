@@ -28,6 +28,9 @@
 		C7692C1C26999C7800A2F699 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7692C1B26999C7800A2F699 /* ShareViewController.swift */; };
 		C7692C1F26999C7800A2F699 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7692C1D26999C7800A2F699 /* MainInterface.storyboard */; };
 		C7692C2326999C7800A2F699 /* TidifyShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B5F19C162699B13800D1E8BB /* BookMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C152699B13800D1E8BB /* BookMark.swift */; };
+		B5F19C1A2699B15300D1E8BB /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C192699B15300D1E8BB /* MainViewModel.swift */; };
+		B5F19C1D2699B61000D1E8BB /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1C2699B61000D1E8BB /* BookMarkTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +84,9 @@
 		C7692C1B26999C7800A2F699 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		C7692C1E26999C7800A2F699 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		C7692C2026999C7800A2F699 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B5F19C152699B13800D1E8BB /* BookMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMark.swift; sourceTree = "<group>"; };
+		B5F19C192699B15300D1E8BB /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		B5F19C1C2699B61000D1E8BB /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +154,9 @@
 		B56D8314269989BF00D5F513 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				B56D83112699882200D5F513 /* MainViewController.swift */,
+				B5F19C1B2699B15800D1E8BB /* View */,
+				B5F19C182699B14B00D1E8BB /* ViewModel */,
+				B5F19C172699B13F00D1E8BB /* Model */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -185,6 +193,31 @@
 				B5F19C132699A04400D1E8BB /* WebViewController.swift */,
 			);
 			path = WebView;
+			sourceTree = "<group>";
+		};
+		B5F19C172699B13F00D1E8BB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B5F19C152699B13800D1E8BB /* BookMark.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B5F19C182699B14B00D1E8BB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B5F19C192699B15300D1E8BB /* MainViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B5F19C1B2699B15800D1E8BB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B56D83112699882200D5F513 /* MainViewController.swift */,
+				B5F19C1C2699B61000D1E8BB /* BookMarkTableViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		C6C02FE7FEF98151B5063570 /* Pods */ = {
@@ -363,9 +396,11 @@
 				B56D832226998A5B00D5F513 /* UITableView+.swift in Sources */,
 				B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */,
 				B56D8317269989F600D5F513 /* CGSIze+.swift in Sources */,
+				B5F19C1D2699B61000D1E8BB /* BookMarkTableViewCell.swift in Sources */,
 				B56D82FE269987AB00D5F513 /* AppDelegate.swift in Sources */,
 				B56D83122699882200D5F513 /* MainViewController.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
+				B5F19C1A2699B15300D1E8BB /* MainViewModel.swift in Sources */,
 				B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */,
 				B56D832426998A7300D5F513 /* UIView+.swift in Sources */,
 				B56D831A26998A1300D5F513 /* Optional+.swift in Sources */,
@@ -373,6 +408,7 @@
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
 				B5F19C142699A04400D1E8BB /* WebViewController.swift in Sources */,
 				B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */,
+				B5F19C162699B13800D1E8BB /* BookMark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

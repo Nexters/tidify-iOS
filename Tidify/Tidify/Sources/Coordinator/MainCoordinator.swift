@@ -18,9 +18,12 @@ class MainCoordinator: NSObject, Coordinator {
     }
 
     func start() {
-        // 추후 VC 객체 생성시 ViewModel을 주입하여 DI 해결
-        let mainViewController = MainViewController()
+        let mainViewModel = MainViewModel()
+        let mainViewController = MainViewController(mainViewModel)
         mainViewController.coordinator = self
+        mainViewController.title = "Tidify"
+        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationItem.largeTitleDisplayMode = .never  // 하위 뷰에서는 비활성화
         navigationController.pushViewController(mainViewController, animated: true)
     }
 
