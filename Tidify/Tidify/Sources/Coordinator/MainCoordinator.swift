@@ -14,6 +14,9 @@ class MainCoordinator: NSObject, Coordinator {
     var navigationController: UINavigationController
 
     init(navigationController: UINavigationController) {
+        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationItem.largeTitleDisplayMode = .never  // 하위 뷰에서는 비활성화
+
         self.navigationController = navigationController
     }
 
@@ -22,14 +25,21 @@ class MainCoordinator: NSObject, Coordinator {
         let mainViewController = MainViewController(mainViewModel)
         mainViewController.coordinator = self
         mainViewController.title = "Tidify"
-        navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.navigationItem.largeTitleDisplayMode = .never  // 하위 뷰에서는 비활성화
-        navigationController.pushViewController(mainViewController, animated: true)
+
+        navigationController.setViewControllers([mainViewController], animated: true)
     }
 
     func pushWebView() {
         let webViewController = WebViewController()
         webViewController.coordinator = self
         navigationController.pushViewController(webViewController, animated: true)
+    }
+
+    func presentSignIn() {
+        let signInViewModel = SignInViewModel()
+        let signInViewController = SignInViewController(signInViewModel)
+        signInViewController.coordinator = self
+
+        navigationController.pushViewController(signInViewController, animated: true)
     }
 }
