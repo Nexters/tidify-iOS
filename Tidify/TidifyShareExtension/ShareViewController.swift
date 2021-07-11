@@ -10,7 +10,6 @@ import UIKit
 class ShareViewController: UIViewController {
 
     let urlShareId = "public.url"
-    let newBookMarkNotificationChannelName = "com.duwjdtn.Tidify.newBookMark" as CFString
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,10 +51,6 @@ class ShareViewController: UIViewController {
     }
     
     private func notifyNewBookMark(url: String) {
-//        let notificationName = CFNotificationName(self.newBookMarkNotificationChannelName)
-//        let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
-//        CFNotificationCenterPostNotification(notificationCenter, notificationName, url.toUnsafePointer(), nil, false)
-
         if let userDefaults = UserDefaults(suiteName: "group.com.aksmj.Tidify") {
             userDefaults.setValue(url, forKey: "newBookMark")
             userDefaults.synchronize()

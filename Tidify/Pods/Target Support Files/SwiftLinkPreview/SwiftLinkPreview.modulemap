@@ -1,0 +1,6 @@
+framework module SwiftLinkPreview {
+  umbrella header "SwiftLinkPreview-umbrella.h"
+
+  export *
+  module * { export * }
+}

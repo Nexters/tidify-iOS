@@ -6,14 +6,12 @@
 //
 
 import KakaoSDKAuth
-import RxKakaoSDKCommon
 import RxKakaoSDKAuth
+import RxKakaoSDKCommon
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    let newBookMarkNotificationChannelName = "com.duwjdtn.Tidify.newBookMark" as CFString
 
     var window: UIWindow?
     var mainCoordinator: MainCoordinator?
@@ -27,28 +25,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         let navigationController = UINavigationController()
-        mainCoordinator = MainCoordinator(navigationController: navigationController)
-//        mainCoordinator?.presentSignIn()
-        mainCoordinator?.start()
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 
-//        let notificationName = newBookMarkNotificationChannelName
-//        let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
-//
-//        CFNotificationCenterAddObserver(notificationCenter, nil, { (_: CFNotificationCenter?, _: UnsafeMutableRawPointer?, _: CFNotificationName?, object: UnsafeRawPointer?, _: CFDictionary?) in
-//
-//            print("received!")
-//
-//            if object != nil {
-//                let decoded = UnsafePointer<UInt8>(object!.assumingMemoryBound(to: UInt8.self))
-//                let newBookMark = String(cString: decoded)
-//
-//                Log.info(newBookMark)
-//            }
-//        }, notificationName, nil, CFNotificationSuspensionBehavior.deliverImmediately)
+        mainCoordinator = MainCoordinator(navigationController: navigationController)
 
+        guard UserDefaults.standard.string(forKey: "access_token") != nil else {
+            mainCoordinator?.presentSignIn()
+            return true
+        }
+
+        mainCoordinator?.start()
         return true
     }
 

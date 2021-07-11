@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import RxSwift
 
 struct BookMark: Codable {
     let urlString: String?        // 북마크 URL
     let title: String             // 북마크 title
+    let thumbnail: URL?        // OG 썸네일 이미지 URL
 //    let dir
 //    let hashTags: [String]
 
@@ -20,5 +22,6 @@ struct BookMark: Codable {
     enum CodingKeys: String, CodingKey {
         case urlString = "url"
         case title
+        case thumbnail
     }
 }

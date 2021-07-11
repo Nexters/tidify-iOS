@@ -20,7 +20,7 @@ class MainViewController: UIViewController {
     private let viewModel: MainViewModel!
 
     private let cellTapSubject = PublishSubject<BookMark>()
-    private let addListItemSubject = PublishSubject<BookMark>()
+    private let addListItemSubject = PublishSubject<URL>()
     private let disposeBag = DisposeBag()
 
     private var observer: NSObjectProtocol?
@@ -59,11 +59,13 @@ class MainViewController: UIViewController {
             .disposed(by: disposeBag)
 
         output.addListItem
-            .do(onNext: { _ in
+            .do(onNext: { newBookMark in
                 self.tableView.reloadData()
             })
             .drive()
             .disposed(by: disposeBag)
+
+        self.generateMockUp()
     }
 
     deinit {
@@ -74,22 +76,39 @@ class MainViewController: UIViewController {
 
     func viewShown() {
         if let userDefaults = UserDefaults(suiteName: "group.com.aksmj.Tidify") {
-            if let newBookMark = userDefaults.string(forKey: "newBookMark") {
+            if let bookMarkUrl = userDefaults.string(forKey: "newBookMark") {
                 self.addListItemSubject
-                    .onNext(BookMark(urlString: newBookMark, title: "Google"))
+                    .onNext(URL(string: bookMarkUrl)!)
+
+                userDefaults.removeObject(forKey: "newBookMark")
             }
+        }
+    }
+
+    // TEST
+    private func generateMockUp() {
+        let mockUpList = [
+            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=227&oid=366&aid=0000745596")!,
+            URL(string: "https://news.naver.com/main/read.naver?mode=LSD&mid=shm&sid1=103&oid=422&aid=0000494233")!,
+            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=731&oid=014&aid=0004672150")!,
+            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=228&oid=001&aid=0012516598")!
+        ]
+
+        for mockUp in mockUpList {
+            self.addListItemSubject
+                .onNext(mockUp)
         }
     }
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.mockUpData.count
+        viewModel.bookMarkList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: BookMarkTableViewCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-        let bookMark = viewModel.mockUpData[indexPath.row]
+        let bookMark = viewModel.bookMarkList[indexPath.row]
         cell.setBookMark(bookMark)
 
         return cell
@@ -100,7 +119,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let bookMark = viewModel.mockUpData[indexPath.row]
+        let bookMark = viewModel.bookMarkList[indexPath.row]
         cellTapSubject.onNext(bookMark)
         tableView.deselectRow(at: indexPath, animated: true)
     }
