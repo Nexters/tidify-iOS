@@ -10,6 +10,7 @@ import RxSwift
 import SnapKit
 import Then
 import UIKit
+import Kingfisher
 
 class BookMarkTableViewCell: UITableViewCell {
     private weak var containerView: UIView!
@@ -51,6 +52,7 @@ class BookMarkTableViewCell: UITableViewCell {
         self.bookMark = bookMark
         titleLabel.text = bookMark.title
         descriptionLabel.text = bookMark.urlString
+        thumbnailImageView.kf.setImage(with: bookMark.thumbnail)
         // 이미지 처리 필요
     }
 }
@@ -76,7 +78,7 @@ private extension BookMarkTableViewCell {
         let thumbnailImageView = UIImageView().then {
             $0.layer.cornerRadius = Self.thumbnailImageWidth / 4
             $0.image = R.image.opengraph_img()
-            $0.contentMode = .scaleAspectFill
+            $0.contentMode = .scaleAspectFit
             containerView.addSubview($0)
         }
         self.thumbnailImageView = thumbnailImageView

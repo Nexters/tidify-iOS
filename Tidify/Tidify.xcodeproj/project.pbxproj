@@ -38,6 +38,7 @@
 		B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */; };
 		B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C232699CFA800D1E8BB /* Environment.swift */; };
 		B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C252699D05200D1E8BB /* APIProvider.swift */; };
+		C72D3702269AFED9009A71B6 /* RxSwift+LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72D3701269AFED9009A71B6 /* RxSwift+LinkPreview.swift */; };
 		C72F27CA2699CC1B00104FE3 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C72F27C92699CC1B00104FE3 /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C72F27CC2699CC4700104FE3 /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27CB2699CC4700104FE3 /* OSLog.swift */; };
 		C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27D12699CF1C00104FE3 /* SignInViewController.swift */; };
@@ -109,6 +110,7 @@
 		B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkAPI.swift; sourceTree = "<group>"; };
 		B5F19C232699CFA800D1E8BB /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		B5F19C252699D05200D1E8BB /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
+		C72D3701269AFED9009A71B6 /* RxSwift+LinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+LinkPreview.swift"; sourceTree = "<group>"; };
 		C72F27C92699CC1B00104FE3 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		C72F27CB2699CC4700104FE3 /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		C72F27D12699CF1C00104FE3 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 				B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */,
 				C72F27CB2699CC4700104FE3 /* OSLog.swift */,
 				B5314FAA2699DC2300769AB2 /* UIFont+.swift */,
+				C72D3701269AFED9009A71B6 /* RxSwift+LinkPreview.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -247,13 +250,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		B5AF0ADD269A133600D8DCF5 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		B5AF0ADE269A133B00D8DCF5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,7 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				B5AF0ADE269A133B00D8DCF5 /* ViewModel */,
-				B5AF0ADD269A133600D8DCF5 /* View */,
 				B5F19C132699A04400D1E8BB /* WebViewController.swift */,
 			);
 			path = WebView;
@@ -563,6 +558,7 @@
 				B56D832426998A7300D5F513 /* UIView+.swift in Sources */,
 				B56D831A26998A1300D5F513 /* Optional+.swift in Sources */,
 				B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */,
+				C72D3702269AFED9009A71B6 /* RxSwift+LinkPreview.swift in Sources */,
 				C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */,
 				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
@@ -737,7 +733,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Tidify/Tidify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 857J3M5L6B;
+				DEVELOPMENT_TEAM = GBX2J8EHBY;
 				INFOPLIST_FILE = Tidify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -759,7 +755,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Tidify/Tidify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 857J3M5L6B;
+				DEVELOPMENT_TEAM = GBX2J8EHBY;
 				INFOPLIST_FILE = Tidify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

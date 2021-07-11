@@ -45,8 +45,9 @@ class SignInViewController: UIViewController {
             .map { userSession in
                 if userSession != nil {
                     self.coordinator?.start()
+                    return "로그인 성공"
                 }
-                return userSession?.accessToken ?? "로그인 실패"
+                return "로그인 실패"
             }
             .drive(resultLabel.rx.text)
             .disposed(by: disposeBag)

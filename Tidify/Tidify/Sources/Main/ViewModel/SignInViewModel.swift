@@ -25,11 +25,16 @@ class SignInViewModel {
         let userSession = input.clickSignInWithKakaoButton.flatMap {
              UserApi.shared.rx.loginWithKakaoAccount()
         }
-        .map { oauthToken in
+        .map { oauthToken -> UserSession in
+            self.rememberAccessToken(oauthToken.accessToken)
             return UserSession(accessToken: oauthToken.accessToken)
         }
         .asDriver(onErrorJustReturn: nil)
 
         return Output(userSession: userSession)
+    }
+
+    private func rememberAccessToken(_ accessToken: String) {
+        UserDefaults.standard.setValue(accessToken, forKey: "access_token")
     }
 }

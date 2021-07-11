@@ -15,4 +15,6 @@ target 'Tidify' do
     pod 'Then'
     pod 'R.swift'
     pod 'RxKakaoSDK'
+    pod 'Kingfisher'
+    pod 'SwiftLinkPreview'
 end
