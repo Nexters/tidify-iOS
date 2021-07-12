@@ -5,8 +5,8 @@
 //  Created by Manjong Han on 2021/07/11.
 //
 
-import SwiftLinkPreview
 import RxSwift
+import SwiftLinkPreview
 
 extension Reactive where Base: SwiftLinkPreview {
     func preview(url: URL?) -> Observable<Response> {

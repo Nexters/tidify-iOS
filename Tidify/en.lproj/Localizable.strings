@@ -7,3 +7,12 @@
 */
 
 "MainTitle" = "Tidify";
+
+// Main
+"Main.addBookMark.title" = "북마크 추가";
+
+// Register
+"Register.title" = "나만의 북마크 만들기";
+"Register.desc" = "링크 주소를 입력해주세요";
+"Register.inputTextField.placeHolder" = "URL, 링크주소 붙여넣기";
+"Register.button.title" = "저장";"

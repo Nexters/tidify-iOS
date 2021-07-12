@@ -22,15 +22,15 @@ class MainCoordinator: NSObject, Coordinator {
     }
 
     func start() {
-        let mainViewModel = MainViewModel()
-        let mainViewController = MainViewController(mainViewModel)
-        mainViewController.coordinator = self
-        mainViewController.title = R.string.localizable.mainTitle()
+        let homeViewModel = HomeViewModel()
+        let homeViewController = HomeViewController(homeViewModel)
+        homeViewController.coordinator = self
+        homeViewController.title = R.string.localizable.mainTitle()
         navigationController.navigationBar.prefersLargeTitles = true
         navigationController.navigationItem.largeTitleDisplayMode = .never  // 하위 뷰에서는 비활성화
         navigationController.navigationBar.backgroundColor = .white
         navigationController.navigationBar.isHidden = true
-        navigationController.setViewControllers([mainViewController], animated: true)
+        navigationController.setViewControllers([homeViewController], animated: true)
     }
 
     func pushWebView() {

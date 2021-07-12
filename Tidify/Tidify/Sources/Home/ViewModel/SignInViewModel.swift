@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 import KakaoSDKAuth
 import KakaoSDKUser
+import RxCocoa
 import RxKakaoSDKUser
+import RxSwift
 
 class SignInViewModel {
     struct Input {

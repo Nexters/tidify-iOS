@@ -1,36 +1,48 @@
 //
-//  MainViewModel.swift
+//  HomeViewModel.swift
 //  Tidify
 //
 //  Created by 여정수 on 2021/07/10.
 //
 
 import Foundation
-import SwiftLinkPreview
 import RxCocoa
 import RxSwift
+import SwiftLinkPreview
 
-class MainViewModel {
+protocol HomeCoordinatorDelegate: AnyObject {
+    func pushRegisterView()
+}
 
+class HomeViewModel {
     let imagePlaceholder = "https://via.placeholder.com/150"
     let swiftLinkPreview = SwiftLinkPreview()
 
     struct Input {
+        let registerButtonTap: Driver<Void>
         let cellTapSubject: Observable<BookMark>
         let addListItemSubject: Observable<URL>
     }
 
     struct Output {
+        let registerButtonTap: Driver<Void>
         let cellTapEvent: Driver<Void>
         let addListItem: Driver<BookMark?>
     }
 
+    weak var delegate: HomeCoordinatorDelegate?
+
     var bookMarkList: [BookMark] = []
 
     func transfrom(_ input: Input) -> Output {
+        let registerButtonTap = input.registerButtonTap
+            .do(onNext: { [weak self] _ in
+                self?.delegate?.pushRegisterView()
+            })
+
         let cellTapEvent = input.cellTapSubject
             .t_asDriverSkipError()
-            .do(onNext: { [weak self] bookMark in
+            .do(onNext: { bookMark in
                 print("🎱🎱🎱 \(bookMark) didTap")
             })
             .map { _ in }
@@ -54,6 +66,8 @@ class MainViewModel {
             })
             .t_asDriverSkipError()
 
-        return Output(cellTapEvent: cellTapEvent, addListItem: addListItem)
+        return Output(registerButtonTap: registerButtonTap,
+                      cellTapEvent: cellTapEvent,
+                      addListItem: addListItem)
     }
 }

@@ -1,5 +1,7 @@
 included:
 - Tidify
+excluded:
+- Pods
 
 line_length: 200
 
