@@ -5,12 +5,12 @@
 //  Created by 여정수 on 2021/07/10.
 //
 
+import Kingfisher
 import RxCocoa
 import RxSwift
 import SnapKit
 import Then
 import UIKit
-import Kingfisher
 
 class BookMarkTableViewCell: UITableViewCell {
     private weak var containerView: UIView!

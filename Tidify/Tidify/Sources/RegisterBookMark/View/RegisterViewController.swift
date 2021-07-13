@@ -56,14 +56,14 @@ private extension RegisterViewController {
         view.backgroundColor = .white
 
         let titleLabel = UILabel().then {
-            $0.text = "Apple SD Gothic Neo"
+            $0.text = R.string.localizable.registerTitle()
             $0.font = .t_B(32)
             view.addSubview($0)
         }
         self.titleLabel = titleLabel
 
         let descriptionLabel = UILabel().then {
-            $0.text = "Apple SD Gothic Neo"
+            $0.text = R.string.localizable.registerDesc()
             $0.font = .t_R(16)
             view.addSubview($0)
         }
@@ -72,24 +72,34 @@ private extension RegisterViewController {
         let inputTextField = UITextField().then {
             $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
             $0.leftViewMode = .always
-            $0.placeholder = "Apple SD Gothic Neo"
+            $0.placeholder = R.string.localizable.registerInputTextFieldPlaceHolder()
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.lightGray.cgColor
             $0.layer.cornerRadius = 16
             $0.font = .t_R(16)
             $0.backgroundColor = .white
+            $0.layer.shadowColor = UIColor.black.cgColor
+            $0.layer.shadowOpacity = 0.7
+            $0.layer.shadowOffset = CGSize(w: 0, h: 3)
+            $0.layer.shadowRadius = 10
+            $0.layer.masksToBounds = false
             view.addSubview($0)
         }
         self.inputTextField = inputTextField
 
         let registerButton = UIButton().then {
-            $0.setTitle("Apple SD Gothic Neo", for: .normal)
+            $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
             $0.titleLabel?.font = .t_B(20)
             $0.setTitleColor(UIColor(60, 60, 67, 0.3), for: .normal)
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.lightGray.cgColor
             $0.layer.cornerRadius = 16
             $0.backgroundColor = .white
+            $0.layer.shadowColor = UIColor.black.cgColor
+            $0.layer.shadowOpacity = 0.7
+            $0.layer.shadowOffset = CGSize(w: 0, h: 3)
+            $0.layer.shadowRadius = 10
+            $0.layer.masksToBounds = false
             view.addSubview($0)
         }
         self.registerButton = registerButton

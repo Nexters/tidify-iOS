@@ -11,13 +11,13 @@ import SnapKit
 import Then
 import UIKit
 
-class MainViewController: UIViewController {
+class HomeViewController: UIViewController {
     weak var coordinator: MainCoordinator?
 
     private weak var tableView: UITableView!
     private weak var customHeaderView: UIView!
     private weak var registerBookMarkButton: UIButton!
-    private let viewModel: MainViewModel!
+    private let viewModel: HomeViewModel!
 
     private let cellTapSubject = PublishSubject<BookMark>()
     private let addListItemSubject = PublishSubject<URL>()
@@ -25,7 +25,7 @@ class MainViewController: UIViewController {
 
     private var observer: NSObjectProtocol?
 
-    init(_ viewModel: MainViewModel) {
+    init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -45,8 +45,12 @@ class MainViewController: UIViewController {
         setupLayoutConstraints()
         tableView.layoutIfNeeded()
 
-        let input = MainViewModel.Input(cellTapSubject: cellTapSubject.asObservable(), addListItemSubject: addListItemSubject.asObserver())
+        let input = HomeViewModel.Input(registerButtonTap: registerBookMarkButton.rx.tap.asDriver().map { _ in },
+                                        cellTapSubject: cellTapSubject.asObservable(),
+                                        addListItemSubject: addListItemSubject.asObserver())
         let output = viewModel.transfrom(input)
+
+        output.registerButtonTap.drive().disposed(by: disposeBag)
 
         output.cellTapEvent
             .drive()
@@ -101,7 +105,7 @@ class MainViewController: UIViewController {
     }
 }
 
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.bookMarkList.count
     }
@@ -125,12 +129,17 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-private extension MainViewController {
+private extension HomeViewController {
     func setupViews() {
         view.backgroundColor = .white
 
         let customHeaderView = UIView().then {
-            $0.backgroundColor = .lightGray
+            $0.backgroundColor = .white
+            $0.layer.shadowColor = UIColor.gray.cgColor
+            $0.layer.shadowOpacity = 0.7
+            $0.layer.shadowOffset = CGSize(w: 0, h: 3)
+            $0.layer.shadowRadius = 10
+            $0.layer.masksToBounds = false
             view.addSubview($0)
         }
         self.customHeaderView = customHeaderView
@@ -146,7 +155,7 @@ private extension MainViewController {
         self.tableView = tableView
 
         let registerBookMarkButton = UIButton().then {
-            $0.setTitle("Apple SD Gothic Neo", for: .normal)
+            $0.setTitle(R.string.localizable.mainAddBookMarkTitle(), for: .normal)
             $0.titleLabel?.font = .t_B(20)
             $0.backgroundColor = .t_tidiBlue()
             $0.layer.cornerRadius = 16

@@ -172,12 +172,32 @@ struct R: Rswift.Validatable {
 
   /// This `R.string` struct is generated, and contains static references to 1 localization tables.
   struct string {
-    /// This `R.string.localizable` struct is generated, and contains static references to 1 localization keys.
+    /// This `R.string.localizable` struct is generated, and contains static references to 6 localization keys.
     struct localizable {
       /// en translation: Tidify
       ///
       /// Locales: en
       static let mainTitle = Rswift.StringResource(key: "MainTitle", tableName: "Localizable", bundle: R.hostingBundle, locales: ["en"], comment: nil)
+      /// en translation: URL, 링크주소 붙여넣기
+      ///
+      /// Locales: en
+      static let registerInputTextFieldPlaceHolder = Rswift.StringResource(key: "Register.inputTextField.placeHolder", tableName: "Localizable", bundle: R.hostingBundle, locales: ["en"], comment: nil)
+      /// en translation: 나만의 북마크 만들기
+      ///
+      /// Locales: en
+      static let registerTitle = Rswift.StringResource(key: "Register.title", tableName: "Localizable", bundle: R.hostingBundle, locales: ["en"], comment: nil)
+      /// en translation: 링크 주소를 입력해주세요
+      ///
+      /// Locales: en
+      static let registerDesc = Rswift.StringResource(key: "Register.desc", tableName: "Localizable", bundle: R.hostingBundle, locales: ["en"], comment: nil)
+      /// en translation: 북마크 추가
+      ///
+      /// Locales: en
+      static let mainAddBookMarkTitle = Rswift.StringResource(key: "Main.addBookMark.title", tableName: "Localizable", bundle: R.hostingBundle, locales: ["en"], comment: nil)
+      /// en translation: 저장
+      ///
+      /// Locales: en
+      static let registerButtonTitle = Rswift.StringResource(key: "Register.button.title", tableName: "Localizable", bundle: R.hostingBundle, locales: ["en"], comment: nil)
 
       /// en translation: Tidify
       ///
@@ -192,6 +212,81 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("MainTitle", bundle: bundle, comment: "")
+      }
+
+      /// en translation: URL, 링크주소 붙여넣기
+      ///
+      /// Locales: en
+      static func registerInputTextFieldPlaceHolder(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("Register.inputTextField.placeHolder", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
+          return "Register.inputTextField.placeHolder"
+        }
+
+        return NSLocalizedString("Register.inputTextField.placeHolder", bundle: bundle, comment: "")
+      }
+
+      /// en translation: 나만의 북마크 만들기
+      ///
+      /// Locales: en
+      static func registerTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("Register.title", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
+          return "Register.title"
+        }
+
+        return NSLocalizedString("Register.title", bundle: bundle, comment: "")
+      }
+
+      /// en translation: 링크 주소를 입력해주세요
+      ///
+      /// Locales: en
+      static func registerDesc(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("Register.desc", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
+          return "Register.desc"
+        }
+
+        return NSLocalizedString("Register.desc", bundle: bundle, comment: "")
+      }
+
+      /// en translation: 북마크 추가
+      ///
+      /// Locales: en
+      static func mainAddBookMarkTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("Main.addBookMark.title", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
+          return "Main.addBookMark.title"
+        }
+
+        return NSLocalizedString("Main.addBookMark.title", bundle: bundle, comment: "")
+      }
+
+      /// en translation: 저장
+      ///
+      /// Locales: en
+      static func registerButtonTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("Register.button.title", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
+          return "Register.button.title"
+        }
+
+        return NSLocalizedString("Register.button.title", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}
