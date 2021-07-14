@@ -12,7 +12,7 @@ import Then
 import UIKit
 
 class HomeViewController: UIViewController {
-    weak var coordinator: MainCoordinator?
+    weak var coordinator: Coordinator?
 
     private weak var tableView: UITableView!
     private weak var customHeaderView: UIView!
@@ -25,8 +25,9 @@ class HomeViewController: UIViewController {
 
     private var observer: NSObjectProtocol?
 
-    init(_ viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -51,16 +52,7 @@ class HomeViewController: UIViewController {
         let output = viewModel.transfrom(input)
 
         output.registerButtonTap.drive().disposed(by: disposeBag)
-
-        output.cellTapEvent
-            .drive()
-            .disposed(by: disposeBag)
-
-        registerBookMarkButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.coordinator?.pushRegisterView()
-            })
-            .disposed(by: disposeBag)
+        output.cellTapEvent.drive().disposed(by: disposeBag)
 
         output.addListItem
             .do(onNext: { newBookMark in

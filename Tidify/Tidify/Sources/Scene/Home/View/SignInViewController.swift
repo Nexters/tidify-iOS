@@ -23,7 +23,7 @@ class SignInViewController: UIViewController {
 
     private let signInWithKakao = PublishSubject<Void>()
 
-    init(_ viewModel: SignInViewModel) {
+    init(viewModel: SignInViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
