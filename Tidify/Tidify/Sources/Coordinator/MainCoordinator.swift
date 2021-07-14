@@ -26,6 +26,7 @@ class MainCoordinator: NSObject, Coordinator {
     func start() {
         window.rootViewController = navigationController
         let homeCoordinator = HomeCoordinator(navigationController: navigationController)
+        homeCoordinator.parentCoordinator = self
         childCoordinators.append(homeCoordinator)
 
         homeCoordinator.start()
