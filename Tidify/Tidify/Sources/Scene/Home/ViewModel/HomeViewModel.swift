@@ -10,8 +10,9 @@ import RxCocoa
 import RxSwift
 import SwiftLinkPreview
 
-protocol HomeCoordinatorDelegate: AnyObject {
+protocol HomeViewModelDelegate: AnyObject {
     func pushRegisterView()
+    func pushWebView()
 }
 
 class HomeViewModel {
@@ -30,7 +31,7 @@ class HomeViewModel {
         let addListItem: Driver<BookMark?>
     }
 
-    weak var delegate: HomeCoordinatorDelegate?
+    weak var delegate: HomeViewModelDelegate?
 
     var bookMarkList: [BookMark] = []
 
@@ -42,8 +43,8 @@ class HomeViewModel {
 
         let cellTapEvent = input.cellTapSubject
             .t_asDriverSkipError()
-            .do(onNext: { bookMark in
-                print("🎱🎱🎱 \(bookMark) didTap")
+            .do(onNext: { [weak self] bookMark in
+                self?.delegate?.pushWebView()
             })
             .map { _ in }
 

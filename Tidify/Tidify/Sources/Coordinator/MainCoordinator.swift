@@ -15,46 +15,28 @@ class MainCoordinator: NSObject, Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
 
-    private let disposeBag = DisposeBag()
+    let window: UIWindow
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    init(window: UIWindow) {
+        self.window = window
+        window.makeKeyAndVisible()
+        self.navigationController = UINavigationController()
     }
 
     func start() {
-        let homeViewModel = HomeViewModel()
-        let homeViewController = HomeViewController(homeViewModel)
-        homeViewController.coordinator = self
-        homeViewController.title = R.string.localizable.mainTitle()
-        navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.navigationItem.largeTitleDisplayMode = .never  // 하위 뷰에서는 비활성화
-        navigationController.navigationBar.backgroundColor = .white
-        navigationController.navigationBar.isHidden = true
-        navigationController.setViewControllers([homeViewController], animated: true)
+        window.rootViewController = navigationController
+        let homeCoordinator = HomeCoordinator(navigationController: navigationController)
+        homeCoordinator.parentCoordinator = self
+        childCoordinators.append(homeCoordinator)
+
+        homeCoordinator.start()
     }
 
-    func pushWebView() {
-        let webViewController = WebViewController()
-        webViewController.coordinator = self
-
-        navigationController.pushViewController(webViewController, animated: true)
-    }
-
-    func presentSignIn() {
+    func startWithSignIn() {
         let signInViewModel = SignInViewModel()
-        let signInViewController = SignInViewController(signInViewModel)
+        let signInViewController = SignInViewController(viewModel: signInViewModel)
         signInViewController.coordinator = self
 
         navigationController.pushViewController(signInViewController, animated: true)
-    }
-
-    func pushRegisterView() {
-        let registerViewModel = RegisterViewModel()
-        let registerViewController = RegisterViewController(registerViewModel)
-        registerViewController.coordinator = self
-        let backButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        backButtonItem.tintColor = UIColor.t_tidiBlue()
-        self.navigationController.navigationItem.backBarButtonItem = backButtonItem
-        navigationController.pushViewController(registerViewController, animated: true)
     }
 }

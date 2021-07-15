@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WebViewModel {
+class WebViewViewModel {
     struct Input {
 
     }

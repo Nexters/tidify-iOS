@@ -11,7 +11,7 @@ import Then
 import UIKit
 
 class RegisterViewController: UIViewController {
-    weak var coordinator: MainCoordinator?
+    weak var coordinator: Coordinator?
 
     private weak var titleLabel: UILabel!
     private weak var descriptionLabel: UILabel!
@@ -21,7 +21,7 @@ class RegisterViewController: UIViewController {
     private let viewModel: RegisterViewModel!
     private let disposeBag = DisposeBag()
 
-    init(_ viewModel: RegisterViewModel) {
+    init(viewModel: RegisterViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
