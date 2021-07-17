@@ -54,14 +54,18 @@ class HomeViewController: UIViewController {
         output.registerButtonTap.drive().disposed(by: disposeBag)
         output.cellTapEvent.drive().disposed(by: disposeBag)
 
+        output.didReceiveBookMarks
+            .drive(onNext: { [weak self] _ in
+                self?.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+
         output.addListItem
-            .do(onNext: { newBookMark in
-                self.tableView.reloadData()
+            .do(onNext: { [weak self] _ in
+                self?.tableView.reloadData()
             })
             .drive()
             .disposed(by: disposeBag)
-
-        self.generateMockUp()
     }
 
     deinit {

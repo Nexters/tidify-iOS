@@ -52,7 +52,6 @@ class BookMarkTableViewCell: UITableViewCell {
         self.bookMark = bookMark
         titleLabel.text = bookMark.title
         descriptionLabel.text = bookMark.urlString
-        thumbnailImageView.kf.setImage(with: bookMark.thumbnail)
         // 이미지 처리 필요
     }
 }
