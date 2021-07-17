@@ -10,13 +10,12 @@ import Moya
 import RxCocoa
 import RxSwift
 
-class ApiProvider {
-    static func request(_ target: TargetType,
-                        callbackQueue: DispatchQueue? = .none,
-                        progress: ProgressBlock? = .none,
-                        completion: @escaping Completion) -> Cancelable {
-        return request(target, completion: completion)
-    }
+enum ApiProvider {
+    private static let moyaProvider = MoyaProvider<MultiTarget>()
 
-    private init() { }
+    static func request(_ target: TargetType,
+                        callBackQueue: DispatchQueue? = nil) -> Single<Response> {
+        return moyaProvider.rx.request(MultiTarget(target), callbackQueue: callBackQueue)
+            .filterSuccessfulStatusCodes()
+    }
 }

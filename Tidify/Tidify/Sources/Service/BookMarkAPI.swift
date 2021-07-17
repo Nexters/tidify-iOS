@@ -9,8 +9,8 @@ import Foundation
 import Moya
 
 enum BookMarkAPI {
-    case getBookMarkList(_ id: String)
-    case createBookMark
+    case getBookMarkList(id: Int)
+    case createBookMark(id: Int, title: String, url: String)
 }
 
 extension BookMarkAPI: TargetType {
@@ -19,9 +19,12 @@ extension BookMarkAPI: TargetType {
     }
 
     var path: String {
+        let baseRoutePath = "/api/v1/bookmarks"
         switch self {
-        case .getBookMarkList, .createBookMark:
-            return "bookmarks"
+        case .getBookMarkList(let id):
+            return baseRoutePath + "/\(id)"
+        case .createBookMark:
+            return baseRoutePath
         }
     }
 
@@ -57,10 +60,10 @@ extension BookMarkAPI: TargetType {
 
     private var parameters: [String: Any]? {
         switch self {
+        case let .createBookMark(id, title, url):
+            return ["member_id": id, "title": title, "url": url]
         case let .getBookMarkList(id):
-            return ["tmp_id": id]
-        case .createBookMark:
-            return nil
+            return ["member_id": id]
         }
     }
 }
