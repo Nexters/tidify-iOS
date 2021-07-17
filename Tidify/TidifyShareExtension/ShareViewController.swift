@@ -20,12 +20,12 @@ class ShareViewController: UIViewController {
             if let itemProviders = extensionItem.attachments {
                 for itemProvider in itemProviders {
                     if itemProvider.hasItemConformingToTypeIdentifier(urlShareId) {
-                        itemProvider.loadItem(forTypeIdentifier: urlShareId, options: nil, completionHandler: { (url, error) -> Void in
+                        itemProvider.loadItem(forTypeIdentifier: urlShareId, options: nil, completionHandler: { [weak self] (url, error) -> Void in
                             if (url as? NSURL) != nil {
                                 let encodedUrl = String(describing: url!)
                                 
-                                DispatchQueue.main.async {
-                                    self.showAlert(url: encodedUrl)
+                                DispatchQueue.main.async { [weak self] in
+                                    self?.showAlert(url: encodedUrl)
                                 }
                             }
                         })
@@ -37,14 +37,12 @@ class ShareViewController: UIViewController {
     
     private func showAlert(url: String) {
         let alert = UIAlertController(title: "북마크로 저장할까요?", message: "\(url)", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "저장", style: .default, handler: {
-            (a) -> Void in
-            self.notifyNewBookMark(url: url)
-            self.complete()
+        alert.addAction(UIAlertAction(title: "저장", style: .default, handler: { [weak self] a -> Void in
+            self?.notifyNewBookMark(url: url)
+            self?.complete()
         }))
-        alert.addAction(UIAlertAction(title: "다음에", style: .cancel, handler: {
-            (a) -> Void in
-            self.complete()
+        alert.addAction(UIAlertAction(title: "다음에", style: .cancel, handler: { [weak self] a -> Void in
+            self?.complete()
         }))
 
         self.present(alert, animated: true, completion: nil)
