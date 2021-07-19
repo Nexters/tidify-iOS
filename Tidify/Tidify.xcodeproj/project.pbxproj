@@ -11,8 +11,9 @@
 		B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CC269C883500B34C5E /* HomeCoordinator.swift */; };
 		B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */; };
 		B5314FAB2699DC2300769AB2 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5314FAA2699DC2300769AB2 /* UIFont+.swift */; };
-		B5314FB12699E7B800769AB2 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5314FB02699E7B800769AB2 /* R.generated.swift */; };
 		B5314FB52699E85000769AB2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5314FB72699E85000769AB2 /* Localizable.strings */; };
+		B5444B9826A56E68006AD9FF /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5444B9726A56E68006AD9FF /* R.generated.swift */; };
+		B5610D7F26A5A7D100F4A5AD /* SharedSequenceConvertibleType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5610D7E26A5A7D100F4A5AD /* SharedSequenceConvertibleType+.swift */; };
 		B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B67E8269997150099C46D /* RxSwift+Moya.swift */; };
 		B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B67EA2699972F0099C46D /* ObservableConvertibleType+.swift */; };
 		B56D82FE269987AB00D5F513 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D82FD269987AB00D5F513 /* AppDelegate.swift */; };
@@ -84,8 +85,9 @@
 		B52982CC269C883500B34C5E /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
 		B5314FAA2699DC2300769AB2 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
-		B5314FB02699E7B800769AB2 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		B5314FB62699E85000769AB2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B5444B9726A56E68006AD9FF /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		B5610D7E26A5A7D100F4A5AD /* SharedSequenceConvertibleType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedSequenceConvertibleType+.swift"; sourceTree = "<group>"; };
 		B56B67E8269997150099C46D /* RxSwift+Moya.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+Moya.swift"; sourceTree = "<group>"; };
 		B56B67EA2699972F0099C46D /* ObservableConvertibleType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableConvertibleType+.swift"; sourceTree = "<group>"; };
 		B56D82FA269987AB00D5F513 /* Tidify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tidify.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				B5A9536D269F31ED00290D64 /* .swiftlint.yml */,
+				B5444B9726A56E68006AD9FF /* R.generated.swift */,
 				B56D82FC269987AB00D5F513 /* Tidify */,
 				B56D8308269987AC00D5F513 /* LaunchScreen.storyboard */,
 				C7692C1A26999C7800A2F699 /* TidifyShareExtension */,
@@ -221,6 +224,7 @@
 				C72F27CB2699CC4700104FE3 /* OSLog.swift */,
 				B5314FAA2699DC2300769AB2 /* UIFont+.swift */,
 				C72D3701269AFED9009A71B6 /* RxSwift+LinkPreview.swift */,
+				B5610D7E26A5A7D100F4A5AD /* SharedSequenceConvertibleType+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -248,7 +252,6 @@
 			children = (
 				B56D830B269987AC00D5F513 /* Info.plist */,
 				C72F281D269A036E00104FE3 /* Tidify.entitlements */,
-				B5314FB02699E7B800769AB2 /* R.generated.swift */,
 				B5314FB72699E85000769AB2 /* Localizable.strings */,
 				B56D8306269987AC00D5F513 /* Assets.xcassets */,
 			);
@@ -576,6 +579,7 @@
 				B56D832226998A5B00D5F513 /* UITableView+.swift in Sources */,
 				B5A95370269F323B00290D64 /* WebViewCoordinator.swift in Sources */,
 				B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */,
+				B5610D7F26A5A7D100F4A5AD /* SharedSequenceConvertibleType+.swift in Sources */,
 				B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */,
 				B56D8317269989F600D5F513 /* CGSIze+.swift in Sources */,
 				B5F19C1D2699B61000D1E8BB /* BookMarkTableViewCell.swift in Sources */,
@@ -585,7 +589,6 @@
 				C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */,
 				B5AF0AE0269A134A00D8DCF5 /* WebViewViewModel.swift in Sources */,
 				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,
-				B5314FB12699E7B800769AB2 /* R.generated.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
 				B5F19C1A2699B15300D1E8BB /* HomeViewModel.swift in Sources */,
 				B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */,
@@ -594,6 +597,7 @@
 				B56D831A26998A1300D5F513 /* Optional+.swift in Sources */,
 				B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */,
 				C72D3702269AFED9009A71B6 /* RxSwift+LinkPreview.swift in Sources */,
+				B5444B9826A56E68006AD9FF /* R.generated.swift in Sources */,
 				C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */,
 				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,

@@ -25,4 +25,8 @@ extension ObservableType where Element == Response {
             }
         }
     }
+
+    func t_unwrap<T>() -> Observable<T> where Element == T? {
+        return self.compactMap { $0 as? T }
+    }
 }

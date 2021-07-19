@@ -14,8 +14,10 @@ class RegisterViewController: UIViewController {
     weak var coordinator: Coordinator?
 
     private weak var titleLabel: UILabel!
-    private weak var descriptionLabel: UILabel!
-    private weak var inputTextField: UITextField!
+    private weak var linkTitleLabel: UILabel!
+    private weak var linkTextField: UITextField!
+    private weak var tagTitleLabel: UILabel!
+    private weak var tagTextField: UITextField!
     private weak var registerButton: UIButton!
 
     private let viewModel: RegisterViewModel!
@@ -23,7 +25,7 @@ class RegisterViewController: UIViewController {
 
     private var registerButtonEnabled: Bool = false {
         didSet {
-            self.registerButton.backgroundColor = registerButtonEnabled ? UIColor.t_tidiBlue() : Self.ghostColor
+            self.registerButton.backgroundColor = registerButtonEnabled ? UIColor.t_tidiBlue() : .white
             self.registerButton.setTitleColor(registerButtonEnabled ? UIColor.white : Self.ghostColor, for: .normal)
         }
     }
@@ -44,7 +46,11 @@ class RegisterViewController: UIViewController {
         setupViews()
         setupLayoutConstraints()
 
-        let input = RegisterViewModel.Input(registerButtonTap: registerButton.rx.tap.asObservable())
+        let bookMarkContentInput = Driver.combineLatest(linkTextField.rx.text.asDriver().t_unwrap(),
+                                                        tagTextField.rx.text.asDriver().startWith(""))
+
+        let input = RegisterViewModel.Input(bookMarkContent: bookMarkContentInput,
+                                            registerButtonTap: registerButton.rx.tap.asDriver())
         let output = viewModel.transform(input)
 
         output.didRegisterButtonTap
@@ -53,12 +59,11 @@ class RegisterViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        inputTextField.rx.text
+        linkTextField.rx.text
             .asDriver()
-            .map { $0?.count }
-            .drive(onNext: { [weak self] count in
-                guard let count = count else { return }
-                self?.registerButtonEnabled = count > 0 ? true : false
+            .map { ($0?.count ?? 0) > 0 }
+            .drive(onNext: { [weak self] isGreaterThanZero in
+                self?.registerButtonEnabled = isGreaterThanZero
             })
             .disposed(by: disposeBag)
     }
@@ -67,7 +72,10 @@ class RegisterViewController: UIViewController {
 }
 
 private extension RegisterViewController {
-    static let textFiledWidth: CGFloat = 335
+    static let textFieldWidth: CGFloat = 335
+    static let textFieldHeight: CGFloat = 56
+    static let labelToTextFieldVerticalSpacing: CGFloat = 15
+    static let sidePadding: CGFloat = 17
 
     func setupViews() {
         view.backgroundColor = .white
@@ -79,41 +87,68 @@ private extension RegisterViewController {
         }
         self.titleLabel = titleLabel
 
-        let descriptionLabel = UILabel().then {
-            $0.text = R.string.localizable.registerDesc()
-            $0.font = .t_R(16)
+        let linkTitleLabel = UILabel().then {
+            $0.text = R.string.localizable.registerLinkTextFieldLabelTitle()
+            $0.font = .t_B(18)
+            $0.textColor = .black
             view.addSubview($0)
         }
-        self.descriptionLabel = descriptionLabel
+        self.linkTitleLabel = linkTitleLabel
 
-        let inputTextField = UITextField().then {
+        let linkTextField = UITextField().then {
             $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
             $0.leftViewMode = .always
-            $0.placeholder = R.string.localizable.registerInputTextFieldPlaceHolder()
+            $0.placeholder = R.string.localizable.registerLinkTextFieldPlaceHolder()
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.lightGray.cgColor
             $0.layer.cornerRadius = 16
             $0.font = .t_R(16)
             $0.backgroundColor = .white
             $0.layer.shadowColor = UIColor.black.cgColor
-            $0.layer.shadowOpacity = 0.7
+            $0.layer.shadowOpacity = 0.3
             $0.layer.shadowOffset = CGSize(w: 0, h: 3)
             $0.layer.shadowRadius = 10
             $0.layer.masksToBounds = false
             view.addSubview($0)
         }
-        self.inputTextField = inputTextField
+        self.linkTextField = linkTextField
+
+        let tagTitleLabel = UILabel().then {
+            $0.text = R.string.localizable.registerTagTextFieldLabelTitle()
+            $0.font = .t_B(18)
+            $0.textColor = .black
+            view.addSubview($0)
+        }
+        self.tagTitleLabel = tagTitleLabel
+
+        let tagTextField = UITextField().then {
+            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+            $0.leftViewMode = .always
+            $0.placeholder = R.string.localizable.registerTagTextFieldPlaceHolder()
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.lightGray.cgColor
+            $0.layer.cornerRadius = 16
+            $0.font = .t_R(16)
+            $0.backgroundColor = .white
+            $0.layer.shadowColor = UIColor.black.cgColor
+            $0.layer.shadowOpacity = 0.3
+            $0.layer.shadowOffset = CGSize(w: 0, h: 3)
+            $0.layer.shadowRadius = 10
+            $0.layer.masksToBounds = false
+            view.addSubview($0)
+        }
+        self.tagTextField = tagTextField
 
         let registerButton = UIButton().then {
             $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
             $0.titleLabel?.font = .t_B(20)
-            $0.setTitleColor(UIColor(60, 60, 67, 0.3), for: .normal)
+            $0.setTitleColor(Self.ghostColor, for: .normal)
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.lightGray.cgColor
             $0.layer.cornerRadius = 16
             $0.backgroundColor = .white
             $0.layer.shadowColor = UIColor.black.cgColor
-            $0.layer.shadowOpacity = 0.7
+            $0.layer.shadowOpacity = 0.3
             $0.layer.shadowOffset = CGSize(w: 0, h: 3)
             $0.layer.shadowRadius = 10
             $0.layer.masksToBounds = false
@@ -124,25 +159,36 @@ private extension RegisterViewController {
 
     func setupLayoutConstraints() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(196)
-            $0.centerX.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
         }
 
-        descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.centerX.equalToSuperview()
+        linkTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(40)
+            $0.leading.equalTo(titleLabel)
         }
 
-        inputTextField.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(73)
-            $0.centerX.equalToSuperview()
-            $0.size.equalTo(CGSize(w: Self.textFiledWidth, h: 48))
+        linkTextField.snp.makeConstraints {
+            $0.top.equalTo(linkTitleLabel.snp.bottom).offset(Self.labelToTextFieldVerticalSpacing)
+            $0.leading.equalTo(titleLabel)
+            $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
+        }
+
+        tagTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(linkTextField.snp.bottom).offset(30)
+            $0.leading.equalTo(titleLabel)
+        }
+
+        tagTextField.snp.makeConstraints {
+            $0.top.equalTo(tagTitleLabel.snp.bottom).offset(Self.labelToTextFieldVerticalSpacing)
+            $0.leading.equalTo(titleLabel)
+            $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
         registerButton.snp.makeConstraints {
-            $0.top.equalTo(inputTextField.snp.bottom).offset(48)
+            $0.top.equalTo(tagTextField.snp.bottom).offset(80)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(CGSize(w: Self.textFiledWidth, h: 56))
+            $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
     }
 }
