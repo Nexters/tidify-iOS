@@ -34,6 +34,7 @@ extension HomeCoordinator: HomeViewModelDelegate {
         let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
         registerCoordinator.parentCoordinator = self
         childCoordinators.append(registerCoordinator)
+
         registerCoordinator.start()
     }
 
@@ -41,6 +42,7 @@ extension HomeCoordinator: HomeViewModelDelegate {
         let webViewCoordinator = WebViewCoordinator(navigationController: navigationController)
         webViewCoordinator.parentCoordinator = self
         childCoordinators.append(webViewCoordinator)
+
         webViewCoordinator.start()
     }
 }

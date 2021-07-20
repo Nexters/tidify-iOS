@@ -21,6 +21,13 @@ class RegisterViewController: UIViewController {
     private let viewModel: RegisterViewModel!
     private let disposeBag = DisposeBag()
 
+    private var registerButtonEnabled: Bool = false {
+        didSet {
+            self.registerButton.backgroundColor = registerButtonEnabled ? UIColor.t_tidiBlue() : Self.ghostColor
+            self.registerButton.setTitleColor(registerButtonEnabled ? UIColor.white : Self.ghostColor, for: .normal)
+        }
+    }
+
     init(viewModel: RegisterViewModel) {
         self.viewModel = viewModel
 
@@ -37,16 +44,26 @@ class RegisterViewController: UIViewController {
         setupViews()
         setupLayoutConstraints()
 
+        let input = RegisterViewModel.Input(registerButtonTap: registerButton.rx.tap.asObservable())
+        let output = viewModel.transform(input)
+
+        output.didRegisterButtonTap
+            .drive(onNext: { [weak self] _ in
+                self?.registerButton.isEnabled = false
+            })
+            .disposed(by: disposeBag)
+
         inputTextField.rx.text
             .asDriver()
             .map { $0?.count }
             .drive(onNext: { [weak self] count in
                 guard let count = count else { return }
-                self?.registerButton.backgroundColor = count > 0 ? .t_tidiBlue() : UIColor(60, 60, 67, 0.3)
-                self?.registerButton.setTitleColor(count > 0 ? .white : UIColor(60, 60, 67, 0.3), for: .normal)
+                self?.registerButtonEnabled = count > 0 ? true : false
             })
             .disposed(by: disposeBag)
     }
+
+    static let ghostColor = UIColor(60, 60, 67, 0.3)
 }
 
 private extension RegisterViewController {

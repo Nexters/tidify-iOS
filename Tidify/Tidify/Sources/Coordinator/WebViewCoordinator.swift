@@ -22,6 +22,7 @@ class WebViewCoordinator: Coordinator {
         let webViewController = WebViewController(viewModel: webViewViewModel)
         webViewController.coordinator = self
 
+        navigationController.navigationBar.isHidden = false
         navigationController.pushViewController(webViewController, animated: true)
     }
 }

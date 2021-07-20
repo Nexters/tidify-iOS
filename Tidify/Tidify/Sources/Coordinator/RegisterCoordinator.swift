@@ -21,8 +21,8 @@ class RegisterCoordinator: Coordinator {
         let registerViewModel = RegisterViewModel()
         let registerViewController = RegisterViewController(viewModel: registerViewModel)
         registerViewController.coordinator = self
-
         navigationController.navigationBar.isHidden = false
+
         navigationController.pushViewController(registerViewController, animated: true)
     }
 }
