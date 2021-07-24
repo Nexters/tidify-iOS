@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RxSwift
 
 struct BookMark {
     let createdAt: String

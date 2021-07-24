@@ -19,17 +19,18 @@ class MainCoordinator: NSObject, Coordinator {
 
     init(window: UIWindow) {
         self.window = window
-        window.makeKeyAndVisible()
         self.navigationController = UINavigationController()
     }
 
     func start() {
         window.rootViewController = navigationController
-        let homeCoordinator = HomeCoordinator(navigationController: navigationController)
-        homeCoordinator.parentCoordinator = self
-        childCoordinators.append(homeCoordinator)
+        window.makeKeyAndVisible()
 
-        homeCoordinator.start()
+        let tabViewCoordinator = TabViewCoordinator(navigationController: navigationController)
+        tabViewCoordinator.parentCoordinator = self
+        childCoordinators.append(tabViewCoordinator)
+
+        tabViewCoordinator.start()
     }
 
     func startWithSignIn() {
