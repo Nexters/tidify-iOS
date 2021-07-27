@@ -23,7 +23,6 @@ class HomeCoordinator: Coordinator {
         let homewViewController = HomeViewController(viewModel: homeViewModel)
         homewViewController.coordinator = self
 
-        navigationController.navigationBar.isHidden = true
         navigationController.setViewControllers([homewViewController], animated: true)
     }
 }
