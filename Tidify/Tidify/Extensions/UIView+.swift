@@ -32,4 +32,11 @@ public extension UIView {
     var right: CGFloat {
         return frame.origin.x + frame.size.width
     }
+
+    func t_addTap() -> UITapGestureRecognizer {
+        let tapGestureRecognizer = UITapGestureRecognizer()
+        addGestureRecognizer(tapGestureRecognizer)
+
+        return tapGestureRecognizer
+    }
 }

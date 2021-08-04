@@ -15,4 +15,12 @@
 "Register.title" = "나만의 북마크 만들기";
 "Register.desc" = "링크 주소를 입력해주세요";
 "Register.inputTextField.placeHolder" = "URL, 링크주소 붙여넣기";
-"Register.button.title" = "저장";"
+"Register.button.title" = "저장";
+
+// Setting
+"Setting.account" = "계정";
+"Setting.account.profile" = "프로필";
+"Setting.account.interLink" = "연동관리";
+"Setting.security" = "보안";
+"Setting.security.appLock" = "앱 잠금설정";
+"Setting.security.authMethod" = "인증방식";
