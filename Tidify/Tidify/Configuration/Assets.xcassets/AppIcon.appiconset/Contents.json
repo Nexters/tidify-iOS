@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "tidify_logo-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
@@ -21,6 +22,7 @@
       "size" : "29x29"
     },
     {
+      "filename" : "tidify_logo@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
@@ -31,6 +33,7 @@
       "size" : "40x40"
     },
     {
+      "filename" : "tidify_logo@3x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"

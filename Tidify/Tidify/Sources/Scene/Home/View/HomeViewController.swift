@@ -11,10 +11,13 @@ import SnapKit
 import Then
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: BaseViewController {
+
+    // MARK: - Properties
+
     weak var coordinator: Coordinator?
 
-    private weak var tableView: UITableView!
+    private weak var collectionView: UICollectionView!
     private weak var customHeaderView: UIView!
     private weak var registerBookMarkButton: UIButton!
     private let viewModel: HomeViewModel!
@@ -24,6 +27,8 @@ class HomeViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
     private var observer: NSObjectProtocol?
+
+    // MARK: - Initialize
 
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -35,6 +40,8 @@ class HomeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -44,7 +51,6 @@ class HomeViewController: UIViewController {
 
         setupViews()
         setupLayoutConstraints()
-        tableView.layoutIfNeeded()
 
         let input = HomeViewModel.Input(registerButtonTap: registerBookMarkButton.rx.tap.asDriver().map { _ in },
                                         cellTapSubject: cellTapSubject.asObservable(),
@@ -56,18 +62,16 @@ class HomeViewController: UIViewController {
 
         output.didReceiveBookMarks
             .drive(onNext: { [weak self] _ in
-                self?.tableView.reloadData()
+                self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
 
         output.addListItem
             .do(onNext: { [weak self] _ in
-                self?.tableView.reloadData()
+                self?.collectionView.reloadData()
             })
             .drive()
             .disposed(by: disposeBag)
-
-        self.generateMockUp()
     }
 
     deinit {
@@ -76,59 +80,9 @@ class HomeViewController: UIViewController {
         }
     }
 
-    func viewShown() {
-        if let userDefaults = UserDefaults(suiteName: "group.com.aksmj.Tidify") {
-            if let bookMarkUrl = userDefaults.string(forKey: "newBookMark") {
-                self.addListItemSubject
-                    .onNext(URL(string: bookMarkUrl)!)
+    // MARK: - Methods
 
-                userDefaults.removeObject(forKey: "newBookMark")
-            }
-        }
-    }
-
-    // TEST
-    private func generateMockUp() {
-        let mockUpList = [
-            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=227&oid=366&aid=0000745596")!,
-            URL(string: "https://news.naver.com/main/read.naver?mode=LSD&mid=shm&sid1=103&oid=422&aid=0000494233")!,
-            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=731&oid=014&aid=0004672150")!,
-            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=228&oid=001&aid=0012516598")!
-        ]
-
-        for mockUp in mockUpList {
-            self.addListItemSubject
-                .onNext(mockUp)
-        }
-    }
-}
-
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.bookMarkList.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: BookMarkTableViewCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-        let bookMark = viewModel.bookMarkList[indexPath.row]
-        cell.setBookMark(bookMark)
-
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return BookMarkTableViewCell.cellHeight
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let bookMark = viewModel.bookMarkList[indexPath.row]
-        cellTapSubject.onNext(bookMark)
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
-private extension HomeViewController {
-    func setupViews() {
+    override func setupViews() {
         view.backgroundColor = .white
 
         let customHeaderView = UIView().then {
@@ -142,15 +96,17 @@ private extension HomeViewController {
         }
         self.customHeaderView = customHeaderView
 
-        let tableView = UITableView().then {
+        let flowLayout = UICollectionViewFlowLayout()
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then {
             $0.delegate = self
             $0.dataSource = self
-            $0.tableHeaderView = customHeaderView
-            $0.separatorStyle = .none
-            $0.t_registerCellClass(cellType: BookMarkTableViewCell.self)
+            $0.t_registerCellClass(cellType: BookMarkCollectionViewCell.self)
+            $0.t_registerCellClass(cellType: NoticeEmptyCollectionViewCell.self)
+            $0.backgroundColor = .white
             view.addSubview($0)
         }
-        self.tableView = tableView
+        self.collectionView = collectionView
 
         let registerBookMarkButton = UIButton().then {
             $0.setTitle(R.string.localizable.mainAddBookMarkTitle(), for: .normal)
@@ -162,19 +118,68 @@ private extension HomeViewController {
         self.registerBookMarkButton = registerBookMarkButton
     }
 
-    func setupLayoutConstraints() {
-        tableView.snp.makeConstraints {
+    override func setupLayoutConstraints() {
+        collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+}
 
-        customHeaderView.snp.makeConstraints {
-            $0.size.equalTo(CGSize(w: view.frame.width, h: 104))
+// MARK: - DataSource
+
+extension HomeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let isEmptyDataSource = self.viewModel.bookMarkList.isEmpty
+
+        return isEmptyDataSource ? 1 : self.viewModel.bookMarkList.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let isEmptyDataSource = self.viewModel.bookMarkList.isEmpty
+
+        if isEmptyDataSource {
+            let cell = collectionView.t_dequeueReusableCell(cellType: NoticeEmptyCollectionViewCell.self,
+                                                            indexPath: indexPath)
+
+            return cell
+        } else {
+            let cell = collectionView.t_dequeueReusableCell(cellType: BookMarkCollectionViewCell.self,
+                                                            indexPath: indexPath)
+            let bookMark = self.viewModel.bookMarkList[indexPath.item]
+            cell.setBookMark(bookMark)
+
+            return cell
         }
+    }
+}
 
-        registerBookMarkButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().offset(-24)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.size.equalTo(CGSize(w: 233, h: 48))
+// MARK: - Delegate
+
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let bookMark = self.viewModel.bookMarkList[indexPath.item]
+
+        cellTapSubject.onNext(bookMark)
+    }
+}
+
+// MARK: - DelegateFlowLayout
+
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(w: self.collectionView.frame.width, h: 50)
+    }
+}
+
+private extension HomeViewController {
+    func viewShown() {
+        if let userDefaults = UserDefaults(suiteName: "group.com.aksmj.Tidify") {
+            if let bookMarkUrl = userDefaults.string(forKey: "newBookMark") {
+                self.addListItemSubject
+                    .onNext(URL(string: bookMarkUrl)!)
+
+                userDefaults.removeObject(forKey: "newBookMark")
+            }
         }
     }
 }

@@ -44,21 +44,6 @@ class TabViewCoordinator: Coordinator {
         navigationController.setViewControllers([tabViewController], animated: true)
 
         tabViewController.showOnTab(selectedIndex: TabViewCoordinator.HOME_VIEW_TAB_INDEX)
-
-        let profileButton = UIButton()
-        profileButton.frame = CGRect(x: 0, y: 0, width: 30, height: 90)
-        profileButton.setTitle("이미지", for: .normal)
-        profileButton.setTitleColor(.t_tidiBlue(), for: .normal)
-        profileButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] in
-                if let homeCoordinator =
-                    self?.childCoordinators[TabViewCoordinator.HOME_VIEW_TAB_INDEX] as? HomeCoordinator {
-                    homeCoordinator.pushSettingView()
-                }
-            })
-            .disposed(by: disposeBag)
-
-        navigationController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton)
     }
 
     func getChildViewController(index: Int) -> UIViewController {
