@@ -9,14 +9,20 @@ import Foundation
 import UIKit
 
 class RegisterCoordinator: Coordinator {
+
+    // MARK: - Properties
+
     weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
+
+    // MARK: - Initialize
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
 
+    // MARK: - Properties
     func start() {
         let registerViewModel = RegisterViewModel()
         let registerViewController = RegisterViewController(viewModel: registerViewModel)

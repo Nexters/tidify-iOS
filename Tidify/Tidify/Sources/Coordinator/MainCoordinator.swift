@@ -12,16 +12,23 @@ import UIKit
 import WebKit
 
 class MainCoordinator: NSObject, Coordinator {
+
+    // MARK: - Properties
+
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
 
     let window: UIWindow
+
+    // MARK: - Initialize
 
     init(window: UIWindow) {
         self.window = window
         window.makeKeyAndVisible()
         self.navigationController = UINavigationController()
     }
+
+    // MARK: - Methods
 
     func start() {
         window.rootViewController = navigationController

@@ -9,13 +9,20 @@ import Foundation
 import UIKit
 
 class WebViewCoordinator: Coordinator {
+
+    // MARK: - Properties
+
     weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
 
+    // MARK: - Initialize
+
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
+
+    // MARK: - Methods
 
     func start() {
         let webViewViewModel = WebViewViewModel()

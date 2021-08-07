@@ -182,19 +182,4 @@ private extension HomeViewController {
             }
         }
     }
-
-    // TEST
-//    func generateMockUp() {
-//        let mockUpList = [
-//            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=227&oid=366&aid=0000745596")!,
-//            URL(string: "https://news.naver.com/main/read.naver?mode=LSD&mid=shm&sid1=103&oid=422&aid=0000494233")!,
-//            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=731&oid=014&aid=0004672150")!,
-//            URL(string: "https://news.naver.com/main/read.naver?mode=LS2D&mid=shm&sid1=105&sid2=228&oid=001&aid=0012516598")!
-//        ]
-//
-//        for mockUp in mockUpList {
-//            self.addListItemSubject
-//                .onNext(mockUp)
-//        }
-//    }
 }

@@ -27,6 +27,8 @@
 		B56D832226998A5B00D5F513 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D832126998A5B00D5F513 /* UITableView+.swift */; };
 		B56D832426998A7300D5F513 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D832326998A7300D5F513 /* UIView+.swift */; };
 		B570F9EE26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B570F9ED26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift */; };
+		B570F9F026BEAAD30095A0F0 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B570F9EF26BEAAD30095A0F0 /* UIViewController+.swift */; };
+		B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B570F9F126BEB57E0095A0F0 /* UINavigationBar+.swift */; };
 		B5A9536E269F31ED00290D64 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B5A9536D269F31ED00290D64 /* .swiftlint.yml */; };
 		B5A95370269F323B00290D64 /* WebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9536F269F323B00290D64 /* WebViewCoordinator.swift */; };
 		B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */; };
@@ -110,6 +112,8 @@
 		B56D832126998A5B00D5F513 /* UITableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
 		B56D832326998A7300D5F513 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		B570F9ED26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeEmptyCollectionViewCell.swift; sourceTree = "<group>"; };
+		B570F9EF26BEAAD30095A0F0 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		B570F9F126BEB57E0095A0F0 /* UINavigationBar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+.swift"; sourceTree = "<group>"; };
 		B5A9536D269F31ED00290D64 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B5A9536F269F323B00290D64 /* WebViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewCoordinator.swift; sourceTree = "<group>"; };
 		B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -238,6 +242,8 @@
 				C72F27CB2699CC4700104FE3 /* OSLog.swift */,
 				B5314FAA2699DC2300769AB2 /* UIFont+.swift */,
 				C72D3701269AFED9009A71B6 /* RxSwift+LinkPreview.swift */,
+				B570F9EF26BEAAD30095A0F0 /* UIViewController+.swift */,
+				B570F9F126BEB57E0095A0F0 /* UINavigationBar+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -689,11 +695,13 @@
 				B5CA8B2926B048C700D9C6D3 /* DefaultTableViewCell.swift in Sources */,
 				C72D3702269AFED9009A71B6 /* RxSwift+LinkPreview.swift in Sources */,
 				B5CA8B1626B042CF00D9C6D3 /* R.generated.swift in Sources */,
+				B570F9F026BEAAD30095A0F0 /* UIViewController+.swift in Sources */,
 				C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */,
 				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
 				B5F19C142699A04400D1E8BB /* WebViewController.swift in Sources */,
 				B570F9EE26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift in Sources */,
+				B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */,
 				B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */,
 				B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */,
 				B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */,
