@@ -66,6 +66,8 @@ class HomeViewController: UIViewController {
             })
             .drive()
             .disposed(by: disposeBag)
+
+        self.generateMockUp()
     }
 
     deinit {

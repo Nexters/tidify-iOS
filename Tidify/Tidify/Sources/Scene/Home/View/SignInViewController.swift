@@ -21,8 +21,6 @@ class SignInViewController: UIViewController {
     private weak var signInWithKakaoButton: UIButton!
     private weak var resultLabel: UILabel!
 
-    private let signInWithKakao = PublishSubject<Void>()
-
     init(viewModel: SignInViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)

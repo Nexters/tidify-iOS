@@ -44,12 +44,23 @@ class RegisterViewController: UIViewController {
         setupViews()
         setupLayoutConstraints()
 
-        let input = RegisterViewModel.Input(registerButtonTap: registerButton.rx.tap.asObservable())
+        let registerButtonTap = registerButton.rx.tap.asObservable()
+            .map { [weak self] in
+                self?.registerButton.setTitle(R.string.localizable.registerButtonTitleSaving(), for: .normal)
+                self?.registerButtonEnabled = false
+            }
+            .flatMap { _ in
+                self.inputTextField.rx.text.asObservable()
+            }
+
+        let input = RegisterViewModel.Input(registerButtonTap: registerButtonTap)
         let output = viewModel.transform(input)
 
         output.didRegisterButtonTap
             .drive(onNext: { [weak self] _ in
-                self?.registerButton.isEnabled = false
+                self?.registerButton.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
+                self?.registerButtonEnabled = true
+                self?.inputTextField.text = ""
             })
             .disposed(by: disposeBag)
 

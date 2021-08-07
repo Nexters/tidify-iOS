@@ -7,15 +7,12 @@
 
 import Foundation
 import RxCocoa
-import RxSwift
 import UIKit
 
 class HomeCoordinator: Coordinator {
     weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
-
-    private let disposeBag = DisposeBag()
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -24,21 +21,10 @@ class HomeCoordinator: Coordinator {
     func start() {
         let homeViewModel = HomeViewModel()
         homeViewModel.delegate = self
-        let homewViewController = HomeViewController(viewModel: homeViewModel)
-        homewViewController.coordinator = self
+        let homeViewController = HomeViewController(viewModel: homeViewModel)
+        homeViewController.coordinator = self
 
-        let profileButton = UIButton()
-        profileButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        profileButton.setTitle("이미지", for: .normal)
-        profileButton.setTitleColor(.t_tidiBlue(), for: .normal)
-        profileButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] in
-                self?.pushSettingView()
-            })
-            .disposed(by: disposeBag)
-
-        navigationController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton)
-        navigationController.setViewControllers([homewViewController], animated: true)
+        navigationController.pushViewController(homeViewController, animated: true)
     }
 }
 

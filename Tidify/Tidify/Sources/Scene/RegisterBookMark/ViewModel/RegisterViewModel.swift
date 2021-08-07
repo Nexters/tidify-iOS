@@ -11,7 +11,7 @@ import RxSwift
 
 class RegisterViewModel {
     struct Input {
-        let registerButtonTap: Observable<Void>
+        let registerButtonTap: Observable<String?>
     }
 
     struct Output {
@@ -20,10 +20,14 @@ class RegisterViewModel {
 
     func transform(_ input: Input) -> Output {
         let didRegisterButtonTap = input.registerButtonTap.t_asDriverSkipError()
-            .flatMapLatest { _ -> Driver<Void> in
-                return ApiProvider.request(BookMarkAPI.createBookMark(id: 1, title: "TMP TITLE", url: "https://www.naver.com"))
-                    .t_asDriverSkipError()
-                    .map { _ in }
+            .flatMapLatest { newUrl -> Driver<Void> in
+                if newUrl != nil {
+                    return ApiProvider.request(BookMarkAPI.createBookMark(id: 1, title: "TMP TITLE", url: newUrl!))
+                        .t_asDriverSkipError()
+                        .map { _ in }
+                }
+
+                return .empty()
             }
 
         return Output(didRegisterButtonTap: didRegisterButtonTap)
