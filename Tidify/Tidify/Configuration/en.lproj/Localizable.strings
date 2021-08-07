@@ -9,7 +9,9 @@
 "MainTitle" = "Tidify";
 
 // Main
-"Main.addBookMark.title" = "북마크 추가";
+"Main.addBookMark.title" = "북마크 생성";
+"Main.content.tag.placeHolder" = "contained tag name";
+"Main.notice.empty.title" = "지금은 북마크가 비어있어요.";
 
 // Register
 "Register.title" = "나만의 북마크 만들기";

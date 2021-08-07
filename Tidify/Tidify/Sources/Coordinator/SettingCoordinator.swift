@@ -10,7 +10,7 @@ import UIKit
 
 class SettingCoordinator: Coordinator {
 
-    // MARK: -  Properties
+    // MARK: - Properties
 
     weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
@@ -43,6 +43,6 @@ extension SettingCoordinator {
     }
 
     func gotoAuthMethod() {
-        
+
     }
 }
