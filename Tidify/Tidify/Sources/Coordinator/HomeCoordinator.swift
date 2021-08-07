@@ -73,7 +73,7 @@ class HomeCoordinator: Coordinator {
         homeViewController.t_setupNavigationBarButton(directionType: .right, button: createBookMarkButton)
 
         // TODO: 네비게이션 바 height & corenrRadius 변경 필요
-        navigationController.setViewControllers([homeViewController], animated: true)
+        navigationController.pushViewController(homeViewController, animated: true)
     }
 }
 

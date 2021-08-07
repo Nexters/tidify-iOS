@@ -34,7 +34,6 @@
 		B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */; };
 		B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0ADB269A117400D8DCF5 /* RegisterViewModel.swift */; };
 		B5AF0AE0269A134A00D8DCF5 /* WebViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0ADF269A134A00D8DCF5 /* WebViewViewModel.swift */; };
-		B5CA8B1626B042CF00D9C6D3 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B1526B042CF00D9C6D3 /* R.generated.swift */; };
 		B5CA8B1926B0438600D9C6D3 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B1826B0438600D9C6D3 /* SettingViewController.swift */; };
 		B5CA8B1D26B043A700D9C6D3 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B1C26B043A700D9C6D3 /* SettingViewModel.swift */; };
 		B5CA8B2026B043CD00D9C6D3 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B1F26B043CD00D9C6D3 /* BaseViewController.swift */; };
@@ -51,6 +50,9 @@
 		B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */; };
 		B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C232699CFA800D1E8BB /* Environment.swift */; };
 		B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C252699D05200D1E8BB /* APIProvider.swift */; };
+		C71E7B5626A2C96E00EF75FE /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71E7B5526A2C96E00EF75FE /* TabViewController.swift */; };
+		C71E7B5A26A2CB5F00EF75FE /* TabViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71E7B5926A2CB5F00EF75FE /* TabViewCoordinator.swift */; };
+		C71E7B5E26A2CB8800EF75FE /* TabViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71E7B5D26A2CB8800EF75FE /* TabViewViewModel.swift */; };
 		C72D3702269AFED9009A71B6 /* RxSwift+LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72D3701269AFED9009A71B6 /* RxSwift+LinkPreview.swift */; };
 		C72F27CA2699CC1B00104FE3 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C72F27C92699CC1B00104FE3 /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C72F27CC2699CC4700104FE3 /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72F27CB2699CC4700104FE3 /* OSLog.swift */; };
@@ -61,6 +63,7 @@
 		C72F282A269A06D300104FE3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C72F2829269A06D300104FE3 /* MainInterface.storyboard */; };
 		C7692C1C26999C7800A2F699 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7692C1B26999C7800A2F699 /* ShareViewController.swift */; };
 		C7692C2326999C7800A2F699 /* TidifyShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C7AF275126BE900F00AE258B /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AF275026BE900F00AE258B /* R.generated.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +139,9 @@
 		B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkAPI.swift; sourceTree = "<group>"; };
 		B5F19C232699CFA800D1E8BB /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		B5F19C252699D05200D1E8BB /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
+		C71E7B5526A2C96E00EF75FE /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		C71E7B5926A2CB5F00EF75FE /* TabViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewCoordinator.swift; sourceTree = "<group>"; };
+		C71E7B5D26A2CB8800EF75FE /* TabViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewViewModel.swift; sourceTree = "<group>"; };
 		C72D3701269AFED9009A71B6 /* RxSwift+LinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+LinkPreview.swift"; sourceTree = "<group>"; };
 		C72F27C92699CC1B00104FE3 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		C72F27CB2699CC4700104FE3 /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
@@ -149,6 +155,7 @@
 		C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TidifyShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7692C1B26999C7800A2F699 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		C7692C2026999C7800A2F699 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7AF275026BE900F00AE258B /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +188,7 @@
 				B56D82FB269987AB00D5F513 /* Products */,
 				C6C02FE7FEF98151B5063570 /* Pods */,
 				F9C32BA5670FB74E5BEFCDC3 /* Frameworks */,
+				C7AF270D26BE867A00AE258B /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -279,7 +287,7 @@
 		B5A9536C269F2FBB00290D64 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				B5CA8B1526B042CF00D9C6D3 /* R.generated.swift */,
+				C7AF275026BE900F00AE258B /* R.generated.swift */,
 				B56D830B269987AC00D5F513 /* Info.plist */,
 				C72F281D269A036E00104FE3 /* Tidify.entitlements */,
 				B5314FB72699E85000769AB2 /* Localizable.strings */,
@@ -390,6 +398,7 @@
 				B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */,
 				B5A9536F269F323B00290D64 /* WebViewCoordinator.swift */,
 				B5CA8B2626B0470500D9C6D3 /* SettingCoordinator.swift */,
+				C71E7B5926A2CB5F00EF75FE /* TabViewCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -417,6 +426,7 @@
 			children = (
 				B5F19C192699B15300D1E8BB /* HomeViewModel.swift */,
 				C72F27D52699CF2700104FE3 /* SignInViewModel.swift */,
+				C71E7B5D26A2CB8800EF75FE /* TabViewViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -427,6 +437,7 @@
 				B570F9EC26BE97470095A0F0 /* Cells */,
 				B56D83112699882200D5F513 /* HomeViewController.swift */,
 				C72F27D12699CF1C00104FE3 /* SignInViewController.swift */,
+				C71E7B5526A2C96E00EF75FE /* TabViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -467,6 +478,14 @@
 				C72F2829269A06D300104FE3 /* MainInterface.storyboard */,
 			);
 			path = TidifyShareExtension;
+			sourceTree = "<group>";
+		};
+		C7AF270D26BE867A00AE258B /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				B5CA8B1526B042CF00D9C6D3 /* R.generated.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		F9C32BA5670FB74E5BEFCDC3 /* Frameworks */ = {
@@ -627,11 +646,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				$SRCROOT/R.generated.swift,
+				$SRCROOT/Tidify/Configuration/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/Tidify/Configuration/R.generated.swift\"\n";
 		};
 		B9CE037148B8B5B3CF50B195 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -665,6 +684,7 @@
 				B5314FAB2699DC2300769AB2 /* UIFont+.swift in Sources */,
 				B56D831C26998A2900D5F513 /* UIApplication+.swift in Sources */,
 				B50E6F6C26BAC802005949B4 /* BookMarkCollectionViewCell.swift in Sources */,
+				C7AF275126BE900F00AE258B /* R.generated.swift in Sources */,
 				B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */,
 				B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */,
 				B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */,
@@ -686,7 +706,9 @@
 				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
 				B5F19C1A2699B15300D1E8BB /* HomeViewModel.swift in Sources */,
+				C71E7B5E26A2CB8800EF75FE /* TabViewViewModel.swift in Sources */,
 				B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */,
+				C71E7B5A26A2CB5F00EF75FE /* TabViewCoordinator.swift in Sources */,
 				C72F27CC2699CC4700104FE3 /* OSLog.swift in Sources */,
 				B5CA8B2726B0470500D9C6D3 /* SettingCoordinator.swift in Sources */,
 				B56D832426998A7300D5F513 /* UIView+.swift in Sources */,
@@ -694,7 +716,6 @@
 				B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */,
 				B5CA8B2926B048C700D9C6D3 /* DefaultTableViewCell.swift in Sources */,
 				C72D3702269AFED9009A71B6 /* RxSwift+LinkPreview.swift in Sources */,
-				B5CA8B1626B042CF00D9C6D3 /* R.generated.swift in Sources */,
 				B570F9F026BEAAD30095A0F0 /* UIViewController+.swift in Sources */,
 				C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */,
 				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
@@ -705,6 +726,7 @@
 				B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */,
 				B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */,
 				B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */,
+				C71E7B5626A2C96E00EF75FE /* TabViewController.swift in Sources */,
 				B5F19C162699B13800D1E8BB /* BookMark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

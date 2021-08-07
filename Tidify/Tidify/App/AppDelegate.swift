@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             Log.info("카카오 SDK가 초기화되지 않았습니다.")
         }
+        
         let window = UIWindow(frame: UIScreen.main.bounds)
         let mainCoordinator = MainCoordinator(window: window)
         self.mainCoordinator = mainCoordinator

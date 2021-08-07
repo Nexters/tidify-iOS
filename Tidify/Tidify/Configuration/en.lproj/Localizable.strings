@@ -18,6 +18,7 @@
 "Register.desc" = "링크 주소를 입력해주세요";
 "Register.inputTextField.placeHolder" = "URL, 링크주소 붙여넣기";
 "Register.button.title" = "저장";
+"Register.button.title.saving" = "저장중";
 
 // Setting
 "Setting.account" = "계정";
@@ -26,3 +27,5 @@
 "Setting.security" = "보안";
 "Setting.security.appLock" = "앱 잠금설정";
 "Setting.security.authMethod" = "인증방식";
+"
+
