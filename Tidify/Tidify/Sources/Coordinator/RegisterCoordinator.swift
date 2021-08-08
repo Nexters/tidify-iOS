@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class RegisterCoordinator: Coordinator {
+class RegisterCoordinator: TabChildCoordinator {
 
     // MARK: - Properties
 
@@ -32,11 +32,21 @@ class RegisterCoordinator: Coordinator {
         navigationController.pushViewController(registerViewController, animated: true)
     }
 
-    func startPush() -> RegisterViewController {
+    func startPush() {
         let registerViewModel = RegisterViewModel()
         let registerViewController = RegisterViewController(viewModel: registerViewModel)
         registerViewController.coordinator = self
 
-        return registerViewController
+        navigationController.setViewControllers([registerViewController], animated: true)
+
+        navigationController.isNavigationBarHidden = true
+    }
+
+    func show() {
+        // do nothing yet..
+    }
+
+    func hide() {
+        // do nothing yet..
     }
 }

@@ -23,6 +23,8 @@ class TabViewCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
 
+    private var tabViewController: TabViewController?
+
     private let disposeBag = DisposeBag()
 
     // MARK: - Initialize
@@ -41,7 +43,19 @@ class TabViewCoordinator: Coordinator {
         tabViewController.coordinator = self
         navigationController.setViewControllers([tabViewController], animated: true)
 
-        tabViewController.showOnTab(selectedIndex: TabBarIndex.Home.rawValue)
+        self.tabViewController = tabViewController
+
+        show(selectedIndex: TabBarIndex.Home.rawValue)
+    }
+
+    func show(selectedIndex: Int) {
+        self.tabViewController?.showOnTab(selectedIndex: selectedIndex)
+        (self.childCoordinators[selectedIndex] as? TabChildCoordinator)?.show()
+    }
+
+    func hide(previousIndex: Int) {
+        self.tabViewController?.removeFromTab(previousIndex: previousIndex)
+        (self.childCoordinators[previousIndex] as? TabChildCoordinator)?.hide()
     }
 
     func getChildViewController(index: Int) -> UIViewController {
@@ -52,16 +66,14 @@ class TabViewCoordinator: Coordinator {
         let homeNavigationController = UINavigationController()
         let homeCoordinator = HomeCoordinator(navigationController: homeNavigationController)
         homeCoordinator.parentCoordinator = self
-        let homeViewController = homeCoordinator.startPush()
-        homeNavigationController.setViewControllers([homeViewController], animated: true)
+        homeCoordinator.startPush()
         childCoordinators.insert(homeCoordinator, at: TabBarIndex.Home.rawValue)
 
         // TODO: 서치VC로 변경
         let registerNavigationController = UINavigationController()
         let registerCoordinator = RegisterCoordinator(navigationController: registerNavigationController)
         registerCoordinator.parentCoordinator = self
-        let registerViewController = registerCoordinator.startPush()
-        registerNavigationController.setViewControllers([registerViewController], animated: true)
+        registerCoordinator.startPush()
         childCoordinators.insert(registerCoordinator, at: TabBarIndex.Search.rawValue)
 
         // TODO: 카테고리VC로 변경

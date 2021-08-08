@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-class HomeCoordinator: Coordinator {
+class HomeCoordinator: TabChildCoordinator {
 
     // MARK: - Constants
 
@@ -76,11 +76,17 @@ class HomeCoordinator: Coordinator {
         navigationController.pushViewController(homeViewController, animated: true)
     }
 
-    func startPush() -> HomeViewController {
+    func startPush() {
         let homeViewModel = HomeViewModel()
         let homeViewController = HomeViewController(viewModel: homeViewModel)
         homeViewController.coordinator = self
 
+        navigationController.setViewControllers([homeViewController], animated: true)
+
+        navigationController.isNavigationBarHidden = true
+    }
+
+    func show() {
         let profileButton = UIButton().then {
             $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_profile(), for: .normal)
@@ -112,10 +118,13 @@ class HomeCoordinator: Coordinator {
             })
             .disposed(by: disposeBag)
 
-        homeViewController.t_setupNavigationBarButton(directionType: .left, button: profileButton)
-        homeViewController.t_setupNavigationBarButton(directionType: .right, button: createBookMarkButton)
+        parentCoordinator?.navigationController.visibleViewController?.t_setupNavigationBarButton(directionType: .left, button: profileButton)
+        parentCoordinator?.navigationController.visibleViewController?.t_setupNavigationBarButton(directionType: .right, button: createBookMarkButton)
+    }
 
-        return homeViewController
+    func hide() {
+        parentCoordinator?.navigationController.visibleViewController?.navigationItem.leftBarButtonItem = nil
+        parentCoordinator?.navigationController.visibleViewController?.navigationItem.rightBarButtonItem = nil
     }
 }
 
