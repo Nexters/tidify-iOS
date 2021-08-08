@@ -43,9 +43,6 @@ class TabViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        setupViews()
-//        setupLayoutConstraints()
-
         let input = TabViewViewModel.Input(tabButtonTap: tabButtonTap.asObservable())
         let output = viewModel.transform(input)
 

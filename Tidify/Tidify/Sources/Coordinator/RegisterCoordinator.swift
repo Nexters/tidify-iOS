@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 import UIKit
 
 class RegisterCoordinator: TabChildCoordinator {
@@ -16,6 +18,8 @@ class RegisterCoordinator: TabChildCoordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
 
+    private let disposeBag = DisposeBag()
+
     // MARK: - Initialize
 
     init(navigationController: UINavigationController) {
@@ -23,11 +27,24 @@ class RegisterCoordinator: TabChildCoordinator {
     }
 
     // MARK: - Methods
+
     func start() {
         let registerViewModel = RegisterViewModel()
         let registerViewController = RegisterViewController(viewModel: registerViewModel)
         registerViewController.coordinator = self
-        navigationController.navigationBar.isHidden = false
+
+        let backButton = UIButton().then {
+            $0.setImage(R.image.nav_icon_back(), for: .normal)
+        }
+
+        backButton.rx.tap.asDriver()
+            .drive(onNext: { [weak registerViewController] in
+                registerViewController?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        registerViewController.t_setupNavigationBarButton(directionType: .left, button: backButton)
+        registerViewController.navigationItem.title = R.string.localizable.mainAddBookMarkTitle()
 
         navigationController.pushViewController(registerViewController, animated: true)
     }
@@ -37,9 +54,18 @@ class RegisterCoordinator: TabChildCoordinator {
         let registerViewController = RegisterViewController(viewModel: registerViewModel)
         registerViewController.coordinator = self
 
-        navigationController.setViewControllers([registerViewController], animated: true)
+        let backButton = UIButton().then {
+            $0.setImage(R.image.nav_icon_back(), for: .normal)
+        }
 
-        navigationController.isNavigationBarHidden = true
+        backButton.rx.tap.asDriver()
+            .drive(onNext: { [weak registerViewController] in
+                registerViewController?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        registerViewController.t_setupNavigationBarButton(directionType: .left, button: backButton)
+        navigationController.setViewControllers([registerViewController], animated: true)
     }
 
     func show() {
