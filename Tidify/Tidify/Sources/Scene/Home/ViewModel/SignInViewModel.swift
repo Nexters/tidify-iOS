@@ -12,7 +12,10 @@ import RxCocoa
 import RxKakaoSDKUser
 import RxSwift
 
-class SignInViewModel {
+class SignInViewModel: ViewModelType {
+
+    // MARK: - Properties
+
     struct Input {
         let clickSignInWithKakaoButton: ControlEvent<Void>
     }
@@ -21,7 +24,9 @@ class SignInViewModel {
         let userSession: Driver<UserSession?>
     }
 
-    func transfrom(_ input: Input) -> Output {
+    // MARK: - Methods
+
+    func transform(_ input: Input) -> Output {
         let userSession = input.clickSignInWithKakaoButton.flatMap {
              UserApi.shared.rx.loginWithKakaoAccount()
         }

@@ -30,8 +30,8 @@ class MainCoordinator: NSObject, Coordinator {
     // MARK: - Methods
 
     func start() {
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
+        self.window.rootViewController = navigationController
+        self.window.makeKeyAndVisible()
 
         let tabViewCoordinator = TabViewCoordinator(navigationController: navigationController)
         tabViewCoordinator.parentCoordinator = self

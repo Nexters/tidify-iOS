@@ -9,7 +9,10 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class RegisterViewModel {
+class RegisterViewModel: ViewModelType {
+
+    // MARK: - Properties
+
     struct Input {
         let registerButtonTap: Observable<String?>
     }
@@ -17,6 +20,8 @@ class RegisterViewModel {
     struct Output {
         let didRegisterButtonTap: Driver<Void>
     }
+
+    // MARK: - Methods
 
     func transform(_ input: Input) -> Output {
         let didRegisterButtonTap = input.registerButtonTap.t_asDriverSkipError()

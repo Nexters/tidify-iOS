@@ -11,15 +11,19 @@ import SnapKit
 import Then
 import UIKit
 
-class SignInViewController: UIViewController {
+class SignInViewController: BaseViewController {
+
+    // MARK: - Properties
+
     weak var coordinator: MainCoordinator?
-
-    private let viewModel: SignInViewModel!
-
-    private let disposeBag = DisposeBag()
 
     private weak var signInWithKakaoButton: UIButton!
     private weak var resultLabel: UILabel!
+
+    private let viewModel: SignInViewModel!
+    private let disposeBag = DisposeBag()
+
+    // MARK: - Initialize
 
     init(viewModel: SignInViewModel) {
         self.viewModel = viewModel
@@ -30,14 +34,13 @@ class SignInViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViews()
-        setupLayoutConstraints()
-
         let input = SignInViewModel.Input(clickSignInWithKakaoButton: signInWithKakaoButton.rx.tap)
-        let output = viewModel.transfrom(input)
+        let output = viewModel.transform(input)
 
         output.userSession
             .map { userSession in
@@ -50,10 +53,10 @@ class SignInViewController: UIViewController {
             .drive(resultLabel.rx.text)
             .disposed(by: disposeBag)
     }
-}
 
-private extension SignInViewController {
-    func setupViews() {
+    // MARK: - Methods
+
+    override func setupViews() {
         view.backgroundColor = .white
 
         let signInWithKakaoButton = UIButton().then {
@@ -74,7 +77,7 @@ private extension SignInViewController {
         self.resultLabel = resultLabel
     }
 
-    func setupLayoutConstraints() {
+    override func setupLayoutConstraints() {
         signInWithKakaoButton.snp.makeConstraints {
             $0.center.equalToSuperview()
         }

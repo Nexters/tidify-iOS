@@ -8,7 +8,9 @@
 import RxSwift
 import UIKit
 
-class TabViewController: UIViewController {
+class TabViewController: BaseViewController {
+
+    // MARK: - Properties
 
     weak var coordinator: TabViewCoordinator?
 
@@ -17,13 +19,14 @@ class TabViewController: UIViewController {
     private weak var floatingBarBackground: UIView!
     private weak var floatingBarStackView: UIStackView!
     private weak var homeTabButton: UIButton!
-    private weak var registerTabButton: UIButton!
+    private weak var searchTabButton: UIButton!
+    private weak var categoryTabButton: UIButton!
 
     private let disposeBag = DisposeBag()
 
-    private var footerHeight: CGFloat = 50
-
     private let tabButtonTap = PublishSubject<Int>()
+
+    // MARK: - Initialize
 
     init(viewModel: TabViewViewModel) {
         self.viewModel = viewModel
@@ -35,22 +38,31 @@ class TabViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViews()
-        setupLayoutConstraints()
+//        setupViews()
+//        setupLayoutConstraints()
 
         let input = TabViewViewModel.Input(tabButtonTap: tabButtonTap.asObservable())
-        let output = viewModel.transfrom(input)
+        let output = viewModel.transform(input)
 
         homeTabButton.rx.tap.bind { [weak self] in
-            self?.tabButtonTap.onNext(TabViewCoordinator.HOME_VIEW_TAB_INDEX)
+            self?.tabButtonTap.onNext(TabBarIndex.Home.rawValue)
         }
         .disposed(by: disposeBag)
 
-        registerTabButton.rx.tap.bind { [weak self] in
-            self?.tabButtonTap.onNext(TabViewCoordinator.REGISTER_VIEW_TAB_INDEX)
+        searchTabButton.rx.tap.bind { [weak self] in
+            self?.tabButtonTap.onNext(TabBarIndex.Search.rawValue)
+        }
+        .disposed(by: disposeBag)
+
+        categoryTabButton.rx.tap.bind { [weak self] in
+            // TODO: category 페이지 생성 후 변경 필요
+//            self?.tabButtonTap.onNext(TabBarIndex.Category.rawValue)
+            self?.tabButtonTap.onNext(TabBarIndex.Search.rawValue)
         }
         .disposed(by: disposeBag)
 
@@ -58,7 +70,7 @@ class TabViewController: UIViewController {
             .drive(onNext: { [weak self] selectedIndex in
 
                 self?.homeTabButton.isSelected = false
-                self?.registerTabButton.isSelected = false
+                self?.searchTabButton.isSelected = false
 
                 if let previousIndex = self?.viewModel.previousIndex {
                     self?.removeFromTab(previousIndex: previousIndex)
@@ -69,46 +81,9 @@ class TabViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-
     }
 
-    func removeFromTab(previousIndex: Int) {
-        let currentViewController = self.coordinator?.getChildViewController(index: previousIndex)
-
-        currentViewController?.willMove(toParent: nil)
-        currentViewController?.view.removeFromSuperview()
-        currentViewController?.removeFromParent()
-
-        self.homeTabButton.isSelected = false
-        self.registerTabButton.isSelected = false
-    }
-
-    func showOnTab(selectedIndex: Int) {
-        if let selectedViewController = self.coordinator?.getChildViewController(index: selectedIndex) {
-            selectedViewController.view.frame = self.view.frame
-            selectedViewController.didMove(toParent: self)
-
-            self.addChild(selectedViewController)
-            self.view.addSubview(selectedViewController.view)
-
-            if let floatingBarBackground = self.floatingBarBackground {
-                self.view.bringSubviewToFront(floatingBarBackground)
-            }
-        }
-
-        if selectedIndex == TabViewCoordinator.HOME_VIEW_TAB_INDEX {
-            self.homeTabButton.isSelected = true
-        }
-
-        if selectedIndex == TabViewCoordinator.REGISTER_VIEW_TAB_INDEX {
-            self.registerTabButton.isSelected = true
-        }
-    }
-}
-
-private extension TabViewController {
-
-    func setupViews() {
+    override func setupViews() {
         view.backgroundColor = .white
 
         self.floatingBarBackground = UIView().then {
@@ -146,31 +121,74 @@ private extension TabViewController {
             $0.contentMode = .scaleToFill
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.autoresizesSubviews = true
+            $0.layer.cornerRadius = 25
 
             self.floatingBarBackground.addSubview($0)
         }
 
         self.homeTabButton = UIButton().then {
-            $0.setTitle("홈", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-
+            $0.setImage(R.image.tabBar_icon_home_deSelected(), for: .normal)
+            $0.setImage(R.image.tabBar_icon_home_selected(), for: .selected)
             self.floatingBarStackView.addArrangedSubview($0)
         }
 
-        self.registerTabButton = UIButton().then {
-            $0.setTitle("추가", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
+        self.searchTabButton = UIButton().then {
+            $0.setImage(R.image.tabBar_icon_search_deSelected(), for: .normal)
+            $0.setImage(R.image.tabBar_icon_search_selected(), for: .selected)
+            self.floatingBarStackView.addArrangedSubview($0)
+        }
 
+        self.categoryTabButton = UIButton().then {
+            $0.setImage(R.image.tabBar_icon_category_deSelected(), for: .normal)
+            $0.setImage(R.image.tabBar_icon_category_selected(), for: .selected)
             self.floatingBarStackView.addArrangedSubview($0)
         }
     }
 
-    func setupLayoutConstraints() {
+    override func setupLayoutConstraints() {
         floatingBarBackground.snp.makeConstraints {
-            $0.height.equalTo(40)
+            $0.height.equalTo(50)
             $0.left.equalToSuperview().offset(80)
             $0.right.equalToSuperview().offset(-80)
             $0.bottom.equalToSuperview().offset(-80)
+        }
+    }
+}
+
+extension TabViewController {
+    private func removeFromTab(previousIndex: Int) {
+        let currentViewController = self.coordinator?.getChildViewController(index: previousIndex)
+
+        currentViewController?.willMove(toParent: nil)
+        currentViewController?.view.removeFromSuperview()
+        currentViewController?.removeFromParent()
+
+        self.homeTabButton.isSelected = false
+        self.searchTabButton.isSelected = false
+    }
+
+    func showOnTab(selectedIndex: Int) {
+        if let selectedViewController = self.coordinator?.getChildViewController(index: selectedIndex) {
+            selectedViewController.view.frame = self.view.frame
+            selectedViewController.didMove(toParent: self)
+
+            self.addChild(selectedViewController)
+            self.view.addSubview(selectedViewController.view)
+
+            if let floatingBarBackground = self.floatingBarBackground {
+                self.view.bringSubviewToFront(floatingBarBackground)
+            }
+        }
+
+        switch selectedIndex {
+        case TabBarIndex.Home.rawValue:
+            self.homeTabButton.isSelected = true
+        case TabBarIndex.Search.rawValue:
+            self.searchTabButton.isSelected = true
+        case TabBarIndex.Category.rawValue:
+            self.categoryTabButton.isSelected = true
+        default:
+            return
         }
     }
 }

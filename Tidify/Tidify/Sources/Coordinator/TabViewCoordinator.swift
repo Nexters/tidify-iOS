@@ -9,10 +9,15 @@ import Foundation
 import RxSwift
 import UIKit
 
+enum TabBarIndex: Int, CaseIterable {
+    case Home
+    case Search
+    case Category
+}
+
 class TabViewCoordinator: Coordinator {
 
-    static let HOME_VIEW_TAB_INDEX = 0
-    static let REGISTER_VIEW_TAB_INDEX = 1
+    // MARK: - Properties
 
     weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
@@ -20,39 +25,45 @@ class TabViewCoordinator: Coordinator {
 
     private let disposeBag = DisposeBag()
 
+    // MARK: - Initialize
+
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
 
-        let homeTabRootController = generateTabRootController()
-        let homeCoordinator = HomeCoordinator(navigationController: homeTabRootController)
-        homeCoordinator.parentCoordinator = self
-        childCoordinators.insert(homeCoordinator, at: TabViewCoordinator.HOME_VIEW_TAB_INDEX)
-        homeCoordinator.start()
-
-        let registerTabRootController = generateTabRootController()
-        let registerCoordinator = RegisterCoordinator(navigationController: registerTabRootController)
-        registerCoordinator.parentCoordinator = self
-        childCoordinators.insert(registerCoordinator, at: TabViewCoordinator.REGISTER_VIEW_TAB_INDEX)
-        registerCoordinator.start()
+        setupTabBarCoordinator()
     }
+
+    // MARK: - Methods
 
     func start() {
         let tabViewViewModel = TabViewViewModel()
         let tabViewController = TabViewController(viewModel: tabViewViewModel)
         tabViewController.coordinator = self
-
         navigationController.setViewControllers([tabViewController], animated: true)
 
-        tabViewController.showOnTab(selectedIndex: TabViewCoordinator.HOME_VIEW_TAB_INDEX)
+        tabViewController.showOnTab(selectedIndex: TabBarIndex.Home.rawValue)
     }
 
     func getChildViewController(index: Int) -> UIViewController {
         return childCoordinators[index].navigationController
     }
 
-    private func generateTabRootController() -> UINavigationController {
-        let newNavigationController = UINavigationController()
-        newNavigationController.isNavigationBarHidden = true
-        return newNavigationController
+    func setupTabBarCoordinator() {
+        let homeNavigationController = UINavigationController()
+        let homeCoordinator = HomeCoordinator(navigationController: homeNavigationController)
+        homeCoordinator.parentCoordinator = self
+        let homeViewController = homeCoordinator.startPush()
+        homeNavigationController.setViewControllers([homeViewController], animated: true)
+        childCoordinators.insert(homeCoordinator, at: TabBarIndex.Home.rawValue)
+
+        // TODO: 서치VC로 변경
+        let registerNavigationController = UINavigationController()
+        let registerCoordinator = RegisterCoordinator(navigationController: registerNavigationController)
+        registerCoordinator.parentCoordinator = self
+        let registerViewController = registerCoordinator.startPush()
+        registerNavigationController.setViewControllers([registerViewController], animated: true)
+        childCoordinators.insert(registerCoordinator, at: TabBarIndex.Search.rawValue)
+
+        // TODO: 카테고리VC로 변경
     }
 }

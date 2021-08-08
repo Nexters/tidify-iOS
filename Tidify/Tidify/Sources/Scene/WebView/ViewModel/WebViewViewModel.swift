@@ -7,7 +7,10 @@
 
 import Foundation
 
-class WebViewViewModel {
+class WebViewViewModel: ViewModelType {
+
+    // MARK: - Properties
+
     struct Input {
 
     }
@@ -15,6 +18,8 @@ class WebViewViewModel {
     struct Output {
 
     }
+
+    // MARK: - Methods
 
     func transform(_ input: Input) -> Output {
         return Output()
