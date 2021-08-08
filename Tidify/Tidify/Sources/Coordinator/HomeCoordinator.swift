@@ -167,6 +167,7 @@ extension HomeCoordinator: HomeViewModelDelegate {
         let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
         registerCoordinator.parentCoordinator = self
         childCoordinators.append(registerCoordinator)
+        TabBarManager.shared.hideTabBarSubject.onNext(())
 
         registerCoordinator.start()
     }
@@ -175,6 +176,7 @@ extension HomeCoordinator: HomeViewModelDelegate {
         let webViewCoordinator = WebViewCoordinator(navigationController: navigationController)
         webViewCoordinator.parentCoordinator = self
         childCoordinators.append(webViewCoordinator)
+        TabBarManager.shared.hideTabBarSubject.onNext(())
 
         webViewCoordinator.start()
     }
@@ -185,6 +187,7 @@ extension HomeCoordinator {
         let settingCoordinator = SettingCoordinator(navigationController: navigationController)
         settingCoordinator.parentCoordinator = self
         childCoordinators.append(settingCoordinator)
+        TabBarManager.shared.hideTabBarSubject.onNext(())
 
         settingCoordinator.start()
     }

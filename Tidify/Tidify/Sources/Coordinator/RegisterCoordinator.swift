@@ -40,6 +40,7 @@ class RegisterCoordinator: TabChildCoordinator {
         backButton.rx.tap.asDriver()
             .drive(onNext: { [weak registerViewController] in
                 registerViewController?.navigationController?.popViewController(animated: true)
+                TabBarManager.shared.showTabBarSubject.onNext(())
             })
             .disposed(by: disposeBag)
 

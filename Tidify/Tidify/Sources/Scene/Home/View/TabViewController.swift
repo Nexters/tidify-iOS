@@ -43,6 +43,14 @@ class TabViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(showTabBar),
+                                               name: NSNotification.Name(rawValue: TabBarManager.ManagerBehavior.show.rawValue), object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(hideTabBar),
+                                               name: NSNotification.Name(rawValue: TabBarManager.ManagerBehavior.hide.rawValue), object: nil)
+
         let input = TabViewViewModel.Input(tabButtonTap: tabButtonTap.asObservable())
         let output = viewModel.transform(input)
 
@@ -186,6 +194,22 @@ extension TabViewController {
             self.categoryTabButton.isSelected = true
         default:
             return
+        }
+    }
+
+    @objc
+    func showTabBar() {
+        DispatchQueue.main.async { [weak self] in
+            self?.floatingBarStackView.isHidden = false
+            self?.floatingBarBackground.isHidden = false
+        }
+    }
+
+    @objc
+    func hideTabBar() {
+        DispatchQueue.main.async { [weak self] in
+            self?.floatingBarStackView.isHidden = true
+            self?.floatingBarBackground.isHidden = true
         }
     }
 }
