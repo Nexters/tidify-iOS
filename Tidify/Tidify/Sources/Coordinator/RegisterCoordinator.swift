@@ -22,7 +22,7 @@ class RegisterCoordinator: Coordinator {
         self.navigationController = navigationController
     }
 
-    // MARK: - Properties
+    // MARK: - Methods
     func start() {
         let registerViewModel = RegisterViewModel()
         let registerViewController = RegisterViewController(viewModel: registerViewModel)
@@ -30,5 +30,13 @@ class RegisterCoordinator: Coordinator {
         navigationController.navigationBar.isHidden = false
 
         navigationController.pushViewController(registerViewController, animated: true)
+    }
+
+    func startPush() -> RegisterViewController {
+        let registerViewModel = RegisterViewModel()
+        let registerViewController = RegisterViewController(viewModel: registerViewModel)
+        registerViewController.coordinator = self
+
+        return registerViewController
     }
 }

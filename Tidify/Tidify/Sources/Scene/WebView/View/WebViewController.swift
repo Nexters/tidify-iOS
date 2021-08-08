@@ -12,13 +12,18 @@ import Then
 import UIKit
 import WebKit
 
-class WebViewController: UIViewController {
+class WebViewController: BaseViewController {
+
+    // MARK: - Properties
+
     weak var coordinator: Coordinator?
 
     private weak var webView: WKWebView!
 
     private let viewModel: WebViewViewModel
     private let disposeBag = DisposeBag()
+
+    // MARK: - Initialize
 
     init(viewModel: WebViewViewModel) {
         self.viewModel = viewModel
@@ -30,18 +35,19 @@ class WebViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupViews()
-        setupLayoutConstraints()
 
         let url = URL(string: "https://www.apple.com")!
         let request = URLRequest(url: url)
         webView.load(request)
     }
 
-    func setupViews() {
+    // MARK: - Methods
+
+    override func setupViews() {
         let webView = WKWebView().then {
             $0.allowsBackForwardNavigationGestures = true
             $0.uiDelegate = self
@@ -52,7 +58,7 @@ class WebViewController: UIViewController {
         self.webView = webView
     }
 
-    func setupLayoutConstraints() {
+    override func setupLayoutConstraints() {
         webView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }

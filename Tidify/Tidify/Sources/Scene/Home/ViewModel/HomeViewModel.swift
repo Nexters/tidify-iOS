@@ -15,7 +15,10 @@ protocol HomeViewModelDelegate: AnyObject {
     func pushWebView()
 }
 
-class HomeViewModel {
+class HomeViewModel: ViewModelType {
+
+    // MARK: - Properties
+
     let imagePlaceholder = "https://via.placeholder.com/150"
     let swiftLinkPreview = SwiftLinkPreview()
 
@@ -36,7 +39,9 @@ class HomeViewModel {
 
     var bookMarkList: [BookMark] = []
 
-    func transfrom(_ input: Input) -> Output {
+    // MARK: - Methods
+
+    func transform(_ input: Input) -> Output {
         let didReceiveBookMarks = Driver.just(())
             .flatMapLatest { _ -> Driver<BookMarkListDTO> in
                 return ApiProvider.request(BookMarkAPI.getBookMarkList(id: 1))

@@ -55,7 +55,7 @@ class HomeViewController: BaseViewController {
         let input = HomeViewModel.Input(registerButtonTap: registerBookMarkButton.rx.tap.asDriver().map { _ in },
                                         cellTapSubject: cellTapSubject.asObservable(),
                                         addListItemSubject: addListItemSubject.asObserver())
-        let output = viewModel.transfrom(input)
+        let output = viewModel.transform(input)
 
         output.registerButtonTap.drive().disposed(by: disposeBag)
         output.cellTapEvent.drive().disposed(by: disposeBag)

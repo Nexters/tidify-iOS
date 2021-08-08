@@ -9,7 +9,10 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class TabViewViewModel {
+class TabViewViewModel: ViewModelType {
+
+    // MARK: - Properties
+
     var selectedIndex: Int = 0
     var previousIndex: Int = 0
 
@@ -21,7 +24,9 @@ class TabViewViewModel {
         let tabButtonTap: Driver<Int>
     }
 
-    func transfrom(_ input: Input) -> Output {
+    // MARK: - Methods
+
+    func transform(_ input: Input) -> Output {
 
         let tabButtonTap = input.tabButtonTap
             .do(onNext: { [weak self] index in

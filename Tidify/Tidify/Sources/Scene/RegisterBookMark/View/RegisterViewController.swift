@@ -10,7 +10,15 @@ import RxSwift
 import Then
 import UIKit
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: BaseViewController {
+
+    // MARK: - Constants
+
+    static let ghostColor = UIColor(60, 60, 67, 0.3)
+    static let textFiledWidth: CGFloat = 335
+
+    // MARK: - Properties
+
     weak var coordinator: Coordinator?
 
     private weak var titleLabel: UILabel!
@@ -28,6 +36,8 @@ class RegisterViewController: UIViewController {
         }
     }
 
+    // MARK: - Initialize
+
     init(viewModel: RegisterViewModel) {
         self.viewModel = viewModel
 
@@ -38,11 +48,10 @@ class RegisterViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupViews()
-        setupLayoutConstraints()
 
         let registerButtonTap = registerButton.rx.tap.asObservable()
             .map { [weak self] in
@@ -74,13 +83,9 @@ class RegisterViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 
-    static let ghostColor = UIColor(60, 60, 67, 0.3)
-}
+    // MARK: - Methods
 
-private extension RegisterViewController {
-    static let textFiledWidth: CGFloat = 335
-
-    func setupViews() {
+    override func setupViews() {
         view.backgroundColor = .white
 
         let titleLabel = UILabel().then {
@@ -133,7 +138,7 @@ private extension RegisterViewController {
         self.registerButton = registerButton
     }
 
-    func setupLayoutConstraints() {
+    override func setupLayoutConstraints() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(196)
             $0.centerX.equalToSuperview()
