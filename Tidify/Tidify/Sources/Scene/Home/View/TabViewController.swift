@@ -73,11 +73,11 @@ class TabViewController: BaseViewController {
                 self?.searchTabButton.isSelected = false
 
                 if let previousIndex = self?.viewModel.previousIndex {
-                    self?.removeFromTab(previousIndex: previousIndex)
+                    self?.coordinator?.hide(previousIndex: previousIndex)
                 }
 
                 if let selectedIndex = self?.viewModel.selectedIndex {
-                    self?.showOnTab(selectedIndex: selectedIndex)
+                    self?.coordinator?.show(selectedIndex: selectedIndex)
                 }
             })
             .disposed(by: disposeBag)
@@ -139,7 +139,7 @@ class TabViewController: BaseViewController {
         }
 
         self.categoryTabButton = UIButton().then {
-            $0.setImage(R.image.tabBar_icon_category_deSelected(), for: .normal)
+            $0.setImage(R.image.tabbar_icon_category_deSelected(), for: .normal)
             $0.setImage(R.image.tabBar_icon_category_selected(), for: .selected)
             self.floatingBarStackView.addArrangedSubview($0)
         }
@@ -156,7 +156,7 @@ class TabViewController: BaseViewController {
 }
 
 extension TabViewController {
-    private func removeFromTab(previousIndex: Int) {
+    func removeFromTab(previousIndex: Int) {
         let currentViewController = self.coordinator?.getChildViewController(index: previousIndex)
 
         currentViewController?.willMove(toParent: nil)

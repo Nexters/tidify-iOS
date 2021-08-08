@@ -20,3 +20,9 @@ protocol Coordinator: AnyObject {
 
     func start()
 }
+
+protocol TabChildCoordinator: Coordinator {
+    func startPush()
+    func show()
+    func hide()
+}
