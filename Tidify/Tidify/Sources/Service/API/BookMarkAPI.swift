@@ -10,7 +10,7 @@ import Moya
 
 enum BookMarkAPI {
     case getBookMarkList(id: Int)
-    case createBookMark(id: Int, title: String, url: String)
+    case createBookMark(title: String, url: String)
 }
 
 extension BookMarkAPI: TargetType {
@@ -20,10 +20,9 @@ extension BookMarkAPI: TargetType {
 
     var path: String {
         let baseRoutePath = "/api/v1/bookmarks"
+
         switch self {
-        case .getBookMarkList(let id):
-            return baseRoutePath + "/\(id)"
-        case .createBookMark:
+        case .getBookMarkList, .createBookMark:
             return baseRoutePath
         }
     }
@@ -44,6 +43,7 @@ extension BookMarkAPI: TargetType {
     var task: Task {
         let requestParameters = parameters ?? [:]
         let encoding: ParameterEncoding
+
         switch self.method {
         case .post, .patch, .put:
             encoding = JSONEncoding.default
@@ -51,20 +51,19 @@ extension BookMarkAPI: TargetType {
             encoding = URLEncoding.default
         }
 
-        return . requestParameters(parameters: requestParameters, encoding: encoding)
+        return .requestParameters(parameters: requestParameters, encoding: encoding)
     }
 
     var headers: [String: String]? {
-//        return nil
-        return ["tidify-auth": Environment.shared.apiKey]
+        return ["tidify-auth": Environment.shared.authorization]
     }
 
     private var parameters: [String: Any]? {
         switch self {
-        case let .createBookMark(id, title, url):
+        case let .createBookMark(title, url):
             return ["title": title, "url": url]
-        case let .getBookMarkList(id):
-            return ["member_id": id]
+        case .getBookMarkList:
+            return nil
         }
     }
 }
