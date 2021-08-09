@@ -137,6 +137,12 @@ extension HomeViewController: UICollectionViewDataSource {
 
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let isEmptyDataSource = self.viewModel.bookMarkList.isEmpty
+
+        if isEmptyDataSource {
+            return
+        }
+
         let bookMark = self.viewModel.bookMarkList[indexPath.item]
 
         cellTapSubject.onNext(bookMark)

@@ -55,13 +55,14 @@ extension BookMarkAPI: TargetType {
     }
 
     var headers: [String: String]? {
-        return nil
+//        return nil
+        return ["tidify-auth": Environment.shared.apiKey]
     }
 
     private var parameters: [String: Any]? {
         switch self {
         case let .createBookMark(id, title, url):
-            return ["member_id": id, "title": title, "url": url]
+            return ["title": title, "url": url]
         case let .getBookMarkList(id):
             return ["member_id": id]
         }
