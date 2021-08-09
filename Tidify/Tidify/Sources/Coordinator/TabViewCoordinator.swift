@@ -76,6 +76,6 @@ class TabViewCoordinator: Coordinator {
         registerCoordinator.startPush()
         childCoordinators.insert(registerCoordinator, at: TabBarIndex.Search.rawValue)
 
-        // TODO: 카테고리VC로 변경
+        // TODO: 카테고리VC 추가
     }
 }

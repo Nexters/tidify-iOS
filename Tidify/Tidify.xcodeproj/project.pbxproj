@@ -41,6 +41,7 @@
 		B5CA8B2726B0470500D9C6D3 /* SettingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2626B0470500D9C6D3 /* SettingCoordinator.swift */; };
 		B5CA8B2926B048C700D9C6D3 /* DefaultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */; };
 		B5CA8B2B26B048D600D9C6D3 /* RightSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2A26B048D600D9C6D3 /* RightSwitchTableViewCell.swift */; };
+		B5E64DA126C0327300DD56E7 /* TabBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E64DA026C0327300DD56E7 /* TabBarManager.swift */; };
 		B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */; };
 		B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */; };
 		B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C1026999E3700D1E8BB /* MainCoordinator.swift */; };
@@ -130,6 +131,7 @@
 		B5CA8B2626B0470500D9C6D3 /* SettingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCoordinator.swift; sourceTree = "<group>"; };
 		B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTableViewCell.swift; sourceTree = "<group>"; };
 		B5CA8B2A26B048D600D9C6D3 /* RightSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		B5E64DA026C0327300DD56E7 /* TabBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarManager.swift; sourceTree = "<group>"; };
 		B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+.swift"; sourceTree = "<group>"; };
 		B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
 		B5F19C1026999E3700D1E8BB /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 			children = (
 				B5F19C252699D05200D1E8BB /* APIProvider.swift */,
 				B5F19C1F2699CB4E00D1E8BB /* BookMarkAPI.swift */,
+				B5E64DA026C0327300DD56E7 /* TabBarManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				B5CA8B2426B0442800D9C6D3 /* ViewModelType.swift in Sources */,
 				C72F27D62699CF2700104FE3 /* SignInViewModel.swift in Sources */,
 				C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */,
+				B5E64DA126C0327300DD56E7 /* TabBarManager.swift in Sources */,
 				B5AF0AE0269A134A00D8DCF5 /* WebViewViewModel.swift in Sources */,
 				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
@@ -821,7 +825,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -876,7 +880,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
