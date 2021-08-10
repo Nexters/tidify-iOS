@@ -9,8 +9,8 @@ import Foundation
 import Moya
 
 enum SocialLoginType: String {
-    case kakao = "kakao"
-    case apple = "apple"
+    case kakao
+    case apple
 }
 
 enum AuthAPI {
@@ -56,7 +56,7 @@ extension AuthAPI: TargetType {
         return .requestParameters(parameters: requestParameters, encoding: encoding)
     }
 
-    var headers: [String : String]? {
+    var headers: [String: String]? {
         return nil
     }
 

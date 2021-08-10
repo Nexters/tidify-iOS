@@ -6,19 +6,19 @@
 //
 
 import Foundation
+import LinkPresentation
 import RxCocoa
 import RxSwift
-import LinkPresentation
 
 class RegisterViewModel: ViewModelType {
 
     // MARK: - Properties
 
     struct Input {
-        let urlInputText: Observable<String?>
-        let bookMarkNameInputText: Observable<String?>
-        let tagInputText: Observable<String?>
-        let registerButtonTap: Observable<Void>
+        let urlInputText: Driver<String?>
+        let bookMarkNameInputText: Driver<String?>
+        let tagInputText: Driver<String?>
+        let registerButtonTap: Driver<Void>
     }
 
     struct Output {
@@ -41,6 +41,7 @@ class RegisterViewModel: ViewModelType {
                     return .just((urlString ?? "", urlTitle))
                 }
 
+                // 추후 LPMetaDataProvider 기반 icon, title 뽑아오는 로직 작성 필요
                 metadataProvider.startFetchingMetadata(for: url, completionHandler: { metaData, error in
                     guard error != nil, let title = metaData?.title else {
                         return

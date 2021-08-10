@@ -23,8 +23,8 @@ class BottomSheetViewController: BaseViewController {
 
     private var tagList: [String]
     private let selectedEventObserver: AnyObserver<Int>
+    private let closeButtonTap = PublishSubject<Void>()
     private let disposeBag = DisposeBag()
-
 
     // MARK: - Initialize
 
@@ -47,7 +47,8 @@ class BottomSheetViewController: BaseViewController {
         setupViews()
         setupLayoutConstraints()
 
-        Driver.merge(dimmedView.t_addTap().rx.event.asDriver().map { _ in })
+        Driver.merge(dimmedView.t_addTap().rx.event.asDriver().map { _ in },
+                     closeButtonTap.t_asDriverSkipError())
             .drive(onNext: { [weak self] _ in
                 self?.hideBottomSheet()
             })
@@ -109,6 +110,7 @@ extension BottomSheetViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedEventObserver.onNext(indexPath.row)
+        hideBottomSheet()
     }
 }
 
@@ -117,7 +119,7 @@ extension BottomSheetViewController: UITableViewDataSource {
 extension BottomSheetViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = BottomSheetHeaderView()
-        headerView.setBottomSheetHeader(R.string.localizable.bottomSheetTagTitle())
+        headerView.setBottomSheetHeader(R.string.localizable.bottomSheetTagTitle(), closeButonTapObserver: closeButtonTap.asObserver())
 
         return headerView
     }
@@ -164,4 +166,3 @@ private extension BottomSheetViewController {
         })
     }
 }
-

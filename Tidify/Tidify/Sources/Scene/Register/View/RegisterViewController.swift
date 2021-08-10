@@ -105,10 +105,16 @@ class RegisterViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
 
-        let input = RegisterViewModel.Input(urlInputText: urlTextField.rx.text.asObservable(),
-                                            bookMarkNameInputText: bookMarkTextField.rx.text.asObservable(),
-                                            tagInputText: tagTextField.rx.text.asObservable(),
-                                            registerButtonTap: registerButton.rx.tap.asObservable())
+        selectedTagIndexSubject.t_asDriverSkipError()
+            .drive(onNext: { [weak self] index in
+                self?.tagTextField.text = self?.demoTagList[index]
+            })
+            .disposed(by: disposeBag)
+
+        let input = RegisterViewModel.Input(urlInputText: urlTextField.rx.text.asDriver(),
+                                            bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
+                                            tagInputText: tagTextField.rx.text.asDriver(),
+                                            registerButtonTap: registerButton.rx.tap.asDriver())
         let output = viewModel.transform(input)
 
         output.didRegisterButtonTap
@@ -266,45 +272,4 @@ private extension RegisterViewController {
 
         self.present(bottomSheet, animated: false, completion: nil)
     }
-
-//    func showBottomSheet(_ filterCase: FilterCase) {
-//        let bottomSheet = BottomSheetViewController(filterCase: filterCase,
-//                                                    addFilterSubject: addFilterSubject,
-//                                                    removeFilterSubject: removeFilterSubject)
-//        bottomSheet.modalPresentationStyle = .overFullScreen
-//
-//        self.present(bottomSheet, animated: false, completion: nil)
-//    }
-
-//    func showBottomSheet() {
-//        UIView.animate(withDuration: 0.5, animations: { [weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//
-//            strongSelf.dimmedView.alpha = 0.7
-//            strongSelf.bottomSheetTableView.snp.updateConstraints { make in
-//                make.top.equalToSuperview().offset(Self.BottomSheetTopPaddingWhenPresent)
-//            }
-//            strongSelf.view.layoutIfNeeded()
-//        })
-//    }
-//
-//    func hideBottomSheet() {
-//        UIView.animate(withDuration: 0.5, animations: { [weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//
-//            strongSelf.dimmedView.alpha = 0
-//            strongSelf.bottomSheetTableView.snp.updateConstraints { make in
-//                make.top.equalToSuperview().offset(strongSelf.view.frame.height)
-//            }
-//            strongSelf.view.layoutIfNeeded()
-//        }, completion: { [weak self] _ in
-//            if self?.presentingViewController != nil {
-//                self?.dismiss(animated: false, completion: nil)
-//            }
-//        })
-//    }
 }

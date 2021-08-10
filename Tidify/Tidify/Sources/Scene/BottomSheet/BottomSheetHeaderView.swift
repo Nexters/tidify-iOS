@@ -38,8 +38,14 @@ class BottomSheetHeaderView: UIView {
 
     // MARK: - Methods
 
-    func setBottomSheetHeader(_ title: String) {
+    func setBottomSheetHeader(_ title: String, closeButonTapObserver: AnyObserver<Void>) {
         self.titleLabel.text = title
+
+        closeButton.rx.tap.asDriver()
+            .drive(onNext: { _ in
+                closeButonTapObserver.onNext(())
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -69,4 +75,3 @@ private extension BottomSheetHeaderView {
         }
     }
 }
-
