@@ -279,7 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				B56D8314269989BF00D5F513 /* Home */,
-				B5AF0AD6269A0D7200D8DCF5 /* RegisterBookMark */,
+				B5AF0AD6269A0D7200D8DCF5 /* Register */,
 				B5CA8B1726B0436900D9C6D3 /* Setting */,
 				B5F19C122699A01700D1E8BB /* WebView */,
 			);
@@ -298,13 +298,13 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
-		B5AF0AD6269A0D7200D8DCF5 /* RegisterBookMark */ = {
+		B5AF0AD6269A0D7200D8DCF5 /* Register */ = {
 			isa = PBXGroup;
 			children = (
 				B5AF0AD7269A0D7B00D8DCF5 /* View */,
 				B5AF0AD8269A0D8300D8DCF5 /* ViewModel */,
 			);
-			path = RegisterBookMark;
+			path = Register;
 			sourceTree = "<group>";
 		};
 		B5AF0AD7269A0D7B00D8DCF5 /* View */ = {

@@ -14,6 +14,7 @@ struct BookMark {
     let memberId: Int
     let urlString: String?
     let title: String
+    let tag: String
 
     var url: URL {
         return URL(string: urlString ?? "")!
@@ -49,14 +50,16 @@ struct BookMarkDTO: Codable {
     let memberId: Int
     let urlString: String?
     let title: String
+    let tag: String
 
-    init(createdAt: String, updatedAt: String, id: Int, memberId: Int, urlString: String, title: String) {
+    init(createdAt: String, updatedAt: String, id: Int, memberId: Int, urlString: String, title: String, tag: String) {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.id = id
         self.memberId = memberId
         self.urlString = urlString
         self.title = title
+        self.tag = tag
     }
 
     func toEntity() -> BookMark {
@@ -65,7 +68,8 @@ struct BookMarkDTO: Codable {
                         id: self.id,
                         memberId: self.memberId,
                         urlString: self.urlString,
-                        title: self.title)
+                        title: self.title,
+                        tag: self.tag)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -75,5 +79,6 @@ struct BookMarkDTO: Codable {
         case memberId = "member_id"
         case urlString = "url"
         case title
+        case tag
     }
 }

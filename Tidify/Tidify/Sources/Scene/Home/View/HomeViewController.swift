@@ -19,7 +19,6 @@ class HomeViewController: BaseViewController {
 
     private weak var collectionView: UICollectionView!
     private weak var customHeaderView: UIView!
-    private weak var registerBookMarkButton: UIButton!
     private let viewModel: HomeViewModel!
 
     private let cellTapSubject = PublishSubject<BookMark>()
@@ -52,25 +51,15 @@ class HomeViewController: BaseViewController {
         setupViews()
         setupLayoutConstraints()
 
-        let input = HomeViewModel.Input(registerButtonTap: registerBookMarkButton.rx.tap.asDriver().map { _ in },
-                                        cellTapSubject: cellTapSubject.asObservable(),
-                                        addListItemSubject: addListItemSubject.asObserver())
+        let input = HomeViewModel.Input(cellTapSubject: cellTapSubject.t_asDriverSkipError())
         let output = viewModel.transform(input)
 
-        output.registerButtonTap.drive().disposed(by: disposeBag)
         output.cellTapEvent.drive().disposed(by: disposeBag)
 
         output.didReceiveBookMarks
             .drive(onNext: { [weak self] _ in
                 self?.collectionView.reloadData()
             })
-            .disposed(by: disposeBag)
-
-        output.addListItem
-            .do(onNext: { [weak self] _ in
-                self?.collectionView.reloadData()
-            })
-            .drive()
             .disposed(by: disposeBag)
     }
 
@@ -107,15 +96,6 @@ class HomeViewController: BaseViewController {
             view.addSubview($0)
         }
         self.collectionView = collectionView
-
-        let registerBookMarkButton = UIButton().then {
-            $0.setTitle(R.string.localizable.mainAddBookMarkTitle(), for: .normal)
-            $0.titleLabel?.font = .t_B(20)
-            $0.backgroundColor = .t_tidiBlue()
-            $0.layer.cornerRadius = 16
-            customHeaderView.addSubview($0)
-        }
-        self.registerBookMarkButton = registerBookMarkButton
     }
 
     override func setupLayoutConstraints() {
