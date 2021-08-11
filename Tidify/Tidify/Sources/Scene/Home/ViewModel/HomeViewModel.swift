@@ -23,16 +23,12 @@ class HomeViewModel: ViewModelType {
     let swiftLinkPreview = SwiftLinkPreview()
 
     struct Input {
-        let registerButtonTap: Driver<Void>
-        let cellTapSubject: Observable<BookMark>
-        let addListItemSubject: Observable<URL>
+        let cellTapSubject: Driver<BookMark>
     }
 
     struct Output {
         let didReceiveBookMarks: Driver<Void>
-        let registerButtonTap: Driver<Void>
         let cellTapEvent: Driver<Void>
-        let addListItem: Driver<BookMark?>
     }
 
     weak var delegate: HomeViewModelDelegate?
@@ -46,54 +42,20 @@ class HomeViewModel: ViewModelType {
             .flatMapLatest { _ -> Driver<BookMarkListDTO> in
                 return ApiProvider.request(BookMarkAPI.getBookMarkList(id: 1))
                     .map(BookMarkListDTO.self)
-                    .asDriver(onErrorRecover: { error in
-                        print(error.localizedDescription)
-                        return .empty()
-                    })
+                    .t_asDriverSkipError()
             }
             .do(onNext: { [weak self] bookMarkListDTO in
                 self?.bookMarkList = bookMarkListDTO.bookMarks.map { $0.toEntity() }
             })
             .map { _ in }
 
-        let registerButtonTap = input.registerButtonTap
-            .do(onNext: { [weak self] _ in
-                self?.delegate?.pushRegisterView()
-            })
-
         let cellTapEvent = input.cellTapSubject
-            .t_asDriverSkipError()
             .do(onNext: { [weak self] _ in
                 self?.delegate?.pushWebView()
             })
             .map { _ in }
 
-        let addListItem = input.addListItemSubject
-            .flatMap { url -> Observable<BookMark?> in
-                self.swiftLinkPreview.rx.preview(url: url)
-                    .map { result -> BookMark in
-                        let urlString = result.finalUrl?.absoluteString ?? url.absoluteString
-                        let title = result.title ?? result.canonicalUrl ?? url.absoluteString
-
-                        return BookMark(createdAt: "2021-07-17T11:38:29.029Z",
-                                        updatedAt: "2021-07-17T11:38:29.029Z",
-                                        id: 1,
-                                        memberId: 1,
-                                        urlString: urlString,
-                                        title: title)
-                    }
-            }
-            .catchErrorJustReturn(nil)
-            .do(onNext: { [weak self] bookMark in
-                if bookMark != nil {
-                    self?.bookMarkList.append(bookMark!)
-                }
-            })
-            .t_asDriverSkipError()
-
         return Output(didReceiveBookMarks: didReceiveBookMarks,
-                      registerButtonTap: registerButtonTap,
-                      cellTapEvent: cellTapEvent,
-                      addListItem: addListItem)
+                      cellTapEvent: cellTapEvent)
     }
 }
