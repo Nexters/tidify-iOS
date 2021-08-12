@@ -25,9 +25,16 @@ class RegisterViewController: BaseViewController {
     private weak var descriptionLabel: UILabel!
     private weak var inputTextField: UITextField!
     private weak var registerButton: UIButton!
+    private weak var notifyInvalidFormatUrlLabel: UILabel!
 
     private let viewModel: RegisterViewModel!
     private let disposeBag = DisposeBag()
+
+    private var isInvalidFormatURL: Bool = true {
+        didSet {
+            self.notifyInvalidFormatUrlLabel.isHidden = !isInvalidFormatURL
+        }
+    }
 
     private var registerButtonEnabled: Bool = false {
         didSet {
@@ -64,6 +71,30 @@ class RegisterViewController: BaseViewController {
 
         let input = RegisterViewModel.Input(registerButtonTap: registerButtonTap)
         let output = viewModel.transform(input)
+        urlTextField.becomeFirstResponder()
+
+        view.t_addTap().rx.event.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.urlTextField.resignFirstResponder()
+                self?.bookMarkTextField.resignFirstResponder()
+            })
+            .disposed(by: disposeBag)
+
+        urlTextField.rx.text.asDriver()
+            .filter { string in
+                guard let string = string else {
+                    return false
+                }
+                return !string.isEmpty
+            }
+            .drive(onNext: { [weak self] text in
+                guard let text = text?.lowercased() else {
+                    return
+                }
+                self?.isInvalidFormatURL = !(text.contains("http") || text.contains("https")) && !text.isEmpty
+                self?.registerButtonEnabled = !(text.isEmpty)
+            })
+            .disposed(by: disposeBag)
 
         output.didRegisterButtonTap
             .drive(onNext: { [weak self] _ in
@@ -123,17 +154,16 @@ class RegisterViewController: BaseViewController {
         let registerButton = UIButton().then {
             $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
             $0.titleLabel?.font = .t_B(20)
-            $0.setTitleColor(UIColor(60, 60, 67, 0.3), for: .normal)
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.lightGray.cgColor
-            $0.layer.cornerRadius = 16
-            $0.backgroundColor = .white
-            $0.layer.shadowColor = UIColor.black.cgColor
-            $0.layer.shadowOpacity = 0.7
-            $0.layer.shadowOffset = CGSize(w: 0, h: 3)
-            $0.layer.shadowRadius = 10
-            $0.layer.masksToBounds = false
+            $0.setTitleColor(.systemGray2, for: .normal)
             view.addSubview($0)
+        }
+
+        self.notifyInvalidFormatUrlLabel = UILabel().then {
+            $0.font = UIFont.t_SB(14)
+            $0.textColor = .systemRed
+            $0.text = R.string.localizable.registerNotifyInvalidUrl()
+            view.addSubview($0)
+            $0.isHidden = true
         }
         self.registerButton = registerButton
     }
@@ -159,6 +189,11 @@ class RegisterViewController: BaseViewController {
             $0.top.equalTo(inputTextField.snp.bottom).offset(48)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(CGSize(w: Self.textFiledWidth, h: 56))
+        }
+
+        notifyInvalidFormatUrlLabel.snp.makeConstraints {
+            $0.centerY.equalTo(urlTitleLabel)
+            $0.trailing.equalToSuperview().inset(Self.labelSidePadding)
         }
     }
 }

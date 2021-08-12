@@ -19,6 +19,7 @@
 "Register.inputTextField.placeHolder" = "URL, 링크주소 붙여넣기";
 "Register.button.title" = "저장";
 "Register.button.title.saving" = "저장중";
+"Register.notify.invalidUrl" = "링크를 확인해주세요";
 
 // Setting
 "Setting.account" = "계정";
