@@ -13,6 +13,10 @@ import UIKit
 
 class DefaultTableViewCell: UITableViewCell {
 
+    // MARK: - Constants
+
+    static let SidePadding: CGFloat = 15
+
     // MARK: - Properties
 
     private weak var titleLabel: UILabel!
@@ -33,7 +37,7 @@ class DefaultTableViewCell: UITableViewCell {
     // MARK: - Methods
 
     private func setupViews() {
-        self.accessoryType = .detailButton
+        self.contentView.backgroundColor = .white
 
         let titleLabel = UILabel().then {
             $0.textColor = .black
@@ -50,6 +54,9 @@ class DefaultTableViewCell: UITableViewCell {
         }
     }
 
-    // MARK: - Constants
-    static let SidePadding: CGFloat = 15
+    func setCell(_ title: String, isHeader: Bool, showDisclosure: Bool) {
+        self.titleLabel.text = title
+        self.titleLabel.font = isHeader ? .t_B(16) : .t_R(16)
+        self.accessoryType = showDisclosure ? .disclosureIndicator : .none
+    }
 }
