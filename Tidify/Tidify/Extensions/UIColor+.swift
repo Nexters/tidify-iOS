@@ -16,4 +16,8 @@ public extension UIColor {
     static func t_tidiBlue() -> UIColor {
         return .init(28, 100, 234)
     }
+
+    static func t_indigoBlue() -> UIColor {
+        return .init(80, 78, 210)
+    }
 }

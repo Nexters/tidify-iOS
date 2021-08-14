@@ -86,7 +86,7 @@ class HomeViewController: BaseViewController {
             $0.dataSource = self
             $0.t_registerCellClass(cellType: BookMarkCollectionViewCell.self)
             $0.t_registerCellClass(cellType: NoticeEmptyCollectionViewCell.self)
-            $0.backgroundColor = .white
+            $0.backgroundColor = .init(235, 235, 240, 100)
             view.addSubview($0)
         }
         self.collectionView = collectionView
@@ -114,6 +114,8 @@ extension HomeViewController: UICollectionViewDataSource {
         if isEmptyDataSource {
             let cell = collectionView.t_dequeueReusableCell(cellType: NoticeEmptyCollectionViewCell.self,
                                                             indexPath: indexPath)
+
+            cell.contentView.t_cornerRadius([.topLeft, .topRight], radius: 18)
 
             return cell
         } else {
@@ -147,7 +149,15 @@ extension HomeViewController: UICollectionViewDelegate {
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(w: self.collectionView.frame.width, h: 50)
+        return CGSize(w: self.collectionView.frame.width, h: BookMarkCollectionViewCell.cellHeight)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if section == .zero {
+            return UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+        }
+
+        return UIEdgeInsets.zero
     }
 }
 

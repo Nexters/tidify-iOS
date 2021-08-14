@@ -144,7 +144,7 @@ class TabViewController: BaseViewController {
         }
 
         self.categoryTabButton = UIButton().then {
-            $0.setImage(R.image.tabBar_icon_category_selected(), for: .normal)
+            $0.setImage(R.image.tabBar_icon_category_deSelected(), for: .normal)
             $0.setImage(R.image.tabBar_icon_category_selected(), for: .selected)
             self.floatingBarStackView.addArrangedSubview($0)
         }
