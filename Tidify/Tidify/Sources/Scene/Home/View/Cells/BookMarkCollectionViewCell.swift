@@ -13,6 +13,10 @@ import UIKit
 
 class BookMarkCollectionViewCell: UICollectionViewCell {
 
+    // MARK: - Constants
+
+    static let cellHeight: CGFloat = 128
+
     // MARK: - Properties
 
     private weak var iconImageView: UIImageView!
@@ -56,7 +60,7 @@ class BookMarkCollectionViewCell: UICollectionViewCell {
 private extension BookMarkCollectionViewCell {
     static let placeHolderImage = R.image.tidify_logo()!
     static let sidePadding: CGFloat = 20
-    static let iconImageWidth: CGFloat = 40
+    static let iconImageWidth: CGFloat = 52
 
     func setupViews() {
         self.iconImageView = UIImageView().then {
@@ -95,7 +99,7 @@ private extension BookMarkCollectionViewCell {
     func setupLayoutConstraints() {
         iconImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(Self.sidePadding)
-            $0.top.equalToSuperview().offset(40)
+            $0.top.equalToSuperview().offset(16)
             $0.size.equalTo(CGSize(w: Self.iconImageWidth, h: Self.iconImageWidth))
         }
 

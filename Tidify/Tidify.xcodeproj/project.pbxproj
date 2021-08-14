@@ -45,6 +45,8 @@
 		B5CA8B2726B0470500D9C6D3 /* SettingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2626B0470500D9C6D3 /* SettingCoordinator.swift */; };
 		B5CA8B2926B048C700D9C6D3 /* DefaultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */; };
 		B5CA8B2B26B048D600D9C6D3 /* RightSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2A26B048D600D9C6D3 /* RightSwitchTableViewCell.swift */; };
+		B5CC174626C69DFB00E827CF /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC174526C69DFB00E827CF /* Notifier.swift */; };
+		B5CC174826C6A48600E827CF /* UIAlertAction+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC174726C6A48600E827CF /* UIAlertAction+.swift */; };
 		B5E64DA126C0327300DD56E7 /* TabBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E64DA026C0327300DD56E7 /* TabBarManager.swift */; };
 		B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */; };
 		B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */; };
@@ -139,6 +141,8 @@
 		B5CA8B2626B0470500D9C6D3 /* SettingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCoordinator.swift; sourceTree = "<group>"; };
 		B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTableViewCell.swift; sourceTree = "<group>"; };
 		B5CA8B2A26B048D600D9C6D3 /* RightSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		B5CC174526C69DFB00E827CF /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
+		B5CC174726C6A48600E827CF /* UIAlertAction+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+.swift"; sourceTree = "<group>"; };
 		B5E64DA026C0327300DD56E7 /* TabBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarManager.swift; sourceTree = "<group>"; };
 		B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+.swift"; sourceTree = "<group>"; };
 		B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
@@ -478,6 +482,8 @@
 			children = (
 				B57765FF26C1731400533276 /* API */,
 				B5E64DA026C0327300DD56E7 /* TabBarManager.swift */,
+				B5CC174526C69DFB00E827CF /* Notifier.swift */,
+				B5CC174726C6A48600E827CF /* UIAlertAction+.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -728,6 +734,7 @@
 				B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */,
 				B5CA8B2026B043CD00D9C6D3 /* BaseViewController.swift in Sources */,
 				B56D8317269989F600D5F513 /* CGSIze+.swift in Sources */,
+				B5CC174826C6A48600E827CF /* UIAlertAction+.swift in Sources */,
 				B56D82FE269987AB00D5F513 /* AppDelegate.swift in Sources */,
 				B56D83122699882200D5F513 /* HomeViewController.swift in Sources */,
 				B5CA8B2426B0442800D9C6D3 /* ViewModelType.swift in Sources */,
@@ -738,6 +745,7 @@
 				B577660626C17E1600533276 /* BottomSheetTableViewCell.swift in Sources */,
 				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
+				B5CC174626C69DFB00E827CF /* Notifier.swift in Sources */,
 				B5F19C1A2699B15300D1E8BB /* HomeViewModel.swift in Sources */,
 				C71E7B5E26A2CB8800EF75FE /* TabViewViewModel.swift in Sources */,
 				B577660126C1732F00533276 /* AuthAPI.swift in Sources */,
