@@ -18,11 +18,8 @@ enum Notifier {
         }
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.view.t_addTap().rx.event.asDriver()
-            .drive(onNext: { _ in
-                alertController.dismiss(animated: true, completion: nil)
-            })
-            .dispose()
+        alertController.setValue(NSAttributedString(string: title, attributes: [.font: UIFont.t_B(20),
+                                                                                .foregroundColor: UIColor.t_tidiBlue()]), forKey: "attributedTitle")
 
         alertController.addAction(UIAlertAction(title: buttons.first?.title ?? "OK", style: .default, handler: { _ in
             buttons.first?.Action?()
@@ -36,6 +33,8 @@ enum Notifier {
             }
         }
 
-        viewController.present(alertController, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            viewController.present(alertController, animated: true, completion: nil)
+        }
     }
 }

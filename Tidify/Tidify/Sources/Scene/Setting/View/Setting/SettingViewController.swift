@@ -5,6 +5,7 @@
 //  Created by 여정수 on 2021/07/27.
 //
 
+import Kingfisher
 import RxCocoa
 import RxSwift
 import SnapKit
@@ -108,11 +109,11 @@ extension SettingViewController: UITableViewDataSource {
         case .account:
             switch indexPath.row {
             case 0:
-                cell.setCell("계정관리", isHeader: true, showDisclosure: false)
+                cell.setCell(R.string.localizable.settingAccount(), isHeader: true, showDisclosure: false)
             case 1:
-                cell.setCell("프로필", isHeader: false, showDisclosure: true)
+                cell.setCell(R.string.localizable.settingAccountProfile(), isHeader: false, showDisclosure: true)
             case 2:
-                cell.setCell("소셜 로그인", isHeader: false, showDisclosure: true)
+                cell.setCell(R.string.localizable.settingAccountSocialLogin(), isHeader: false, showDisclosure: true)
             default:
                 return DefaultTableViewCell()
             }
@@ -120,11 +121,11 @@ extension SettingViewController: UITableViewDataSource {
         case .dataManagement:
             switch indexPath.row {
             case 0:
-                cell.setCell("데이터 관리", isHeader: true, showDisclosure: false)
+                cell.setCell(R.string.localizable.settingDataManagement(), isHeader: true, showDisclosure: false)
             case 1:
-                cell.setCell("이미지 캐시 정리", isHeader: false, showDisclosure: false)
+                cell.setCell(R.string.localizable.settingDataManagementImageCache(), isHeader: false, showDisclosure: false)
             case 2:
-                cell.setCell("모든 캐시 정리", isHeader: false, showDisclosure: false)
+                cell.setCell(R.string.localizable.settingDataManagementCache(), isHeader: false, showDisclosure: false)
             default:
                 return DefaultTableViewCell()
             }
@@ -200,11 +201,16 @@ extension SettingViewController: UITableViewDelegate {
             switch indexPath.row {
             case 1:
                 let cancelButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertImageCacheCancelTitle(), { [weak self] in self?.dismiss(animated: true, completion: nil) })
-                let okButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertImageCacheOkTitle(), { [weak self] in self?.dismiss(animated: true, completion: nil) })
+                let okButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertImageCacheOkTitle(), { [weak self] in
+                                                            ImageCache.default.clearCache()
+                                                            self?.dismiss(animated: true, completion: nil) })
                 Notifier.alert(on: self, title: R.string.localizable.settingAlertImageCacheTitle(), message: R.string.localizable.settingAlertImageCacheMessage(), buttons: [cancelButton, okButton])
             case 2:
                 let cancelButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertAllCacheCancelTitle(), { [weak self] in  self?.dismiss(animated: true, completion: nil) })
-                let okButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertAllCacheOkTitle(), { [weak self] in self?.dismiss(animated: true, completion: nil) })
+                let okButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertAllCacheOkTitle(), { [weak self] in
+                                                            ImageCache.default.clearCache()
+                                                            URLCache.shared.removeAllCachedResponses()
+                                                            self?.dismiss(animated: true, completion: nil) })
                 Notifier.alert(on: self, title: R.string.localizable.settingAlertAllCacheTitle(), message: R.string.localizable.settingAlertAllCacheMessage(), buttons: [cancelButton, okButton])
             default:
                 return
