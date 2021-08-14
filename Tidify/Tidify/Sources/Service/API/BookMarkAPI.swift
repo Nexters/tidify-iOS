@@ -10,7 +10,7 @@ import Moya
 
 enum BookMarkAPI {
     case getBookMarkList(id: Int)
-    case createBookMark(title: String, url: String)
+    case createBookMark(url: String, title: String?, ogImageUrl: String?, tags: String?)
 }
 
 extension BookMarkAPI: TargetType {
@@ -60,8 +60,11 @@ extension BookMarkAPI: TargetType {
 
     private var parameters: [String: Any]? {
         switch self {
-        case let .createBookMark(title, url):
-            return ["title": title, "url": url]
+        case let .createBookMark(url, title, ogImageUrl, tags):
+            return ["url": url,
+                    "title": title ?? "",
+                    "og_img_url": ogImageUrl ?? "",
+                    "tags": tags ?? ""]
         case .getBookMarkList:
             return nil
         }

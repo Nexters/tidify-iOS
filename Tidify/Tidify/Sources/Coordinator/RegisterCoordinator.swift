@@ -76,4 +76,8 @@ class RegisterCoordinator: TabChildCoordinator {
     func hide() {
         // do nothing yet..
     }
+
+    func popRegisterVC() {
+        navigationController.popViewController(animated: true)
+    }
 }
