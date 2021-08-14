@@ -24,11 +24,20 @@ class ProfileViewController: BaseViewController {
     private weak var profileImageView: UIImageView!
     private weak var editButton: UIButton!
     private weak var nameTextField: UITextField!
+    private let imagePicker = UIImagePickerController()
+
+    private let disposeBag = DisposeBag()
 
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        editButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.showLibrary()
+            })
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Methods
@@ -39,7 +48,7 @@ class ProfileViewController: BaseViewController {
             $0.layer.shadowColor = UIColor.black.cgColor
             $0.layer.shadowOpacity = 0.5
             $0.layer.shadowOffset = CGSize(w: 0, h: 2)
-            $0.layer.shadowRadius = 10
+            $0.layer.shadowRadius = Self.profileImageWidth / 2
             $0.layer.masksToBounds = false
             view.addSubview($0)
         }
@@ -48,7 +57,6 @@ class ProfileViewController: BaseViewController {
             $0.setTitle(R.string.localizable.profileSettingTitle(), for: .normal)
             $0.setTitleColor(.t_tidiBlue(), for: .normal)
             $0.titleLabel?.font = UIFont.t_SB(14)
-//            $0.titleLabel?.textColor = .t_tidiBlue()
             view.addSubview($0)
         }
 
@@ -62,6 +70,8 @@ class ProfileViewController: BaseViewController {
             setupTextFieldLayer($0)
             view.addSubview($0)
         }
+
+        self.imagePicker.delegate = self
     }
 
     override func setupLayoutConstraints() {
@@ -84,6 +94,17 @@ class ProfileViewController: BaseViewController {
     }
 }
 
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        guard let image = info[.originalImage] as? UIImage else {
+            return
+        }
+
+        self.profileImageView.image = image
+        dismiss(animated: true, completion: nil)
+    }
+}
+
 private extension ProfileViewController {
     func setupTextFieldLayer(_ textFiled: UITextField) {
         textFiled.layer.cornerRadius = Self.textFieldHeight / 3
@@ -92,5 +113,10 @@ private extension ProfileViewController {
         textFiled.layer.shadowOffset = CGSize(w: 0, h: 2)
         textFiled.layer.shadowRadius = Self.textFieldHeight / 3
         textFiled.layer.masksToBounds = false
+    }
+
+    func showLibrary() {
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
     }
 }
