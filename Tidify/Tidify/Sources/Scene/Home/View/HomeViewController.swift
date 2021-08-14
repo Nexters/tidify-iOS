@@ -25,14 +25,18 @@ class HomeViewController: BaseViewController {
     private let addListItemSubject = PublishSubject<URL>()
     private let disposeBag = DisposeBag()
 
-    private var observer: NSObjectProtocol?
-
     // MARK: - Initialize
 
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
+
+        self.rx.viewDidLoad
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewShown()
+            })
+            .disposed(by: disposeBag)
     }
 
     required init?(coder: NSCoder) {
@@ -43,10 +47,6 @@ class HomeViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        observer = NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [unowned self] _ in
-            self.viewShown()
-        }
 
         setupViews()
         setupLayoutConstraints()
@@ -61,12 +61,6 @@ class HomeViewController: BaseViewController {
                 self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
-    }
-
-    deinit {
-        if let observer = observer {
-            NotificationCenter.default.removeObserver(observer)
-        }
     }
 
     // MARK: - Methods

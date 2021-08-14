@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 import UIKit
 
 public extension UIViewController {
@@ -23,5 +24,25 @@ public extension UIViewController {
         case .right:
             navigationItem.rightBarButtonItem = barButtonItem
         }
+    }
+}
+
+// MARK: - UIViewController + Rx
+
+public extension Reactive where Base: UIViewController {
+    var viewDidLoad: Observable<Void> {
+        return self.methodInvoked(#selector(Base.viewDidLoad)).map { _ in }
+    }
+
+    var viewWillAppear: Observable<Void> {
+        return self.methodInvoked(#selector(Base.viewWillAppear(_:))).map { _ in }
+    }
+
+    var viewDidAppear: Observable<Void> {
+        return self.methodInvoked(#selector(Base.viewDidAppear(_:))).map { _ in }
+    }
+
+    var viewDidDisappear: Observable<Void> {
+        return self.methodInvoked(#selector(Base.viewDidDisappear(_:))).map { _ in }
     }
 }
