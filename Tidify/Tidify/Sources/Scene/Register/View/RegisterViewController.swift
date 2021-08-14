@@ -14,27 +14,45 @@ class RegisterViewController: BaseViewController {
 
     // MARK: - Constants
 
-    static let ghostColor = UIColor(60, 60, 67, 0.3)
-    static let textFiledWidth: CGFloat = 335
+    static let textFieldWidth: CGFloat = 335
+    static let textFieldHeight: CGFloat = 48
+    static let labelSidePadding: CGFloat = 32
+    static let textFieldSidePadding: CGFloat = 20
+    static let registerButtonHeight: CGFloat = 96
 
     // MARK: - Properties
 
     weak var coordinator: Coordinator?
 
-    private weak var titleLabel: UILabel!
-    private weak var descriptionLabel: UILabel!
-    private weak var inputTextField: UITextField!
+    private weak var urlTitleLabel: UILabel!
+    private weak var urlTextField: UITextField!
+    private weak var bookMarkTitleLabel: UILabel!
+    private weak var bookMarkTextField: UITextField!
+    private weak var tagTitleLabel: UILabel!
+    private weak var tagTextField: UITextField!
+    private weak var dividerView: UIView!
     private weak var registerButton: UIButton!
+    private weak var notifyInvalidFormatUrlLabel: UILabel!
+
+    private let selectedTagIndexSubject = PublishSubject<Int>()
 
     private let viewModel: RegisterViewModel!
     private let disposeBag = DisposeBag()
 
-    private var registerButtonEnabled: Bool = false {
+    private var isInvalidFormatURL: Bool = true {
         didSet {
-            self.registerButton.backgroundColor = registerButtonEnabled ? UIColor.t_tidiBlue() : Self.ghostColor
-            self.registerButton.setTitleColor(registerButtonEnabled ? UIColor.white : Self.ghostColor, for: .normal)
+            self.notifyInvalidFormatUrlLabel.isHidden = !isInvalidFormatURL
         }
     }
+
+    private var registerButtonEnabled: Bool = false {
+        didSet {
+            self.registerButton.backgroundColor = registerButtonEnabled ? .t_tidiBlue() : .white
+            self.registerButton.setTitleColor(registerButtonEnabled ? .white : .systemGray2, for: .normal)
+        }
+    }
+
+    let demoTagList = ["tag name / 0", "tag name / 1", "tag name / 2", "tag name / 3", "tag name / 4"]
 
     // MARK: - Initialize
 
@@ -53,32 +71,55 @@ class RegisterViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let registerButtonTap = registerButton.rx.tap.asObservable()
-            .map { [weak self] in
-                self?.registerButton.setTitle(R.string.localizable.registerButtonTitleSaving(), for: .normal)
-                self?.registerButtonEnabled = false
-            }
-            .flatMap { _ in
-                self.inputTextField.rx.text.asObservable()
-            }
+        urlTextField.becomeFirstResponder()
 
-        let input = RegisterViewModel.Input(registerButtonTap: registerButtonTap)
+        view.t_addTap().rx.event.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.urlTextField.resignFirstResponder()
+                self?.bookMarkTextField.resignFirstResponder()
+            })
+            .disposed(by: disposeBag)
+
+        urlTextField.rx.text.asDriver()
+            .filter { string in
+                guard let string = string else {
+                    return false
+                }
+                return !string.isEmpty
+            }
+            .drive(onNext: { [weak self] text in
+                guard let text = text?.lowercased() else {
+                    return
+                }
+                self?.isInvalidFormatURL = !(text.contains("http") || text.contains("https")) && !text.isEmpty
+                self?.registerButtonEnabled = !(text.isEmpty)
+            })
+            .disposed(by: disposeBag)
+
+        tagTextField.t_addTap().rx.event.asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.showBottomSheet(strongSelf.demoTagList)
+            })
+            .disposed(by: disposeBag)
+
+        selectedTagIndexSubject.t_asDriverSkipError()
+            .drive(onNext: { [weak self] index in
+                self?.tagTextField.text = self?.demoTagList[index]
+            })
+            .disposed(by: disposeBag)
+
+        let input = RegisterViewModel.Input(urlInputText: urlTextField.rx.text.asDriver(),
+                                            bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
+                                            tagInputText: tagTextField.rx.text.asDriver(),
+                                            registerButtonTap: registerButton.rx.tap.asDriver())
         let output = viewModel.transform(input)
 
         output.didRegisterButtonTap
             .drive(onNext: { [weak self] _ in
-                self?.registerButton.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
-                self?.registerButtonEnabled = true
-                self?.inputTextField.text = ""
-            })
-            .disposed(by: disposeBag)
-
-        inputTextField.rx.text
-            .asDriver()
-            .map { $0?.count }
-            .drive(onNext: { [weak self] count in
-                guard let count = count else { return }
-                self?.registerButtonEnabled = count > 0 ? true : false
+                self?.registerButtonEnabled = false
             })
             .disposed(by: disposeBag)
     }
@@ -88,77 +129,147 @@ class RegisterViewController: BaseViewController {
     override func setupViews() {
         view.backgroundColor = .white
 
-        let titleLabel = UILabel().then {
-            $0.text = R.string.localizable.registerTitle()
-            $0.font = .t_B(32)
-            view.addSubview($0)
+        self.urlTitleLabel = UILabel().then {
+            $0.text = R.string.localizable.registerAddressTitle()
+            $0.font = .t_B(16)
+            self.view.addSubview($0)
         }
-        self.titleLabel = titleLabel
 
-        let descriptionLabel = UILabel().then {
-            $0.text = R.string.localizable.registerDesc()
-            $0.font = .t_R(16)
-            view.addSubview($0)
-        }
-        self.descriptionLabel = descriptionLabel
-
-        let inputTextField = UITextField().then {
+        self.urlTextField = UITextField().then {
             $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
             $0.leftViewMode = .always
-            $0.placeholder = R.string.localizable.registerInputTextFieldPlaceHolder()
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.lightGray.cgColor
-            $0.layer.cornerRadius = 16
-            $0.font = .t_R(16)
+            $0.placeholder = R.string.localizable.registerAddressPlaceHolder()
             $0.backgroundColor = .white
-            $0.layer.shadowColor = UIColor.black.cgColor
-            $0.layer.shadowOpacity = 0.7
-            $0.layer.shadowOffset = CGSize(w: 0, h: 3)
-            $0.layer.shadowRadius = 10
-            $0.layer.masksToBounds = false
+            $0.font = .t_R(16)
+            setupTextFieldLayer($0)
             view.addSubview($0)
         }
-        self.inputTextField = inputTextField
 
-        let registerButton = UIButton().then {
+        self.bookMarkTitleLabel = UILabel().then {
+            $0.text = R.string.localizable.registerBookMarkTitle()
+            $0.font = .t_B(16)
+            self.view.addSubview($0)
+        }
+
+        self.bookMarkTextField = UITextField().then {
+            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+            $0.leftViewMode = .always
+            $0.placeholder = R.string.localizable.registerBookMarkPlaceHolder()
+            $0.backgroundColor = .white
+            $0.font = .t_R(16)
+            setupTextFieldLayer($0)
+            view.addSubview($0)
+        }
+
+        self.tagTitleLabel = UILabel().then {
+            $0.text = R.string.localizable.registerTagTitle()
+            $0.font = .t_B(16)
+            self.view.addSubview($0)
+        }
+
+        // t_addTap으로 터치 이벤트 풀어내야 할 듯
+        // 이미지 오른쪽에 여백 좀 있는거로 받아서 하자
+        self.tagTextField = UITextField().then {
+            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+            $0.leftViewMode = .always
+            $0.placeholder = R.string.localizable.registerTagPlaceHolder()
+            $0.rightView = UIImageView(image: R.image.arrow_down_gray())
+            $0.rightViewMode = .always
+            $0.backgroundColor = .white
+            $0.font = .t_R(16)
+            setupTextFieldLayer($0)
+            view.addSubview($0)
+        }
+
+        self.dividerView = UIView().then {
+            $0.backgroundColor = .systemGray2
+            view.addSubview($0)
+        }
+
+        self.registerButton = UIButton().then {
             $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
             $0.titleLabel?.font = .t_B(20)
-            $0.setTitleColor(UIColor(60, 60, 67, 0.3), for: .normal)
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.lightGray.cgColor
-            $0.layer.cornerRadius = 16
-            $0.backgroundColor = .white
-            $0.layer.shadowColor = UIColor.black.cgColor
-            $0.layer.shadowOpacity = 0.7
-            $0.layer.shadowOffset = CGSize(w: 0, h: 3)
-            $0.layer.shadowRadius = 10
-            $0.layer.masksToBounds = false
+            $0.setTitleColor(.systemGray2, for: .normal)
             view.addSubview($0)
         }
-        self.registerButton = registerButton
+
+        self.notifyInvalidFormatUrlLabel = UILabel().then {
+            $0.font = UIFont.t_SB(14)
+            $0.textColor = .systemRed
+            $0.text = R.string.localizable.registerNotifyInvalidUrl()
+            view.addSubview($0)
+            $0.isHidden = true
+        }
     }
 
     override func setupLayoutConstraints() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(196)
-            $0.centerX.equalToSuperview()
+        urlTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(44)
+            $0.leading.equalToSuperview().offset(Self.labelSidePadding)
         }
 
-        descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.centerX.equalToSuperview()
+        urlTextField.snp.makeConstraints {
+            $0.top.equalTo(urlTitleLabel.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
-        inputTextField.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(73)
-            $0.centerX.equalToSuperview()
-            $0.size.equalTo(CGSize(w: Self.textFiledWidth, h: 48))
+        bookMarkTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(urlTextField.snp.bottom).offset(48)
+            $0.leading.equalToSuperview().offset(Self.labelSidePadding)
+        }
+
+        bookMarkTextField.snp.makeConstraints {
+            $0.top.equalTo(bookMarkTitleLabel.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
+        }
+
+        tagTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(bookMarkTextField.snp.bottom).offset(48)
+            $0.left.equalToSuperview().offset(Self.labelSidePadding)
+        }
+
+        tagTextField.snp.makeConstraints {
+            $0.top.equalTo(tagTitleLabel.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
         registerButton.snp.makeConstraints {
-            $0.top.equalTo(inputTextField.snp.bottom).offset(48)
-            $0.centerX.equalToSuperview()
-            $0.size.equalTo(CGSize(w: Self.textFiledWidth, h: 56))
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            $0.height.equalTo(Self.registerButtonHeight)
         }
+
+        dividerView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
+            $0.bottom.equalTo(registerButton.snp.top).inset(2)
+        }
+
+        notifyInvalidFormatUrlLabel.snp.makeConstraints {
+            $0.centerY.equalTo(urlTitleLabel)
+            $0.trailing.equalToSuperview().inset(Self.labelSidePadding)
+        }
+    }
+}
+
+private extension RegisterViewController {
+    func setupTextFieldLayer(_ textFiled: UITextField) {
+        textFiled.layer.cornerRadius = Self.textFieldHeight / 3
+        textFiled.layer.shadowColor = UIColor.black.cgColor
+        textFiled.layer.shadowOpacity = 0.5
+        textFiled.layer.shadowOffset = CGSize(w: 0, h: 2)
+        textFiled.layer.shadowRadius = Self.textFieldHeight / 3
+        textFiled.layer.masksToBounds = false
+    }
+
+    func showBottomSheet(_ tagList: [String]) {
+        let bottomSheet = BottomSheetViewController(tagList: demoTagList,
+                                                    selectedEventObserver: selectedTagIndexSubject.asObserver())
+        bottomSheet.modalPresentationStyle = .overFullScreen
+
+        self.present(bottomSheet, animated: false, completion: nil)
     }
 }
