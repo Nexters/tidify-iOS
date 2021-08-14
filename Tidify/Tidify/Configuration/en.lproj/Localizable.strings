@@ -25,12 +25,25 @@
 "Register.notify.invalidUrl" = "링크를 확인해주세요";
 
 // Setting
-"Setting.account" = "계정";
+"Setting.navigation.title" = "설정";
+"Setting.account" = "계정관리";
 "Setting.account.profile" = "프로필";
-"Setting.account.interLink" = "연동관리";
-"Setting.security" = "보안";
-"Setting.security.appLock" = "앱 잠금설정";
-"Setting.security.authMethod" = "인증방식";
+"Setting.account.socialLogin" = "소셜 로그인";
+"Setting.dataManagement" = "데이터 관리";
+"Setting.dataManagement.imageCache" = "이미지 캐시 정리";
+"Setting.dataManagement.cache" = "모든 캐시 정리";
+"Setting.alert.imageCache.title" = "이미지 캐시 정리";
+"Setting.alert.imageCache.message" = "저장공간을 위한 효율적인 정리 기능";
+"Setting.alert.imageCache.cancel.title" = "다음에";
+"Setting.alert.imageCache.ok.title" = "실행";
+"Setting.alert.allCache.title" = "모든 캐시 정리";
+"Setting.alert.allCache.message" = "저장공간을 위한 적극적인 정리 기능";
+"Setting.alert.allCache.cancel.title" = "다음에";
+"Setting.alert.allCache.ok.title" = "실행";
 
 // BottomSheet
 "BottomSheet.tag.title" = "태그 선택";
+
+// Profile
+"Profile.setting.title" = "프로필 사진 편집";
+"Profile.name.placeHolder" = "이름을 입력해주세요";

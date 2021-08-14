@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
+		B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */; };
 		B50E6F6C26BAC802005949B4 /* BookMarkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E6F6B26BAC802005949B4 /* BookMarkCollectionViewCell.swift */; };
 		B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CC269C883500B34C5E /* HomeCoordinator.swift */; };
 		B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */; };
@@ -44,7 +45,6 @@
 		B5CA8B2426B0442800D9C6D3 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2326B0442800D9C6D3 /* ViewModelType.swift */; };
 		B5CA8B2726B0470500D9C6D3 /* SettingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2626B0470500D9C6D3 /* SettingCoordinator.swift */; };
 		B5CA8B2926B048C700D9C6D3 /* DefaultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */; };
-		B5CA8B2B26B048D600D9C6D3 /* RightSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2A26B048D600D9C6D3 /* RightSwitchTableViewCell.swift */; };
 		B5CC174626C69DFB00E827CF /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC174526C69DFB00E827CF /* Notifier.swift */; };
 		B5CC174826C6A48600E827CF /* UIAlertAction+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC174726C6A48600E827CF /* UIAlertAction+.swift */; };
 		B5E64DA126C0327300DD56E7 /* TabBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E64DA026C0327300DD56E7 /* TabBarManager.swift */; };
@@ -101,6 +101,7 @@
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
+		B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B50E6F6B26BAC802005949B4 /* BookMarkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkCollectionViewCell.swift; sourceTree = "<group>"; };
 		B52982CC269C883500B34C5E /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -140,7 +141,6 @@
 		B5CA8B2326B0442800D9C6D3 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		B5CA8B2626B0470500D9C6D3 /* SettingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCoordinator.swift; sourceTree = "<group>"; };
 		B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTableViewCell.swift; sourceTree = "<group>"; };
-		B5CA8B2A26B048D600D9C6D3 /* RightSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC174526C69DFB00E827CF /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
 		B5CC174726C6A48600E827CF /* UIAlertAction+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+.swift"; sourceTree = "<group>"; };
 		B5E64DA026C0327300DD56E7 /* TabBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarManager.swift; sourceTree = "<group>"; };
@@ -192,6 +192,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B50A37C326C7ECC600E5EE31 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		B50A37C626C7F72A00E5EE31 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				B5CA8B1826B0438600D9C6D3 /* SettingViewController.swift */,
+				B50A37C326C7ECC600E5EE31 /* Cells */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		B50A37C726C7F73B00E5EE31 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		B56D82F1269987AB00D5F513 = {
 			isa = PBXGroup;
 			children = (
@@ -376,9 +401,8 @@
 		B5CA8B1A26B0438900D9C6D3 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B5CA8B1826B0438600D9C6D3 /* SettingViewController.swift */,
-				B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */,
-				B5CA8B2A26B048D600D9C6D3 /* RightSwitchTableViewCell.swift */,
+				B50A37C726C7F73B00E5EE31 /* Profile */,
+				B50A37C626C7F72A00E5EE31 /* Setting */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -724,8 +748,8 @@
 				C7AF275126BE900F00AE258B /* R.generated.swift in Sources */,
 				B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */,
 				B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */,
+				B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */,
 				B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */,
-				B5CA8B2B26B048D600D9C6D3 /* RightSwitchTableViewCell.swift in Sources */,
 				B5CA8B1926B0438600D9C6D3 /* SettingViewController.swift in Sources */,
 				B56D832226998A5B00D5F513 /* UITableView+.swift in Sources */,
 				B5CA8B1D26B043A700D9C6D3 /* SettingViewModel.swift in Sources */,
