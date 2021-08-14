@@ -30,6 +30,8 @@ class NoticeEmptyCollectionViewCell: UICollectionViewCell {
 
 private extension NoticeEmptyCollectionViewCell {
     func setupViews() {
+        contentView.backgroundColor = .white
+
         let titleLabel = UILabel().then {
             $0.text = R.string.localizable.mainNoticeEmptyTitle()
             $0.textColor = .lightGray
