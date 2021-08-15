@@ -50,6 +50,7 @@
 		B5CA8B2926B048C700D9C6D3 /* DefaultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */; };
 		B5CC174626C69DFB00E827CF /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC174526C69DFB00E827CF /* Notifier.swift */; };
 		B5CC174826C6A48600E827CF /* UIAlertAction+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC174726C6A48600E827CF /* UIAlertAction+.swift */; };
+		B5E554A826C9506C00C948A0 /* TidifyNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E554A726C9506C00C948A0 /* TidifyNavigationBar.swift */; };
 		B5E64DA126C0327300DD56E7 /* TabBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E64DA026C0327300DD56E7 /* TabBarManager.swift */; };
 		B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */; };
 		B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */; };
@@ -149,6 +150,7 @@
 		B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC174526C69DFB00E827CF /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
 		B5CC174726C6A48600E827CF /* UIAlertAction+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+.swift"; sourceTree = "<group>"; };
+		B5E554A726C9506C00C948A0 /* TidifyNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyNavigationBar.swift; sourceTree = "<group>"; };
 		B5E64DA026C0327300DD56E7 /* TabBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarManager.swift; sourceTree = "<group>"; };
 		B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+.swift"; sourceTree = "<group>"; };
 		B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				B5CA8B1F26B043CD00D9C6D3 /* BaseViewController.swift */,
+				B5E554A726C9506C00C948A0 /* TidifyNavigationBar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -765,6 +768,7 @@
 				B5CA8B1D26B043A700D9C6D3 /* SettingViewModel.swift in Sources */,
 				B5A95370269F323B00290D64 /* WebViewCoordinator.swift in Sources */,
 				B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */,
+				B5E554A826C9506C00C948A0 /* TidifyNavigationBar.swift in Sources */,
 				B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */,
 				B5CA8B2026B043CD00D9C6D3 /* BaseViewController.swift in Sources */,
 				B56D8317269989F600D5F513 /* CGSIze+.swift in Sources */,
