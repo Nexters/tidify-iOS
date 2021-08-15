@@ -32,7 +32,7 @@ class MainCoordinator: NSObject, Coordinator {
     func start() {
         self.window.rootViewController = navigationController
         self.window.makeKeyAndVisible()
-        self.navigationController.isNavigationBarHidden = true
+        self.navigationController.navigationBar.isHidden = true
 
         let tabViewCoordinator = TabViewCoordinator(navigationController: navigationController)
         tabViewCoordinator.parentCoordinator = self

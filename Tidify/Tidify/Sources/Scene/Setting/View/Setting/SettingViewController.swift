@@ -23,6 +23,7 @@ class SettingViewController: BaseViewController {
 
     weak var coordinator: SettingCoordinator?
     private weak var tableView: UITableView!
+    private let backButton: UIButton!
 
     private let viewModel: SettingViewModel
     private let userTapEvent = PublishSubject<SettingUserTapCase>()
@@ -30,10 +31,15 @@ class SettingViewController: BaseViewController {
     private let appLockIsOn = PublishSubject<Bool>()
     private let disposeBag = DisposeBag()
 
+    lazy var navigationBar = TidifyNavigationBar(.default, title: R.string.localizable.settingNavigationTitle(),
+                                                 leftButton: backButton,
+                                                 rightButtons: [])
+
     // MARK: - Initialize
 
-    init(viewModel: SettingViewModel) {
+    init(viewModel: SettingViewModel, leftButton: UIButton) {
         self.viewModel = viewModel
+        self.backButton = leftButton
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,6 +66,8 @@ class SettingViewController: BaseViewController {
     // MARK: - Methods
 
     override func setupViews() {
+        setupNavigationBar()
+
         self.tableView = UITableView(frame: .zero, style: .insetGrouped).then {
             $0.delegate = self
             $0.dataSource = self
@@ -72,8 +80,17 @@ class SettingViewController: BaseViewController {
 
     override func setupLayoutConstraints() {
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(navigationBar.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+}
+
+private extension SettingViewController {
+    func setupNavigationBar() {
+        view.addSubview(navigationBar)
+        navigationBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }

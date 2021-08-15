@@ -29,26 +29,20 @@ class SettingCoordinator: Coordinator {
     // MARK: - Methods
 
     func start() {
-        let settingViewModel = SettingViewModel()
-        let settingViewController = SettingViewController(viewModel: settingViewModel)
-        settingViewController.coordinator = self
-
         let backButton = UIButton().then {
             $0.setImage(R.image.nav_icon_back(), for: .normal)
         }
 
+        let settingViewModel = SettingViewModel()
+        let settingViewController = SettingViewController(viewModel: settingViewModel, leftButton: backButton)
+        settingViewController.coordinator = self
+
         backButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] _ in
-                self?.navigationController.navigationBar.prefersLargeTitles = false
                 self?.navigationController.popViewController(animated: true)
                 TabBarManager.shared.showTabBarSubject.onNext(())
             })
             .disposed(by: disposeBag)
-
-        settingViewController.t_setupNavigationBarButton(directionType: .left, button: backButton)
-        navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.navigationBar.backgroundColor = .white
-        settingViewController.title = R.string.localizable.settingNavigationTitle()
         navigationController.pushViewController(settingViewController, animated: true)
     }
 }
