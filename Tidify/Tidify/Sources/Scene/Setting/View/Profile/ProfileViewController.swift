@@ -21,12 +21,26 @@ class ProfileViewController: BaseViewController {
 
     // MARK: - Properties
 
+    weak var coordinator: ProfileCoordinator?
+
     private weak var profileImageView: UIImageView!
     private weak var editButton: UIButton!
     private weak var nameTextField: UITextField!
     private let imagePicker = UIImagePickerController()
 
+    private let saveDataSubject: PublishSubject<Void>
     private let disposeBag = DisposeBag()
+
+    // MARK: - Initialize
+    init(_ saveDataSubject: PublishSubject<Void>) {
+        self.saveDataSubject = saveDataSubject
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - LifeCycle
 
@@ -36,6 +50,12 @@ class ProfileViewController: BaseViewController {
         editButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] _ in
                 self?.showLibrary()
+            })
+            .disposed(by: disposeBag)
+
+        saveDataSubject.t_asDriverSkipError()
+            .drive(onNext: { [weak self] _ in
+                self?.saveProfileData()
             })
             .disposed(by: disposeBag)
     }
@@ -118,5 +138,15 @@ private extension ProfileViewController {
     func showLibrary() {
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
+    }
+
+    func saveProfileData() {
+        guard let imageData = self.profileImageView.image?.pngData(),
+              let nameText = self.nameTextField.text else {
+            return
+        }
+
+        UserDefaults.standard.setValue(imageData, forKey: UserDefaultManager.userImageData.rawValue)
+        UserDefaults.standard.setValue(nameText, forKey: UserDefaultManager.userNameString.rawValue)
     }
 }

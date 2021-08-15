@@ -55,33 +55,10 @@ class SettingCoordinator: Coordinator {
 
 extension SettingCoordinator {
     func goToProfile() {
-        let profileViewController = ProfileViewController()
-        let backButton = UIButton().then {
-            $0.setImage(R.image.nav_icon_back(), for: .normal)
-        }
-        let registerButton = UIButton().then {
-            $0.setTitle("저장", for: .normal)
-            $0.setTitleColor(.t_tidiBlue(), for: .normal)
-        }
-
-        backButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.navigationController.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        registerButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                // 이미지, 이름 등록 로직 작성
-                self?.navigationController.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        profileViewController.t_setupNavigationBarButton(directionType: .left, button: backButton)
-        profileViewController.t_setupNavigationBarButton(directionType: .right, button: registerButton)
-        navigationController.title = "프로필"
-
-        navigationController.pushViewController(profileViewController, animated: true)
+        let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
+        profileCoordinator.parentCoordinator = self
+        childCoordinators.append(profileCoordinator)
+        profileCoordinator.start()
     }
 
     func goToSocialLogin() {
