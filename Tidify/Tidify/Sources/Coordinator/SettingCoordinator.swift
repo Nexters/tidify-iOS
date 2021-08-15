@@ -39,26 +39,29 @@ class SettingCoordinator: Coordinator {
 
         backButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] _ in
+                self?.navigationController.navigationBar.prefersLargeTitles = false
                 self?.navigationController.popViewController(animated: true)
                 TabBarManager.shared.showTabBarSubject.onNext(())
             })
             .disposed(by: disposeBag)
 
         settingViewController.t_setupNavigationBarButton(directionType: .left, button: backButton)
+        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationBar.backgroundColor = .white
+        settingViewController.title = R.string.localizable.settingNavigationTitle()
         navigationController.pushViewController(settingViewController, animated: true)
     }
 }
 
 extension SettingCoordinator {
     func goToProfile() {
-
+        let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
+        profileCoordinator.parentCoordinator = self
+        childCoordinators.append(profileCoordinator)
+        profileCoordinator.start()
     }
 
-    func goToInterLink() {
-
-    }
-
-    func gotoAuthMethod() {
-
+    func goToSocialLogin() {
+        print("GoToSocialLogin Tapped")
     }
 }

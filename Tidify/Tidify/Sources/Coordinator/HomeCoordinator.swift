@@ -82,8 +82,14 @@ class HomeCoordinator: Coordinator {
         homeViewController.coordinator = self
 
         let profileButton = UIButton().then {
+            if let image = UserDefaultManager.getProfileImage()?.resize(newWidth: Self.navButtonHeight, fixedHeight: Self.navButtonHeight) {
+                $0.setImage(image, for: .normal)
+            } else {
+                $0.setImage(R.image.home_icon_profile(), for: .normal)
+            }
             $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
-            $0.setImage(R.image.home_icon_profile(), for: .normal)
+            $0.imageView?.contentMode = .scaleAspectFit
+            $0.imageView?.layer.cornerRadius = Self.navButtonHeight / 2
             $0.backgroundColor = .white
             $0.layer.cornerRadius = Self.navButtonHeight / 2
             $0.layer.shadowColor = UIColor.gray.cgColor
