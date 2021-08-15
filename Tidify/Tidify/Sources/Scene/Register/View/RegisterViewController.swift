@@ -22,7 +22,7 @@ class RegisterViewController: BaseViewController {
 
     // MARK: - Properties
 
-    weak var coordinator: Coordinator?
+    weak var coordinator: RegisterCoordinator?
 
     private weak var urlTitleLabel: UILabel!
     private weak var urlTextField: UITextField!
@@ -35,6 +35,7 @@ class RegisterViewController: BaseViewController {
     private weak var notifyInvalidFormatUrlLabel: UILabel!
 
     private let selectedTagIndexSubject = PublishSubject<Int>()
+    private let selectedTagSubject = PublishSubject<String>()
 
     private let viewModel: RegisterViewModel!
     private let disposeBag = DisposeBag()
@@ -107,19 +108,26 @@ class RegisterViewController: BaseViewController {
 
         selectedTagIndexSubject.t_asDriverSkipError()
             .drive(onNext: { [weak self] index in
+                guard let strongSelf = self else {
+                    return
+                }
                 self?.tagTextField.text = self?.demoTagList[index]
+                self?.selectedTagSubject.onNext(strongSelf.demoTagList[index])
             })
             .disposed(by: disposeBag)
 
-        let input = RegisterViewModel.Input(urlInputText: urlTextField.rx.text.asDriver(),
+        let input = RegisterViewModel.Input(urlInputText: urlTextField.rx.text.asDriver().filter { $0.t_isNotNil }.map { $0.t_unwrap },
                                             bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
-                                            tagInputText: tagTextField.rx.text.asDriver(),
+                                            tagInputText: selectedTagSubject.t_asDriverSkipError(),
                                             registerButtonTap: registerButton.rx.tap.asDriver())
         let output = viewModel.transform(input)
 
-        output.didRegisterButtonTap
+        output.didReceivePreviewResponse.drive().disposed(by: disposeBag)
+
+        output.didSaveBookMark
             .drive(onNext: { [weak self] _ in
                 self?.registerButtonEnabled = false
+                self?.coordinator?.popRegisterVC()
             })
             .disposed(by: disposeBag)
     }
@@ -167,8 +175,6 @@ class RegisterViewController: BaseViewController {
             self.view.addSubview($0)
         }
 
-        // t_addTap으로 터치 이벤트 풀어내야 할 듯
-        // 이미지 오른쪽에 여백 좀 있는거로 받아서 하자
         self.tagTextField = UITextField().then {
             $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
             $0.leftViewMode = .always
@@ -204,7 +210,7 @@ class RegisterViewController: BaseViewController {
 
     override func setupLayoutConstraints() {
         urlTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(44)
+            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
             $0.leading.equalToSuperview().offset(Self.labelSidePadding)
         }
 
@@ -237,8 +243,7 @@ class RegisterViewController: BaseViewController {
         }
 
         registerButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(Self.registerButtonHeight)
         }
 

@@ -6,58 +6,68 @@
 //
 
 import Foundation
-import LinkPresentation
 import RxCocoa
 import RxSwift
+import SwiftLinkPreview
 
 class RegisterViewModel: ViewModelType {
+    // (url, title, og_img_url, tags)
+    typealias PreviewResponse = (String, String?, String?, String?)
 
     // MARK: - Properties
 
     struct Input {
-        let urlInputText: Driver<String?>
+        let urlInputText: Driver<String>
         let bookMarkNameInputText: Driver<String?>
-        let tagInputText: Driver<String?>
+        let tagInputText: Driver<String>
         let registerButtonTap: Driver<Void>
     }
 
     struct Output {
-        let didRegisterButtonTap: Driver<Void>
+        let didSaveBookMark: Driver<Void>
+        let didReceivePreviewResponse: Driver<Void>
     }
+
+    private let previewResponseSubject = PublishSubject<PreviewResponse>()
 
     // MARK: - Methods
 
     func transform(_ input: Input) -> Output {
-        let didRegisterButtonTap = input.registerButtonTap.t_asDriverSkipError()
+        let didReceivePreviewResponse = input.registerButtonTap.t_asDriverSkipError()
             .withLatestFrom(Driver.combineLatest(input.urlInputText.t_asDriverSkipError(),
-                                                 input.bookMarkNameInputText.t_asDriverSkipError(),
+                                                 input.bookMarkNameInputText.t_asDriverSkipError().startWith(""),
                                                  input.tagInputText.t_asDriverSkipError()))
-            .flatMapLatest { urlString, _, _ -> Driver<(String, String)> in
-                let urlString = urlString
-                var urlTitle = ""
-                let metadataProvider = LPMetadataProvider()
+            .map { urlString, bookMarkName, tag in
+                let linkPreview = SwiftLinkPreview(session: .shared,
+                                                   workQueue: SwiftLinkPreview.defaultWorkQueue,
+                                                   responseQueue: .main,
+                                                   cache: DisabledCache.instance)
+                var response: PreviewResponse = (urlString, nil, nil, nil)
 
-                guard let urlString = urlString, let url = URL(string: urlString) else {
-                    return .just((urlString ?? "", urlTitle))
-                }
-
-                // 추후 LPMetaDataProvider 기반 icon, title 뽑아오는 로직 작성 필요
-                metadataProvider.startFetchingMetadata(for: url, completionHandler: { metaData, error in
-                    guard error != nil, let title = metaData?.title else {
+                linkPreview.preview(urlString, onSuccess: { [weak self] previewResponse in
+                    guard let bookMarkName = bookMarkName else {
                         return
                     }
-
-                    urlTitle = title
+                    response = (urlString, bookMarkName.isEmpty ? previewResponse.title : bookMarkName, previewResponse.icon, tag)
+                    self?.previewResponseSubject.onNext(response)
+                }, onError: { error in
+                    print("[ERROR] \(error.localizedDescription)")
+                    response = (urlString, nil, nil, nil)
+                    self.previewResponseSubject.onNext(response)
                 })
-
-                return .just((urlString, urlTitle))
             }
-            .flatMapLatest { urlString, urlTItle in
-                return ApiProvider.request(BookMarkAPI.createBookMark(title: urlTItle, url: urlString))
+
+        let didSaveBookMark = previewResponseSubject.t_asDriverSkipError()
+            .flatMapLatest { urlString, bookMarkTitle, ogImageUrl, tag -> Driver<Void> in
+                return ApiProvider.request(BookMarkAPI.createBookMark(url: urlString,
+                                                                      title: bookMarkTitle,
+                                                                      ogImageUrl: ogImageUrl,
+                                                                      tags: tag))
                     .t_asDriverSkipError()
                     .map { _ in }
             }
 
-        return Output(didRegisterButtonTap: didRegisterButtonTap.map { _ in })
+        return Output(didSaveBookMark: didSaveBookMark,
+                      didReceivePreviewResponse: didReceivePreviewResponse)
     }
 }
