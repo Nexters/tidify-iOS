@@ -40,7 +40,6 @@ class SettingCoordinator: Coordinator {
         backButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] _ in
                 self?.navigationController.popViewController(animated: true)
-                TabBarManager.shared.showTabBarSubject.onNext(())
             })
             .disposed(by: disposeBag)
         navigationController.pushViewController(settingViewController, animated: true)

@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-class RegisterCoordinator: TabChildCoordinator {
+class RegisterCoordinator: Coordinator {
 
     // MARK: - Properties
 
@@ -42,7 +42,6 @@ class RegisterCoordinator: TabChildCoordinator {
         backButton.rx.tap.asDriver()
             .drive(onNext: { [weak registerViewController] in
                 registerViewController?.navigationController?.popViewController(animated: true)
-                TabBarManager.shared.showTabBarSubject.onNext(())
             })
             .disposed(by: disposeBag)
 
@@ -51,7 +50,7 @@ class RegisterCoordinator: TabChildCoordinator {
         navigationController.pushViewController(registerViewController, animated: true)
     }
 
-    func startPush() {
+    func startPush() -> UIViewController {
         let backButton = UIButton().then {
             $0.setImage(R.image.nav_icon_back(), for: .normal)
         }
@@ -68,18 +67,11 @@ class RegisterCoordinator: TabChildCoordinator {
             })
             .disposed(by: disposeBag)
 
-        registerViewController.t_setupNavigationBarButton(directionType: .left, button: backButton)
-        navigationController.setViewControllers([registerViewController], animated: true)
+        return registerViewController
     }
+}
 
-    func show() {
-        // do nothing yet..
-    }
-
-    func hide() {
-        // do nothing yet..
-    }
-
+extension RegisterCoordinator {
     func popRegisterVC() {
         navigationController.popViewController(animated: true)
     }
