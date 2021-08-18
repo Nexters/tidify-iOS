@@ -30,33 +30,30 @@ class ProfileCoordinator: Coordinator {
     // MARK: - Methods
 
     func start() {
-        let profileViewController = ProfileViewController(saveDataSubject)
-        profileViewController.coordinator = self
-
-        let backButton = UIButton().then {
+        let leftButton = UIButton().then {
             $0.setImage(R.image.nav_icon_back(), for: .normal)
         }
 
-        let registerButton = UIButton().then {
-            $0.setTitle("저장", for: .normal)
+        let rightButton = UIButton().then {
+            $0.setTitle(R.string.localizable.profileNavButtonTitle(), for: .normal)
             $0.setTitleColor(.t_tidiBlue(), for: .normal)
         }
 
-        backButton.rx.tap.asDriver()
+        let profileViewController = ProfileViewController(saveDataSubject, leftButton: leftButton, rightButton: rightButton)
+        profileViewController.coordinator = self
+
+        leftButton.rx.tap.asDriver()
             .drive(onNext: { [weak profileViewController] _ in
                 profileViewController?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
 
-        registerButton.rx.tap.asDriver()
+        rightButton.rx.tap.asDriver()
             .drive(onNext: { [weak self, weak profileViewController] _ in
                 self?.saveDataSubject.onNext(())
                 profileViewController?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
-
-        profileViewController.t_setupNavigationBarButton(directionType: .left, button: backButton)
-        profileViewController.t_setupNavigationBarButton(directionType: .right, button: registerButton)
 
         navigationController.pushViewController(profileViewController, animated: true)
     }

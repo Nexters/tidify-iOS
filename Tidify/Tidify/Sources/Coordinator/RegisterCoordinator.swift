@@ -29,13 +29,15 @@ class RegisterCoordinator: TabChildCoordinator {
     // MARK: - Methods
 
     func start() {
-        let registerViewModel = RegisterViewModel()
-        let registerViewController = RegisterViewController(viewModel: registerViewModel)
-        registerViewController.coordinator = self
-
         let backButton = UIButton().then {
             $0.setImage(R.image.nav_icon_back(), for: .normal)
         }
+
+        let registerViewModel = RegisterViewModel()
+        let registerViewController = RegisterViewController(viewModel: registerViewModel,
+                                                            title: R.string.localizable.mainAddBookMarkTitle(),
+                                                            leftButton: backButton)
+        registerViewController.coordinator = self
 
         backButton.rx.tap.asDriver()
             .drive(onNext: { [weak registerViewController] in
@@ -44,20 +46,21 @@ class RegisterCoordinator: TabChildCoordinator {
             })
             .disposed(by: disposeBag)
 
-        registerViewController.t_setupNavigationBarButton(directionType: .left, button: backButton)
         registerViewController.navigationItem.title = R.string.localizable.mainAddBookMarkTitle()
 
         navigationController.pushViewController(registerViewController, animated: true)
     }
 
     func startPush() {
-        let registerViewModel = RegisterViewModel()
-        let registerViewController = RegisterViewController(viewModel: registerViewModel)
-        registerViewController.coordinator = self
-
         let backButton = UIButton().then {
             $0.setImage(R.image.nav_icon_back(), for: .normal)
         }
+
+        let registerViewModel = RegisterViewModel()
+        let registerViewController = RegisterViewController(viewModel: registerViewModel,
+                                                            title: R.string.localizable.mainAddBookMarkTitle(),
+                                                            leftButton: backButton)
+        registerViewController.coordinator = self
 
         backButton.rx.tap.asDriver()
             .drive(onNext: { [weak registerViewController] in

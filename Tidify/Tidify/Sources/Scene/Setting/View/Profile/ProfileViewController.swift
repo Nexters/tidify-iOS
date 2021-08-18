@@ -27,13 +27,21 @@ class ProfileViewController: BaseViewController {
     private weak var editButton: UIButton!
     private weak var nameTextField: UITextField!
     private let imagePicker = UIImagePickerController()
+    private let leftButton: UIButton!
+    private let rightButton: UIButton!
 
     private let saveDataSubject: PublishSubject<Void>
     private let disposeBag = DisposeBag()
 
+    lazy var navigationBar = TidifyNavigationBar(.default,
+                                                 leftButton: leftButton,
+                                                 rightButtons: [rightButton])
+
     // MARK: - Initialize
-    init(_ saveDataSubject: PublishSubject<Void>) {
+    init(_ saveDataSubject: PublishSubject<Void>, leftButton: UIButton, rightButton: UIButton) {
         self.saveDataSubject = saveDataSubject
+        self.leftButton = leftButton
+        self.rightButton = rightButton
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -63,6 +71,8 @@ class ProfileViewController: BaseViewController {
     // MARK: - Methods
 
     override func setupViews() {
+        setupNavigationBar()
+
         self.profileImageView = UIImageView().then {
             $0.image = R.image.home_icon_profile()
             $0.layer.shadowColor = UIColor.black.cgColor
@@ -96,7 +106,8 @@ class ProfileViewController: BaseViewController {
 
     override func setupLayoutConstraints() {
         profileImageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(50)
+//            $0.top.equalTo(view.safeAreaLayoutGuide).offset(50)
+            $0.top.equalTo(navigationBar).offset(50)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(CGSize(w: Self.profileImageWidth, h: Self.profileImageWidth))
         }
@@ -126,6 +137,13 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 }
 
 private extension ProfileViewController {
+    func setupNavigationBar() {
+        view.addSubview(navigationBar)
+        navigationBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+
     func setupTextFieldLayer(_ textFiled: UITextField) {
         textFiled.layer.cornerRadius = Self.textFieldHeight / 3
         textFiled.layer.shadowColor = UIColor.black.cgColor

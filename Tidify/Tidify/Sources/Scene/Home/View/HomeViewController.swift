@@ -15,26 +15,48 @@ class HomeViewController: BaseViewController {
 
     // MARK: - Properties
 
-    weak var coordinator: Coordinator?
+    weak var coordinator: HomeCoordinator?
 
     private weak var collectionView: UICollectionView!
     private weak var customHeaderView: UIView!
-    private let viewModel: HomeViewModel!
+    private let profileButton: UIButton!
+    private let createBookMarkButton: UIButton!
 
+    private let viewModel: HomeViewModel!
     private let cellTapSubject = PublishSubject<BookMark>()
     private let addListItemSubject = PublishSubject<URL>()
     private let disposeBag = DisposeBag()
 
+    lazy var navigationBar = TidifyNavigationBar(.rounded,
+                                                 leftButton: profileButton,
+                                                 rightButtons: [createBookMarkButton])
+
     // MARK: - Initialize
 
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel, leftButton: UIButton, rightButton: UIButton) {
         self.viewModel = viewModel
+        self.profileButton = leftButton
+        self.createBookMarkButton = rightButton
 
         super.init(nibName: nil, bundle: nil)
 
         self.rx.viewDidLoad
             .subscribe(onNext: { [weak self] _ in
                 self?.viewShown()
+            })
+            .disposed(by: disposeBag)
+
+        self.profileButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.coordinator?.pushSettingView()
+            })
+            .disposed(by: disposeBag)
+
+        self.createBookMarkButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.coordinator?.pushRegisterView()
             })
             .disposed(by: disposeBag)
     }
@@ -66,18 +88,8 @@ class HomeViewController: BaseViewController {
     // MARK: - Methods
 
     override func setupViews() {
+        setupNavigationBar()
         view.backgroundColor = .white
-
-        let customHeaderView = UIView().then {
-            $0.backgroundColor = .white
-            $0.layer.shadowColor = UIColor.gray.cgColor
-            $0.layer.shadowOpacity = 0.7
-            $0.layer.shadowOffset = CGSize(w: 0, h: 3)
-            $0.layer.shadowRadius = 10
-            $0.layer.masksToBounds = false
-            view.addSubview($0)
-        }
-        self.customHeaderView = customHeaderView
 
         let flowLayout = UICollectionViewFlowLayout()
 
@@ -94,7 +106,8 @@ class HomeViewController: BaseViewController {
 
     override func setupLayoutConstraints() {
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(navigationBar.snp.bottom).inset(15)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
@@ -154,7 +167,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if section == .zero {
-            return UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+            return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         }
 
         return UIEdgeInsets.zero
@@ -170,6 +183,13 @@ private extension HomeViewController {
 
                 userDefaults.removeObject(forKey: "newBookMark")
             }
+        }
+    }
+
+    func setupNavigationBar() {
+        view.addSubview(navigationBar)
+        navigationBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }

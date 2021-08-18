@@ -33,6 +33,8 @@ class RegisterViewController: BaseViewController {
     private weak var dividerView: UIView!
     private weak var registerButton: UIButton!
     private weak var notifyInvalidFormatUrlLabel: UILabel!
+    private let leftButton: UIButton!
+    private let navTitle: String!
 
     private let selectedTagIndexSubject = PublishSubject<Int>()
     private let selectedTagSubject = PublishSubject<String>()
@@ -53,12 +55,19 @@ class RegisterViewController: BaseViewController {
         }
     }
 
+    lazy var navigationBar = TidifyNavigationBar(.default,
+                                                 title: navTitle,
+                                                 leftButton: leftButton,
+                                                 rightButtons: [])
+
     let demoTagList = ["tag name / 0", "tag name / 1", "tag name / 2", "tag name / 3", "tag name / 4"]
 
     // MARK: - Initialize
 
-    init(viewModel: RegisterViewModel) {
+    init(viewModel: RegisterViewModel, title: String, leftButton: UIButton) {
         self.viewModel = viewModel
+        self.navTitle = title
+        self.leftButton = leftButton
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -135,6 +144,7 @@ class RegisterViewController: BaseViewController {
     // MARK: - Methods
 
     override func setupViews() {
+        setupNavigationBar()
         view.backgroundColor = .white
 
         self.urlTitleLabel = UILabel().then {
@@ -210,7 +220,7 @@ class RegisterViewController: BaseViewController {
 
     override func setupLayoutConstraints() {
         urlTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
+            $0.top.equalTo(navigationBar.snp.bottom).offset(30)
             $0.leading.equalToSuperview().offset(Self.labelSidePadding)
         }
 
@@ -261,6 +271,13 @@ class RegisterViewController: BaseViewController {
 }
 
 private extension RegisterViewController {
+    func setupNavigationBar() {
+        view.addSubview(navigationBar)
+        navigationBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+
     func setupTextFieldLayer(_ textFiled: UITextField) {
         textFiled.layer.cornerRadius = Self.textFieldHeight / 3
         textFiled.layer.shadowColor = UIColor.black.cgColor
