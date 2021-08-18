@@ -53,9 +53,6 @@ class SettingViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViews()
-        setupLayoutConstraints()
-
         let input = SettingViewModel.Input(userTapEvent: userTapEvent.t_asDriverSkipError())
 
         let output = viewModel.transform(input)

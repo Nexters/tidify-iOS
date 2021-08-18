@@ -70,9 +70,6 @@ class HomeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViews()
-        setupLayoutConstraints()
-
         let input = HomeViewModel.Input(cellTapSubject: cellTapSubject.t_asDriverSkipError())
         let output = viewModel.transform(input)
 

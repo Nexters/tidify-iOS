@@ -73,7 +73,7 @@ class HomeCoordinator: Coordinator {
         navigationController.pushViewController(homeViewController, animated: true)
     }
 
-    func startPush() {
+    func startPush() -> UIViewController {
         let profileButton = UIButton().then {
             $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_profile(), for: .normal)
@@ -98,50 +98,8 @@ class HomeCoordinator: Coordinator {
         let homeViewController = HomeViewController(viewModel: homeViewModel, leftButton: profileButton, rightButton: createBookMarkButton)
         homeViewController.coordinator = self
 
-        navigationController.navigationBar.isHidden = true
-        navigationController.setViewControllers([homeViewController], animated: true)
+        return homeViewController
     }
-
-//    func show() {
-//        let profileButton = UIButton().then {
-//            $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
-//            $0.setImage(R.image.home_icon_profile(), for: .normal)
-//            $0.backgroundColor = .white
-//            $0.layer.cornerRadius = Self.navButtonHeight / 2
-//            $0.layer.shadowColor = UIColor.gray.cgColor
-//            $0.layer.shadowOpacity = 0.8
-//            $0.layer.shadowOffset = CGSize(w: 0, h: 2)
-//            $0.layer.shadowRadius = Self.navButtonHeight / 2
-//            $0.layer.masksToBounds = false
-//        }
-//
-//        let createBookMarkButton = UIButton().then {
-//            $0.frame = CGRect(x: 0, y: 0, width: Self.createBookMarkButtonWidth, height: Self.navButtonHeight)
-//            $0.setImage(R.image.home_icon_bookMark(), for: .normal)
-//            $0.backgroundColor = .t_tidiBlue()
-//            $0.layer.cornerRadius = Self.navButtonHeight / 2
-//        }
-//
-//        profileButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] _ in
-//                self?.pushSettingView()
-//            })
-//            .disposed(by: disposeBag)
-//
-//        createBookMarkButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] _ in
-//                self?.pushRegisterView()
-//            })
-//            .disposed(by: disposeBag)
-//
-//        parentCoordinator?.navigationController.visibleViewController?.t_setupNavigationBarButton(directionType: .left, button: profileButton)
-//        parentCoordinator?.navigationController.visibleViewController?.t_setupNavigationBarButton(directionType: .right, button: createBookMarkButton)
-//    }
-
-//    func hide() {
-//        parentCoordinator?.navigationController.visibleViewController?.navigationItem.leftBarButtonItem = nil
-//        parentCoordinator?.navigationController.visibleViewController?.navigationItem.rightBarButtonItem = nil
-//    }
 }
 
 // MARK: - 1 Depth
@@ -151,7 +109,6 @@ extension HomeCoordinator: HomeViewModelDelegate {
         let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
         registerCoordinator.parentCoordinator = self
         childCoordinators.append(registerCoordinator)
-        TabBarManager.shared.hideTabBarSubject.onNext(())
 
         registerCoordinator.start()
     }
@@ -160,7 +117,6 @@ extension HomeCoordinator: HomeViewModelDelegate {
         let webViewCoordinator = WebViewCoordinator(navigationController: navigationController)
         webViewCoordinator.parentCoordinator = self
         childCoordinators.append(webViewCoordinator)
-        TabBarManager.shared.hideTabBarSubject.onNext(())
 
         webViewCoordinator.start()
     }
@@ -171,7 +127,6 @@ extension HomeCoordinator {
         let settingCoordinator = SettingCoordinator(navigationController: navigationController)
         settingCoordinator.parentCoordinator = self
         childCoordinators.append(settingCoordinator)
-        TabBarManager.shared.hideTabBarSubject.onNext(())
 
         settingCoordinator.start()
     }

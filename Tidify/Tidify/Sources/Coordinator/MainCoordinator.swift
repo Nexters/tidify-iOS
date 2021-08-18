@@ -24,21 +24,22 @@ class MainCoordinator: NSObject, Coordinator {
 
     init(window: UIWindow) {
         self.window = window
+        self.window.makeKeyAndVisible()
+
         self.navigationController = UINavigationController()
+        self.window.rootViewController = navigationController
+        self.navigationController.navigationBar.isHidden = true
+        self.navigationController.view.backgroundColor = .systemBackground
     }
 
     // MARK: - Methods
 
     func start() {
-        self.window.rootViewController = navigationController
-        self.window.makeKeyAndVisible()
-        self.navigationController.navigationBar.isHidden = true
+        let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
+        tabBarCoordinator.parentCoordinator = self
+        childCoordinators.append(tabBarCoordinator)
 
-        let tabViewCoordinator = TabViewCoordinator(navigationController: navigationController)
-        tabViewCoordinator.parentCoordinator = self
-        childCoordinators.append(tabViewCoordinator)
-
-        tabViewCoordinator.start()
+        tabBarCoordinator.start()
     }
 
     func startWithSignIn() {
