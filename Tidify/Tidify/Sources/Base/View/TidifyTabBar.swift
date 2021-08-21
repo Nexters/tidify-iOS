@@ -118,7 +118,7 @@ private extension TidifyTabBar {
 
         self.categoryTabButton = UIButton().then {
             $0.setImage(R.image.tabBar_icon_category_deSelected(), for: .normal)
-            $0.setImage(R.image.tabbar_icon_category_selected(), for: .normal)
+            $0.setImage(R.image.tabbar_icon_category_selected(), for: .selected)
             self.stackView.addArrangedSubview($0)
         }
     }

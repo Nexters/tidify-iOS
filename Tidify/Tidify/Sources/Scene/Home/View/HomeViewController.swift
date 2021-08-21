@@ -125,6 +125,7 @@ extension HomeViewController: UICollectionViewDataSource {
             let cell = collectionView.t_dequeueReusableCell(cellType: NoticeEmptyCollectionViewCell.self,
                                                             indexPath: indexPath)
 
+            cell.setNoticeTitle(R.string.localizable.mainNoticeEmptyTitle())
             cell.contentView.t_cornerRadius([.topLeft, .topRight], radius: 18)
 
             return cell

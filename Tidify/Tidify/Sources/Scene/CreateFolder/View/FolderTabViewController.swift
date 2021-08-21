@@ -59,6 +59,7 @@ class FolderTabViewController: BaseViewController {
             $0.delegate = self
             $0.dataSource = self
             $0.t_registerCellClass(cellType: FolderCollectionViewCell.self)
+            $0.t_registerCellClass(cellType: NoticeEmptyCollectionViewCell.self)
             view.addSubview($0)
         }
     }
@@ -75,18 +76,60 @@ class FolderTabViewController: BaseViewController {
 
 extension FolderTabViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        let isEmptyDataSource = self.viewModel.folderList.isEmpty
+
+        return isEmptyDataSource ? 1 : self.viewModel.folderList.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
+        let isEmptyDataSource = self.viewModel.folderList.isEmpty
+
+        if isEmptyDataSource {
+            let cell = collectionView.t_dequeueReusableCell(cellType: NoticeEmptyCollectionViewCell.self,
+                                                            indexPath: indexPath)
+            cell.setNoticeTitle(R.string.localizable.folderNoticeEmptyTitle())
+            cell.contentView.t_cornerRadius([.topLeft, .topRight], radius: 18)
+
+            return cell
+        } else {
+            guard let folder = self.viewModel.folderList[safe: indexPath.item] else {
+                return UICollectionViewCell()
+            }
+
+            let cell = collectionView.t_dequeueReusableCell(cellType: FolderCollectionViewCell.self,
+                                                            indexPath: indexPath)
+            cell.setFolder(folder)
+            return cell
+        }
+    }
+}
+
+// MARK: - DelegateFlowLayout
+
+extension FolderTabViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(w: FolderCollectionViewCell.width, h: FolderCollectionViewCell.height)
     }
 }
 
 // MARK: - Delegate
 
 extension FolderTabViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let isEmptyDataSource = self.viewModel.folderList.isEmpty
 
+        if isEmptyDataSource {
+            return
+        }
+
+        guard let folder = self.viewModel.folderList[safe: indexPath.item] else {
+            return
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
+    }
 }
 
 private extension FolderTabViewController {

@@ -39,7 +39,7 @@ class CreateFolderCoordinator: Coordinator {
         createFolderViewController.coordinator = self
 
         leftButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
+            .drive(onNext: { _ in
                 createFolderViewController.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
