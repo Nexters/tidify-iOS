@@ -32,14 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let mainCoordinator = MainCoordinator(window: window)
         self.mainCoordinator = mainCoordinator
 
-        guard let accessToken = UserDefaults.standard.string(forKey: "access_token") else {
+        if let accessToken = UserDefaults.standard.string(forKey: "access_token") {
+            Environment.shared.authorization = accessToken
+        } else {
             mainCoordinator.startWithSignIn()
             return true
         }
-
-        // accessToken 기반으로 authorization 받아오는 로직이 필요함.
-//        ApiProvider.request(AuthAPI.auth(socialLoginType: .kakao, accessToken: accessToken))
-
 
         mainCoordinator.start()
         return true

@@ -14,7 +14,7 @@ enum SocialLoginType: String {
 }
 
 enum AuthAPI {
-    case auth(socialLoginType: SocialLoginType, accessToken: String)
+    case auth(socialLoginType: SocialLoginType, accessToken: String, refreshToken: String)
 }
 
 extension AuthAPI: TargetType {
@@ -62,9 +62,10 @@ extension AuthAPI: TargetType {
 
     private var parameters: [String: Any]? {
         switch self {
-        case let .auth(socialLoginType, accessToken):
+        case let .auth(socialLoginType, accessToken, refreshToken):
             return ["sns_type": socialLoginType.rawValue,
-                    "access_token": accessToken]
+                    "access_token": accessToken,
+                    "refresh_token": refreshToken]
         }
     }
 }
