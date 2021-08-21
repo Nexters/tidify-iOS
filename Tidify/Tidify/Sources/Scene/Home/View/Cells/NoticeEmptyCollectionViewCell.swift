@@ -16,6 +16,7 @@ class NoticeEmptyCollectionViewCell: UICollectionViewCell {
     private weak var titleLabel: UILabel!
 
     // MARK: - Initialize
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -26,6 +27,10 @@ class NoticeEmptyCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func setNoticeTitle(_ title: String) {
+        self.titleLabel.text = title
+    }
 }
 
 private extension NoticeEmptyCollectionViewCell {
@@ -33,7 +38,6 @@ private extension NoticeEmptyCollectionViewCell {
         contentView.backgroundColor = .white
 
         let titleLabel = UILabel().then {
-            $0.text = R.string.localizable.mainNoticeEmptyTitle()
             $0.textColor = .lightGray
             $0.font = .t_R(16)
             contentView.addSubview($0)

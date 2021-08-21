@@ -40,6 +40,15 @@
 		B57833E026CA41E6000AC589 /* TidifyTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57833DF26CA41E6000AC589 /* TidifyTabBar.swift */; };
 		B57833E226CA465F000AC589 /* TidifyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57833E126CA465F000AC589 /* TidifyTabBarController.swift */; };
 		B57833E426CA7BC2000AC589 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57833E326CA7BC2000AC589 /* TabBarCoordinator.swift */; };
+		B588C69626D0C958003F4308 /* FolderTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C69526D0C957003F4308 /* FolderTabViewController.swift */; };
+		B588C69826D0C96E003F4308 /* FolderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C69726D0C96E003F4308 /* FolderTabViewModel.swift */; };
+		B588C69B26D0CB40003F4308 /* FolderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C69A26D0CB40003F4308 /* FolderCollectionViewCell.swift */; };
+		B588C69D26D0CED2003F4308 /* FolderTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C69C26D0CED2003F4308 /* FolderTabCoordinator.swift */; };
+		B588C69F26D0D175003F4308 /* CreateFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C69E26D0D175003F4308 /* CreateFolderViewController.swift */; };
+		B588C6A126D0D181003F4308 /* CreateFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C6A026D0D181003F4308 /* CreateFolderViewModel.swift */; };
+		B588C6A326D0D23C003F4308 /* CreateFolderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C6A226D0D23C003F4308 /* CreateFolderCoordinator.swift */; };
+		B588C6A526D0DF32003F4308 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C6A426D0DF32003F4308 /* Folder.swift */; };
+		B588C6A726D0E12E003F4308 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C6A626D0E12E003F4308 /* Array+.swift */; };
 		B5A9536E269F31ED00290D64 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B5A9536D269F31ED00290D64 /* .swiftlint.yml */; };
 		B5A95370269F323B00290D64 /* WebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9536F269F323B00290D64 /* WebViewCoordinator.swift */; };
 		B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */; };
@@ -139,6 +148,15 @@
 		B57833DF26CA41E6000AC589 /* TidifyTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyTabBar.swift; sourceTree = "<group>"; };
 		B57833E126CA465F000AC589 /* TidifyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyTabBarController.swift; sourceTree = "<group>"; };
 		B57833E326CA7BC2000AC589 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
+		B588C69526D0C957003F4308 /* FolderTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTabViewController.swift; sourceTree = "<group>"; };
+		B588C69726D0C96E003F4308 /* FolderTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTabViewModel.swift; sourceTree = "<group>"; };
+		B588C69A26D0CB40003F4308 /* FolderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCollectionViewCell.swift; sourceTree = "<group>"; };
+		B588C69C26D0CED2003F4308 /* FolderTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTabCoordinator.swift; sourceTree = "<group>"; };
+		B588C69E26D0D175003F4308 /* CreateFolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFolderViewController.swift; sourceTree = "<group>"; };
+		B588C6A026D0D181003F4308 /* CreateFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFolderViewModel.swift; sourceTree = "<group>"; };
+		B588C6A226D0D23C003F4308 /* CreateFolderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFolderCoordinator.swift; sourceTree = "<group>"; };
+		B588C6A426D0DF32003F4308 /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		B588C6A626D0E12E003F4308 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		B5A9536D269F31ED00290D64 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B5A9536F269F323B00290D64 /* WebViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewCoordinator.swift; sourceTree = "<group>"; };
 		B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -301,6 +319,7 @@
 				B570F9EF26BEAAD30095A0F0 /* UIViewController+.swift */,
 				B570F9F126BEB57E0095A0F0 /* UINavigationBar+.swift */,
 				B5443B9D26C8F56900F7494A /* UIImage+.swift */,
+				B588C6A626D0E12E003F4308 /* Array+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -334,6 +353,51 @@
 			path = BottomSheet;
 			sourceTree = "<group>";
 		};
+		B588C69126D0C93C003F4308 /* CreateFolder */ = {
+			isa = PBXGroup;
+			children = (
+				B588C69426D0C948003F4308 /* Model */,
+				B588C69326D0C944003F4308 /* ViewModel */,
+				B588C69226D0C941003F4308 /* View */,
+			);
+			path = CreateFolder;
+			sourceTree = "<group>";
+		};
+		B588C69226D0C941003F4308 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B588C69926D0CA6E003F4308 /* Cells */,
+				B588C69526D0C957003F4308 /* FolderTabViewController.swift */,
+				B588C69E26D0D175003F4308 /* CreateFolderViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B588C69326D0C944003F4308 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B588C69726D0C96E003F4308 /* FolderTabViewModel.swift */,
+				B588C6A026D0D181003F4308 /* CreateFolderViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B588C69426D0C948003F4308 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B588C6A426D0DF32003F4308 /* Folder.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B588C69926D0CA6E003F4308 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B588C69A26D0CB40003F4308 /* FolderCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		B5A9536A269F2D0500290D64 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -345,6 +409,7 @@
 		B5A9536B269F2F4C00290D64 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				B588C69126D0C93C003F4308 /* CreateFolder */,
 				B577660226C17DFF00533276 /* BottomSheet */,
 				B56D8314269989BF00D5F513 /* Home */,
 				B5AF0AD6269A0D7200D8DCF5 /* Register */,
@@ -472,6 +537,8 @@
 				B5CA8B2626B0470500D9C6D3 /* SettingCoordinator.swift */,
 				B5443B9926C8E71500F7494A /* ProfileCoordinator.swift */,
 				B57833E326CA7BC2000AC589 /* TabBarCoordinator.swift */,
+				B588C69C26D0CED2003F4308 /* FolderTabCoordinator.swift */,
+				B588C6A226D0D23C003F4308 /* CreateFolderCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -758,6 +825,8 @@
 				B56D831C26998A2900D5F513 /* UIApplication+.swift in Sources */,
 				B5443B9A26C8E71500F7494A /* ProfileCoordinator.swift in Sources */,
 				B50E6F6C26BAC802005949B4 /* BookMarkCollectionViewCell.swift in Sources */,
+				B588C69626D0C958003F4308 /* FolderTabViewController.swift in Sources */,
+				B588C6A726D0E12E003F4308 /* Array+.swift in Sources */,
 				C7AF275126BE900F00AE258B /* R.generated.swift in Sources */,
 				B57833E426CA7BC2000AC589 /* TabBarCoordinator.swift in Sources */,
 				B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */,
@@ -787,11 +856,13 @@
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
 				B5CC174626C69DFB00E827CF /* Notifier.swift in Sources */,
 				B5F19C1A2699B15300D1E8BB /* HomeViewModel.swift in Sources */,
+				B588C69D26D0CED2003F4308 /* FolderTabCoordinator.swift in Sources */,
 				C71E7B5E26A2CB8800EF75FE /* TabViewViewModel.swift in Sources */,
 				B577660126C1732F00533276 /* AuthAPI.swift in Sources */,
 				B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */,
 				B5443B9C26C8F11D00F7494A /* UserDefaultManager.swift in Sources */,
 				C72F27CC2699CC4700104FE3 /* OSLog.swift in Sources */,
+				B588C69F26D0D175003F4308 /* CreateFolderViewController.swift in Sources */,
 				B5CA8B2726B0470500D9C6D3 /* SettingCoordinator.swift in Sources */,
 				B56D832426998A7300D5F513 /* UIView+.swift in Sources */,
 				B57833E026CA41E6000AC589 /* TidifyTabBar.swift in Sources */,
@@ -801,13 +872,18 @@
 				C72D3702269AFED9009A71B6 /* RxSwift+LinkPreview.swift in Sources */,
 				B570F9F026BEAAD30095A0F0 /* UIViewController+.swift in Sources */,
 				C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */,
+				B588C6A126D0D181003F4308 /* CreateFolderViewModel.swift in Sources */,
 				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
 				B5F19C142699A04400D1E8BB /* WebViewController.swift in Sources */,
 				B570F9EE26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift in Sources */,
 				B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */,
+				B588C6A326D0D23C003F4308 /* CreateFolderCoordinator.swift in Sources */,
 				B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */,
 				B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */,
+				B588C6A526D0DF32003F4308 /* Folder.swift in Sources */,
+				B588C69826D0C96E003F4308 /* FolderTabViewModel.swift in Sources */,
+				B588C69B26D0CB40003F4308 /* FolderCollectionViewCell.swift in Sources */,
 				B56B67E9269997150099C46D /* RxSwift+Moya.swift in Sources */,
 				B577660426C17E0C00533276 /* BottomSheetHeaderView.swift in Sources */,
 				B5F19C162699B13800D1E8BB /* BookMark.swift in Sources */,

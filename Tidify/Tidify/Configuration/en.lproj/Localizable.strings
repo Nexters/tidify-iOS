@@ -48,3 +48,12 @@
 "Profile.setting.title" = "프로필 사진 편집";
 "Profile.name.placeHolder" = "이름을 입력해주세요";
 "Profile.nav.button.title" = "저장";
+
+// Folder
+"Folder.notice.empty.title" = "지금은 폴더가 없어요.";
+"Folder.navigation.title" = "폴더 생성";
+"Folder.folder.title" = "폴더 이름";
+"Folder.folder.placeHolder" = "어떤 폴더인가요?";
+"Folder.label.title" = "라벨 컬러";
+"Folder.label.placeHolder" = "깔끔한 북마크 정리";
+"Folder.save.button.title" = "저장";

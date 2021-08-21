@@ -56,7 +56,7 @@ private extension TabBarCoordinator {
 
         let homeViewController: UIViewController!
         let searchViewController: UIViewController!
-        let createTagViewController: UIViewController!
+        let folderTabController: UIViewController!
 
         let homeCoordinator = HomeCoordinator(navigationController: navigationController)
         homeCoordinator.parentCoordinator = self
@@ -69,13 +69,12 @@ private extension TabBarCoordinator {
         childCoordinators.append(registerCoordinator)
         searchViewController = registerCoordinator.startPush()
 
-        // 추후 categoryVC로 변경
-        let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
-        profileCoordinator.parentCoordinator = self
-        childCoordinators.append(profileCoordinator)
-        createTagViewController = profileCoordinator.startPush()
+        let folderTabCoordinator = FolderTabCoordinator(navigationController: navigationController)
+        folderTabCoordinator.parentCoordinator = self
+        childCoordinators.append(folderTabCoordinator)
+        folderTabController = folderTabCoordinator.startPush()
 
-        tidifyTabBarController.setViewControllers([homeViewController, searchViewController, createTagViewController], animated: false)
+        tidifyTabBarController.setViewControllers([homeViewController, searchViewController, folderTabController], animated: false)
         tidifyTabBarController.selectedIndex = 0
     }
 }
