@@ -7,6 +7,14 @@
 
 import Foundation
 
+struct UserSessionDTO: Codable {
+    let authorization: String!
+
+    enum CodingKeys: String, CodingKey {
+        case authorization = "Authorization"
+    }
+}
+
 struct UserSession: Codable {
     let accessToken: String!
     let uid: String? = nil

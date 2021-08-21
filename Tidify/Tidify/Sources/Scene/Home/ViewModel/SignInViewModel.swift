@@ -30,9 +30,18 @@ class SignInViewModel: ViewModelType {
         let userSession = input.clickSignInWithKakaoButton.flatMap {
              UserApi.shared.rx.loginWithKakaoAccount()
         }
-        .map { oauthToken -> UserSession in
-            self.rememberAccessToken(oauthToken.accessToken)
-            return UserSession(accessToken: oauthToken.accessToken)
+        .flatMap { snsToken in
+            return ApiProvider.request(AuthAPI.auth(socialLoginType: .kakao,
+                                                    accessToken: snsToken.accessToken,
+                                                    refreshToken: snsToken.refreshToken))
+                .map(UserSessionDTO.self)
+        }
+        .map { response -> UserSession? in
+            if let authorization = response.authorization {
+                self.rememberAccessToken(authorization)
+                return UserSession(accessToken: authorization)
+            }
+            return nil
         }
         .asDriver(onErrorJustReturn: nil)
 

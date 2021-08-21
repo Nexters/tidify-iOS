@@ -55,7 +55,10 @@ extension BookMarkAPI: TargetType {
     }
 
     var headers: [String: String]? {
-        return ["tidify-auth": Environment.shared.authorization]
+        if let authorization = Environment.shared.authorization {
+            return ["tidify-auth": authorization]
+        }
+        return nil
     }
 
     private var parameters: [String: Any]? {
