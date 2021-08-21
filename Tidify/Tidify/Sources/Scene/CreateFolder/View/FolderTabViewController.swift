@@ -46,6 +46,18 @@ class FolderTabViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        profileButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.coordinator?.pushSettingView()
+            })
+            .disposed(by: disposeBag)
+
+        createFolderButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.coordinator?.pushCreateFolderView()
+            })
+            .disposed(by: disposeBag)
     }
 
     override func setupViews() {

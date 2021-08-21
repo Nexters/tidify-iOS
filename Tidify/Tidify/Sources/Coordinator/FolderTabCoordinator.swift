@@ -15,7 +15,7 @@ class FolderTabCoordinator: Coordinator {
     // MARK: - Constants
 
     static let createFolderButtonWidth: CGFloat = 64
-    static let navButtonHeight: CGFloat = 40
+    static let navButtonHeight: CGFloat = 44
 
     // MARK: - Properties
 
@@ -75,8 +75,9 @@ class FolderTabCoordinator: Coordinator {
 
         let rightButton = UIButton().then {
             $0.frame = CGRect(x: 0, y: 0, width: Self.createFolderButtonWidth, height: Self.navButtonHeight)
-            $0.setImage(R.image.nav_icon_createFolder()?.resize(newWidth: Self.createFolderButtonWidth, fixedHeight: Self.navButtonHeight), for: .normal)
-            $0.layer.cornerRadius = 28
+            $0.setImage(R.image.nav_icon_createFolder(), for: .normal)
+            $0.backgroundColor = .t_tidiBlue()
+            $0.layer.cornerRadius = Self.navButtonHeight / 2
         }
 
         let folderTabViewModel = FolderTabViewModel()
@@ -84,17 +85,6 @@ class FolderTabCoordinator: Coordinator {
                                                               leftButton: leftButton,
                                                               rightButton: rightButton)
         folderTabViewController.coordinator = self
-        leftButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.pushSettingView()
-            })
-            .disposed(by: disposeBag)
-
-        rightButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.pushCreateFolderView()
-            })
-            .disposed(by: disposeBag)
 
         return folderTabViewController
     }
@@ -102,7 +92,7 @@ class FolderTabCoordinator: Coordinator {
 
 // MARK: - 1Depth
 
-private extension FolderTabCoordinator {
+extension FolderTabCoordinator {
     func pushSettingView() {
         let settingCoordinator = SettingCoordinator(navigationController: navigationController)
         settingCoordinator.parentCoordinator = self

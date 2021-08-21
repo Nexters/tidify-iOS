@@ -31,7 +31,8 @@ class SettingViewController: BaseViewController {
     private let appLockIsOn = PublishSubject<Bool>()
     private let disposeBag = DisposeBag()
 
-    lazy var navigationBar = TidifyNavigationBar(.default, title: R.string.localizable.settingNavigationTitle(),
+    lazy var navigationBar = TidifyNavigationBar(.default,
+                                                 title: R.string.localizable.settingNavigationTitle(),
                                                  leftButton: backButton,
                                                  rightButtons: [])
 
