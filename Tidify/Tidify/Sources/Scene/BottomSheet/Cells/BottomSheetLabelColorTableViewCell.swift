@@ -1,8 +1,8 @@
 //
-//  BottomSheetTableViewCell.swift
+//  BottomSheetLabelColorTableViewCell.swift
 //  Tidify
 //
-//  Created by 여정수 on 2021/08/10.
+//  Created by 여정수 on 2021/08/27.
 //
 
 import RxCocoa
@@ -11,20 +11,19 @@ import SnapKit
 import Then
 import UIKit
 
-class BottomSheetTableViewCell: UITableViewCell {
+class BottomSheetLabelColorTableViewCell: UITableViewCell {
 
     // MARK: - Constants
 
+    static let circleColorWidth: CGFloat = 30
     static let superViewToImageViewHorizontalSpacing: CGFloat = 20
-    static let imageViewToLabelHorizontalSpacing: CGFloat = 12
-    static let cellHeight: CGFloat = 56
+    static let imageViewToCircleHorizontalSpacing: CGFloat = 52
 
     // MARK: - Properties
 
     private weak var checkStatusImageView: UIImageView!
-    private weak var tagLabel: UILabel!
-
-    private var disposeBag = DisposeBag()
+    private weak var circleColorView: UIView!
+    private weak var stickColorView: StickColorView!
 
     // MARK: - Initialize
 
@@ -39,35 +38,31 @@ class BottomSheetTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Methods
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        disposeBag = DisposeBag()
-    }
-
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         checkStatusImageView.image = selected ? R.image.bottomSheet_ico_checked() : R.image.bottomSheet_ico_unChecked()
     }
 
-    func setTag(_ tag: String) {
-        self.tagLabel.text = tag
+    func setColor(_ color: UIColor) {
+        circleColorView.backgroundColor = color
+        stickColorView.setColor(color)
     }
 }
 
-private extension BottomSheetTableViewCell {
+private extension BottomSheetLabelColorTableViewCell {
     func setupViews() {
         self.checkStatusImageView = UIImageView().then {
             $0.image = R.image.bottomSheet_ico_unChecked()
             contentView.addSubview($0)
         }
 
-        self.tagLabel = UILabel().then {
-            $0.font = .t_SB(16)
-            $0.textColor = .black
+        self.circleColorView = UIView().then {
+            $0.t_cornerRadius(radius: Self.circleColorWidth / 2)
+            contentView.addSubview($0)
+        }
+
+        self.stickColorView = StickColorView().then {
             contentView.addSubview($0)
         }
     }
@@ -78,8 +73,15 @@ private extension BottomSheetTableViewCell {
             $0.centerY.equalToSuperview()
         }
 
-        tagLabel.snp.makeConstraints {
-            $0.leading.equalTo(checkStatusImageView.snp.trailing).offset(Self.imageViewToLabelHorizontalSpacing)
+        circleColorView.snp.makeConstraints {
+            $0.leading.equalTo(checkStatusImageView.snp.trailing).offset(Self.imageViewToCircleHorizontalSpacing)
+            $0.size.equalTo(CGSize(w: Self.circleColorWidth, h: Self.circleColorWidth))
+            $0.centerY.equalToSuperview()
+        }
+
+        stickColorView.snp.makeConstraints {
+            $0.leading.equalTo(circleColorView.snp.trailing).offset(28)
+            $0.size.equalTo(CGSize(w: StickColorView.stickWidth, h: Self.circleColorWidth))
             $0.centerY.equalToSuperview()
         }
     }

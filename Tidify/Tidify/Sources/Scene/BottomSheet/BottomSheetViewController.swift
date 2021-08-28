@@ -9,6 +9,11 @@ import RxCocoa
 import RxSwift
 import UIKit
 
+enum BottomSheetType {
+    case chooseFolder
+    case labelColor
+}
+
 class BottomSheetViewController: BaseViewController {
 
     // MARK: - Constants
@@ -21,16 +26,24 @@ class BottomSheetViewController: BaseViewController {
     private weak var dimmedView: UIView!
     private weak var tableView: UITableView!
 
-    private var tagList: [String]
+    private var dataSource: [Any]?
     private let selectedEventObserver: AnyObserver<Int>
     private let closeButtonTap = PublishSubject<Void>()
     private let disposeBag = DisposeBag()
+    private var bottomSheetType: BottomSheetType
 
     // MARK: - Initialize
 
-    init(tagList: [String], selectedEventObserver: AnyObserver<Int>) {
-        self.tagList = tagList
+    init(_ bottomSheetType: BottomSheetType, dataSource: [Any], selectedEventObserver: AnyObserver<Int>) {
         self.selectedEventObserver = selectedEventObserver
+        self.bottomSheetType = bottomSheetType
+
+        switch bottomSheetType {
+        case .chooseFolder:
+            self.dataSource = dataSource as? [String] ?? []
+        case .labelColor:
+            self.dataSource = dataSource as? [UIColor] ?? []
+        }
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -76,7 +89,8 @@ class BottomSheetViewController: BaseViewController {
         bottomSheetTableView.delegate = self
         bottomSheetTableView.dataSource = self
         bottomSheetTableView.separatorStyle = .none
-        bottomSheetTableView.t_registerCellClass(cellType: BottomSheetTableViewCell.self)
+        bottomSheetTableView.t_registerCellClass(cellType: BottomSheetFolderTableViewCell.self)
+        bottomSheetTableView.t_registerCellClass(cellType: BottomSheetLabelColorTableViewCell.self)
         view.addSubview(bottomSheetTableView)
         self.tableView = bottomSheetTableView
     }
@@ -98,12 +112,29 @@ class BottomSheetViewController: BaseViewController {
 
 extension BottomSheetViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tagList.count
+        return dataSource?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.t_dequeueReusableCell(cellType: BottomSheetTableViewCell.self, indexPath: indexPath)
-        cell.setTag(tagList[indexPath.row])
+        let cell: UITableViewCell
+
+        switch bottomSheetType {
+        case .chooseFolder:
+            guard let dataSource = dataSource as? [String] else { return UITableViewCell() }
+
+            let folderCell = tableView.t_dequeueReusableCell(cellType: BottomSheetFolderTableViewCell.self,
+                                                             indexPath: indexPath)
+            folderCell.setFolder(dataSource[indexPath.row])
+            cell = folderCell
+
+        case .labelColor:
+            guard let dataSource = dataSource as? [UIColor] else { return UITableViewCell() }
+
+            let labelColorCell = tableView.t_dequeueReusableCell(cellType: BottomSheetLabelColorTableViewCell.self,
+                                                                 indexPath: indexPath)
+            labelColorCell.setColor(dataSource[indexPath.row])
+            cell = labelColorCell
+        }
 
         return cell
     }
@@ -129,7 +160,7 @@ extension BottomSheetViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return BottomSheetTableViewCell.cellHeight
+        return BottomSheetFolderTableViewCell.cellHeight
     }
 }
 

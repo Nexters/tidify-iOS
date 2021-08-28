@@ -51,6 +51,8 @@ class BottomSheetHeaderView: UIView {
 
 private extension BottomSheetHeaderView {
     func setupViews() {
+        self.backgroundColor = .white
+
         let titleLabel = UILabel()
         titleLabel.font = .t_B(28)
         titleLabel.textColor = .black

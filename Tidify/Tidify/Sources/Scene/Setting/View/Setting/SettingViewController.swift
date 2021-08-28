@@ -66,6 +66,8 @@ class SettingViewController: BaseViewController {
     override func setupViews() {
         setupNavigationBar()
 
+        view.backgroundColor = .white
+
         self.tableView = UITableView(frame: .zero, style: .insetGrouped).then {
             $0.delegate = self
             $0.dataSource = self

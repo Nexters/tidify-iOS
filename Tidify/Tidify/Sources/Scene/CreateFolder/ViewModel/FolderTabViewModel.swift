@@ -25,6 +25,7 @@ class FolderTabViewModel: ViewModelType {
 
     func transform(_ input: Input) -> Output {
 
+        // 폴더 리스트 가져오기
         let didReceiveFolders = Driver.just(())
 
         return Output(didReceiveFolders: didReceiveFolders)
