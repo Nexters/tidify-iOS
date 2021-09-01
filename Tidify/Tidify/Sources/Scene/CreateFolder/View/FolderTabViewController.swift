@@ -47,6 +47,15 @@ class FolderTabViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let input = FolderTabViewModel.Input()
+        let output = viewModel.transform(input)
+
+        output.didReceiveFolders
+            .drive(onNext: { [weak self] _ in
+                self?.collectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+
         profileButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] _ in
                 self?.coordinator?.pushSettingView()

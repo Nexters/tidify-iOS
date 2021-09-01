@@ -288,7 +288,8 @@ private extension RegisterViewController {
     }
 
     func showBottomSheet(_ tagList: [String]) {
-        let bottomSheet = BottomSheetViewController(tagList: demoTagList,
+        let bottomSheet = BottomSheetViewController(.chooseFolder,
+                                                    dataSource: demoTagList,
                                                     selectedEventObserver: selectedTagIndexSubject.asObserver())
         bottomSheet.modalPresentationStyle = .overFullScreen
 

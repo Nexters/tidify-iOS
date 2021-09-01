@@ -77,7 +77,7 @@ class FolderTabCoordinator: Coordinator {
             $0.frame = CGRect(x: 0, y: 0, width: Self.createFolderButtonWidth, height: Self.navButtonHeight)
             $0.setImage(R.image.nav_icon_createFolder(), for: .normal)
             $0.backgroundColor = .t_tidiBlue()
-            $0.layer.cornerRadius = Self.navButtonHeight / 2
+            $0.layer.cornerRadius = Self.navButtonHeight / 2 - 3
         }
 
         let folderTabViewModel = FolderTabViewModel()
