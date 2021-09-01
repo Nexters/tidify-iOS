@@ -73,6 +73,8 @@ class ProfileViewController: BaseViewController {
     override func setupViews() {
         setupNavigationBar()
 
+        view.backgroundColor = .white
+
         self.profileImageView = UIImageView().then {
             $0.image = R.image.home_icon_profile()
             $0.layer.shadowColor = UIColor.black.cgColor

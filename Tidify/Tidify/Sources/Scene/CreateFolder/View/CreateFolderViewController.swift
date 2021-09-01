@@ -32,6 +32,7 @@ class CreateFolderViewController: BaseViewController {
     private let backButton: UIButton!
 
     private let viewModel: CreateFolderViewModel
+    private let selectedTagIndexSubject = PublishSubject<Int>()
     private let disposeBag = DisposeBag()
 
     private var saveButtonEnabled: Bool = false {
@@ -44,6 +45,7 @@ class CreateFolderViewController: BaseViewController {
     private lazy var navigationBar = TidifyNavigationBar(.default,
                                                          title: R.string.localizable.folderNavigationTitle(),
                                                          leftButton: backButton)
+    private let selectedColorHexStringSubject = PublishSubject<String>()
 
     // MARK: - Initialize
 
@@ -63,13 +65,48 @@ class CreateFolderViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let input = CreateFolderViewModel.Input(folderNameText: folderNameTextField.rx.text.asDriver().filter { $0.t_isNotNil }.map { ($0)! },
+                                                folderLabelColor: selectedColorHexStringSubject.t_asDriverSkipError(),
+                                                saveButtonTap: saveButton.rx.tap.asDriver())
+
+        view.t_addTap().rx.event.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.folderColorTextfield.resignFirstResponder()
+                self?.folderNameTextField.resignFirstResponder()
+            })
+            .disposed(by: disposeBag)
+
+        folderColorTextfield.t_addTap().rx.event.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.showBottomSheet()
+            })
+            .disposed(by: disposeBag)
+
+        selectedTagIndexSubject.t_asDriverSkipError()
+            .drive(onNext: { [weak self] index in
+                guard let strongSelf = self else { return }
+
+                self?.folderColorTextfield.attributedPlaceholder = NSAttributedString(string: R.string.localizable.folderLabelPlaceHolder(),
+                                                                                      attributes: [.foregroundColor: self?.viewModel.dataSource[safe: index] ?? .black])
+                self?.selectedColorHexStringSubject.onNext((strongSelf.viewModel.dataSource[safe: index] ?? .black)?.toHexString() ?? "")
+            })
+            .disposed(by: disposeBag)
+
+        folderNameTextField.rx.text
+            .asDriver()
+            .drive(onNext: { [weak self] text in
+                self?.saveButtonEnabled = (text?.count ?? 0) > 0
+            })
+            .disposed(by: disposeBag)
     }
 
     override func setupViews() {
+        view.backgroundColor = .white
         setupNavigationBar()
 
         self.folderNameLabel = UILabel().then {
             $0.font = .t_B(16)
+            $0.text = R.string.localizable.folderFolderTitle()
             $0.textColor = .black
             view.addSubview($0)
         }
@@ -86,6 +123,7 @@ class CreateFolderViewController: BaseViewController {
 
         self.folderColorLabel = UILabel().then {
             $0.font = .t_B(16)
+            $0.text = R.string.localizable.folderLabelTitle()
             $0.textColor = .black
             view.addSubview($0)
         }
@@ -94,8 +132,10 @@ class CreateFolderViewController: BaseViewController {
             $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
             $0.leftViewMode = .always
             $0.placeholder = R.string.localizable.folderLabelPlaceHolder()
+            $0.rightView = UIImageView(image: R.image.arrow_down_gray())
+            $0.rightViewMode = .always
             $0.backgroundColor = .white
-            $0.font = .t_R(16)
+            $0.font = .t_B(16)
             setupTextFieldLayer($0)
             view.addSubview($0)
         }
@@ -156,5 +196,14 @@ private extension CreateFolderViewController {
         textFiled.layer.shadowOffset = CGSize(w: 0, h: 2)
         textFiled.layer.shadowRadius = Self.textFieldHeight / 3
         textFiled.layer.masksToBounds = false
+    }
+
+    func showBottomSheet() {
+        let bottomSheet = BottomSheetViewController(.labelColor,
+                                                    dataSource: viewModel.dataSource,
+                                                    selectedEventObserver: selectedTagIndexSubject.asObserver())
+        bottomSheet.modalPresentationStyle = .overFullScreen
+
+        self.present(bottomSheet, animated: false, completion: nil)
     }
 }
