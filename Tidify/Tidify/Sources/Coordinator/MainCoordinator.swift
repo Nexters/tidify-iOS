@@ -42,11 +42,19 @@ class MainCoordinator: NSObject, Coordinator {
         tabBarCoordinator.start()
     }
 
-    func startWithSignIn() {
-        let signInViewModel = SignInViewModel()
-        let signInViewController = SignInViewController(viewModel: signInViewModel)
-        signInViewController.coordinator = self
+    func startWithOnboarding() {
+        let onboardingCoordinator = OnboardingCoordinator(navigationController: navigationController)
+        onboardingCoordinator.parentCoordinator = self
+        self.childCoordinators.append(onboardingCoordinator)
 
-        navigationController.pushViewController(signInViewController, animated: true)
+        onboardingCoordinator.start()
+    }
+
+    func startWithSignIn() {
+        let signInCoordinator = SignInCoordinator(navigationController: navigationController)
+        signInCoordinator.parentCoordinator = self
+        self.childCoordinators.append(signInCoordinator)
+
+        signInCoordinator.start()
     }
 }
