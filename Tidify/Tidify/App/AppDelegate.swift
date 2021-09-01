@@ -32,11 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let mainCoordinator = MainCoordinator(window: window)
         self.mainCoordinator = mainCoordinator
 
-        if !UserDefaults.standard.bool(forKey: "didOnboarded") {
-            mainCoordinator.startWithOnboarding()
-            return true
-        }
-
         if let accessToken = UserDefaults.standard.string(forKey: "access_token") {
             Environment.shared.authorization = accessToken
         } else {

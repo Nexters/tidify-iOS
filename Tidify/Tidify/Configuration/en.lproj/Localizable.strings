@@ -8,23 +8,6 @@
 
 "MainTitle" = "Tidify";
 
-// Onboarding
-"Onboarding.title1" = "북마크 저장해볼까요?";
-"Onboarding.title2" = "원하는 링크를 저장";
-"Onboarding.title3" = "이름, 고민하지 마세요";
-"Onboarding.title4" = "나만의 정리방법";
-"Onboarding.title5" = "폴더 공유";
-"Onboarding.desc1" = "앱, 브라우저를 자유롭게 사용하며 언제든지 북마크 만들기!";
-"Onboarding.desc2" = "저장하고 싶은 링크가 있을때도 문제없어요! 원하는 만큼 저장하세요.";
-"Onboarding.desc3" = "그냥 버튼만 누르세요, 알아서 깔끔하게 저장해 드려요!";
-"Onboarding.desc4" = "태그를 만들어 붙여보세요! 폴더를 만들어 구분 할 수도 있죠.";
-"Onboarding.desc5" = "공유하고 싶은 북마크가 있는 폴더는 모두 함께 볼 수 있어요!";
-"Onboarding.button.title1" = "복사한 링크를 저장하고 싶으면요?";
-"Onboarding.button.title2" = "매번 이름 만들기 힘들어요!";
-"Onboarding.button.title3" = "정리는 어떻게 해요?";
-"Onboarding.button.title4" = "다른사람들과 같이 보고 싶어요!";
-"Onboarding.button.title5" = "좋아요, 시작할래요!";
-
 // Main
 "Main.addBookMark.title" = "북마크 생성";
 "Main.content.tag.placeHolder" = "contained tag name";
