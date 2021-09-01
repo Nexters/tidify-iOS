@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
 		B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */; };
+		B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */; };
 		B50E6F6C26BAC802005949B4 /* BookMarkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E6F6B26BAC802005949B4 /* BookMarkCollectionViewCell.swift */; };
 		B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CC269C883500B34C5E /* HomeCoordinator.swift */; };
 		B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */; };
@@ -35,7 +36,7 @@
 		B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B570F9F126BEB57E0095A0F0 /* UINavigationBar+.swift */; };
 		B577660126C1732F00533276 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B577660026C1732F00533276 /* AuthAPI.swift */; };
 		B577660426C17E0C00533276 /* BottomSheetHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B577660326C17E0C00533276 /* BottomSheetHeaderView.swift */; };
-		B577660626C17E1600533276 /* BottomSheetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B577660526C17E1600533276 /* BottomSheetTableViewCell.swift */; };
+		B577660626C17E1600533276 /* BottomSheetFolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B577660526C17E1600533276 /* BottomSheetFolderTableViewCell.swift */; };
 		B577660826C17E2100533276 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B577660726C17E2100533276 /* BottomSheetViewController.swift */; };
 		B57833E026CA41E6000AC589 /* TidifyTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57833DF26CA41E6000AC589 /* TidifyTabBar.swift */; };
 		B57833E226CA465F000AC589 /* TidifyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57833E126CA465F000AC589 /* TidifyTabBarController.swift */; };
@@ -62,6 +63,7 @@
 		B5CA8B2926B048C700D9C6D3 /* DefaultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */; };
 		B5CC174626C69DFB00E827CF /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC174526C69DFB00E827CF /* Notifier.swift */; };
 		B5CC174826C6A48600E827CF /* UIAlertAction+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC174726C6A48600E827CF /* UIAlertAction+.swift */; };
+		B5DE6A0926DA3ED70055B8D1 /* StickColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DE6A0826DA3ED70055B8D1 /* StickColorView.swift */; };
 		B5E554A826C9506C00C948A0 /* TidifyNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E554A726C9506C00C948A0 /* TidifyNavigationBar.swift */; };
 		B5F19C0B26999A3D00D1E8BB /* ObservableType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */; };
 		B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */; };
@@ -115,6 +117,7 @@
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
 		B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetLabelColorTableViewCell.swift; sourceTree = "<group>"; };
 		B50E6F6B26BAC802005949B4 /* BookMarkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkCollectionViewCell.swift; sourceTree = "<group>"; };
 		B52982CC269C883500B34C5E /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
@@ -143,7 +146,7 @@
 		B570F9F126BEB57E0095A0F0 /* UINavigationBar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+.swift"; sourceTree = "<group>"; };
 		B577660026C1732F00533276 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		B577660326C17E0C00533276 /* BottomSheetHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetHeaderView.swift; sourceTree = "<group>"; };
-		B577660526C17E1600533276 /* BottomSheetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTableViewCell.swift; sourceTree = "<group>"; };
+		B577660526C17E1600533276 /* BottomSheetFolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetFolderTableViewCell.swift; sourceTree = "<group>"; };
 		B577660726C17E2100533276 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		B57833DF26CA41E6000AC589 /* TidifyTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyTabBar.swift; sourceTree = "<group>"; };
 		B57833E126CA465F000AC589 /* TidifyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyTabBarController.swift; sourceTree = "<group>"; };
@@ -171,6 +174,7 @@
 		B5CA8B2826B048C700D9C6D3 /* DefaultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC174526C69DFB00E827CF /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
 		B5CC174726C6A48600E827CF /* UIAlertAction+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+.swift"; sourceTree = "<group>"; };
+		B5DE6A0826DA3ED70055B8D1 /* StickColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickColorView.swift; sourceTree = "<group>"; };
 		B5E554A726C9506C00C948A0 /* TidifyNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyNavigationBar.swift; sourceTree = "<group>"; };
 		B5F19C0A26999A3D00D1E8BB /* ObservableType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+.swift"; sourceTree = "<group>"; };
 		B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
@@ -241,6 +245,15 @@
 				B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		B50E18D526D89F7200207062 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B577660526C17E1600533276 /* BottomSheetFolderTableViewCell.swift */,
+				B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		B56D82F1269987AB00D5F513 = {
@@ -346,9 +359,10 @@
 		B577660226C17DFF00533276 /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
+				B50E18D526D89F7200207062 /* Cells */,
 				B577660326C17E0C00533276 /* BottomSheetHeaderView.swift */,
-				B577660526C17E1600533276 /* BottomSheetTableViewCell.swift */,
 				B577660726C17E2100533276 /* BottomSheetViewController.swift */,
+				B5DE6A0826DA3ED70055B8D1 /* StickColorView.swift */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -828,7 +842,9 @@
 				B588C69626D0C958003F4308 /* FolderTabViewController.swift in Sources */,
 				B588C6A726D0E12E003F4308 /* Array+.swift in Sources */,
 				C7AF275126BE900F00AE258B /* R.generated.swift in Sources */,
+				B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */,
 				B57833E426CA7BC2000AC589 /* TabBarCoordinator.swift in Sources */,
+				B5DE6A0926DA3ED70055B8D1 /* StickColorView.swift in Sources */,
 				B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */,
 				B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */,
 				B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */,
@@ -850,7 +866,7 @@
 				C72F27D62699CF2700104FE3 /* SignInViewModel.swift in Sources */,
 				C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */,
 				B5AF0AE0269A134A00D8DCF5 /* WebViewViewModel.swift in Sources */,
-				B577660626C17E1600533276 /* BottomSheetTableViewCell.swift in Sources */,
+				B577660626C17E1600533276 /* BottomSheetFolderTableViewCell.swift in Sources */,
 				B57833E226CA465F000AC589 /* TidifyTabBarController.swift in Sources */,
 				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,

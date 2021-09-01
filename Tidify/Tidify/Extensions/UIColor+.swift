@@ -39,6 +39,10 @@ public extension UIColor {
         return .init(80, 78, 210)
     }
 
+    static func t_tidiBlue2() -> UIColor {
+        return .init(84, 200, 245)
+    }
+
     func toHexString() -> String {
         var r:CGFloat = 0
         var g:CGFloat = 0

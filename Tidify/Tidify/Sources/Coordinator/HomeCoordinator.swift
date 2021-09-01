@@ -50,7 +50,7 @@ class HomeCoordinator: Coordinator {
             $0.frame = CGRect(x: 0, y: 0, width: Self.createBookMarkButtonWidth, height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_bookMark(), for: .normal)
             $0.backgroundColor = .t_tidiBlue()
-            $0.layer.cornerRadius = 28
+            $0.layer.cornerRadius = Self.navButtonHeight / 2
         }
 
         let homeViewModel = HomeViewModel()
@@ -90,7 +90,7 @@ class HomeCoordinator: Coordinator {
             $0.frame = CGRect(x: 0, y: 0, width: Self.createBookMarkButtonWidth, height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_bookMark(), for: .normal)
             $0.backgroundColor = .t_tidiBlue()
-            $0.layer.cornerRadius = Self.navButtonHeight / 2
+            $0.layer.cornerRadius = Self.navButtonHeight / 2 - 3
         }
 
         let homeViewModel = HomeViewModel()
