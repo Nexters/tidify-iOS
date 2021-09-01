@@ -266,6 +266,8 @@
 				B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
 		B53B93F226DB7D3B00EBCB21 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
