@@ -115,7 +115,7 @@ class OnboardingViewController: BaseViewController {
         }
 
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(pageControl.snp.bottom).offset(56)
+            $0.top.equalTo(pageControl.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-140)
         }
@@ -149,7 +149,7 @@ extension OnboardingViewController: UICollectionViewDataSource {
 
 extension OnboardingViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(w: collectionView.frame.width, h: 500)
+        return CGSize(w: collectionView.frame.width, h: collectionView.frame.height - 100)
     }
 }
 

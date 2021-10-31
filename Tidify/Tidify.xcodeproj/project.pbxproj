@@ -363,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				B5CC174526C69DFB00E827CF /* Notifier.swift */,
+				B5CC174726C6A48600E827CF /* UIAlertAction+.swift */,
 				B56D8316269989F600D5F513 /* CGSIze+.swift */,
 				B56D831926998A1300D5F513 /* Optional+.swift */,
 				B56D831B26998A2900D5F513 /* UIApplication+.swift */,
@@ -649,7 +650,6 @@
 			isa = PBXGroup;
 			children = (
 				B57765FF26C1731400533276 /* API */,
-				B5CC174726C6A48600E827CF /* UIAlertAction+.swift */,
 				B5443B9B26C8F11D00F7494A /* UserDefaultManager.swift */,
 			);
 			path = Service;

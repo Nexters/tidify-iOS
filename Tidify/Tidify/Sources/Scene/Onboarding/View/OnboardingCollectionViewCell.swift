@@ -60,7 +60,7 @@ private extension OnboardingCollectionViewCell {
         }
 
         self.descriptionLabel = UILabel().then {
-            $0.font = .t_R(16)
+            $0.font = .t_R(18)
             $0.textColor = .black
             $0.numberOfLines = 0
             labelContainerView.addSubview($0)
@@ -86,7 +86,7 @@ private extension OnboardingCollectionViewCell {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(Self.sidePadding)
-            $0.width.equalTo(225)
+            $0.width.equalTo(contentView.frame.width - (Self.sidePadding * 3))
         }
 
         imageView.snp.makeConstraints {
