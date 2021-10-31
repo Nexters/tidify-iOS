@@ -26,6 +26,7 @@ class SignInCoordinator: Coordinator {
     func start() {
         let signInViewModel = SignInViewModel()
         let signInViewController = SignInViewController(viewModel: signInViewModel)
+        signInViewController.coordinator = parentCoordinator as? MainCoordinator
 
         navigationController.pushViewController(signInViewController, animated: true)
     }

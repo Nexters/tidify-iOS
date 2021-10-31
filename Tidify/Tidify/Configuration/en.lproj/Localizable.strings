@@ -25,6 +25,15 @@
 "Onboarding.button.title4" = "다른사람들과 같이 보고 싶어요!";
 "Onboarding.button.title5" = "좋아요, 시작할래요!";
 
+// Login
+"Login.title" = "쉽고, 깔끔하게";
+"Login.subTitle" = "북마크 만들어요!";
+"Login.tooltip.title" = "터치하고 빠르게 시작";
+"Login.kakao.title" = "카카오 로그인";
+"Login.apple.title" = "Apple 로그인";
+"Login.google.title" = "Google 로그인";
+"Login.withoutLogin.title" = "지금은 로그인 없이 시작할래요";
+
 // Main
 "Main.addBookMark.title" = "북마크 생성";
 "Main.content.tag.placeHolder" = "contained tag name";

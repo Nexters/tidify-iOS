@@ -17,17 +17,19 @@ class SignInViewModel: ViewModelType {
     // MARK: - Properties
 
     struct Input {
-        let clickSignInWithKakaoButton: ControlEvent<Void>
+        let signInWithKakaoButtonTap: ControlEvent<Void>
+        let withoutLoginButtonTap: ControlEvent<Void>
     }
 
     struct Output {
         let userSession: Driver<UserSession?>
+        let didTapWithoutLoginButton: Driver<Void>
     }
 
     // MARK: - Methods
 
     func transform(_ input: Input) -> Output {
-        let userSession = input.clickSignInWithKakaoButton.flatMap {
+        let userSession = input.signInWithKakaoButtonTap.flatMap {
              UserApi.shared.rx.loginWithKakaoAccount()
         }
         .flatMap { snsToken in
@@ -45,7 +47,12 @@ class SignInViewModel: ViewModelType {
         }
         .asDriver(onErrorJustReturn: nil)
 
-        return Output(userSession: userSession)
+        let didTapWithoutLoginButton = input.withoutLoginButtonTap
+            .asDriver()
+            .map { _ in }
+
+        return Output(userSession: userSession,
+                      didTapWithoutLoginButton: didTapWithoutLoginButton)
     }
 
     private func rememberAccessToken(_ accessToken: String) {
