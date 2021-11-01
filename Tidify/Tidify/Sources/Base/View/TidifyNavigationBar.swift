@@ -67,7 +67,7 @@ class TidifyNavigationBar: UIView {
 
     // MARK: - Methods
 
-    func setupViews(_ navigationbarStyle: NavigationBarStyle, title: String?, leftButton: UIButton, rightButtons: [UIButton]) {
+    func setupViews(_ navigationBarStyle: NavigationBarStyle, title: String?, leftButton: UIButton, rightButtons: [UIButton]) {
         self.backgroundColor = .white
 
         self.titleLabel = UILabel().then {
