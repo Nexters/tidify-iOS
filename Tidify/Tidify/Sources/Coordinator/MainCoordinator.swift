@@ -37,7 +37,7 @@ class MainCoordinator: NSObject, Coordinator {
     func start() {
         let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
         tabBarCoordinator.parentCoordinator = self
-        childCoordinators.append(tabBarCoordinator)
+        self.childCoordinators.append(tabBarCoordinator)
 
         tabBarCoordinator.start()
     }
