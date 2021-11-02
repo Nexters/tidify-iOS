@@ -5,6 +5,7 @@
 //  Created by Manjong Han on 2021/07/10.
 //
 
+import AuthenticationServices
 import RxCocoa
 import RxSwift
 import SnapKit
@@ -22,8 +23,10 @@ class SignInViewController: BaseViewController {
     private weak var subTitleLabel: UILabel!
     private weak var tooltipImageView: UIImageView!
 
+    private weak var loginMethodStackView: UIStackView!
     // TODO: 추후 모든 SNS 로그인 연동을 완료하면 버튼들을 StackView에 담아 관리한다.
-    private weak var signInWithKakaoButton: UIButton!
+    private weak var kakaoSignInButton: UIButton!
+    private weak var appleSignInButton: ASAuthorizationAppleIDButton!
     private weak var withoutLoginButton: UIButton!
     private weak var resultLabel: UILabel!
 
@@ -46,7 +49,7 @@ class SignInViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let input = SignInViewModel.Input(signInWithKakaoButtonTap: signInWithKakaoButton.rx.tap,
+        let input = SignInViewModel.Input(signInWithKakaoButtonTap: kakaoSignInButton.rx.tap,
                                           withoutLoginButtonTap: withoutLoginButton.rx.tap)
         let output = viewModel.transform(input)
 
@@ -99,11 +102,28 @@ class SignInViewController: BaseViewController {
             view.addSubview($0)
         }
 
-        self.signInWithKakaoButton = UIButton().then {
-            $0.setTitle(R.string.localizable.loginKakaoTitle(), for: .normal)
-            $0.setTitleColor(.systemYellow, for: .normal)
-            $0.backgroundColor = .black
+        self.loginMethodStackView = UIStackView().then {
+            $0.axis = .vertical
+            $0.spacing = 20
+            $0.alignment = .fill
             view.addSubview($0)
+        }
+
+        self.kakaoSignInButton = UIButton().then {
+            $0.setTitle(R.string.localizable.loginKakaoTitle(), for: .normal)
+            $0.setTitleColor(.black, for: .normal)
+            $0.setImage(R.image.login_kakao_symbol(), for: .normal)
+            $0.imageEdgeInsets = .init(top: 0, left: -15, bottom: 0, right: 0)
+            $0.titleLabel?.font = .t_B(16)
+            $0.backgroundColor = .init(255, 197, 0)
+            $0.t_cornerRadius(radius: 14)
+            loginMethodStackView.addArrangedSubview($0)
+        }
+
+        self.appleSignInButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black).then {
+            $0.addTarget(self, action: #selector(appleSignInButtonTap), for: .touchUpInside)
+            $0.cornerRadius = 14
+            loginMethodStackView.addArrangedSubview($0)
         }
 
         self.withoutLoginButton = UIButton().then {
@@ -113,7 +133,7 @@ class SignInViewController: BaseViewController {
                                                         .underlineStyle: NSUnderlineStyle.single.rawValue])
             $0.setAttributedTitle(attributedString, for: .normal)
             $0.setTitleColor(.black, for: .normal)
-            view.addSubview($0)
+            loginMethodStackView.addArrangedSubview($0)
         }
 
         self.resultLabel = UILabel().then {
@@ -123,6 +143,8 @@ class SignInViewController: BaseViewController {
     }
 
     override func setupLayoutConstraints() {
+        let loginMethodButtonHeight: CGFloat = 46
+
         logoImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(200)
             $0.size.equalTo(CGSize(w: 76, h: 43))
@@ -144,19 +166,61 @@ class SignInViewController: BaseViewController {
             $0.centerX.equalToSuperview()
         }
 
-        signInWithKakaoButton.snp.makeConstraints {
+        loginMethodStackView.snp.makeConstraints {
             $0.top.equalTo(tooltipImageView.snp.bottom).offset(20)
-            $0.centerX.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
         }
 
-        withoutLoginButton.snp.makeConstraints {
-            $0.top.equalTo(signInWithKakaoButton.snp.bottom).offset(60)
-            $0.centerX.equalToSuperview()
+        kakaoSignInButton.snp.makeConstraints {
+            $0.height.equalTo(loginMethodButtonHeight)
+        }
+
+        appleSignInButton.snp.makeConstraints {
+            $0.height.equalTo(loginMethodButtonHeight)
         }
 
         resultLabel.snp.makeConstraints {
-            $0.top.equalTo(signInWithKakaoButton.snp.bottom).offset(24)
+            $0.top.equalTo(kakaoSignInButton.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
+        }
+    }
+}
+
+private extension SignInViewController {
+    @objc
+    func appleSignInButtonTap() {
+        let appleIdProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIdProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+}
+// MARK: - Apple Login Delegate
+extension SignInViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    // Apple Login Modal Sheet 띄우기.
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        if let window = view.window {
+            return window
+        } else {
+            return UIApplication.shared.t_keyWindow!
+        }
+    }
+
+    // Apple Id 연동 성공시 실행되는 함수
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let credential as ASAuthorizationAppleIDCredential:
+            let userIdentifier = credential.user
+            let fullName = credential.fullName
+            let email = credential.email
+            print("\(userIdentifier), fullName: \(fullName), email: \(email)")
+        default:
+            break
         }
     }
 }
