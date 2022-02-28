@@ -120,17 +120,22 @@ class SignInViewController: BaseViewController {
             loginMethodStackView.addArrangedSubview($0)
         }
 
-        self.appleSignInButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black).then {
+        self.appleSignInButton = ASAuthorizationAppleIDButton(
+            authorizationButtonType: .signIn,
+            authorizationButtonStyle: .black).then {
             $0.addTarget(self, action: #selector(appleSignInButtonTap), for: .touchUpInside)
             $0.cornerRadius = 14
             loginMethodStackView.addArrangedSubview($0)
         }
 
         self.withoutLoginButton = UIButton().then {
-            let attributedString = NSAttributedString(string: R.string.localizable.loginWithoutLoginTitle(), attributes: [
-                                                        .font: UIFont.t_R(14),
-                                                        .foregroundColor: UIColor.systemGray,
-                                                        .underlineStyle: NSUnderlineStyle.single.rawValue])
+            let attributedString = NSAttributedString(
+                string: R.string.localizable.loginWithoutLoginTitle(),
+                attributes:
+                    [.font: UIFont.t_R(14),
+                     .foregroundColor: UIColor.systemGray,
+                     .underlineStyle: NSUnderlineStyle.single.rawValue
+                    ])
             $0.setAttributedTitle(attributedString, for: .normal)
             $0.setTitleColor(.black, for: .normal)
             loginMethodStackView.addArrangedSubview($0)
@@ -201,7 +206,8 @@ private extension SignInViewController {
     }
 }
 // MARK: - Apple Login Delegate
-extension SignInViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+extension SignInViewController: ASAuthorizationControllerDelegate,
+                                ASAuthorizationControllerPresentationContextProviding {
     // Apple Login Modal Sheet 띄우기.
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         if let window = view.window {
@@ -212,7 +218,8 @@ extension SignInViewController: ASAuthorizationControllerDelegate, ASAuthorizati
     }
 
     // Apple Id 연동 성공시 실행되는 함수
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    func authorizationController(controller: ASAuthorizationController,
+                                 didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let credential as ASAuthorizationAppleIDCredential:
             let userIdentifier = credential.user

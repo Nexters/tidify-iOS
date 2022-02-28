@@ -112,26 +112,32 @@ class HomeViewController: BaseViewController {
 // MARK: - DataSource
 
 extension HomeViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         let isEmptyDataSource = self.viewModel.bookMarkList.isEmpty
 
         return isEmptyDataSource ? 1 : self.viewModel.bookMarkList.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let isEmptyDataSource = self.viewModel.bookMarkList.isEmpty
 
         if isEmptyDataSource {
-            let cell = collectionView.t_dequeueReusableCell(cellType: NoticeEmptyCollectionViewCell.self,
-                                                            indexPath: indexPath)
+            let cell = collectionView.t_dequeueReusableCell(
+                cellType: NoticeEmptyCollectionViewCell.self,
+                indexPath: indexPath
+            )
 
             cell.setNoticeTitle(R.string.localizable.mainNoticeEmptyTitle())
             cell.contentView.t_cornerRadius([.topLeft, .topRight], radius: 18)
 
             return cell
         } else {
-            let cell = collectionView.t_dequeueReusableCell(cellType: BookMarkCollectionViewCell.self,
-                                                            indexPath: indexPath)
+            let cell = collectionView.t_dequeueReusableCell(
+                cellType: BookMarkCollectionViewCell.self,
+                indexPath: indexPath
+            )
             let bookMark = self.viewModel.bookMarkList[indexPath.item]
             cell.setBookMark(bookMark)
 
@@ -159,11 +165,15 @@ extension HomeViewController: UICollectionViewDelegate {
 // MARK: - DelegateFlowLayout
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(w: self.collectionView.frame.width, h: BookMarkCollectionViewCell.cellHeight)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView,
+                        ßlayout collectionViewLayout: UICollectionViewLayout,
+                        ßinsetForSectionAt section: Int) -> UIEdgeInsets {
         if section == .zero {
             return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         }

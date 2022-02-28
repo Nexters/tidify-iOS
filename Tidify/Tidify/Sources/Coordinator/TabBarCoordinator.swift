@@ -74,7 +74,10 @@ private extension TabBarCoordinator {
         childCoordinators.append(folderTabCoordinator)
         folderTabController = folderTabCoordinator.startPush()
 
-        tidifyTabBarController.setViewControllers([homeViewController, searchViewController, folderTabController], animated: false)
+        tidifyTabBarController.setViewControllers(
+            [homeViewController, searchViewController, folderTabController],
+            animated: false
+        )
         tidifyTabBarController.selectedIndex = 0
     }
 }

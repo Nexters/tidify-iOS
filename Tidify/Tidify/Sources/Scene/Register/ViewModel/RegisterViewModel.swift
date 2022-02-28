@@ -34,9 +34,11 @@ class RegisterViewModel: ViewModelType {
 
     func transform(_ input: Input) -> Output {
         let didReceivePreviewResponse = input.registerButtonTap.t_asDriverSkipError()
-            .withLatestFrom(Driver.combineLatest(input.urlInputText.t_asDriverSkipError(),
-                                                 input.bookMarkNameInputText.t_asDriverSkipError().startWith(""),
-                                                 input.tagInputText.t_asDriverSkipError()))
+            .withLatestFrom(Driver.combineLatest(
+                input.urlInputText.t_asDriverSkipError(),
+                input.bookMarkNameInputText.t_asDriverSkipError().startWith(""),
+                input.tagInputText.t_asDriverSkipError())
+            )
             .map { urlString, bookMarkName, tag in
                 let linkPreview = SwiftLinkPreview(session: .shared,
                                                    workQueue: SwiftLinkPreview.defaultWorkQueue,
@@ -48,7 +50,9 @@ class RegisterViewModel: ViewModelType {
                     guard let bookMarkName = bookMarkName else {
                         return
                     }
-                    response = (urlString, bookMarkName.isEmpty ? previewResponse.title : bookMarkName, previewResponse.icon, tag)
+                    response = (urlString,
+                                bookMarkName.isEmpty ?
+                                previewResponse.title : bookMarkName, previewResponse.icon, tag)
                     self?.previewResponseSubject.onNext(response)
                 }, onError: { error in
                     print("[ERROR] \(error.localizedDescription)")

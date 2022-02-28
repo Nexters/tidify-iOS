@@ -34,7 +34,8 @@ class SettingCoordinator: Coordinator {
         }
 
         let settingViewModel = SettingViewModel()
-        let settingViewController = SettingViewController(viewModel: settingViewModel, leftButton: backButton)
+        let settingViewController = SettingViewController(viewModel: settingViewModel,
+                                                          leftButton: backButton)
         settingViewController.coordinator = self
 
         backButton.rx.tap.asDriver()

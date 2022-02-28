@@ -52,7 +52,14 @@ struct BookMarkDTO: Codable {
     let title: String
     let tag: String
 
-    init(createdAt: String, updatedAt: String, id: Int, memberId: Int, urlString: String, title: String, tag: String) {
+    init(createdAt: String,
+         updatedAt: String,
+         id: Int,
+         memberId: Int,
+         urlString: String,
+         title: String,
+         tag: String)
+    {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.id = id

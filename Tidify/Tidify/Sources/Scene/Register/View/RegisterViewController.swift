@@ -51,7 +51,8 @@ class RegisterViewController: BaseViewController {
     private var registerButtonEnabled: Bool = false {
         didSet {
             self.registerButton.backgroundColor = registerButtonEnabled ? .t_tidiBlue() : .white
-            self.registerButton.setTitleColor(registerButtonEnabled ? .white : .systemGray2, for: .normal)
+            self.registerButton.setTitleColor(registerButtonEnabled ? .white : .systemGray2,
+                                              for: .normal)
         }
     }
 
@@ -60,7 +61,7 @@ class RegisterViewController: BaseViewController {
                                                  leftButton: leftButton,
                                                  rightButtons: [])
 
-    let demoTagList = ["tag name / 0", "tag name / 1", "tag name / 2", "tag name / 3", "tag name / 4"]
+    let demoTagList = ["tag name / 0", "tag name / 1", "tag name / 2", "tag name / 3"]
 
     // MARK: - Initialize
 
@@ -101,7 +102,8 @@ class RegisterViewController: BaseViewController {
                 guard let text = text?.lowercased() else {
                     return
                 }
-                self?.isInvalidFormatURL = !(text.contains("http") || text.contains("https")) && !text.isEmpty
+                self?.isInvalidFormatURL = !(text.contains("http") ||
+                                             text.contains("https")) && !text.isEmpty
                 self?.registerButtonEnabled = !(text.isEmpty)
             })
             .disposed(by: disposeBag)
@@ -125,10 +127,16 @@ class RegisterViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
 
-        let input = RegisterViewModel.Input(urlInputText: urlTextField.rx.text.asDriver().filter { $0.t_isNotNil }.map { $0.t_unwrap },
-                                            bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
-                                            tagInputText: selectedTagSubject.t_asDriverSkipError(),
-                                            registerButtonTap: registerButton.rx.tap.asDriver())
+        let urlTextField = urlTextField.rx.text.asDriver()
+            .filter { $0.t_isNotNil }
+            .map { $0.t_unwrap }
+
+        let input = RegisterViewModel.Input(
+            urlInputText: urlTextField,
+            bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
+            tagInputText: selectedTagSubject.t_asDriverSkipError(),
+            registerButtonTap: registerButton.rx.tap.asDriver()
+        )
         let output = viewModel.transform(input)
 
         output.didReceivePreviewResponse.drive().disposed(by: disposeBag)
@@ -288,9 +296,11 @@ private extension RegisterViewController {
     }
 
     func showBottomSheet(_ tagList: [String]) {
-        let bottomSheet = BottomSheetViewController(.chooseFolder,
-                                                    dataSource: demoTagList,
-                                                    selectedEventObserver: selectedTagIndexSubject.asObserver())
+        let bottomSheet = BottomSheetViewController(
+            .chooseFolder,
+            dataSource: demoTagList,
+            selectedEventObserver: selectedTagIndexSubject.asObserver()
+        )
         bottomSheet.modalPresentationStyle = .overFullScreen
 
         self.present(bottomSheet, animated: false, completion: nil)

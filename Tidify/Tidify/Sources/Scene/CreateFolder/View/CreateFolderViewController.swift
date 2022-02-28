@@ -42,9 +42,11 @@ class CreateFolderViewController: BaseViewController {
         }
     }
 
-    private lazy var navigationBar = TidifyNavigationBar(.default,
-                                                         title: R.string.localizable.folderNavigationTitle(),
-                                                         leftButton: backButton)
+    private lazy var navigationBar = TidifyNavigationBar(
+        .default,
+        title: R.string.localizable.folderNavigationTitle(),
+        leftButton: backButton
+    )
     private let selectedColorHexStringSubject = PublishSubject<String>()
 
     // MARK: - Initialize
@@ -65,9 +67,15 @@ class CreateFolderViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let input = CreateFolderViewModel.Input(folderNameText: folderNameTextField.rx.text.asDriver().filter { $0.t_isNotNil }.map { ($0)! },
-                                                folderLabelColor: selectedColorHexStringSubject.t_asDriverSkipError(),
-                                                saveButtonTap: saveButton.rx.tap.asDriver())
+        let folderNameText = folderNameTextField.rx.text.asDriver()
+            .filter { $0.t_isNotNil }
+            .map { ($0)! }
+
+        let input = CreateFolderViewModel.Input(
+            folderNameText: folderNameText,
+            folderLabelColor: selectedColorHexStringSubject.t_asDriverSkipError(),
+            saveButtonTap: saveButton.rx.tap.asDriver()
+        )
 
         view.t_addTap().rx.event.asDriver()
             .drive(onNext: { [weak self] _ in
@@ -84,11 +92,16 @@ class CreateFolderViewController: BaseViewController {
 
         selectedTagIndexSubject.t_asDriverSkipError()
             .drive(onNext: { [weak self] index in
-                guard let strongSelf = self else { return }
+                guard let self = self else { return }
 
-                self?.folderColorTextfield.attributedPlaceholder = NSAttributedString(string: R.string.localizable.folderLabelPlaceHolder(),
-                                                                                      attributes: [.foregroundColor: self?.viewModel.dataSource[safe: index] ?? .black])
-                self?.selectedColorHexStringSubject.onNext((strongSelf.viewModel.dataSource[safe: index] ?? .black)?.toHexString() ?? "")
+                let attributedString = NSAttributedString(
+                    string: R.string.localizable.folderLabelPlaceHolder(),
+                    attributes: [.foregroundColor: self.viewModel.dataSource[safe: index] ?? .black]
+                )
+                self.folderColorTextfield.attributedPlaceholder = attributedString
+                self.selectedColorHexStringSubject.onNext(
+                    (self.viewModel.dataSource[safe: index])?.toHexString() ?? ""
+                )
             })
             .disposed(by: disposeBag)
 
@@ -199,9 +212,11 @@ private extension CreateFolderViewController {
     }
 
     func showBottomSheet() {
-        let bottomSheet = BottomSheetViewController(.labelColor,
-                                                    dataSource: viewModel.dataSource,
-                                                    selectedEventObserver: selectedTagIndexSubject.asObserver())
+        let bottomSheet = BottomSheetViewController(
+            .labelColor,
+            dataSource: viewModel.dataSource,
+            selectedEventObserver: selectedTagIndexSubject.asObserver()
+        )
         bottomSheet.modalPresentationStyle = .overFullScreen
 
         self.present(bottomSheet, animated: false, completion: nil)

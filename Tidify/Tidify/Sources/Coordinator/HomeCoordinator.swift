@@ -47,7 +47,10 @@ class HomeCoordinator: Coordinator {
         }
 
         let createBookMarkButton = UIButton().then {
-            $0.frame = CGRect(x: 0, y: 0, width: Self.createBookMarkButtonWidth, height: Self.navButtonHeight)
+            $0.frame = CGRect(x: 0,
+                              y: 0,
+                              width: Self.createBookMarkButtonWidth,
+                              height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_bookMark(), for: .normal)
             $0.backgroundColor = .t_tidiBlue()
             $0.layer.cornerRadius = Self.navButtonHeight / 2
@@ -55,7 +58,9 @@ class HomeCoordinator: Coordinator {
 
         let homeViewModel = HomeViewModel()
         homeViewModel.delegate = self
-        let homeViewController = HomeViewController(viewModel: homeViewModel, leftButton: profileButton, rightButton: createBookMarkButton)
+        let homeViewController = HomeViewController(viewModel: homeViewModel,
+                                                    leftButton: profileButton,
+                                                    rightButton: createBookMarkButton)
         homeViewController.coordinator = self
 
         profileButton.rx.tap.asDriver()
@@ -87,7 +92,10 @@ class HomeCoordinator: Coordinator {
         }
 
         let createBookMarkButton = UIButton().then {
-            $0.frame = CGRect(x: 0, y: 0, width: Self.createBookMarkButtonWidth, height: Self.navButtonHeight)
+            $0.frame = CGRect(x: 0,
+                              y: 0,
+                              width: Self.createBookMarkButtonWidth,
+                              height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_bookMark(), for: .normal)
             $0.backgroundColor = .t_tidiBlue()
             $0.layer.cornerRadius = Self.navButtonHeight / 2 - 3
@@ -95,7 +103,9 @@ class HomeCoordinator: Coordinator {
 
         let homeViewModel = HomeViewModel()
         homeViewModel.delegate = self
-        let homeViewController = HomeViewController(viewModel: homeViewModel, leftButton: profileButton, rightButton: createBookMarkButton)
+        let homeViewController = HomeViewController(viewModel: homeViewModel,
+                                                    leftButton: profileButton,
+                                                    rightButton: createBookMarkButton)
         homeViewController.coordinator = self
 
         return homeViewController

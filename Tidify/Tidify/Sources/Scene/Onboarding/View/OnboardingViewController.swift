@@ -58,7 +58,8 @@ class OnboardingViewController: BaseViewController {
                 self?.nextButton.setTitle(onboarding.buttonTitle, for: .normal)
             })
             .drive(onNext: { [weak self] index in
-                self?.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
+                self?.collectionView.scrollToItem(at: IndexPath(item: index, section: 0),
+                                                  at: .centeredHorizontally, animated: true)
             })
             .disposed(by: disposeBag)
 
@@ -90,7 +91,8 @@ class OnboardingViewController: BaseViewController {
         flowLayout.minimumLineSpacing = .zero
         flowLayout.minimumInteritemSpacing = .zero
 
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then {
+        self.collectionView = UICollectionView(frame: .zero,
+                                               collectionViewLayout: flowLayout).then {
             $0.delegate = self
             $0.dataSource = self
             $0.isPagingEnabled = true
@@ -132,15 +134,18 @@ class OnboardingViewController: BaseViewController {
 // MARK: - DataSource
 
 extension OnboardingViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return viewModel.onboardingDataSource.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let onboarding = viewModel.onboardingDataSource[safe: indexPath.item] else {
             return UICollectionViewCell()
         }
-        let cell = collectionView.t_dequeueReusableCell(cellType: OnboardingCollectionViewCell.self, indexPath: indexPath)
+        let cell = collectionView.t_dequeueReusableCell(cellType: OnboardingCollectionViewCell.self,
+                                                        indexPath: indexPath)
         cell.setOnboarding(onboarding)
 
         return cell
@@ -148,7 +153,9 @@ extension OnboardingViewController: UICollectionViewDataSource {
 }
 
 extension OnboardingViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(w: collectionView.frame.width, h: collectionView.frame.height - 100)
     }
 }
@@ -156,7 +163,9 @@ extension OnboardingViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - Delegate
 
 extension OnboardingViewController: UICollectionViewDelegate {
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let pageIndex = Int(targetContentOffset.pointee.x / collectionView.frame.width)
 
         currentPageRelay.accept(pageIndex)

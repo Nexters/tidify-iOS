@@ -75,7 +75,10 @@ class FolderTabViewController: BaseViewController {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
 
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then {
+        self.collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: flowLayout
+        ).then {
             $0.backgroundColor = .white
             $0.delegate = self
             $0.dataSource = self
@@ -96,18 +99,22 @@ class FolderTabViewController: BaseViewController {
 // MARK: - DataSource
 
 extension FolderTabViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         let isEmptyDataSource = self.viewModel.folderList.isEmpty
 
         return isEmptyDataSource ? 1 : self.viewModel.folderList.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let isEmptyDataSource = self.viewModel.folderList.isEmpty
 
         if isEmptyDataSource {
-            let cell = collectionView.t_dequeueReusableCell(cellType: NoticeEmptyCollectionViewCell.self,
-                                                            indexPath: indexPath)
+            let cell = collectionView.t_dequeueReusableCell(
+                cellType: NoticeEmptyCollectionViewCell.self,
+                indexPath: indexPath
+            )
             cell.setNoticeTitle(R.string.localizable.folderNoticeEmptyTitle())
             cell.contentView.t_cornerRadius([.topLeft, .topRight], radius: 18)
 
@@ -128,7 +135,9 @@ extension FolderTabViewController: UICollectionViewDataSource {
 // MARK: - DelegateFlowLayout
 
 extension FolderTabViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(w: FolderCollectionViewCell.width, h: FolderCollectionViewCell.height)
     }
 }
@@ -136,7 +145,8 @@ extension FolderTabViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - Delegate
 
 extension FolderTabViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
         let isEmptyDataSource = self.viewModel.folderList.isEmpty
 
         if isEmptyDataSource {
@@ -148,7 +158,9 @@ extension FolderTabViewController: UICollectionViewDelegate {
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
     }
 }

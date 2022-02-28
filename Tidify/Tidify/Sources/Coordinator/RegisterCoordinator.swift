@@ -34,9 +34,11 @@ class RegisterCoordinator: Coordinator {
         }
 
         let registerViewModel = RegisterViewModel()
-        let registerViewController = RegisterViewController(viewModel: registerViewModel,
-                                                            title: R.string.localizable.mainAddBookMarkTitle(),
-                                                            leftButton: backButton)
+        let registerViewController = RegisterViewController(
+            viewModel: registerViewModel,
+            title: R.string.localizable.mainAddBookMarkTitle(),
+            leftButton: backButton
+        )
         registerViewController.coordinator = self
 
         backButton.rx.tap.asDriver()
@@ -56,9 +58,11 @@ class RegisterCoordinator: Coordinator {
         }
 
         let registerViewModel = RegisterViewModel()
-        let registerViewController = RegisterViewController(viewModel: registerViewModel,
-                                                            title: R.string.localizable.mainAddBookMarkTitle(),
-                                                            leftButton: backButton)
+        let registerViewController = RegisterViewController(
+            viewModel: registerViewModel,
+            title: R.string.localizable.mainAddBookMarkTitle(),
+            leftButton: backButton
+        )
         registerViewController.coordinator = self
 
         backButton.rx.tap.asDriver()

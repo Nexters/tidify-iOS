@@ -53,11 +53,17 @@ class TidifyNavigationBar: UIView {
 
     // MARK: - Initialize
 
-    init(_ navigationBarStyle: NavigationBarStyle, title: String? = nil, leftButton: UIButton, rightButtons: [UIButton] = []) {
+    init(_ navigationBarStyle: NavigationBarStyle,
+         title: String? = nil,
+         leftButton: UIButton,
+         rightButtons: [UIButton] = []) {
         self.navigationBarStyle = navigationBarStyle
         super.init(frame: .zero)
 
-        setupViews(navigationBarStyle, title: title, leftButton: leftButton, rightButtons: rightButtons)
+        setupViews(navigationBarStyle,
+                   title: title,
+                   leftButton: leftButton,
+                   rightButtons: rightButtons)
         setupLayoutConstraints()
     }
 
@@ -67,7 +73,10 @@ class TidifyNavigationBar: UIView {
 
     // MARK: - Methods
 
-    func setupViews(_ navigationBarStyle: NavigationBarStyle, title: String?, leftButton: UIButton, rightButtons: [UIButton]) {
+    func setupViews(_ navigationBarStyle: NavigationBarStyle,
+                    title: String?,
+                    leftButton: UIButton,
+                    rightButtons: [UIButton]) {
         self.backgroundColor = .white
 
         self.titleLabel = UILabel().then {

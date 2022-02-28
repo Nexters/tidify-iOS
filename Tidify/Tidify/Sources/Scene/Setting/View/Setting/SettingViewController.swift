@@ -31,10 +31,11 @@ class SettingViewController: BaseViewController {
     private let appLockIsOn = PublishSubject<Bool>()
     private let disposeBag = DisposeBag()
 
-    lazy var navigationBar = TidifyNavigationBar(.default,
-                                                 title: R.string.localizable.settingNavigationTitle(),
-                                                 leftButton: backButton,
-                                                 rightButtons: [])
+    lazy var navigationBar = TidifyNavigationBar(
+        .default,
+        title: R.string.localizable.settingNavigationTitle(),
+        leftButton: backButton,
+        rightButtons: [])
 
     // MARK: - Initialize
 
@@ -120,17 +121,24 @@ extension SettingViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        let cell = tableView.t_dequeueReusableCell(cellType: DefaultTableViewCell.self, indexPath: indexPath)
+        let cell = tableView.t_dequeueReusableCell(cellType: DefaultTableViewCell.self,
+                                                   indexPath: indexPath)
 
         switch section {
         case .account:
             switch indexPath.row {
             case 0:
-                cell.setCell(R.string.localizable.settingAccount(), isHeader: true, showDisclosure: false)
+                cell.setCell(R.string.localizable.settingAccount(),
+                             isHeader: true,
+                             showDisclosure: false)
             case 1:
-                cell.setCell(R.string.localizable.settingAccountProfile(), isHeader: false, showDisclosure: true)
+                cell.setCell(R.string.localizable.settingAccountProfile(),
+                             isHeader: false,
+                             showDisclosure: true)
             case 2:
-                cell.setCell(R.string.localizable.settingAccountSocialLogin(), isHeader: false, showDisclosure: true)
+                cell.setCell(R.string.localizable.settingAccountSocialLogin(),
+                             isHeader: false,
+                             showDisclosure: true)
             default:
                 return DefaultTableViewCell()
             }
@@ -138,11 +146,17 @@ extension SettingViewController: UITableViewDataSource {
         case .dataManagement:
             switch indexPath.row {
             case 0:
-                cell.setCell(R.string.localizable.settingDataManagement(), isHeader: true, showDisclosure: false)
+                cell.setCell(R.string.localizable.settingDataManagement(),
+                             isHeader: true,
+                             showDisclosure: false)
             case 1:
-                cell.setCell(R.string.localizable.settingDataManagementImageCache(), isHeader: false, showDisclosure: false)
+                cell.setCell(R.string.localizable.settingDataManagementImageCache(),
+                             isHeader: false,
+                             showDisclosure: false)
             case 2:
-                cell.setCell(R.string.localizable.settingDataManagementCache(), isHeader: false, showDisclosure: false)
+                cell.setCell(R.string.localizable.settingDataManagementCache(),
+                             isHeader: false,
+                             showDisclosure: false)
             default:
                 return DefaultTableViewCell()
             }
@@ -184,7 +198,10 @@ extension SettingViewController: UITableViewDataSource {
         }
 
         if section == .dataManagement {
-            let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 16))
+            let paddingView = UIView(frame: CGRect(x: 0,
+                                                   y: 0,
+                                                   width: tableView.frame.width,
+                                                   height: 16))
             paddingView.backgroundColor = .clear
 
             return paddingView
@@ -217,18 +234,34 @@ extension SettingViewController: UITableViewDelegate {
         case .dataManagement:
             switch indexPath.row {
             case 1:
-                let cancelButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertImageCacheCancelTitle(), { [weak self] in self?.dismiss(animated: true, completion: nil) })
-                let okButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertImageCacheOkTitle(), { [weak self] in
-                                                            ImageCache.default.clearCache()
-                                                            self?.dismiss(animated: true, completion: nil) })
-                Notifier.alert(on: self, title: R.string.localizable.settingAlertImageCacheTitle(), message: R.string.localizable.settingAlertImageCacheMessage(), buttons: [cancelButton, okButton])
+                let cancelButton: Notifier.AlertButtonAction = (
+                    R.string.localizable.settingAlertImageCacheCancelTitle(),
+                    { [weak self] in self?.dismiss(animated: true, completion: nil) })
+
+                let okButton: Notifier.AlertButtonAction = (
+                    R.string.localizable.settingAlertImageCacheOkTitle(),
+                    { [weak self] in ImageCache.default.clearCache()
+                        self?.dismiss(animated: true, completion: nil) })
+
+                Notifier.alert(on: self,
+                               title: R.string.localizable.settingAlertImageCacheTitle(),
+                               message: R.string.localizable.settingAlertImageCacheMessage(),
+                               buttons: [cancelButton, okButton])
             case 2:
-                let cancelButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertAllCacheCancelTitle(), { [weak self] in  self?.dismiss(animated: true, completion: nil) })
-                let okButton: Notifier.AlertButtonAction = (R.string.localizable.settingAlertAllCacheOkTitle(), { [weak self] in
-                                                            ImageCache.default.clearCache()
-                                                            URLCache.shared.removeAllCachedResponses()
-                                                            self?.dismiss(animated: true, completion: nil) })
-                Notifier.alert(on: self, title: R.string.localizable.settingAlertAllCacheTitle(), message: R.string.localizable.settingAlertAllCacheMessage(), buttons: [cancelButton, okButton])
+                let cancelButton: Notifier.AlertButtonAction = (
+                    R.string.localizable.settingAlertAllCacheCancelTitle(),
+                    { [weak self] in  self?.dismiss(animated: true, completion: nil) })
+
+                let okButton: Notifier.AlertButtonAction = (
+                    R.string.localizable.settingAlertAllCacheOkTitle(),
+                    { [weak self] in ImageCache.default.clearCache()
+                        URLCache.shared.removeAllCachedResponses()
+                        self?.dismiss(animated: true, completion: nil) })
+
+                Notifier.alert(on: self,
+                               title: R.string.localizable.settingAlertAllCacheTitle(),
+                               message: R.string.localizable.settingAlertAllCacheMessage(),
+                               buttons: [cancelButton, okButton])
             default:
                 return
             }

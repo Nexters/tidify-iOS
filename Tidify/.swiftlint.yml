@@ -49,6 +49,8 @@ opt_in_rules:
 - vertical_parameter_alignment_on_call
 - yoda_condition
 
+line_length: 100
+
 type_name:
   max_length: 60
 

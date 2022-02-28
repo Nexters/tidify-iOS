@@ -62,7 +62,12 @@ class FolderTabCoordinator: Coordinator {
 
     func startPush() -> UIViewController {
         let leftButton = UIButton().then {
-            $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
+            $0.frame = CGRect(
+                x: 0,
+                y: 0,
+                width: Self.navButtonHeight,
+                height: Self.navButtonHeight
+            )
             $0.setImage(R.image.home_icon_profile(), for: .normal)
             $0.backgroundColor = .white
             $0.layer.cornerRadius = Self.navButtonHeight / 2
@@ -74,7 +79,12 @@ class FolderTabCoordinator: Coordinator {
         }
 
         let rightButton = UIButton().then {
-            $0.frame = CGRect(x: 0, y: 0, width: Self.createFolderButtonWidth, height: Self.navButtonHeight)
+            $0.frame = CGRect(
+                x: 0,
+                y: 0,
+                width: Self.createFolderButtonWidth,
+                height: Self.navButtonHeight
+            )
             $0.setImage(R.image.nav_icon_createFolder(), for: .normal)
             $0.backgroundColor = .t_tidiBlue()
             $0.layer.cornerRadius = Self.navButtonHeight / 2 - 3
@@ -102,10 +112,10 @@ extension FolderTabCoordinator {
     }
 
     func pushCreateFolderView() {
-        let createFolderCoordinator = CreateFolderCoordinator(navigationController: navigationController)
-        createFolderCoordinator.parentCoordinator = self
-        childCoordinators.append(createFolderCoordinator)
+        let folderCoordinator = CreateFolderCoordinator(navigationController: navigationController)
+        folderCoordinator.parentCoordinator = self
+        childCoordinators.append(folderCoordinator)
 
-        createFolderCoordinator.start()
+        folderCoordinator.start()
     }
 }
