@@ -38,8 +38,9 @@ private extension NoticeEmptyCollectionViewCell {
         contentView.backgroundColor = .white
 
         let titleLabel = UILabel().then {
-            $0.textColor = .lightGray
-            $0.font = .t_R(16)
+            $0.textColor = .t_indigo2()
+            $0.font = .t_B(16)
+            $0.textAlignment = .center
             contentView.addSubview($0)
         }
         self.titleLabel = titleLabel
@@ -47,7 +48,8 @@ private extension NoticeEmptyCollectionViewCell {
 
     func setupLayoutConstraints() {
         titleLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.top.equalToSuperview().offset(28)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }

@@ -76,7 +76,7 @@
 "Profile.nav.button.title" = "저장";
 
 // Folder
-"Folder.notice.empty.title" = "지금은 폴더가 없어요.";
+"Folder.notice.empty.title" = "폴더에 정리하고 싶지 않나요?";
 "Folder.navigation.title" = "폴더 생성";
 "Folder.folder.title" = "폴더 이름";
 "Folder.folder.placeHolder" = "어떤 폴더인가요?";
