@@ -10,7 +10,7 @@ import Moya
 import RxCocoa
 import RxSwift
 
-enum ApiProvider {
+enum APIProvider {
     private static let moyaProvider = MoyaProvider<MultiTarget>(plugins: [CustomPlugin()],
                                                                 trackInflights: true)
 

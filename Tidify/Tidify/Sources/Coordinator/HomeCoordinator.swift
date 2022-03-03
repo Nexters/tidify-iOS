@@ -123,12 +123,13 @@ extension HomeCoordinator: HomeViewModelDelegate {
         registerCoordinator.start()
     }
 
-    func pushWebView() {
-        let webViewCoordinator = WebViewCoordinator(navigationController: navigationController)
-        webViewCoordinator.parentCoordinator = self
-        childCoordinators.append(webViewCoordinator)
+    func pushWebView(_ url: String) {
+        let webViewCooridnator = WebViewCoordinator(navigationController: navigationController,
+                                                    urlString: url)
+        webViewCooridnator.parentCoordinator = self
+        childCoordinators.append(webViewCooridnator)
 
-        webViewCoordinator.start()
+        webViewCooridnator.start()
     }
 }
 
