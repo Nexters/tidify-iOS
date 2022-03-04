@@ -33,7 +33,7 @@ class SignInViewModel: ViewModelType {
              UserApi.shared.rx.loginWithKakaoAccount()
         }
         .flatMap { snsToken in
-            return ApiProvider.request(AuthAPI.auth(socialLoginType: .kakao,
+            return APIProvider.request(AuthAPI.auth(socialLoginType: .kakao,
                                                     accessToken: snsToken.accessToken,
                                                     refreshToken: snsToken.refreshToken))
                 .map(UserSessionDTO.self)

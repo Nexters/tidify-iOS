@@ -123,8 +123,9 @@ extension HomeCoordinator: HomeViewModelDelegate {
         registerCoordinator.start()
     }
 
-    func pushWebView() {
-        let webViewCoordinator = WebViewCoordinator(navigationController: navigationController)
+    func pushWebView(_ url: String) {
+        let webViewCoordinator = WebViewCoordinator(navigationController: navigationController,
+                                                    urlString: url)
         webViewCoordinator.parentCoordinator = self
         childCoordinators.append(webViewCoordinator)
 

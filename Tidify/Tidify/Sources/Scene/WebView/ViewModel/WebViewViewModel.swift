@@ -10,6 +10,11 @@ import Foundation
 class WebViewViewModel: ViewModelType {
 
     // MARK: - Properties
+    var bookMarkURLString: String = ""
+
+    init(_ urlString: String) {
+        self.bookMarkURLString = urlString
+    }
 
     struct Input {
 
