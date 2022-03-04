@@ -63,7 +63,7 @@ class RegisterViewModel: ViewModelType {
 
         let didSaveBookMark = previewResponseSubject.t_asDriverSkipError()
             .flatMapLatest { urlString, bookMarkTitle, ogImageUrl, tag -> Driver<Void> in
-                return ApiProvider.request(BookMarkAPI.createBookMark(url: urlString,
+                return APIProvider.request(BookMarkAPI.createBookMark(url: urlString,
                                                                       title: bookMarkTitle,
                                                                       ogImageUrl: ogImageUrl,
                                                                       tags: tag))

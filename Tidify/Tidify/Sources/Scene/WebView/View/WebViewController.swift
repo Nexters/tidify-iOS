@@ -40,7 +40,7 @@ class WebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let url = URL(string: "https://www.apple.com")!
+        let url = URL(string: viewModel.bookMarkURLString)!
         let request = URLRequest(url: url)
         webView.load(request)
     }

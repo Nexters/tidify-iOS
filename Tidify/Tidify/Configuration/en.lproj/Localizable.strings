@@ -38,6 +38,12 @@
 "Main.addBookMark.title" = "북마크 생성";
 "Main.content.tag.placeHolder" = "contained tag name";
 "Main.notice.empty.title" = "지금은 북마크가 비어있어요.";
+"Main.cell.edit.title" = "편집";
+"Main.cell.delete.title" = "삭제";
+"Main.notifier.bookMark.delete.title" = "북마크가 없어져요";
+"Main.notifier.bookMark.delete.desc" = "이 글은 더 이상 볼 수 없을텐데 정말 삭제하시겠어요?";
+"Main.notifier.bookMark.button.next" = "다음에";
+"Main.notifier.bookMark.button.delete" = "삭제";
 
 // Register
 "Register.address.title" = "주소입력";

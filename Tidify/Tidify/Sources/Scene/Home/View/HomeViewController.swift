@@ -14,25 +14,24 @@ import UIKit
 class HomeViewController: BaseViewController {
 
     // MARK: - Properties
-
     weak var coordinator: HomeCoordinator?
 
-    private weak var collectionView: UICollectionView!
-    private weak var customHeaderView: UIView!
+    private weak var tableView: UITableView!
     private let profileButton: UIButton!
     private let createBookMarkButton: UIButton!
 
     private let viewModel: HomeViewModel!
-    private let cellTapSubject = PublishSubject<BookMark>()
+    private let didTapCellSubject = PublishSubject<BookMark>()
     private let addListItemSubject = PublishSubject<URL>()
     private let disposeBag = DisposeBag()
+
+    private let didSwipeBookMarkCellSubject = PublishSubject<BookMarkCellSwipeOption>()
 
     lazy var navigationBar = TidifyNavigationBar(.rounded,
                                                  leftButton: profileButton,
                                                  rightButtons: [createBookMarkButton])
 
     // MARK: - Initialize
-
     init(viewModel: HomeViewModel, leftButton: UIButton, rightButton: UIButton) {
         self.viewModel = viewModel
         self.profileButton = leftButton
@@ -65,123 +64,103 @@ class HomeViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - LifeCycle
-
+    // MARK: - Override
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let input = HomeViewModel.Input(cellTapSubject: cellTapSubject.t_asDriverSkipError())
-        let output = viewModel.transform(input)
+        let input = HomeViewModel.Input(
+            didSwipeBookMarkCell: didSwipeBookMarkCellSubject.t_asDriverSkipError(),
+            didTapCell: didTapCellSubject.t_asDriverSkipError()
+        )
 
-        output.cellTapEvent.drive().disposed(by: disposeBag)
+        let output = viewModel.transform(input)
 
         output.didReceiveBookMarks
             .drive(onNext: { [weak self] _ in
-                self?.collectionView.reloadData()
+                self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
-    }
 
-    // MARK: - Methods
+        output.didTapCell
+            .drive()
+            .disposed(by: disposeBag)
+    }
 
     override func setupViews() {
         setupNavigationBar()
         view.backgroundColor = .white
 
-        let flowLayout = UICollectionViewFlowLayout()
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then {
+        self.tableView = UITableView().then {
             $0.delegate = self
             $0.dataSource = self
-            $0.t_registerCellClass(cellType: BookMarkCollectionViewCell.self)
-            $0.t_registerCellClass(cellType: NoticeEmptyCollectionViewCell.self)
-            $0.backgroundColor = .init(235, 235, 240, 100)
+            $0.backgroundColor = .white
+            $0.t_registerCellClass(cellType: BookMarkTableViewCell.self)
             view.addSubview($0)
         }
-        self.collectionView = collectionView
     }
 
     override func setupLayoutConstraints() {
-        collectionView.snp.makeConstraints {
+        tableView.snp.makeConstraints {
             $0.top.equalTo(navigationBar.snp.bottom).inset(15)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
 
-// MARK: - DataSource
-
-extension HomeViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        let isEmptyDataSource = self.viewModel.bookMarkList.isEmpty
-
-        return isEmptyDataSource ? 1 : self.viewModel.bookMarkList.count
+// MARK: - TableViewDataSource
+extension HomeViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return viewModel.bookMarkList.count
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let isEmptyDataSource = self.viewModel.bookMarkList.isEmpty
-
-        if isEmptyDataSource {
-            let cell = collectionView.t_dequeueReusableCell(
-                cellType: NoticeEmptyCollectionViewCell.self,
-                indexPath: indexPath
-            )
-
-            cell.setNoticeTitle(R.string.localizable.mainNoticeEmptyTitle())
-            cell.contentView.t_cornerRadius([.topLeft, .topRight], radius: 18)
-
-            return cell
-        } else {
-            let cell = collectionView.t_dequeueReusableCell(
-                cellType: BookMarkCollectionViewCell.self,
-                indexPath: indexPath
-            )
-            let bookMark = self.viewModel.bookMarkList[indexPath.item]
-            cell.setBookMark(bookMark)
-
-            return cell
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let bookMark = viewModel.bookMarkList[safe: indexPath.row] else {
+            return UITableViewCell()
         }
+
+        let cell = tableView.t_dequeueReusableCell(cellType: BookMarkTableViewCell.self,
+                                                   indexPath: indexPath)
+
+        cell.configure(bookMark)
+        return cell
     }
 }
 
-// MARK: - Delegate
-
-extension HomeViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let isEmptyDataSource = self.viewModel.bookMarkList.isEmpty
-
-        if isEmptyDataSource {
-            return
+// MARK: - TableViewDelegate
+extension HomeViewController: UITableViewDelegate {
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        guard let bookMark = viewModel.bookMarkList[safe: indexPath.row] else {
+            return .none
         }
 
-        let bookMark = self.viewModel.bookMarkList[indexPath.item]
+        let editAction = UIContextualAction(style: .normal,
+                                            title: R.string.localizable.mainCellEditTitle(),
+                                            handler: { [weak self] _, _, _ in
+            self?.showAlertForDeleteBookMark(bookMark: bookMark)
+        })
 
-        cellTapSubject.onNext(bookMark)
+        let deleteAction = UIContextualAction(style: .destructive,
+                                              title: R.string.localizable.mainCellDeleteTitle(),
+                                              handler: { [weak self] _, _, _ in
+            self?.didSwipeBookMarkCellSubject.onNext(.delete(bookMark))
+        })
+
+        return .init(actions: [editAction, deleteAction])
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let bookMark = viewModel.bookMarkList[safe: indexPath.row] else { return }
+
+        didTapCellSubject.onNext(bookMark)
     }
 }
 
-// MARK: - DelegateFlowLayout
-
-extension HomeViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(w: self.collectionView.frame.width, h: BookMarkCollectionViewCell.cellHeight)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        ßlayout collectionViewLayout: UICollectionViewLayout,
-                        ßinsetForSectionAt section: Int) -> UIEdgeInsets {
-        if section == .zero {
-            return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
-        }
-
-        return UIEdgeInsets.zero
-    }
-}
-
+// MARK: - Private Extension
 private extension HomeViewController {
     func viewShown() {
         if let userDefaults = UserDefaults(suiteName: "group.com.aksmj.Tidify") {
@@ -199,5 +178,20 @@ private extension HomeViewController {
         navigationBar.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+
+    func showAlertForDeleteBookMark(bookMark: BookMark) {
+        let nextAction: Notifier.AlertButtonAction = (
+            R.string.localizable.mainNotifierBookMarkButtonNext(), nil)
+
+        let deleteAction: Notifier.AlertButtonAction = (
+            R.string.localizable.mainNotifierBookMarkButtonDelete(),
+            { [weak self] in self?.didSwipeBookMarkCellSubject.onNext(.delete(bookMark)) }
+        )
+
+        Notifier.alert(on: self,
+                       title: R.string.localizable.mainNotifierBookMarkDeleteTitle(),
+                       message: R.string.localizable.mainNotifierBookMarkDeleteDesc(),
+                       buttons: [nextAction, deleteAction])
     }
 }

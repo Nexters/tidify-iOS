@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
+		8680A0A327D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */; };
 		B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */; };
 		B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */; };
-		B50E6F6C26BAC802005949B4 /* BookMarkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E6F6B26BAC802005949B4 /* BookMarkCollectionViewCell.swift */; };
 		B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CC269C883500B34C5E /* HomeCoordinator.swift */; };
 		B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */; };
 		B5314FAB2699DC2300769AB2 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5314FAA2699DC2300769AB2 /* UIFont+.swift */; };
@@ -37,7 +37,6 @@
 		B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D831F26998A4E00D5F513 /* UIColor+.swift */; };
 		B56D832226998A5B00D5F513 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D832126998A5B00D5F513 /* UITableView+.swift */; };
 		B56D832426998A7300D5F513 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D832326998A7300D5F513 /* UIView+.swift */; };
-		B570F9EE26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B570F9ED26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift */; };
 		B570F9F026BEAAD30095A0F0 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B570F9EF26BEAAD30095A0F0 /* UIViewController+.swift */; };
 		B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B570F9F126BEB57E0095A0F0 /* UINavigationBar+.swift */; };
 		B577660126C1732F00533276 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B577660026C1732F00533276 /* AuthAPI.swift */; };
@@ -121,10 +120,10 @@
 /* Begin PBXFileReference section */
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
+		8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
 		B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetLabelColorTableViewCell.swift; sourceTree = "<group>"; };
-		B50E6F6B26BAC802005949B4 /* BookMarkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkCollectionViewCell.swift; sourceTree = "<group>"; };
 		B52982CC269C883500B34C5E /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		B52982CE269C8A3800B34C5E /* RegisterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCoordinator.swift; sourceTree = "<group>"; };
 		B5314FAA2699DC2300769AB2 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
@@ -153,7 +152,6 @@
 		B56D831F26998A4E00D5F513 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		B56D832126998A5B00D5F513 /* UITableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
 		B56D832326998A7300D5F513 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
-		B570F9ED26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeEmptyCollectionViewCell.swift; sourceTree = "<group>"; };
 		B570F9EF26BEAAD30095A0F0 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		B570F9F126BEB57E0095A0F0 /* UINavigationBar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+.swift"; sourceTree = "<group>"; };
 		B577660026C1732F00533276 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
@@ -388,8 +386,7 @@
 		B570F9EC26BE97470095A0F0 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				B50E6F6B26BAC802005949B4 /* BookMarkCollectionViewCell.swift */,
-				B570F9ED26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift */,
+				8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -888,7 +885,6 @@
 				B5314FAB2699DC2300769AB2 /* UIFont+.swift in Sources */,
 				B56D831C26998A2900D5F513 /* UIApplication+.swift in Sources */,
 				B5443B9A26C8E71500F7494A /* ProfileCoordinator.swift in Sources */,
-				B50E6F6C26BAC802005949B4 /* BookMarkCollectionViewCell.swift in Sources */,
 				B53B93F426DB7D4900EBCB21 /* OnboardingViewController.swift in Sources */,
 				B53B93F826DB7DD000EBCB21 /* OnboardingViewModel.swift in Sources */,
 				B588C69626D0C958003F4308 /* FolderTabViewController.swift in Sources */,
@@ -900,6 +896,7 @@
 				B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */,
 				B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */,
 				B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */,
+				8680A0A327D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift in Sources */,
 				B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */,
 				B5CA8B1926B0438600D9C6D3 /* SettingViewController.swift in Sources */,
 				B53B93FF26DBC9B600EBCB21 /* SignInCoordinator.swift in Sources */,
@@ -948,7 +945,6 @@
 				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
 				B5F19C142699A04400D1E8BB /* WebViewController.swift in Sources */,
-				B570F9EE26BE97770095A0F0 /* NoticeEmptyCollectionViewCell.swift in Sources */,
 				B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */,
 				B588C6A326D0D23C003F4308 /* CreateFolderCoordinator.swift in Sources */,
 				B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */,

@@ -15,17 +15,19 @@ class WebViewCoordinator: Coordinator {
     weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
+    private let bookMarkURLString: String
 
     // MARK: - Initialize
 
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, urlString: String) {
         self.navigationController = navigationController
+        self.bookMarkURLString = urlString
     }
 
     // MARK: - Methods
 
     func start() {
-        let webViewViewModel = WebViewViewModel()
+        let webViewViewModel = WebViewViewModel(bookMarkURLString)
         let webViewController = WebViewController(viewModel: webViewViewModel)
         webViewController.coordinator = self
 
