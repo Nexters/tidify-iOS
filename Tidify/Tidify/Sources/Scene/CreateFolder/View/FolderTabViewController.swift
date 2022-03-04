@@ -84,7 +84,7 @@ class FolderTabViewController: BaseViewController {
             $0.delegate = self
             $0.dataSource = self
             $0.t_registerCellClass(cellType: FolderCollectionViewCell.self)
-            $0.t_registerCellClass(cellType: NoticeEmptyCollectionViewCell.self)
+            $0.t_registerCellClass(cellType: FolderCollectionViewEmptyCell.self)
             $0.layer.cornerRadius = 16
             $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             view.addSubview($0)
@@ -115,7 +115,7 @@ extension FolderTabViewController: UICollectionViewDataSource {
 
         if isEmptyDataSource {
             let cell = collectionView.t_dequeueReusableCell(
-                cellType: NoticeEmptyCollectionViewCell.self,
+                cellType: FolderCollectionViewEmptyCell.self,
                 indexPath: indexPath
             )
             cell.setNoticeTitle(R.string.localizable.folderNoticeEmptyTitle())
