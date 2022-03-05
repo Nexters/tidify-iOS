@@ -35,13 +35,12 @@ private extension FolderCollectionViewEmptyCell {
     func setupViews() {
         contentView.backgroundColor = .white
 
-        let titleLabel = UILabel().then {
+        self.titleLabel = UILabel().then {
             $0.textColor = .t_indigo2()
             $0.font = .t_B(16)
             $0.textAlignment = .center
             contentView.addSubview($0)
         }
-        self.titleLabel = titleLabel
     }
 
     func setupLayoutConstraints() {

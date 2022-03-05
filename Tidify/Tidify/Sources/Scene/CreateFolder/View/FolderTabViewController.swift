@@ -85,8 +85,7 @@ class FolderTabViewController: BaseViewController {
             $0.dataSource = self
             $0.t_registerCellClass(cellType: FolderCollectionViewCell.self)
             $0.t_registerCellClass(cellType: FolderCollectionViewEmptyCell.self)
-            $0.layer.cornerRadius = 16
-            $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            $0.t_cornerRadius([.topLeft, .topRight], radius: 16)
             view.addSubview($0)
         }
     }
@@ -175,7 +174,6 @@ private extension FolderTabViewController {
             $0.top.equalTo(view.top)
             $0.leading.trailing.equalToSuperview()
         }
-        navigationBar.layer.cornerRadius = 16
-        navigationBar.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        navigationBar.t_cornerRadius([.bottomLeft, .bottomRight], radius: 16)
     }
 }
