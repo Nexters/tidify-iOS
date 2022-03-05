@@ -24,7 +24,7 @@ class FolderTabViewController: BaseViewController {
     private let viewModel: FolderTabViewModel
     private let disposeBag = DisposeBag()
 
-    private lazy var navigationBar = TidifyNavigationBar(.rounded,
+    private lazy var navigationBar = TidifyNavigationBar(.folder,
                                                          leftButton: profileButton,
                                                          rightButtons: [createFolderButton])
 
@@ -71,6 +71,7 @@ class FolderTabViewController: BaseViewController {
 
     override func setupViews() {
         setupNavigationBar()
+        view.backgroundColor = .t_background()
 
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -83,14 +84,16 @@ class FolderTabViewController: BaseViewController {
             $0.delegate = self
             $0.dataSource = self
             $0.t_registerCellClass(cellType: FolderCollectionViewCell.self)
-            $0.t_registerCellClass(cellType: NoticeEmptyCollectionViewCell.self)
+            $0.t_registerCellClass(cellType: FolderCollectionViewEmptyCell.self)
+            $0.layer.cornerRadius = 16
+            $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             view.addSubview($0)
         }
     }
 
     override func setupLayoutConstraints() {
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(navigationBar.snp.bottom)
+            make.top.equalTo(navigationBar.snp.bottom).offset(16)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -112,7 +115,7 @@ extension FolderTabViewController: UICollectionViewDataSource {
 
         if isEmptyDataSource {
             let cell = collectionView.t_dequeueReusableCell(
-                cellType: NoticeEmptyCollectionViewCell.self,
+                cellType: FolderCollectionViewEmptyCell.self,
                 indexPath: indexPath
             )
             cell.setNoticeTitle(R.string.localizable.folderNoticeEmptyTitle())
@@ -161,7 +164,7 @@ extension FolderTabViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
     }
 }
 
@@ -169,8 +172,10 @@ private extension FolderTabViewController {
     func setupNavigationBar() {
         view.addSubview(navigationBar)
         navigationBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.top)
             $0.leading.trailing.equalToSuperview()
         }
+        navigationBar.layer.cornerRadius = 16
+        navigationBar.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
 }

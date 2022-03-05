@@ -15,7 +15,7 @@ class CreateFolderViewModel: ViewModelType {
     // MARK: - Properties
 
     let dataSource: [UIColor] = [UIColor.t_tidiBlue(),
-                                 UIColor.t_indigoBlue(),
+                                 UIColor.t_indigo(),
                                  UIColor.t_tidiBlue2(),
                                  UIColor.systemRed,
                                  UIColor.systemOrange,

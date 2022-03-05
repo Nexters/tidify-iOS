@@ -77,7 +77,7 @@ class OnboardingViewController: BaseViewController {
 
     override func setupViews() {
         self.pageControl = UIPageControl().then {
-            $0.currentPageIndicatorTintColor = .t_indigoBlue()
+            $0.currentPageIndicatorTintColor = .t_indigo()
             $0.pageIndicatorTintColor = .systemGray
             $0.currentPage = 0
             $0.numberOfPages = viewModel.onboardingDataSource.count
