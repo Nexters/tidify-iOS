@@ -1127,13 +1127,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Tidify/Tidify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GBX2J8EHBY;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
 				INFOPLIST_FILE = Tidify/Configuration/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.aksmj.Tidify;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ian.Tidify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1149,13 +1149,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Tidify/Tidify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GBX2J8EHBY;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
 				INFOPLIST_FILE = Tidify/Configuration/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.aksmj.Tidify;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ian.Tidify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1167,7 +1167,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TidifyShareExtension/TidifyShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GBX2J8EHBY;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
 				INFOPLIST_FILE = TidifyShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1175,7 +1175,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.aksmj.Tidify.TidifyShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ian.Tidify.TidifyShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1188,7 +1188,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TidifyShareExtension/TidifyShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GBX2J8EHBY;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
 				INFOPLIST_FILE = TidifyShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1196,7 +1196,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.aksmj.Tidify.TidifyShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ian.Tidify.TidifyShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
