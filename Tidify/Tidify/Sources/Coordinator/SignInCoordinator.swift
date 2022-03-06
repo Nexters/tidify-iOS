@@ -35,12 +35,20 @@ final class SignInCoordinator: Coordinator {
 
 extension SignInCoordinator: SignInViewModelDelegate {
     func didSuccessSignInWithKakao() {
-        guard let mainCoordinator = parentCoordinator as? MainCoordinator else {
-            print("❌ [Ian] \(#file) - \(#line): \(#function) - Fail: ")
-            return
+        var mainCoordinator: MainCoordinator?
+
+        if let parentCoordinator = parentCoordinator as? MainCoordinator {
+            // startWithSignIn으로 분기한 경우
+            mainCoordinator = parentCoordinator
+        } else {
+            // startWithOnboarding으로 분기한 경우
+            let onboardingCoordinator = parentCoordinator as? OnboardingCoordinator
+            let parentCoordinator = onboardingCoordinator?.parentCoordinator as? MainCoordinator
+
+            mainCoordinator = parentCoordinator
         }
 
-        mainCoordinator.start()
+        mainCoordinator?.start()
     }
 
     func didSUccessSingInWithApple() {
