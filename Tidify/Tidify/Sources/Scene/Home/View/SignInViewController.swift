@@ -12,7 +12,7 @@ import SnapKit
 import Then
 import UIKit
 
-class SignInViewController: BaseViewController {
+final class SignInViewController: BaseViewController {
 
     // MARK: - Properties
 
@@ -49,25 +49,20 @@ class SignInViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let input = SignInViewModel.Input(signInWithKakaoButtonTap: kakaoSignInButton.rx.tap,
-                                          withoutLoginButtonTap: withoutLoginButton.rx.tap)
+        let input = SignInViewModel.Input(
+            signInWithKakaoButtonTap: kakaoSignInButton.rx.tap,
+            signInWithAppleButtonTap: appleSignInButton.rx.controlEvent(.touchUpInside),
+            withoutLoginButtonTap: withoutLoginButton.rx.tap
+        )
+
         let output = viewModel.transform(input)
 
         output.userSession
-            .map { [weak self] userSession in
-                if userSession != nil {
-                    self?.coordinator?.start()
-                    return "로그인 성공"
-                }
-                return "로그인 실패"
-            }
-            .drive(resultLabel.rx.text)
+            .drive()
             .disposed(by: disposeBag)
 
         output.didTapWithoutLoginButton
-            .drive(onNext: { [weak self] _ in
-                self?.coordinator?.start()
-            })
+            .drive()
             .disposed(by: disposeBag)
     }
 
@@ -77,21 +72,21 @@ class SignInViewController: BaseViewController {
         view.backgroundColor = .white
 
         self.logoImageView = UIImageView().then {
-            $0.image = R.image.tidify_logo()
+            $0.image = R.image.icon_symbolColor()
             $0.contentMode = .scaleAspectFill
             view.addSubview($0)
         }
 
         self.titleLabel = UILabel().then {
-            $0.text = R.string.localizable.loginTitle()
-            $0.font = .t_R(24)
-            $0.textColor = .black
+            $0.text = R.string.localizable.mainTitle()
+            $0.font = .t_B(32)
+            $0.textColor = .t_tidiBlue()
             view.addSubview($0)
         }
 
         self.subTitleLabel = UILabel().then {
-            $0.text = R.string.localizable.loginSubTitle()
-            $0.font = .t_B(32)
+            $0.text = R.string.localizable.loginTitle()
+            $0.font = .t_B(18)
             $0.textColor = .t_tidiBlue()
             view.addSubview($0)
         }

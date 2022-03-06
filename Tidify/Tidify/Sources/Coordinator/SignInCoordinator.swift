@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SignInCoordinator: Coordinator {
+final class SignInCoordinator: Coordinator {
 
     // MARK: - Properties
 
@@ -25,9 +25,26 @@ class SignInCoordinator: Coordinator {
 
     func start() {
         let signInViewModel = SignInViewModel()
+        signInViewModel.delegate = self
         let signInViewController = SignInViewController(viewModel: signInViewModel)
         signInViewController.coordinator = parentCoordinator as? MainCoordinator
 
         navigationController.pushViewController(signInViewController, animated: true)
+    }
+}
+
+extension SignInCoordinator: SignInViewModelDelegate {
+    func didSuccessSignInWithKakao() {
+        guard let mainCoordinator = parentCoordinator as? MainCoordinator else {
+            print("❌ [Ian] \(#file) - \(#line): \(#function) - Fail: ")
+            return
+        }
+
+        mainCoordinator.start()
+    }
+
+    func didSUccessSingInWithApple() {
+        // 추후 연동 진행
+        print("⚠️ [Ian] \(#file) - \(#line): \(#function): Apple Login")
     }
 }

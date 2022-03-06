@@ -27,9 +27,9 @@ class HomeViewController: BaseViewController {
 
     private let didSwipeBookMarkCellSubject = PublishSubject<BookMarkCellSwipeOption>()
 
-    lazy var navigationBar = TidifyNavigationBar(.rounded,
-                                                 leftButton: profileButton,
-                                                 rightButtons: [createBookMarkButton])
+    private lazy var navigationBar = TidifyNavigationBar(.rounded,
+                                                         leftButton: profileButton,
+                                                         rightButtons: [createBookMarkButton])
 
     // MARK: - Initialize
     init(viewModel: HomeViewModel, leftButton: UIButton, rightButton: UIButton) {
@@ -88,20 +88,20 @@ class HomeViewController: BaseViewController {
 
     override func setupViews() {
         setupNavigationBar()
-        view.backgroundColor = .white
 
         self.tableView = UITableView().then {
             $0.delegate = self
             $0.dataSource = self
             $0.backgroundColor = .white
             $0.t_registerCellClass(cellType: BookMarkTableViewCell.self)
+            $0.t_cornerRadius([.topLeft, .topRight], radius: 16)
             view.addSubview($0)
         }
     }
 
     override func setupLayoutConstraints() {
         tableView.snp.makeConstraints {
-            $0.top.equalTo(navigationBar.snp.bottom).inset(15)
+            $0.top.equalTo(navigationBar.snp.bottom).offset(15)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -176,7 +176,8 @@ private extension HomeViewController {
     func setupNavigationBar() {
         view.addSubview(navigationBar)
         navigationBar.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.top)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 
