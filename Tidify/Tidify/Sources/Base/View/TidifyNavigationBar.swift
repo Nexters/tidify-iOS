@@ -18,7 +18,7 @@ class TidifyNavigationBar: UIView {
         var height: CGFloat {
             switch self {
             case .default: return 44
-            case .rounded: return 104
+            case .rounded: return 144
             case .folder: return 144
             }
         }
