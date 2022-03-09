@@ -16,9 +16,7 @@ class RegisterViewController: BaseViewController {
 
     static let textFieldWidth: CGFloat = 335
     static let textFieldHeight: CGFloat = 48
-    static let labelSidePadding: CGFloat = 32
-    static let textFieldSidePadding: CGFloat = 20
-    static let registerButtonHeight: CGFloat = 96
+    static let sidePadding: CGFloat = 20
 
     // MARK: - Properties
 
@@ -30,7 +28,6 @@ class RegisterViewController: BaseViewController {
     private weak var bookMarkTextField: UITextField!
     private weak var tagTitleLabel: UILabel!
     private weak var tagTextField: UITextField!
-    private weak var dividerView: UIView!
     private weak var registerButton: UIButton!
     private weak var notifyInvalidFormatUrlLabel: UILabel!
     private let leftButton: UIButton!
@@ -158,55 +155,71 @@ class RegisterViewController: BaseViewController {
         self.urlTitleLabel = UILabel().then {
             $0.text = R.string.localizable.registerAddressTitle()
             $0.font = .t_B(16)
+            $0.textColor = .black
             self.view.addSubview($0)
         }
 
         self.urlTextField = UITextField().then {
+            let attrPlaceholderString = NSAttributedString(
+                string: R.string.localizable.registerAddressPlaceHolder(),
+                attributes: [.foregroundColor: UIColor.gray])
             $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
             $0.leftViewMode = .always
-            $0.placeholder = R.string.localizable.registerAddressPlaceHolder()
+            $0.attributedPlaceholder = attrPlaceholderString
             $0.backgroundColor = .white
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.gray.cgColor
+            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
             $0.font = .t_R(16)
-            setupTextFieldLayer($0)
+            $0.textColor = .black
             view.addSubview($0)
         }
 
         self.bookMarkTitleLabel = UILabel().then {
             $0.text = R.string.localizable.registerBookMarkTitle()
             $0.font = .t_B(16)
+            $0.textColor = .black
             self.view.addSubview($0)
         }
 
         self.bookMarkTextField = UITextField().then {
+            let attrPlaceholderString = NSAttributedString(
+                string: R.string.localizable.registerBookMarkPlaceHolder(),
+                attributes: [.foregroundColor: UIColor.gray])
             $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
             $0.leftViewMode = .always
-            $0.placeholder = R.string.localizable.registerBookMarkPlaceHolder()
+            $0.attributedPlaceholder = attrPlaceholderString
             $0.backgroundColor = .white
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.gray.cgColor
+            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
             $0.font = .t_R(16)
-            setupTextFieldLayer($0)
+            $0.textColor = .black
             view.addSubview($0)
         }
 
         self.tagTitleLabel = UILabel().then {
-            $0.text = R.string.localizable.registerTagTitle()
+            $0.text = R.string.localizable.registerFolderTitle()
             $0.font = .t_B(16)
+            $0.textColor = .black
             self.view.addSubview($0)
         }
 
         self.tagTextField = UITextField().then {
+            let attrPlaceholderString = NSAttributedString(
+                string: R.string.localizable.registerFolderPlaceHolder(),
+                attributes: [.foregroundColor: UIColor.gray])
             $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
             $0.leftViewMode = .always
-            $0.placeholder = R.string.localizable.registerTagPlaceHolder()
+            $0.attributedPlaceholder = attrPlaceholderString
             $0.rightView = UIImageView(image: R.image.arrow_down_gray())
             $0.rightViewMode = .always
             $0.backgroundColor = .white
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.gray.cgColor
+            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
             $0.font = .t_R(16)
-            setupTextFieldLayer($0)
-            view.addSubview($0)
-        }
-
-        self.dividerView = UIView().then {
-            $0.backgroundColor = .systemGray2
+            $0.textColor = .black
             view.addSubview($0)
         }
 
@@ -214,6 +227,9 @@ class RegisterViewController: BaseViewController {
             $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
             $0.titleLabel?.font = .t_B(20)
             $0.setTitleColor(.systemGray2, for: .normal)
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.lightGray.cgColor
+            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
             view.addSubview($0)
         }
 
@@ -229,51 +245,46 @@ class RegisterViewController: BaseViewController {
     override func setupLayoutConstraints() {
         urlTitleLabel.snp.makeConstraints {
             $0.top.equalTo(navigationBar.snp.bottom).offset(30)
-            $0.leading.equalToSuperview().offset(Self.labelSidePadding)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
         }
 
         urlTextField.snp.makeConstraints {
-            $0.top.equalTo(urlTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.top.equalTo(urlTitleLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
             $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
         bookMarkTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(urlTextField.snp.bottom).offset(48)
-            $0.leading.equalToSuperview().offset(Self.labelSidePadding)
+            $0.top.equalTo(urlTextField.snp.bottom).offset(40)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
         }
 
         bookMarkTextField.snp.makeConstraints {
-            $0.top.equalTo(bookMarkTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.top.equalTo(bookMarkTitleLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
             $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
         tagTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(bookMarkTextField.snp.bottom).offset(48)
-            $0.left.equalToSuperview().offset(Self.labelSidePadding)
+            $0.top.equalTo(bookMarkTextField.snp.bottom).offset(40)
+            $0.left.equalToSuperview().offset(Self.sidePadding)
         }
 
         tagTextField.snp.makeConstraints {
-            $0.top.equalTo(tagTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.top.equalTo(tagTitleLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
             $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
         registerButton.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(Self.registerButtonHeight)
-        }
-
-        dividerView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(1)
-            $0.bottom.equalTo(registerButton.snp.top).inset(2)
+            $0.leading.trailing.equalTo(tagTextField)
+            $0.height.equalTo(56)
+            $0.bottom.equalToSuperview().offset(-40)
         }
 
         notifyInvalidFormatUrlLabel.snp.makeConstraints {
             $0.centerY.equalTo(urlTitleLabel)
-            $0.trailing.equalToSuperview().inset(Self.labelSidePadding)
+            $0.trailing.equalToSuperview().inset(Self.sidePadding)
         }
     }
 }
@@ -284,15 +295,6 @@ private extension RegisterViewController {
         navigationBar.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-
-    func setupTextFieldLayer(_ textFiled: UITextField) {
-        textFiled.layer.cornerRadius = Self.textFieldHeight / 3
-        textFiled.layer.shadowColor = UIColor.black.cgColor
-        textFiled.layer.shadowOpacity = 0.5
-        textFiled.layer.shadowOffset = CGSize(w: 0, h: 2)
-        textFiled.layer.shadowRadius = Self.textFieldHeight / 3
-        textFiled.layer.masksToBounds = false
     }
 
     func showBottomSheet(_ tagList: [String]) {

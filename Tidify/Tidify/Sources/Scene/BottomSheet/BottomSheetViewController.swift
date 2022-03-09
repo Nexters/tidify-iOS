@@ -156,7 +156,7 @@ extension BottomSheetViewController: UITableViewDataSource {
 extension BottomSheetViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = BottomSheetHeaderView()
-        headerView.setBottomSheetHeader(R.string.localizable.bottomSheetTagTitle(),
+        headerView.setBottomSheetHeader(R.string.localizable.bottomSheetFolderTitle(),
                                         closeButonTapObserver: closeButtonTap.asObserver())
 
         return headerView
