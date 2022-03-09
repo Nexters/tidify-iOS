@@ -152,76 +152,28 @@ class RegisterViewController: BaseViewController {
         setupNavigationBar()
         view.backgroundColor = .white
 
-        self.urlTitleLabel = UILabel().then {
-            $0.text = R.string.localizable.registerAddressTitle()
-            $0.font = .t_B(16)
-            $0.textColor = .black
-            self.view.addSubview($0)
-        }
+        self.urlTitleLabel = makeTitleLabel(title: R.string.localizable.registerAddressTitle())
 
-        self.urlTextField = UITextField().then {
-            let attrPlaceholderString = NSAttributedString(
-                string: R.string.localizable.registerAddressPlaceHolder(),
-                attributes: [.foregroundColor: UIColor.gray])
-            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-            $0.leftViewMode = .always
-            $0.attributedPlaceholder = attrPlaceholderString
-            $0.backgroundColor = .white
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.gray.cgColor
-            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
-            $0.font = .t_R(16)
-            $0.textColor = .black
-            view.addSubview($0)
-        }
+        let urlTextFieldPlaceholder = NSAttributedString(
+            string: R.string.localizable.registerAddressPlaceHolder(),
+            attributes: [.foregroundColor: UIColor.gray])
+        self.urlTextField = makeTextField(placeholder: urlTextFieldPlaceholder)
 
-        self.bookMarkTitleLabel = UILabel().then {
-            $0.text = R.string.localizable.registerBookMarkTitle()
-            $0.font = .t_B(16)
-            $0.textColor = .black
-            self.view.addSubview($0)
-        }
+        self.bookMarkTitleLabel = makeTitleLabel(
+            title: R.string.localizable.registerBookMarkTitle()
+        )
 
-        self.bookMarkTextField = UITextField().then {
-            let attrPlaceholderString = NSAttributedString(
-                string: R.string.localizable.registerBookMarkPlaceHolder(),
-                attributes: [.foregroundColor: UIColor.gray])
-            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-            $0.leftViewMode = .always
-            $0.attributedPlaceholder = attrPlaceholderString
-            $0.backgroundColor = .white
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.gray.cgColor
-            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
-            $0.font = .t_R(16)
-            $0.textColor = .black
-            view.addSubview($0)
-        }
+        let bookMarkTextFieldPlaceholder = NSAttributedString(
+            string: R.string.localizable.registerBookMarkPlaceHolder(),
+            attributes: [.foregroundColor: UIColor.gray])
+        self.bookMarkTextField = makeTextField(placeholder: bookMarkTextFieldPlaceholder)
 
-        self.tagTitleLabel = UILabel().then {
-            $0.text = R.string.localizable.registerFolderTitle()
-            $0.font = .t_B(16)
-            $0.textColor = .black
-            self.view.addSubview($0)
-        }
+        self.tagTitleLabel = makeTitleLabel(title: R.string.localizable.registerFolderTitle())
 
-        self.tagTextField = UITextField().then {
-            let attrPlaceholderString = NSAttributedString(
-                string: R.string.localizable.registerFolderPlaceHolder(),
-                attributes: [.foregroundColor: UIColor.gray])
-            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-            $0.leftViewMode = .always
-            $0.attributedPlaceholder = attrPlaceholderString
-            $0.rightView = UIImageView(image: R.image.arrow_down_gray())
-            $0.rightViewMode = .always
-            $0.backgroundColor = .white
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.gray.cgColor
-            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
-            $0.font = .t_R(16)
-            $0.textColor = .black
-            view.addSubview($0)
-        }
+        let tagTextFieldPlaceholder = NSAttributedString(
+            string: R.string.localizable.registerFolderPlaceHolder(),
+            attributes: [.foregroundColor: UIColor.gray])
+        self.tagTextField = makeTextField(placeholder: tagTextFieldPlaceholder)
 
         self.registerButton = UIButton().then {
             $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
@@ -306,5 +258,29 @@ private extension RegisterViewController {
         bottomSheet.modalPresentationStyle = .overFullScreen
 
         self.present(bottomSheet, animated: false, completion: nil)
+    }
+
+    func makeTitleLabel(title: String) -> UILabel {
+        return UILabel().then {
+            $0.text = title
+            $0.font = .t_B(16)
+            $0.textColor = .black
+            view.addSubview($0)
+        }
+    }
+
+    func makeTextField(placeholder: NSAttributedString) -> UITextField {
+        return UITextField().then {
+            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+            $0.leftViewMode = .always
+            $0.attributedPlaceholder = placeholder
+            $0.backgroundColor = .white
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.gray.cgColor
+            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
+            $0.font = .t_R(16)
+            $0.textColor = .black
+            view.addSubview($0)
+        }
     }
 }
