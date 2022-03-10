@@ -23,6 +23,7 @@ class FolderTabViewController: BaseViewController {
 
     private let viewModel: FolderTabViewModel
     private let disposeBag = DisposeBag()
+    private var lastIndex: IndexPath?
 
     private lazy var navigationBar = TidifyNavigationBar(.folder,
                                                          leftButton: profileButton,
@@ -164,6 +165,21 @@ extension FolderTabViewController: UICollectionViewDelegate {
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        performAction action: Selector,
+        forItemAt indexPath: IndexPath,
+        withSender sender: Any?
+    ) {
+        guard lastIndex != nil else { lastIndex = indexPath; return }
+        guard let lastIndex = lastIndex, lastIndex != indexPath else { return }
+        guard let cell = collectionView.cellForItem(at: lastIndex)
+                as? FolderCollectionViewCell else { return }
+
+        cell.initSwipeView()
+        self.lastIndex = indexPath
     }
 }
 

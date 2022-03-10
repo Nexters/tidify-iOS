@@ -21,7 +21,10 @@ class FolderTabViewModel: ViewModelType {
         let didReceiveFolders: Driver<Void>
     }
 
-    var folderList: [Folder] = []
+    var folderList: [Folder] = [
+        Folder(name: "테스트폴더", color: "#ff9500"),
+        Folder(name: "테스트폴더22", color: "#ff2d54")
+    ]
 
     func transform(_ input: Input) -> Output {
 
