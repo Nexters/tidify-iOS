@@ -21,10 +21,21 @@ class FolderTabViewModel: ViewModelType {
         let didReceiveFolders: Driver<Void>
     }
 
-    var folderList: [Folder] = [
-        Folder(name: "테스트폴더", color: "#ff9500"),
-        Folder(name: "테스트폴더22", color: "#ff2d54")
-    ]
+    var lastIndex: IndexPath?
+
+    var folderList: BehaviorRelay<[Folder]> = BehaviorRelay<[Folder]>(value: [
+        Folder(name: "테스트폴더0", color: "#ff9500"),
+        Folder(name: "테스트폴더1", color: "#ff2d54"),
+        Folder(name: "테스트폴더2", color: "#ff9500"),
+        Folder(name: "테스트폴더3", color: "#ff2d54"),
+        Folder(name: "테스트폴더4", color: "#ff9500"),
+        Folder(name: "테스트폴더5", color: "#ff2d54"),
+        Folder(name: "테스트폴더6", color: "#ff9500"),
+        Folder(name: "테스트폴더7", color: "#ff2d54"),
+        Folder(name: "테스트폴더8", color: "#ff9500"),
+        Folder(name: "테스트폴더9", color: "#ff2d54"),
+        Folder(name: "테스트폴더10", color: "#ff9500")
+    ])
 
     func transform(_ input: Input) -> Output {
 

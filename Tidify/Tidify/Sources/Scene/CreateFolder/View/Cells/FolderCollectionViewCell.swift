@@ -23,8 +23,8 @@ class FolderCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegat
 
     private weak var folderColorView: UIView!
     private weak var folderNameLabel: UILabel!
-    private var editButton: UIButton!
-    private var deleteButton: UIButton!
+    var editButton: UIButton!
+    var deleteButton: UIButton!
     private var swipeView: UIStackView!
     private var pan: UIPanGestureRecognizer!
     private var isSwiped = false
@@ -49,6 +49,14 @@ class FolderCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegat
         if pan.state == UIGestureRecognizer.State.changed { dragSwipeView() }
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        initSwipeView()
+    }
+}
+
+extension FolderCollectionViewCell {
     func setFolder(_ folder: Folder) {
         self.folder = folder
 
@@ -56,46 +64,15 @@ class FolderCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegat
         folderColorView.backgroundColor = UIColor(hexString: folder.color)
     }
 
-    private func dragSwipeView() {
-        if swipeView.frame.origin.x < Self.width - swipeView.frame.width { return }
-
-        let p = pan.translation(in: self)
-        swipeView.frame.origin.x = isSwiped ? p.x + Self.swipedPositionX : p.x + Self.width
-    }
-
     func initSwipeView() {
         swipeView.frame.origin.x = Self.width
         isSwiped = false
     }
 
-    @objc
-    private func onPan(_ pan: UIPanGestureRecognizer) {
-        if pan.state == UIPanGestureRecognizer.State.began {
-            guard let collectionView = self.superview as? UICollectionView else { return }
-            guard let indexPath = collectionView.indexPathForItem(at: self.center) else { return }
-            collectionView.delegate?.collectionView?(
-                collectionView,
-                performAction: #selector(onPan(_:)),
-                forItemAt: indexPath,
-                withSender: nil
-            )
-        } else if pan.state == UIPanGestureRecognizer.State.changed {
-            self.setNeedsLayout()
-        } else if pan.state == UIPanGestureRecognizer.State.ended {
-            if swipeView.center.x < 331 {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.swipeView.frame.origin.x = Self.width - self.swipeView.frame.width
-                    self.setNeedsLayout()
-                    self.layoutIfNeeded()
-                })
-                isSwiped = true
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.initSwipeView()
-                })
-            }
-        }
-    }
+    func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool { return true }
 }
 
 private extension FolderCollectionViewCell {
@@ -156,6 +133,45 @@ private extension FolderCollectionViewCell {
             $0.leading.equalTo(folderColorView.snp.trailing)
                 .offset(Self.colorViewToNameHorizontalSpacing)
             $0.centerY.equalToSuperview()
+        }
+    }
+
+    func dragSwipeView() {
+        if swipeView.frame.origin.x < Self.width - swipeView.frame.width { return }
+
+        let p = pan.translation(in: self)
+        swipeView.frame.origin.x = isSwiped ? p.x + Self.swipedPositionX : p.x + Self.width
+    }
+
+    @objc
+    func onPan(_ pan: UIPanGestureRecognizer) {
+        if pan.state == UIPanGestureRecognizer.State.began {
+            guard let collectionView = self.superview as? UICollectionView else { return }
+            guard let indexPath = collectionView.indexPathForItem(at: self.center) else { return }
+            collectionView.delegate?.collectionView?(
+                collectionView,
+                performAction: #selector(onPan(_:)),
+                forItemAt: indexPath,
+                withSender: nil
+            )
+
+        } else if pan.state == UIPanGestureRecognizer.State.changed {
+            self.setNeedsLayout()
+
+        } else if pan.state == UIPanGestureRecognizer.State.ended {
+            if swipeView.center.x < 331 {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.swipeView.frame.origin.x = Self.width - self.swipeView.frame.width
+                    self.setNeedsLayout()
+                    self.layoutIfNeeded()
+                })
+                isSwiped = true
+
+            } else {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.initSwipeView()
+                })
+            }
         }
     }
 }
