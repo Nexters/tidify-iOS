@@ -14,7 +14,7 @@ class HomeCoordinator: Coordinator {
 
     // MARK: - Constants
 
-    static let navButtonHeight: CGFloat = 44
+    static let navButtonHeight: CGFloat = 40
     static let createBookMarkButtonWidth: CGFloat = 75
 
     // MARK: - Properties
@@ -37,13 +37,9 @@ class HomeCoordinator: Coordinator {
         let profileButton = UIButton().then {
             $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_profile(), for: .normal)
-            $0.backgroundColor = .white
-            $0.layer.cornerRadius = Self.navButtonHeight / 2
-            $0.layer.shadowColor = UIColor.gray.cgColor
-            $0.layer.shadowOpacity = 0.8
-            $0.layer.shadowOffset = CGSize(w: 0, h: 2)
-            $0.layer.shadowRadius = Self.navButtonHeight / 2
-            $0.layer.masksToBounds = false
+            $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
+            $0.layer.borderWidth = 1
+            $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
         }
 
         let createBookMarkButton = UIButton().then {
@@ -82,13 +78,9 @@ class HomeCoordinator: Coordinator {
         let profileButton = UIButton().then {
             $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_profile(), for: .normal)
-            $0.backgroundColor = .white
-            $0.layer.cornerRadius = Self.navButtonHeight / 2
-            $0.layer.shadowColor = UIColor.gray.cgColor
-            $0.layer.shadowOpacity = 0.8
-            $0.layer.shadowOffset = CGSize(w: 0, h: 0.2)
-            $0.layer.shadowRadius = Self.navButtonHeight / 2
-            $0.layer.masksToBounds = false
+            $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
+            $0.layer.borderWidth = 1
+            $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
         }
 
         let createBookMarkButton = UIButton().then {

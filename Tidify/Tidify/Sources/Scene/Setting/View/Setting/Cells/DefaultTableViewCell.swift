@@ -15,7 +15,7 @@ class DefaultTableViewCell: UITableViewCell {
 
     // MARK: - Constants
 
-    static let SidePadding: CGFloat = 15
+    static let sidePadding: CGFloat = 15
 
     // MARK: - Properties
 
@@ -38,25 +38,28 @@ class DefaultTableViewCell: UITableViewCell {
 
     private func setupViews() {
         self.contentView.backgroundColor = .white
+        self.backgroundColor = .clear
 
-        let titleLabel = UILabel().then {
+        self.titleLabel = UILabel().then {
             $0.textColor = .black
             $0.font = .t_R(15)
             contentView.addSubview($0)
         }
-        self.titleLabel = titleLabel
     }
 
     private func setupLayoutConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(Self.SidePadding)
+            make.leading.equalToSuperview().inset(Self.sidePadding)
         }
     }
 
-    func setCell(_ title: String, isHeader: Bool, showDisclosure: Bool) {
+    func setCell(_ title: String, isHeader: Bool, showDisclosure: Bool = false,
+                 radiusEdges: [UIRectCorner] = [], radius: CGFloat = 0)
+    {
         self.titleLabel.text = title
         self.titleLabel.font = isHeader ? .t_B(16) : .t_R(16)
         self.accessoryType = showDisclosure ? .disclosureIndicator : .none
+        contentView.t_cornerRadius(radiusEdges, radius: radius)
     }
 }

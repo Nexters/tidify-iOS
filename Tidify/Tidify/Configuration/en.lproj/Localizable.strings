@@ -58,11 +58,12 @@
 // Setting
 "Setting.navigation.title" = "설정";
 "Setting.account" = "계정관리";
-"Setting.account.profile" = "프로필";
 "Setting.account.socialLogin" = "소셜 로그인";
 "Setting.dataManagement" = "데이터 관리";
 "Setting.dataManagement.imageCache" = "이미지 캐시 정리";
 "Setting.dataManagement.cache" = "모든 캐시 정리";
+"Setting.dataManagement.logout" = "로그아웃";
+"Setting.datamanagement.appVersion" = "앱 버전";
 "Setting.alert.imageCache.title" = "이미지 캐시 정리";
 "Setting.alert.imageCache.message" = "저장공간을 위한 효율적인 정리 기능";
 "Setting.alert.imageCache.cancel.title" = "다음에";
