@@ -90,7 +90,7 @@ class HomeCoordinator: Coordinator {
                               height: Self.navButtonHeight)
             $0.setImage(R.image.home_icon_bookMark(), for: .normal)
             $0.backgroundColor = .t_tidiBlue()
-            $0.layer.cornerRadius = Self.navButtonHeight / 2 - 3
+            $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
         }
 
         let homeViewModel = HomeViewModel()
