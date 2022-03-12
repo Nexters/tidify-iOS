@@ -18,6 +18,8 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .t_background()
+
         setupViews()
         setupLayoutConstraints()
     }

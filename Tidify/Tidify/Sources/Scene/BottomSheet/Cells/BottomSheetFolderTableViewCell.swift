@@ -61,6 +61,7 @@ class BottomSheetFolderTableViewCell: UITableViewCell {
 
 private extension BottomSheetFolderTableViewCell {
     func setupViews() {
+        contentView.backgroundColor = .white
         self.checkStatusImageView = UIImageView().then {
             $0.image = R.image.bottomSheet_ico_unChecked()
             contentView.addSubview($0)

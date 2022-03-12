@@ -26,8 +26,7 @@
 "Onboarding.button.title5" = "좋아요, 시작할래요!";
 
 // Login
-"Login.title" = "쉽고, 깔끔하게";
-"Login.subTitle" = "북마크 만들어요!";
+"Login.title" = "쉽고 깔끔한 북마크";
 "Login.tooltip.title" = "터치하고 빠르게 시작";
 "Login.kakao.title" = "카카오 로그인";
 "Login.apple.title" = "Apple 로그인";
@@ -50,8 +49,8 @@
 "Register.address.placeHolder" = "URL 주소를 넣어주세요";
 "Register.bookMark.title" = "북마크 이름";
 "Register.bookMark.placeHolder" = "입력하지 않으면 링크 제목으로 저장돼요";
-"Register.tag.title" = "저장할 태그";
-"Register.tag.placeHolder" = "태그 선택";
+"Register.folder.title" = "저장할 폴더";
+"Register.folder.placeHolder" = "폴더 선택";
 "Register.button.title" = "저장";
 "Register.button.title.saving" = "저장중";
 "Register.notify.invalidUrl" = "링크를 확인해주세요";
@@ -74,7 +73,7 @@
 "Setting.alert.allCache.ok.title" = "실행";
 
 // BottomSheet
-"BottomSheet.tag.title" = "태그 선택";
+"BottomSheet.folder.title" = "폴더 선택";
 
 // Profile
 "Profile.setting.title" = "프로필 사진 편집";

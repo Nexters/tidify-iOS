@@ -12,12 +12,18 @@ import RxCocoa
 import RxKakaoSDKUser
 import RxSwift
 
-class SignInViewModel: ViewModelType {
+protocol SignInViewModelDelegate: AnyObject {
+    func didSuccessSignInWithKakao()
+    func didSUccessSingInWithApple()
+}
+
+final class SignInViewModel: ViewModelType {
 
     // MARK: - Properties
 
     struct Input {
         let signInWithKakaoButtonTap: ControlEvent<Void>
+        let signInWithAppleButtonTap: ControlEvent<Void>
         let withoutLoginButtonTap: ControlEvent<Void>
     }
 
@@ -26,29 +32,39 @@ class SignInViewModel: ViewModelType {
         let didTapWithoutLoginButton: Driver<Void>
     }
 
+    weak var delegate: SignInViewModelDelegate?
+
     // MARK: - Methods
 
     func transform(_ input: Input) -> Output {
-        let userSession = input.signInWithKakaoButtonTap.flatMap {
-             UserApi.shared.rx.loginWithKakaoAccount()
-        }
-        .flatMap { snsToken in
-            return APIProvider.request(AuthAPI.auth(socialLoginType: .kakao,
-                                                    accessToken: snsToken.accessToken,
-                                                    refreshToken: snsToken.refreshToken))
-                .map(UserSessionDTO.self)
-        }
-        .map { response -> UserSession? in
-            if let authorization = response.authorization {
-                self.rememberAccessToken(authorization)
-                return UserSession(accessToken: authorization)
+        let userSession = input.signInWithKakaoButtonTap
+            .flatMap { UserApi.shared.rx.loginWithKakaoAccount() }
+            .flatMapLatest { oAuthToken in
+                return APIProvider.request(AuthAPI.auth(socialLoginType: .kakao,
+                                                        accessToken: oAuthToken.accessToken,
+                                                        refreshToken: oAuthToken.refreshToken))
+                    .map(UserSessionDTO.self)
             }
-            return nil
-        }
-        .asDriver(onErrorJustReturn: nil)
+            .map { response -> UserSession? in
+                if let authorization = response.authorization {
+                    self.rememberAccessToken(authorization)
+                    return UserSession(accessToken: authorization)
+                }
+
+                return nil
+            }
+            .do(onNext: { [weak self] userSession in
+                if userSession.t_isNotNil {
+                    self?.delegate?.didSuccessSignInWithKakao()
+                }
+            })
+            .asDriver(onErrorJustReturn: nil)
 
         let didTapWithoutLoginButton = input.withoutLoginButtonTap
             .asDriver()
+            .do(onNext: { [weak self] in
+                self?.delegate?.didSuccessSignInWithKakao()
+            })
             .map { _ in }
 
         return Output(userSession: userSession,

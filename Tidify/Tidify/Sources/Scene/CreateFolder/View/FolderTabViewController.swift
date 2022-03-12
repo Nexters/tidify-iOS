@@ -75,7 +75,6 @@ class FolderTabViewController: BaseViewController {
 
     override func setupViews() {
         setupNavigationBar()
-        view.backgroundColor = .t_background()
 
         let flowLayout = UICollectionViewFlowLayout().then {
             $0.itemSize = CGSize(
