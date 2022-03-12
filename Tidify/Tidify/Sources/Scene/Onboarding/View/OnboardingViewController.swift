@@ -76,6 +76,8 @@ class OnboardingViewController: BaseViewController {
     }
 
     override func setupViews() {
+        view.backgroundColor = .white
+        
         self.pageControl = UIPageControl().then {
             $0.currentPageIndicatorTintColor = .t_indigo()
             $0.pageIndicatorTintColor = .systemGray

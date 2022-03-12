@@ -20,7 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Methods
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         if let kakaoApiKey = Bundle.main.infoDictionary?["KAKAO_API_KEY"] as? String {
             RxKakaoSDKCommon.initSDK(appKey: kakaoApiKey)

@@ -14,7 +14,7 @@ import RxSwift
 
 protocol SignInViewModelDelegate: AnyObject {
     func didSuccessSignInWithKakao()
-    func didSUccessSingInWithApple()
+    func didSuccessSingInWithApple()
 }
 
 final class SignInViewModel: ViewModelType {
