@@ -5,11 +5,13 @@
 //  Created by 여정수 on 2021/08/21.
 //
 
+import RxSwift
 import SnapKit
 import Then
 import UIKit
+import RxRelay
 
-class FolderCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegate {
+final class FolderCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Constants
 
@@ -26,9 +28,11 @@ class FolderCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegat
     var editButton: UIButton!
     var deleteButton: UIButton!
     private var swipeView: UIStackView!
-    private var pan: UIPanGestureRecognizer!
+    private var panGestureRecognizer: UIPanGestureRecognizer!
     private var isSwiped = false
 
+    private var disposeBag = DisposeBag()
+    private var buttonTag: Int?
     private var folder: Folder?
 
     // MARK: - Initialize
@@ -46,22 +50,39 @@ class FolderCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegat
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        if pan.state == UIGestureRecognizer.State.changed { dragSwipeView() }
+        if panGestureRecognizer.state == .changed { dragSwipeView() }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
 
         initSwipeView()
+        disposeBag = DisposeBag()
     }
 }
 
-extension FolderCollectionViewCell {
-    func setFolder(_ folder: Folder) {
+extension FolderCollectionViewCell: UIGestureRecognizerDelegate {
+    func setFolder(
+        _ folder: Folder,
+        buttonTag: Int,
+        lastIndexObserver: AnyObserver<Int>
+    ) {
         self.folder = folder
+        self.buttonTag = buttonTag
+        self.editButton.tag = buttonTag
+        self.deleteButton.tag = buttonTag
 
         folderNameLabel.text = folder.name
         folderColorView.backgroundColor = UIColor(hexString: folder.color)
+
+        panGestureRecognizer.rx.event
+            .asDriver()
+            .filter { $0.state == .began }
+            .drive(onNext: { [weak self] _ in
+                guard let self = self, let tag = self.buttonTag else { return }
+                lastIndexObserver.onNext(tag)
+            })
+            .disposed(by: disposeBag)
     }
 
     func initSwipeView() {
@@ -81,7 +102,10 @@ private extension FolderCollectionViewCell {
         layer.borderWidth = 1
         layer.borderColor = UIColor(hexString: "3C3C43").withAlphaComponent(0.08).cgColor
 
-        self.pan = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:))).then {
+        self.panGestureRecognizer = UIPanGestureRecognizer(
+            target: self,
+            action: #selector(onPan(_:))
+        ).then {
             $0.delegate = self
             addGestureRecognizer($0)
         }
@@ -139,39 +163,38 @@ private extension FolderCollectionViewCell {
     func dragSwipeView() {
         if swipeView.frame.origin.x < Self.width - swipeView.frame.width { return }
 
-        let p = pan.translation(in: self)
+        let p = panGestureRecognizer.translation(in: self)
         swipeView.frame.origin.x = isSwiped ? p.x + Self.swipedPositionX : p.x + Self.width
     }
 
     @objc
-    func onPan(_ pan: UIPanGestureRecognizer) {
-        if pan.state == UIPanGestureRecognizer.State.began {
-            guard let collectionView = self.superview as? UICollectionView else { return }
-            guard let indexPath = collectionView.indexPathForItem(at: self.center) else { return }
-            collectionView.delegate?.collectionView?(
-                collectionView,
-                performAction: #selector(onPan(_:)),
-                forItemAt: indexPath,
-                withSender: nil
-            )
-
-        } else if pan.state == UIPanGestureRecognizer.State.changed {
-            self.setNeedsLayout()
-
-        } else if pan.state == UIPanGestureRecognizer.State.ended {
-            if swipeView.center.x < 331 {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.swipeView.frame.origin.x = Self.width - self.swipeView.frame.width
+    func onPan(_ panGestureRecognizer: UIPanGestureRecognizer) {
+        panGestureRecognizer.rx.event
+            .map { $0 .state }
+            .bind { [weak self] in
+                guard let self = self else { return }
+                switch $0 {
+                case .changed:
                     self.setNeedsLayout()
-                    self.layoutIfNeeded()
-                })
-                isSwiped = true
-
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.initSwipeView()
-                })
+                case .ended:
+                    if self.swipeView.center.x < 331 {
+                        UIView.animate(withDuration: 0.3, animations: {
+                            self.swipeView.frame.origin.x = Self.width - self.swipeView.frame.width
+                            self.layoutIfNeeded()
+                        })
+                        self.isSwiped = true
+                    } else {
+                        UIView.animate(withDuration: 0.3, animations: {
+                            self.initSwipeView()
+                        })
+                    }
+                case .possible: return
+                case .began: return
+                case .cancelled: return
+                case .failed: return
+                @unknown default: return
+                }
             }
-        }
+            .disposed(by: disposeBag)
     }
 }

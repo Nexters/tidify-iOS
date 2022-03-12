@@ -14,14 +14,14 @@ class FolderTabViewModel: ViewModelType {
     // MARK: - Properties
 
     struct Input {
-
     }
 
     struct Output {
         let didReceiveFolders: Driver<Void>
     }
 
-    var lastIndex: IndexPath?
+    let lastIndexSubject = PublishSubject<Int>()
+    var lastIndex: Int = 0
 
     var folderList: BehaviorRelay<[Folder]> = BehaviorRelay<[Folder]>(value: [
         Folder(name: "테스트폴더0", color: "#ff9500"),

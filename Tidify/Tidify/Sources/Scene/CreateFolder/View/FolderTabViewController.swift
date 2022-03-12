@@ -144,27 +144,41 @@ private extension FolderTabViewController {
             collectionView.isHidden = true
             return
         }
-        collectionView.rx.setDelegate(self).disposed(by: disposeBag)
         collectionView.isHidden = false
 
         viewModel.folderList
-            .bind(to: collectionView.rx.items) {_, row, item -> UICollectionViewCell in
+            .bind(to: collectionView.rx.items) { [weak self] _, row, item -> UICollectionViewCell in
+                guard let self = self else { return UICollectionViewCell() }
                 let cell = self.collectionView.t_dequeueReusableCell(
                     cellType: FolderCollectionViewCell.self,
                     indexPath: IndexPath.init(row: row, section: 0)
                 )
 
-                cell.editButton.tag = row
-                cell.deleteButton.tag = row
                 cell.editButton.addTarget(self,
                                           action: #selector(self.editWasTapped(_:)),
                                           for: .touchUpInside)
                 cell.deleteButton.addTarget(self,
                                             action: #selector(self.deleteWasTapped(_:)),
                                             for: .touchUpInside)
-                cell.setFolder(item)
+                cell.setFolder(
+                    item,
+                    buttonTag: row,
+                    lastIndexObserver: self.viewModel.lastIndexSubject.asObserver()
+                )
                 return cell
             }
+            .disposed(by: disposeBag)
+
+        viewModel.lastIndexSubject
+            .filter { [weak self] in $0 != (self?.viewModel.lastIndex ?? 0) }
+            .subscribe(onNext: { [weak self] in
+                let lastIndex = IndexPath(item: self?.viewModel.lastIndex ?? 0, section: 0)
+                guard let self = self,
+                      let cell = self.collectionView.cellForItem(at: lastIndex)
+                        as? FolderCollectionViewCell else { return }
+                cell.initSwipeView()
+                self.viewModel.lastIndex = $0
+            })
             .disposed(by: disposeBag)
     }
 
@@ -178,24 +192,5 @@ private extension FolderTabViewController {
         var data = viewModel.folderList.value
         data.remove(at: sender.tag)
         viewModel.folderList.accept(data)
-    }
-}
-
-// MARK: - Delegate
-
-extension FolderTabViewController: UICollectionViewDelegate {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        performAction action: Selector,
-        forItemAt indexPath: IndexPath,
-        withSender sender: Any?
-    ) {
-        guard viewModel.lastIndex != nil else { viewModel.lastIndex = indexPath; return }
-        guard let lastIndex = viewModel.lastIndex, lastIndex != indexPath else { return }
-        guard let cell = collectionView.cellForItem(at: lastIndex)
-                as? FolderCollectionViewCell else { return }
-
-        cell.initSwipeView()
-        viewModel.lastIndex = indexPath
     }
 }
