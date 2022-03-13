@@ -26,8 +26,7 @@
 "Onboarding.button.title5" = "좋아요, 시작할래요!";
 
 // Login
-"Login.title" = "쉽고, 깔끔하게";
-"Login.subTitle" = "북마크 만들어요!";
+"Login.title" = "쉽고 깔끔한 북마크";
 "Login.tooltip.title" = "터치하고 빠르게 시작";
 "Login.kakao.title" = "카카오 로그인";
 "Login.apple.title" = "Apple 로그인";
@@ -38,14 +37,20 @@
 "Main.addBookMark.title" = "북마크 생성";
 "Main.content.tag.placeHolder" = "contained tag name";
 "Main.notice.empty.title" = "지금은 북마크가 비어있어요.";
+"Main.cell.edit.title" = "편집";
+"Main.cell.delete.title" = "삭제";
+"Main.notifier.bookMark.delete.title" = "북마크가 없어져요";
+"Main.notifier.bookMark.delete.desc" = "이 글은 더 이상 볼 수 없을텐데 정말 삭제하시겠어요?";
+"Main.notifier.bookMark.button.next" = "다음에";
+"Main.notifier.bookMark.button.delete" = "삭제";
 
 // Register
 "Register.address.title" = "주소입력";
 "Register.address.placeHolder" = "URL 주소를 넣어주세요";
 "Register.bookMark.title" = "북마크 이름";
 "Register.bookMark.placeHolder" = "입력하지 않으면 링크 제목으로 저장돼요";
-"Register.tag.title" = "저장할 태그";
-"Register.tag.placeHolder" = "태그 선택";
+"Register.folder.title" = "저장할 폴더";
+"Register.folder.placeHolder" = "폴더 선택";
 "Register.button.title" = "저장";
 "Register.button.title.saving" = "저장중";
 "Register.notify.invalidUrl" = "링크를 확인해주세요";
@@ -53,11 +58,12 @@
 // Setting
 "Setting.navigation.title" = "설정";
 "Setting.account" = "계정관리";
-"Setting.account.profile" = "프로필";
 "Setting.account.socialLogin" = "소셜 로그인";
 "Setting.dataManagement" = "데이터 관리";
 "Setting.dataManagement.imageCache" = "이미지 캐시 정리";
 "Setting.dataManagement.cache" = "모든 캐시 정리";
+"Setting.dataManagement.logout" = "로그아웃";
+"Setting.datamanagement.appVersion" = "앱 버전";
 "Setting.alert.imageCache.title" = "이미지 캐시 정리";
 "Setting.alert.imageCache.message" = "저장공간을 위한 효율적인 정리 기능";
 "Setting.alert.imageCache.cancel.title" = "다음에";
@@ -68,7 +74,7 @@
 "Setting.alert.allCache.ok.title" = "실행";
 
 // BottomSheet
-"BottomSheet.tag.title" = "태그 선택";
+"BottomSheet.folder.title" = "폴더 선택";
 
 // Profile
 "Profile.setting.title" = "프로필 사진 편집";
@@ -76,7 +82,7 @@
 "Profile.nav.button.title" = "저장";
 
 // Folder
-"Folder.notice.empty.title" = "지금은 폴더가 없어요.";
+"Folder.notice.empty.title" = "폴더에 정리하고 싶지 않나요?";
 "Folder.navigation.title" = "폴더 생성";
 "Folder.folder.title" = "폴더 이름";
 "Folder.folder.placeHolder" = "어떤 폴더인가요?";

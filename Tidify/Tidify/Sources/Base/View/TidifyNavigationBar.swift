@@ -13,11 +13,13 @@ class TidifyNavigationBar: UIView {
     enum NavigationBarStyle {
         case `default`
         case rounded
+        case folder
 
         var height: CGFloat {
             switch self {
             case .default: return 44
-            case .rounded: return 104
+            case .rounded: return 144
+            case .folder: return 144
             }
         }
 
@@ -25,6 +27,7 @@ class TidifyNavigationBar: UIView {
             switch self {
             case .default: return 9
             case .rounded: return 28
+            case .folder: return 20
             }
         }
 
@@ -32,6 +35,7 @@ class TidifyNavigationBar: UIView {
             switch self {
             case .default: return 12
             case .rounded: return 20
+            case .folder: return 20
             }
         }
 
@@ -39,6 +43,7 @@ class TidifyNavigationBar: UIView {
             switch self {
             case .default: return 8
             case .rounded: return 18
+            case .folder: return 24
             }
         }
     }
@@ -53,11 +58,17 @@ class TidifyNavigationBar: UIView {
 
     // MARK: - Initialize
 
-    init(_ navigationBarStyle: NavigationBarStyle, title: String? = nil, leftButton: UIButton, rightButtons: [UIButton] = []) {
+    init(_ navigationBarStyle: NavigationBarStyle,
+         title: String? = nil,
+         leftButton: UIButton,
+         rightButtons: [UIButton] = []) {
         self.navigationBarStyle = navigationBarStyle
         super.init(frame: .zero)
 
-        setupViews(navigationBarStyle, title: title, leftButton: leftButton, rightButtons: rightButtons)
+        setupViews(navigationBarStyle,
+                   title: title,
+                   leftButton: leftButton,
+                   rightButtons: rightButtons)
         setupLayoutConstraints()
     }
 
@@ -67,7 +78,10 @@ class TidifyNavigationBar: UIView {
 
     // MARK: - Methods
 
-    func setupViews(_ navigationBarStyle: NavigationBarStyle, title: String?, leftButton: UIButton, rightButtons: [UIButton]) {
+    func setupViews(_ navigationBarStyle: NavigationBarStyle,
+                    title: String?,
+                    leftButton: UIButton,
+                    rightButtons: [UIButton]) {
         self.backgroundColor = .white
 
         self.titleLabel = UILabel().then {
@@ -121,7 +135,7 @@ class TidifyNavigationBar: UIView {
             $0.centerY.equalTo(leftButton)
             $0.trailing.equalToSuperview().inset(navigationBarStyle.trailingPadding)
             $0.height.equalTo(40)
-            $0.width.equalTo(75)
+            $0.width.equalTo(navigationBarStyle == .folder ? 40 : 75)
         }
     }
 }

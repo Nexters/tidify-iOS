@@ -34,8 +34,10 @@ class CreateFolderCoordinator: Coordinator {
         }
 
         let createFolderViewModel = CreateFolderViewModel()
-        let createFolderViewController = CreateFolderViewController(viewModel: createFolderViewModel,
-                                                                    leftButton: leftButton)
+        let createFolderViewController = CreateFolderViewController(
+            viewModel: createFolderViewModel,
+            leftButton: leftButton
+        )
         createFolderViewController.coordinator = self
 
         leftButton.rx.tap.asDriver()

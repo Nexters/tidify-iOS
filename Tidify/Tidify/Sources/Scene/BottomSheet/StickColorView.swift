@@ -67,7 +67,8 @@ private extension StickColorView {
         whiteStickView.snp.makeConstraints {
             $0.top.trailing.bottom.equalToSuperview()
             $0.leading.equalTo(leftColorView.snp.trailing)
-            $0.size.equalTo(CGSize(w: Self.stickWidth - Self.leftColorViewWidth, h: Self.stickHeight))
+            $0.size.equalTo(CGSize(w: Self.stickWidth - Self.leftColorViewWidth,
+                                   h: Self.stickHeight))
         }
     }
 }

@@ -35,12 +35,25 @@ public extension UIColor {
         return .init(28, 100, 234)
     }
 
-    static func t_indigoBlue() -> UIColor {
-        return .init(80, 78, 210)
-    }
-
     static func t_tidiBlue2() -> UIColor {
         return .init(84, 200, 245)
+    }
+    
+    
+    static func t_indigo() -> UIColor {
+        return .init(80, 78, 210)
+    }
+    
+    static func t_indigo1() -> UIColor {
+        return .init(105, 103, 215)
+    }
+    
+    static func t_indigo2() -> UIColor {
+        return .init(137, 152, 233)
+    }
+    
+    static func t_background() -> UIColor {
+        return .init(235, 235, 240)
     }
 
     func toHexString() -> String {

@@ -50,7 +50,8 @@ class BottomSheetFolderTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        checkStatusImageView.image = selected ? R.image.bottomSheet_ico_checked() : R.image.bottomSheet_ico_unChecked()
+        checkStatusImageView.image = selected ?
+        R.image.bottomSheet_ico_checked() : R.image.bottomSheet_ico_unChecked()
     }
 
     func setFolder(_ folderName: String) {
@@ -60,6 +61,7 @@ class BottomSheetFolderTableViewCell: UITableViewCell {
 
 private extension BottomSheetFolderTableViewCell {
     func setupViews() {
+        contentView.backgroundColor = .white
         self.checkStatusImageView = UIImageView().then {
             $0.image = R.image.bottomSheet_ico_unChecked()
             contentView.addSubview($0)
@@ -79,7 +81,8 @@ private extension BottomSheetFolderTableViewCell {
         }
 
         folderLabel.snp.makeConstraints {
-            $0.leading.equalTo(checkStatusImageView.snp.trailing).offset(Self.imageViewToLabelHorizontalSpacing)
+            $0.leading.equalTo(checkStatusImageView.snp.trailing)
+                .offset(Self.imageViewToLabelHorizontalSpacing)
             $0.centerY.equalToSuperview()
         }
     }

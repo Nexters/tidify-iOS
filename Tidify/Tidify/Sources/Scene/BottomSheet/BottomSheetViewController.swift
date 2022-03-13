@@ -34,7 +34,9 @@ class BottomSheetViewController: BaseViewController {
 
     // MARK: - Initialize
 
-    init(_ bottomSheetType: BottomSheetType, dataSource: [Any], selectedEventObserver: AnyObserver<Int>) {
+    init(_ bottomSheetType: BottomSheetType,
+         dataSource: [Any],
+         selectedEventObserver: AnyObserver<Int>) {
         self.selectedEventObserver = selectedEventObserver
         self.bottomSheetType = bottomSheetType
 
@@ -122,16 +124,20 @@ extension BottomSheetViewController: UITableViewDataSource {
         case .chooseFolder:
             guard let dataSource = dataSource as? [String] else { return UITableViewCell() }
 
-            let folderCell = tableView.t_dequeueReusableCell(cellType: BottomSheetFolderTableViewCell.self,
-                                                             indexPath: indexPath)
+            let folderCell = tableView.t_dequeueReusableCell(
+                cellType: BottomSheetFolderTableViewCell.self,
+                indexPath: indexPath
+            )
             folderCell.setFolder(dataSource[indexPath.row])
             cell = folderCell
 
         case .labelColor:
             guard let dataSource = dataSource as? [UIColor] else { return UITableViewCell() }
 
-            let labelColorCell = tableView.t_dequeueReusableCell(cellType: BottomSheetLabelColorTableViewCell.self,
-                                                                 indexPath: indexPath)
+            let labelColorCell = tableView.t_dequeueReusableCell(
+                cellType: BottomSheetLabelColorTableViewCell.self,
+                indexPath: indexPath
+            )
             labelColorCell.setColor(dataSource[indexPath.row])
             cell = labelColorCell
         }
@@ -150,7 +156,8 @@ extension BottomSheetViewController: UITableViewDataSource {
 extension BottomSheetViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = BottomSheetHeaderView()
-        headerView.setBottomSheetHeader(R.string.localizable.bottomSheetTagTitle(), closeButonTapObserver: closeButtonTap.asObserver())
+        headerView.setBottomSheetHeader(R.string.localizable.bottomSheetFolderTitle(),
+                                        closeButonTapObserver: closeButtonTap.asObserver())
 
         return headerView
     }

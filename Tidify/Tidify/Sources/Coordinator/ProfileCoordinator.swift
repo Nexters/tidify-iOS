@@ -39,7 +39,9 @@ class ProfileCoordinator: Coordinator {
             $0.setTitleColor(.t_tidiBlue(), for: .normal)
         }
 
-        let profileViewController = ProfileViewController(saveDataSubject, leftButton: leftButton, rightButton: rightButton)
+        let profileViewController = ProfileViewController(saveDataSubject,
+                                                          leftButton: leftButton,
+                                                          rightButton: rightButton)
         profileViewController.coordinator = self
 
         leftButton.rx.tap.asDriver()
@@ -68,7 +70,9 @@ class ProfileCoordinator: Coordinator {
             $0.setTitleColor(.t_tidiBlue(), for: .normal)
         }
 
-        let profileViewController = ProfileViewController(saveDataSubject, leftButton: leftButton, rightButton: rightButton)
+        let profileViewController = ProfileViewController(saveDataSubject,
+                                                          leftButton: leftButton,
+                                                          rightButton: rightButton)
         profileViewController.coordinator = self
 
         leftButton.rx.tap.asDriver()

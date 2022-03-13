@@ -10,8 +10,9 @@ import Moya
 import RxCocoa
 import RxSwift
 
-enum ApiProvider {
-    private static let moyaProvider = MoyaProvider<MultiTarget>(plugins: [CustomPlugin()], trackInflights: true)
+enum APIProvider {
+    private static let moyaProvider = MoyaProvider<MultiTarget>(plugins: [CustomPlugin()],
+                                                                trackInflights: true)
 
     static func request(_ target: TargetType,
                         callBackQueue: DispatchQueue? = nil) -> Single<Response> {
@@ -42,7 +43,10 @@ struct CustomPlugin: PluginType {
             }
             print("[Moya-Logger] 🟢 SUCCESS: \(json)")
         case .failure(let error):
-            print("[Moya-Logger] 🔴 FAIL: \(error.errorCode) - \(String(describing: error.errorDescription))")
+            print("""
+                    [Moya-Logger] 🔴 FAIL: \(error.errorCode) -
+                  \(String(describing: error.errorDescription))
+                """)
         }
         print("\n")
         #endif

@@ -16,9 +16,7 @@ class RegisterViewController: BaseViewController {
 
     static let textFieldWidth: CGFloat = 335
     static let textFieldHeight: CGFloat = 48
-    static let labelSidePadding: CGFloat = 32
-    static let textFieldSidePadding: CGFloat = 20
-    static let registerButtonHeight: CGFloat = 96
+    static let sidePadding: CGFloat = 20
 
     // MARK: - Properties
 
@@ -30,7 +28,6 @@ class RegisterViewController: BaseViewController {
     private weak var bookMarkTextField: UITextField!
     private weak var tagTitleLabel: UILabel!
     private weak var tagTextField: UITextField!
-    private weak var dividerView: UIView!
     private weak var registerButton: UIButton!
     private weak var notifyInvalidFormatUrlLabel: UILabel!
     private let leftButton: UIButton!
@@ -51,7 +48,8 @@ class RegisterViewController: BaseViewController {
     private var registerButtonEnabled: Bool = false {
         didSet {
             self.registerButton.backgroundColor = registerButtonEnabled ? .t_tidiBlue() : .white
-            self.registerButton.setTitleColor(registerButtonEnabled ? .white : .systemGray2, for: .normal)
+            self.registerButton.setTitleColor(registerButtonEnabled ? .white : .systemGray2,
+                                              for: .normal)
         }
     }
 
@@ -60,7 +58,7 @@ class RegisterViewController: BaseViewController {
                                                  leftButton: leftButton,
                                                  rightButtons: [])
 
-    let demoTagList = ["tag name / 0", "tag name / 1", "tag name / 2", "tag name / 3", "tag name / 4"]
+    let demoTagList = ["tag name / 0", "tag name / 1", "tag name / 2", "tag name / 3"]
 
     // MARK: - Initialize
 
@@ -101,7 +99,8 @@ class RegisterViewController: BaseViewController {
                 guard let text = text?.lowercased() else {
                     return
                 }
-                self?.isInvalidFormatURL = !(text.contains("http") || text.contains("https")) && !text.isEmpty
+                self?.isInvalidFormatURL = !(text.contains("http") ||
+                                             text.contains("https")) && !text.isEmpty
                 self?.registerButtonEnabled = !(text.isEmpty)
             })
             .disposed(by: disposeBag)
@@ -125,10 +124,16 @@ class RegisterViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
 
-        let input = RegisterViewModel.Input(urlInputText: urlTextField.rx.text.asDriver().filter { $0.t_isNotNil }.map { $0.t_unwrap },
-                                            bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
-                                            tagInputText: selectedTagSubject.t_asDriverSkipError(),
-                                            registerButtonTap: registerButton.rx.tap.asDriver())
+        let urlTextField = urlTextField.rx.text.asDriver()
+            .filter { $0.t_isNotNil }
+            .map { $0.t_unwrap }
+
+        let input = RegisterViewModel.Input(
+            urlInputText: urlTextField,
+            bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
+            tagInputText: selectedTagSubject.t_asDriverSkipError(),
+            registerButtonTap: registerButton.rx.tap.asDriver()
+        )
         let output = viewModel.transform(input)
 
         output.didReceivePreviewResponse.drive().disposed(by: disposeBag)
@@ -147,65 +152,36 @@ class RegisterViewController: BaseViewController {
         setupNavigationBar()
         view.backgroundColor = .white
 
-        self.urlTitleLabel = UILabel().then {
-            $0.text = R.string.localizable.registerAddressTitle()
-            $0.font = .t_B(16)
-            self.view.addSubview($0)
-        }
+        self.urlTitleLabel = makeTitleLabel(title: R.string.localizable.registerAddressTitle())
 
-        self.urlTextField = UITextField().then {
-            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-            $0.leftViewMode = .always
-            $0.placeholder = R.string.localizable.registerAddressPlaceHolder()
-            $0.backgroundColor = .white
-            $0.font = .t_R(16)
-            setupTextFieldLayer($0)
-            view.addSubview($0)
-        }
+        let urlTextFieldPlaceholder = NSAttributedString(
+            string: R.string.localizable.registerAddressPlaceHolder(),
+            attributes: [.foregroundColor: UIColor.gray])
+        self.urlTextField = makeTextField(placeholder: urlTextFieldPlaceholder)
 
-        self.bookMarkTitleLabel = UILabel().then {
-            $0.text = R.string.localizable.registerBookMarkTitle()
-            $0.font = .t_B(16)
-            self.view.addSubview($0)
-        }
+        self.bookMarkTitleLabel = makeTitleLabel(
+            title: R.string.localizable.registerBookMarkTitle()
+        )
 
-        self.bookMarkTextField = UITextField().then {
-            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-            $0.leftViewMode = .always
-            $0.placeholder = R.string.localizable.registerBookMarkPlaceHolder()
-            $0.backgroundColor = .white
-            $0.font = .t_R(16)
-            setupTextFieldLayer($0)
-            view.addSubview($0)
-        }
+        let bookMarkTextFieldPlaceholder = NSAttributedString(
+            string: R.string.localizable.registerBookMarkPlaceHolder(),
+            attributes: [.foregroundColor: UIColor.gray])
+        self.bookMarkTextField = makeTextField(placeholder: bookMarkTextFieldPlaceholder)
 
-        self.tagTitleLabel = UILabel().then {
-            $0.text = R.string.localizable.registerTagTitle()
-            $0.font = .t_B(16)
-            self.view.addSubview($0)
-        }
+        self.tagTitleLabel = makeTitleLabel(title: R.string.localizable.registerFolderTitle())
 
-        self.tagTextField = UITextField().then {
-            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-            $0.leftViewMode = .always
-            $0.placeholder = R.string.localizable.registerTagPlaceHolder()
-            $0.rightView = UIImageView(image: R.image.arrow_down_gray())
-            $0.rightViewMode = .always
-            $0.backgroundColor = .white
-            $0.font = .t_R(16)
-            setupTextFieldLayer($0)
-            view.addSubview($0)
-        }
-
-        self.dividerView = UIView().then {
-            $0.backgroundColor = .systemGray2
-            view.addSubview($0)
-        }
+        let tagTextFieldPlaceholder = NSAttributedString(
+            string: R.string.localizable.registerFolderPlaceHolder(),
+            attributes: [.foregroundColor: UIColor.gray])
+        self.tagTextField = makeTextField(placeholder: tagTextFieldPlaceholder)
 
         self.registerButton = UIButton().then {
             $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
             $0.titleLabel?.font = .t_B(20)
             $0.setTitleColor(.systemGray2, for: .normal)
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.lightGray.cgColor
+            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
             view.addSubview($0)
         }
 
@@ -221,51 +197,46 @@ class RegisterViewController: BaseViewController {
     override func setupLayoutConstraints() {
         urlTitleLabel.snp.makeConstraints {
             $0.top.equalTo(navigationBar.snp.bottom).offset(30)
-            $0.leading.equalToSuperview().offset(Self.labelSidePadding)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
         }
 
         urlTextField.snp.makeConstraints {
-            $0.top.equalTo(urlTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.top.equalTo(urlTitleLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
             $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
         bookMarkTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(urlTextField.snp.bottom).offset(48)
-            $0.leading.equalToSuperview().offset(Self.labelSidePadding)
+            $0.top.equalTo(urlTextField.snp.bottom).offset(40)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
         }
 
         bookMarkTextField.snp.makeConstraints {
-            $0.top.equalTo(bookMarkTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.top.equalTo(bookMarkTitleLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
             $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
         tagTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(bookMarkTextField.snp.bottom).offset(48)
-            $0.left.equalToSuperview().offset(Self.labelSidePadding)
+            $0.top.equalTo(bookMarkTextField.snp.bottom).offset(40)
+            $0.left.equalToSuperview().offset(Self.sidePadding)
         }
 
         tagTextField.snp.makeConstraints {
-            $0.top.equalTo(tagTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
+            $0.top.equalTo(tagTitleLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(Self.sidePadding)
             $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
         }
 
         registerButton.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(Self.registerButtonHeight)
-        }
-
-        dividerView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(1)
-            $0.bottom.equalTo(registerButton.snp.top).inset(2)
+            $0.leading.trailing.equalTo(tagTextField)
+            $0.height.equalTo(56)
+            $0.bottom.equalToSuperview().offset(-40)
         }
 
         notifyInvalidFormatUrlLabel.snp.makeConstraints {
             $0.centerY.equalTo(urlTitleLabel)
-            $0.trailing.equalToSuperview().inset(Self.labelSidePadding)
+            $0.trailing.equalToSuperview().inset(Self.sidePadding)
         }
     }
 }
@@ -278,21 +249,38 @@ private extension RegisterViewController {
         }
     }
 
-    func setupTextFieldLayer(_ textFiled: UITextField) {
-        textFiled.layer.cornerRadius = Self.textFieldHeight / 3
-        textFiled.layer.shadowColor = UIColor.black.cgColor
-        textFiled.layer.shadowOpacity = 0.5
-        textFiled.layer.shadowOffset = CGSize(w: 0, h: 2)
-        textFiled.layer.shadowRadius = Self.textFieldHeight / 3
-        textFiled.layer.masksToBounds = false
-    }
-
     func showBottomSheet(_ tagList: [String]) {
-        let bottomSheet = BottomSheetViewController(.chooseFolder,
-                                                    dataSource: demoTagList,
-                                                    selectedEventObserver: selectedTagIndexSubject.asObserver())
+        let bottomSheet = BottomSheetViewController(
+            .chooseFolder,
+            dataSource: demoTagList,
+            selectedEventObserver: selectedTagIndexSubject.asObserver()
+        )
         bottomSheet.modalPresentationStyle = .overFullScreen
 
         self.present(bottomSheet, animated: false, completion: nil)
+    }
+
+    func makeTitleLabel(title: String) -> UILabel {
+        return UILabel().then {
+            $0.text = title
+            $0.font = .t_B(16)
+            $0.textColor = .black
+            view.addSubview($0)
+        }
+    }
+
+    func makeTextField(placeholder: NSAttributedString) -> UITextField {
+        return UITextField().then {
+            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+            $0.leftViewMode = .always
+            $0.attributedPlaceholder = placeholder
+            $0.backgroundColor = .white
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.gray.cgColor
+            $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
+            $0.font = .t_R(16)
+            $0.textColor = .black
+            view.addSubview($0)
+        }
     }
 }

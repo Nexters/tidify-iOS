@@ -23,7 +23,7 @@ extension AuthAPI: TargetType {
     }
 
     var path: String {
-        let baseRoutePath = "/api/v1/auth"
+        let baseRoutePath = "/api/v1/oauth"
 
         switch self {
         case .auth:

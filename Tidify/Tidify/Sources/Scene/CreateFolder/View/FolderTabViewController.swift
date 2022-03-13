@@ -18,13 +18,15 @@ class FolderTabViewController: BaseViewController {
     weak var coordinator: FolderTabCoordinator?
 
     private weak var collectionView: UICollectionView!
+    private var containerView: UIView!
+    private var emptyLabel: UILabel!
     private let profileButton: UIButton!
     private let createFolderButton: UIButton!
 
     private let viewModel: FolderTabViewModel
     private let disposeBag = DisposeBag()
 
-    private lazy var navigationBar = TidifyNavigationBar(.rounded,
+    private lazy var navigationBar = TidifyNavigationBar(.folder,
                                                          leftButton: profileButton,
                                                          rightButtons: [createFolderButton])
 
@@ -67,89 +69,62 @@ class FolderTabViewController: BaseViewController {
                 self?.coordinator?.pushCreateFolderView()
             })
             .disposed(by: disposeBag)
+
+        setupCollectionView()
     }
 
     override func setupViews() {
         setupNavigationBar()
 
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
+        let flowLayout = UICollectionViewFlowLayout().then {
+            $0.itemSize = CGSize(
+                w: FolderCollectionViewCell.width,
+                h: FolderCollectionViewCell.height
+            )
+        }
 
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then {
+        self.containerView = UIView().then {
             $0.backgroundColor = .white
-            $0.delegate = self
-            $0.dataSource = self
-            $0.t_registerCellClass(cellType: FolderCollectionViewCell.self)
-            $0.t_registerCellClass(cellType: NoticeEmptyCollectionViewCell.self)
+            $0.t_cornerRadius([.topLeft, .topRight], radius: 16)
             view.addSubview($0)
+        }
+
+        self.collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: flowLayout
+        ).then {
+            $0.backgroundColor = .white
+            $0.t_registerCellClass(cellType: FolderCollectionViewCell.self)
+            $0.isHidden = true
+            containerView.addSubview($0)
+        }
+
+        self.emptyLabel = UILabel().then {
+            $0.text = R.string.localizable.folderNoticeEmptyTitle()
+            $0.textColor = .t_indigo2()
+            $0.font = .t_B(16)
+            $0.textAlignment = .center
+            $0.isHidden = true
+            containerView.addSubview($0)
         }
     }
 
     override func setupLayoutConstraints() {
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(navigationBar.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-}
-
-// MARK: - DataSource
-
-extension FolderTabViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let isEmptyDataSource = self.viewModel.folderList.isEmpty
-
-        return isEmptyDataSource ? 1 : self.viewModel.folderList.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let isEmptyDataSource = self.viewModel.folderList.isEmpty
-
-        if isEmptyDataSource {
-            let cell = collectionView.t_dequeueReusableCell(cellType: NoticeEmptyCollectionViewCell.self,
-                                                            indexPath: indexPath)
-            cell.setNoticeTitle(R.string.localizable.folderNoticeEmptyTitle())
-            cell.contentView.t_cornerRadius([.topLeft, .topRight], radius: 18)
-
-            return cell
-        } else {
-            guard let folder = self.viewModel.folderList[safe: indexPath.item] else {
-                return UICollectionViewCell()
-            }
-
-            let cell = collectionView.t_dequeueReusableCell(cellType: FolderCollectionViewCell.self,
-                                                            indexPath: indexPath)
-            cell.setFolder(folder)
-            return cell
-        }
-    }
-}
-
-// MARK: - DelegateFlowLayout
-
-extension FolderTabViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(w: FolderCollectionViewCell.width, h: FolderCollectionViewCell.height)
-    }
-}
-
-// MARK: - Delegate
-
-extension FolderTabViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let isEmptyDataSource = self.viewModel.folderList.isEmpty
-
-        if isEmptyDataSource {
-            return
+        containerView.snp.makeConstraints {
+            $0.top.equalTo(navigationBar.snp.bottom).offset(16)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
 
-        guard let folder = self.viewModel.folderList[safe: indexPath.item] else {
-            return
+        collectionView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(24)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-140)
         }
-    }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
+        emptyLabel.snp.makeConstraints{
+            $0.top.equalToSuperview().offset(70)
+            $0.leading.trailing.equalToSuperview()
+        }
     }
 }
 
@@ -157,8 +132,65 @@ private extension FolderTabViewController {
     func setupNavigationBar() {
         view.addSubview(navigationBar)
         navigationBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.top)
             $0.leading.trailing.equalToSuperview()
         }
+        navigationBar.t_cornerRadius([.bottomLeft, .bottomRight], radius: 16)
+    }
+
+    func setupCollectionView() {
+        guard !viewModel.folderList.value.isEmpty else {
+            emptyLabel.isHidden = false
+            collectionView.isHidden = true
+            return
+        }
+        collectionView.isHidden = false
+
+        viewModel.folderList
+            .bind(to: collectionView.rx.items) { [weak self] _, row, item -> UICollectionViewCell in
+                guard let self = self else { return UICollectionViewCell() }
+                let cell = self.collectionView.t_dequeueReusableCell(
+                    cellType: FolderCollectionViewCell.self,
+                    indexPath: IndexPath.init(row: row, section: 0)
+                )
+
+                cell.editButton.addTarget(self,
+                                          action: #selector(self.editWasTapped(_:)),
+                                          for: .touchUpInside)
+                cell.deleteButton.addTarget(self,
+                                            action: #selector(self.deleteWasTapped(_:)),
+                                            for: .touchUpInside)
+                cell.setFolder(
+                    item,
+                    buttonTag: row,
+                    lastIndexObserver: self.viewModel.lastIndexSubject.asObserver()
+                )
+                return cell
+            }
+            .disposed(by: disposeBag)
+
+        viewModel.lastIndexSubject
+            .filter { [weak self] in $0 != (self?.viewModel.lastIndex ?? 0) }
+            .subscribe(onNext: { [weak self] in
+                let lastIndex = IndexPath(item: self?.viewModel.lastIndex ?? 0, section: 0)
+                guard let self = self,
+                      let cell = self.collectionView.cellForItem(at: lastIndex)
+                        as? FolderCollectionViewCell else { return }
+                cell.initSwipeView()
+                self.viewModel.lastIndex = $0
+            })
+            .disposed(by: disposeBag)
+    }
+
+    @objc
+    func editWasTapped(_ sender: UIButton) {
+        print("edit Was Tapped") // TODO
+    }
+
+    @objc
+    func deleteWasTapped(_ sender: UIButton) {
+        var data = viewModel.folderList.value
+        data.remove(at: sender.tag)
+        viewModel.folderList.accept(data)
     }
 }

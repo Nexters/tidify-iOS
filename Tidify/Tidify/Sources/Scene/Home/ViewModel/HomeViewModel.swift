@@ -12,23 +12,23 @@ import SwiftLinkPreview
 
 protocol HomeViewModelDelegate: AnyObject {
     func pushRegisterView()
-    func pushWebView()
+    func pushWebView(_ url: String)
 }
 
 class HomeViewModel: ViewModelType {
 
     // MARK: - Properties
-
     let imagePlaceholder = "https://via.placeholder.com/150"
     let swiftLinkPreview = SwiftLinkPreview()
 
     struct Input {
-        let cellTapSubject: Driver<BookMark>
+        let didSwipeBookMarkCell: Driver<BookMarkCellSwipeOption>
+        let didTapCell: Driver<BookMark>
     }
 
     struct Output {
         let didReceiveBookMarks: Driver<Void>
-        let cellTapEvent: Driver<Void>
+        let didTapCell: Driver<Void>
     }
 
     weak var delegate: HomeViewModelDelegate?
@@ -38,24 +38,25 @@ class HomeViewModel: ViewModelType {
     // MARK: - Methods
 
     func transform(_ input: Input) -> Output {
-        let didReceiveBookMarks = Driver.just(())
-            .flatMapLatest { _ -> Driver<BookMarkListDTO> in
-                return ApiProvider.request(BookMarkAPI.getBookMarkList(id: 1))
+        let didReeceiveBookMakrs = Driver.just(())
+            .flatMapLatest { _ -> Driver<[BookMark]> in
+                return APIProvider.request(BookMarkAPI.getBookMarkList(id: 1))
                     .map(BookMarkListDTO.self)
+                    .map { $0.bookMarks.map { $0.toEntity() } }
                     .t_asDriverSkipError()
             }
-            .do(onNext: { [weak self] bookMarkListDTO in
-                self?.bookMarkList = bookMarkListDTO.bookMarks.map { $0.toEntity() }
+            .do(onNext: {
+                self.bookMarkList = $0
             })
             .map { _ in }
 
-        let cellTapEvent = input.cellTapSubject
-            .do(onNext: { [weak self] _ in
-                self?.delegate?.pushWebView()
+        let didTapCell = input.didTapCell
+            .do(onNext: { [weak self] in
+                self?.delegate?.pushWebView($0.urlString ?? "")
             })
             .map { _ in }
 
-        return Output(didReceiveBookMarks: didReceiveBookMarks,
-                      cellTapEvent: cellTapEvent)
+        return Output(didReceiveBookMarks: didReeceiveBookMakrs,
+                      didTapCell: didTapCell)
     }
 }
