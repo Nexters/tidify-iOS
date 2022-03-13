@@ -27,7 +27,6 @@ final class SignInCoordinator: Coordinator {
         let signInViewModel = SignInViewModel()
         signInViewModel.delegate = self
         let signInViewController = SignInViewController(viewModel: signInViewModel)
-        signInViewController.coordinator = parentCoordinator as? MainCoordinator
 
         navigationController.pushViewController(signInViewController, animated: true)
     }
@@ -42,16 +41,16 @@ extension SignInCoordinator: SignInViewModelDelegate {
             mainCoordinator = parentCoordinator
         } else {
             // startWithOnboarding으로 분기한 경우
-            let onboardingCoordinator = parentCoordinator as? OnboardingCoordinator
-            let parentCoordinator = onboardingCoordinator?.parentCoordinator as? MainCoordinator
-
+            guard let onboardingCoordinator = parentCoordinator as? OnboardingCoordinator,
+                  let parentCoordinator = onboardingCoordinator.parentCoordinator
+                    as? MainCoordinator else { return }
             mainCoordinator = parentCoordinator
         }
 
         mainCoordinator?.start()
     }
 
-    func didSUccessSingInWithApple() {
+    func didSuccessSingInWithApple() {
         // 추후 연동 진행
         print("⚠️ [Ian] \(#file) - \(#line): \(#function): Apple Login")
     }
