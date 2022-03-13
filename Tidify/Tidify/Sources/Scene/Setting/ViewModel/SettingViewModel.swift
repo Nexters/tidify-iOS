@@ -30,6 +30,13 @@ class SettingViewModel: ViewModelType {
     enum Section: Int, CaseIterable {
         case account
         case dataManagement
+
+        var numberOfRows: Int {
+            switch self {
+            case .account: return 2
+            case .dataManagement: return 5
+            }
+        }
     }
 
     struct Input {

@@ -69,7 +69,7 @@ class FolderTabCoordinator: Coordinator {
             )
             $0.setImage(R.image.home_icon_profile(), for: .normal)
             $0.backgroundColor = .white
-            $0.layer.cornerRadius = Self.navButtonSize / 2
+            $0.t_cornerRadius(radius: Self.navButtonSize / 2)
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
             $0.layer.masksToBounds = false
