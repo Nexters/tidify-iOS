@@ -19,7 +19,8 @@ class DefaultTableViewCell: UITableViewCell {
 
     // MARK: - Properties
 
-    private weak var titleLabel: UILabel!
+    weak var titleLabel: UILabel!
+    private weak var rightArrowImageView: UIImageView?
 
     // MARK: - Initialize
 
@@ -54,12 +55,33 @@ class DefaultTableViewCell: UITableViewCell {
         }
     }
 
-    func setCell(_ title: String, isHeader: Bool, showDisclosure: Bool = false,
-                 radiusEdges: [UIRectCorner] = [], radius: CGFloat = 0)
+    func setCell(_ title: String,
+                 isHeader: Bool = false,
+                 showDisclosure: Bool = false,
+                 radiusEdges: [UIRectCorner] = [],
+                 radius: CGFloat = 0)
     {
         self.titleLabel.text = title
-        self.titleLabel.font = isHeader ? .t_B(16) : .t_R(16)
-        self.accessoryType = showDisclosure ? .disclosureIndicator : .none
+        self.titleLabel.font = isHeader ? .t_EB(16) : .t_R(16)
         contentView.t_cornerRadius(radiusEdges, radius: radius)
+
+        if showDisclosure {
+            createRightArrowImage()
+        }
+    }
+}
+
+private extension DefaultTableViewCell {
+    func createRightArrowImage() {
+        self.rightArrowImageView = UIImageView().then {
+            $0.image = R.image.arrowRight()
+            $0.contentMode = .scaleAspectFit
+            contentView.addSubview($0)
+        }
+
+        rightArrowImageView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-22)
+        }
     }
 }

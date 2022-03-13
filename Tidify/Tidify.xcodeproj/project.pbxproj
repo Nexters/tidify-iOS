@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
 		4024496D27D2464B003587B5 /* FolderCollectionViewEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4024496C27D2464B003587B5 /* FolderCollectionViewEmptyCell.swift */; };
+		8661DECE27DDBF360005B02B /* AccountSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */; };
 		8680A0A327D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */; };
 		B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */; };
 		B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */; };
@@ -122,6 +123,7 @@
 		4024496C27D2464B003587B5 /* FolderCollectionViewEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCollectionViewEmptyCell.swift; sourceTree = "<group>"; };
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
+		8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSectionHeaderView.swift; sourceTree = "<group>"; };
 		8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
 		B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				B5CA8B1826B0438600D9C6D3 /* SettingViewController.swift */,
+				8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */,
 				B50A37C326C7ECC600E5EE31 /* Cells */,
 			);
 			path = Setting;
@@ -908,6 +911,7 @@
 				B5CA8B1D26B043A700D9C6D3 /* SettingViewModel.swift in Sources */,
 				B5A95370269F323B00290D64 /* WebViewCoordinator.swift in Sources */,
 				B5F19C0E26999D7A00D1E8BB /* AbstractCoordinator.swift in Sources */,
+				8661DECE27DDBF360005B02B /* AccountSectionHeaderView.swift in Sources */,
 				B5E554A826C9506C00C948A0 /* TidifyNavigationBar.swift in Sources */,
 				B5F19C202699CB4E00D1E8BB /* BookMarkAPI.swift in Sources */,
 				B5CA8B2026B043CD00D9C6D3 /* BaseViewController.swift in Sources */,

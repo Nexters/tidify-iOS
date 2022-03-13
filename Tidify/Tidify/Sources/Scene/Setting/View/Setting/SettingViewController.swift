@@ -33,7 +33,7 @@ class SettingViewController: BaseViewController {
 
     lazy var navigationBar = TidifyNavigationBar(
         .default,
-        title: R.string.localizable.settingNavigationTitle(),
+        title: "",
         leftButton: backButton,
         rightButtons: [])
 
@@ -74,6 +74,9 @@ class SettingViewController: BaseViewController {
             $0.backgroundColor = .init(235, 235, 240, 100)
             $0.separatorStyle = .none
             $0.t_registerCellClass(cellType: DefaultTableViewCell.self)
+            if #available(iOS 15, *) {
+                $0.sectionHeaderTopPadding = 0
+            }
             view.addSubview($0)
         }
     }
@@ -128,7 +131,7 @@ extension SettingViewController: UITableViewDataSource {
                              isHeader: true)
             case 1:
                 cell.setCell(R.string.localizable.settingAccountSocialLogin(),
-                             isHeader: false,
+                             showDisclosure: true,
                              radiusEdges: [.bottomLeft, .bottomRight],
                              radius: 15)
             default:
@@ -143,19 +146,17 @@ extension SettingViewController: UITableViewDataSource {
                              radiusEdges: [.topLeft, .topRight],
                              radius: 15)
             case 1:
-                cell.setCell(R.string.localizable.settingDataManagementImageCache(),
-                             isHeader: false)
+                cell.setCell(R.string.localizable.settingDataManagementImageCache())
             case 2:
-                cell.setCell(R.string.localizable.settingDataManagementCache(),
-                             isHeader: false)
+                cell.setCell(R.string.localizable.settingDataManagementCache())
             case 3:
-                cell.setCell(R.string.localizable.settingDataManagementLogout(),
-                             isHeader: false)
+                cell.setCell(R.string.localizable.settingDataManagementLogout())
             case 4:
                 cell.setCell(R.string.localizable.settingDatamanagementAppVersion(),
-                             isHeader: false,
                              radiusEdges: [.bottomLeft, .bottomRight],
                              radius: 15)
+                cell.titleLabel.font = .t_R(12)
+                cell.titleLabel.textColor = .lightGray
             default:
                 return DefaultTableViewCell()
             }
@@ -191,30 +192,35 @@ extension SettingViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
         guard let section = SettingViewModel.Section(rawValue: section) else {
-            return UIView()
+            return nil
         }
 
-//        switch section {
-//        case .account:
-//            let headerView = UIView(frame: CGRect(x: 0,
-//                                                  y: 0,
-//                                                  width: tableView.frame.width,
-//                                                  height: tableView.frame.height / 9))
-//            headerView.backgroundColor = .white
-//            headerView.t_cornerRadius([.topLeft, .topRight], radius: 15)
-//            return headerView
-//        case .dataManagement:
+        let sectionHeaderView: UIView?
 
-        if section == .dataManagement {
-            let paddingView = UIView(frame: CGRect(x: 0,
-                                                   y: 0,
-                                                   width: tableView.frame.width,
-                                                   height: 16))
-            paddingView.backgroundColor = .clear
-            return paddingView
+        switch section {
+        case .account:
+            let headerView = AccountSectionHeaderView()
+            sectionHeaderView = headerView
+        case .dataManagement:
+            let headerView = UIView()
+            headerView.backgroundColor = .clear
+            sectionHeaderView = headerView
         }
 
-        return UIView()
+        return sectionHeaderView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let section = SettingViewModel.Section(rawValue: section) else {
+            return .zero
+        }
+
+        switch section {
+        case .account:
+            return tableView.frame.height / 9
+        case .dataManagement:
+            return 20
+        }
     }
 }
 
