@@ -73,6 +73,11 @@
 "Setting.alert.allCache.cancel.title" = "다음에";
 "Setting.alert.allCache.ok.title" = "실행";
 
+// Search
+"Setting.search.placeholder" = "어떤 것을 찾으시나요?";
+"Setting.history.listGuide.title" = "최근 검색목록";
+"Setting.history.eraseAllButton.title" = "모두 지우기";
+
 // BottomSheet
 "BottomSheet.folder.title" = "폴더 선택";
 
