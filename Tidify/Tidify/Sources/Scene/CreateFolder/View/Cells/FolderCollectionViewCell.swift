@@ -5,11 +5,11 @@
 //  Created by 여정수 on 2021/08/21.
 //
 
+import RxRelay
 import RxSwift
 import SnapKit
 import Then
 import UIKit
-import RxRelay
 
 final class FolderCollectionViewCell: UICollectionViewCell {
 
@@ -25,11 +25,11 @@ final class FolderCollectionViewCell: UICollectionViewCell {
 
     private weak var folderColorView: UIView!
     private weak var folderNameLabel: UILabel!
-    var editButton: UIButton!
-    var deleteButton: UIButton!
-    private var swipeView: UIStackView!
-    private var panGestureRecognizer: UIPanGestureRecognizer!
-    private var isSwiped = false
+    weak var editButton: UIButton!
+    weak var deleteButton: UIButton!
+    weak var swipeView: UIStackView!
+    weak var panGestureRecognizer: UIPanGestureRecognizer!
+    var isSwiped = BehaviorRelay<Bool>(value: false)
 
     private var disposeBag = DisposeBag()
     private var buttonTag: Int?
@@ -56,7 +56,7 @@ final class FolderCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        initSwipeView()
+        t_initSwipeView(swipeView: swipeView, width: Self.width, isSwiped: isSwiped)
         disposeBag = DisposeBag()
     }
 }
@@ -73,6 +73,7 @@ extension FolderCollectionViewCell: UIGestureRecognizerDelegate {
         self.deleteButton.tag = buttonTag
 
         folderNameLabel.text = folder.name
+        folderNameLabel.textColor = UIColor(hexString: folder.color)
         folderColorView.backgroundColor = UIColor(hexString: folder.color)
 
         panGestureRecognizer.rx.event
@@ -83,11 +84,6 @@ extension FolderCollectionViewCell: UIGestureRecognizerDelegate {
                 lastIndexObserver.onNext(tag)
             })
             .disposed(by: disposeBag)
-    }
-
-    func initSwipeView() {
-        swipeView.frame.origin.x = Self.width
-        isSwiped = false
     }
 
     func gestureRecognizer(
@@ -104,7 +100,7 @@ private extension FolderCollectionViewCell {
 
         self.panGestureRecognizer = UIPanGestureRecognizer(
             target: self,
-            action: #selector(onPan(_:))
+            action: #selector(onPan)
         ).then {
             $0.delegate = self
             addGestureRecognizer($0)
@@ -164,37 +160,17 @@ private extension FolderCollectionViewCell {
         if swipeView.frame.origin.x < Self.width - swipeView.frame.width { return }
 
         let p = panGestureRecognizer.translation(in: self)
-        swipeView.frame.origin.x = isSwiped ? p.x + Self.swipedPositionX : p.x + Self.width
+        swipeView.frame.origin.x = isSwiped.value ? p.x + Self.swipedPositionX : p.x + Self.width
     }
 
     @objc
-    func onPan(_ panGestureRecognizer: UIPanGestureRecognizer) {
-        panGestureRecognizer.rx.event
-            .map { $0 .state }
-            .bind { [weak self] in
-                guard let self = self else { return }
-                switch $0 {
-                case .changed:
-                    self.setNeedsLayout()
-                case .ended:
-                    if self.swipeView.center.x < 331 {
-                        UIView.animate(withDuration: 0.3, animations: {
-                            self.swipeView.frame.origin.x = Self.width - self.swipeView.frame.width
-                            self.layoutIfNeeded()
-                        })
-                        self.isSwiped = true
-                    } else {
-                        UIView.animate(withDuration: 0.3, animations: {
-                            self.initSwipeView()
-                        })
-                    }
-                case .possible: return
-                case .began: return
-                case .cancelled: return
-                case .failed: return
-                @unknown default: return
-                }
-            }
-            .disposed(by: disposeBag)
+    func onPan() {
+        t_panSwipeAction(
+            panGestureRecognizer,
+            swipeView: swipeView,
+            isSwiped: isSwiped,
+            width: Self.width,
+            disposeBag: disposeBag
+        )
     }
 }

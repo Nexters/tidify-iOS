@@ -176,7 +176,12 @@ private extension FolderTabViewController {
                 guard let self = self,
                       let cell = self.collectionView.cellForItem(at: lastIndex)
                         as? FolderCollectionViewCell else { return }
-                cell.initSwipeView()
+
+                cell.t_initSwipeView(
+                    swipeView: cell.swipeView,
+                    width: cell.width,
+                    isSwiped: cell.isSwiped
+                )
                 self.viewModel.lastIndex = $0
             })
             .disposed(by: disposeBag)
