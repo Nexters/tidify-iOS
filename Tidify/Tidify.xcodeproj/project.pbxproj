@@ -10,6 +10,11 @@
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
 		40C0023427E088F400941339 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C0023327E088F400941339 /* UICollectionViewCell+.swift */; };
 		8661DECE27DDBF360005B02B /* AccountSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */; };
+		8661DED527DE118A0005B02B /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DED427DE118A0005B02B /* SearchCoordinator.swift */; };
+		8661DED927DE11DF0005B02B /* SearchHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DED827DE11DF0005B02B /* SearchHistoryHeaderView.swift */; };
+		8661DEDB27DE11EE0005B02B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DEDA27DE11EE0005B02B /* SearchViewController.swift */; };
+		8661DEDE27DE11FF0005B02B /* SearchHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DEDD27DE11FF0005B02B /* SearchHistoryCell.swift */; };
+		8661DEE127DE12110005B02B /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DEE027DE12110005B02B /* SearchViewModel.swift */; };
 		8680A0A327D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */; };
 		B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */; };
 		B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */; };
@@ -124,6 +129,11 @@
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
 		8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSectionHeaderView.swift; sourceTree = "<group>"; };
+		8661DED427DE118A0005B02B /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
+		8661DED827DE11DF0005B02B /* SearchHistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryHeaderView.swift; sourceTree = "<group>"; };
+		8661DEDA27DE11EE0005B02B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		8661DEDD27DE11FF0005B02B /* SearchHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryCell.swift; sourceTree = "<group>"; };
+		8661DEE027DE12110005B02B /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
 		B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +246,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8661DED627DE11C90005B02B /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				8661DEDF27DE120B0005B02B /* ViewModel */,
+				8661DED727DE11D50005B02B /* View */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		8661DED727DE11D50005B02B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8661DEDC27DE11F90005B02B /* Cells */,
+				8661DED827DE11DF0005B02B /* SearchHistoryHeaderView.swift */,
+				8661DEDA27DE11EE0005B02B /* SearchViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8661DEDC27DE11F90005B02B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8661DEDD27DE11FF0005B02B /* SearchHistoryCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		8661DEDF27DE120B0005B02B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8661DEE027DE12110005B02B /* SearchViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		B50A37C326C7ECC600E5EE31 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,6 +523,7 @@
 				B588C69126D0C93C003F4308 /* CreateFolder */,
 				B577660226C17DFF00533276 /* BottomSheet */,
 				B56D8314269989BF00D5F513 /* Home */,
+				8661DED627DE11C90005B02B /* Search */,
 				B5AF0AD6269A0D7200D8DCF5 /* Register */,
 				B5CA8B1726B0436900D9C6D3 /* Setting */,
 				B5F19C122699A01700D1E8BB /* WebView */,
@@ -607,6 +653,7 @@
 				B588C6A226D0D23C003F4308 /* CreateFolderCoordinator.swift */,
 				B53B93F026DB7D0300EBCB21 /* OnboardingCoordinator.swift */,
 				B53B93FE26DBC9B600EBCB21 /* SignInCoordinator.swift */,
+				8661DED427DE118A0005B02B /* SearchCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -897,6 +944,7 @@
 				B588C69626D0C958003F4308 /* FolderTabViewController.swift in Sources */,
 				B588C6A726D0E12E003F4308 /* Array+.swift in Sources */,
 				C7AF275126BE900F00AE258B /* R.generated.swift in Sources */,
+				8661DED527DE118A0005B02B /* SearchCoordinator.swift in Sources */,
 				B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */,
 				B57833E426CA7BC2000AC589 /* TabBarCoordinator.swift in Sources */,
 				B5DE6A0926DA3ED70055B8D1 /* StickColorView.swift in Sources */,
@@ -945,15 +993,19 @@
 				B57833E026CA41E6000AC589 /* TidifyTabBar.swift in Sources */,
 				B56D831A26998A1300D5F513 /* Optional+.swift in Sources */,
 				B56D832026998A4E00D5F513 /* UIColor+.swift in Sources */,
+				8661DEDE27DE11FF0005B02B /* SearchHistoryCell.swift in Sources */,
 				B5CA8B2926B048C700D9C6D3 /* DefaultTableViewCell.swift in Sources */,
 				C72D3702269AFED9009A71B6 /* RxSwift+LinkPreview.swift in Sources */,
 				B570F9F026BEAAD30095A0F0 /* UIViewController+.swift in Sources */,
+				8661DEDB27DE11EE0005B02B /* SearchViewController.swift in Sources */,
 				C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */,
 				B588C6A126D0D181003F4308 /* CreateFolderViewModel.swift in Sources */,
 				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
+				8661DEE127DE12110005B02B /* SearchViewModel.swift in Sources */,
 				B5F19C142699A04400D1E8BB /* WebViewController.swift in Sources */,
 				B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */,
+				8661DED927DE11DF0005B02B /* SearchHistoryHeaderView.swift in Sources */,
 				B588C6A326D0D23C003F4308 /* CreateFolderCoordinator.swift in Sources */,
 				B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */,
 				B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */,

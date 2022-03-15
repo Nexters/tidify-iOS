@@ -50,7 +50,6 @@ class TabBarCoordinator: Coordinator {
 }
 
 private extension TabBarCoordinator {
-    // 탭 바 테스트를 위해 기획되어진 VC가 아닌 임의의 VC를 생성하여 구성하였음.
     func setupTabBarCoordinator() {
         tidifyTabBarController.tabBar.isHidden = true
 
@@ -63,11 +62,10 @@ private extension TabBarCoordinator {
         childCoordinators.append(homeCoordinator)
         homeViewController = homeCoordinator.startPush()
 
-        // 추후 searchVC로 변경
-        let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
-        registerCoordinator.parentCoordinator = self
-        childCoordinators.append(registerCoordinator)
-        searchViewController = registerCoordinator.startPush()
+        let searchCoordinator = SearchCoordinator(navigationController: navigationController)
+        searchCoordinator.parentCoordinator = self
+        childCoordinators.append(searchCoordinator)
+        searchViewController = searchCoordinator.startPush()
 
         let folderTabCoordinator = FolderTabCoordinator(navigationController: navigationController)
         folderTabCoordinator.parentCoordinator = self
