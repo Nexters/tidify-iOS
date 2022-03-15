@@ -153,7 +153,8 @@ extension HomeViewController: UITableViewDelegate {
         return .init(actions: [editAction, deleteAction])
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
         guard let bookMark = viewModel.bookMarkList[safe: indexPath.row] else { return }
 
         didTapCellSubject.onNext(bookMark)
