@@ -12,82 +12,62 @@ import UIKit
 
 class ProfileCoordinator: Coordinator {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
+  var navigationController: UINavigationController
 
-    private let disposeBag = DisposeBag()
-    private let saveDataSubject = PublishSubject<Void>()
+  private let disposeBag = DisposeBag()
+  private let saveDataSubject = PublishSubject<Void>()
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
+  }
+
+  // MARK: - Methods
+
+  func start() {
+    let profileViewController = getProfileViewController()
+    navigationController.pushViewController(profileViewController, animated: true)
+  }
+
+  func startPush() -> UIViewController {
+    getProfileViewController()
+  }
+}
+
+private extension ProfileCoordinator {
+  func getProfileViewController() -> ProfileViewController {
+    let leftButton = UIButton().then {
+      $0.setImage(R.image.nav_icon_back(), for: .normal)
     }
 
-    // MARK: - Methods
-
-    func start() {
-        let leftButton = UIButton().then {
-            $0.setImage(R.image.nav_icon_back(), for: .normal)
-        }
-
-        let rightButton = UIButton().then {
-            $0.setTitle(R.string.localizable.profileNavButtonTitle(), for: .normal)
-            $0.setTitleColor(.t_tidiBlue(), for: .normal)
-        }
-
-        let profileViewController = ProfileViewController(saveDataSubject,
-                                                          leftButton: leftButton,
-                                                          rightButton: rightButton)
-        profileViewController.coordinator = self
-
-        leftButton.rx.tap.asDriver()
-            .drive(onNext: { [weak profileViewController] _ in
-                profileViewController?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        rightButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self, weak profileViewController] _ in
-                self?.saveDataSubject.onNext(())
-                profileViewController?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        navigationController.pushViewController(profileViewController, animated: true)
+    let rightButton = UIButton().then {
+      $0.setTitle(R.string.localizable.profileNavButtonTitle(), for: .normal)
+      $0.setTitleColor(.t_tidiBlue(), for: .normal)
     }
 
-    func startPush() -> UIViewController {
-        let leftButton = UIButton().then {
-            $0.setImage(R.image.nav_icon_back(), for: .normal)
-        }
+    let profileViewController = ProfileViewController(saveDataSubject,
+                                                      leftButton: leftButton,
+                                                      rightButton: rightButton)
+    profileViewController.coordinator = self
 
-        let rightButton = UIButton().then {
-            $0.setTitle(R.string.localizable.profileNavButtonTitle(), for: .normal)
-            $0.setTitleColor(.t_tidiBlue(), for: .normal)
-        }
+    leftButton.rx.tap.asDriver()
+      .drive(onNext: { [weak profileViewController] _ in
+        profileViewController?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
 
-        let profileViewController = ProfileViewController(saveDataSubject,
-                                                          leftButton: leftButton,
-                                                          rightButton: rightButton)
-        profileViewController.coordinator = self
+    rightButton.rx.tap.asDriver()
+      .drive(onNext: { [weak self, weak profileViewController] _ in
+        self?.saveDataSubject.onNext(())
+        profileViewController?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
 
-        leftButton.rx.tap.asDriver()
-            .drive(onNext: { [weak profileViewController] _ in
-                profileViewController?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        rightButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self, weak profileViewController] _ in
-                self?.saveDataSubject.onNext(())
-                profileViewController?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        return profileViewController
-    }
+    return profileViewController
+  }
 }

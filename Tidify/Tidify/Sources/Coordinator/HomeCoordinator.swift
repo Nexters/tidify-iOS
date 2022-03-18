@@ -12,125 +12,125 @@ import UIKit
 
 class HomeCoordinator: Coordinator {
 
-    // MARK: - Constants
+  // MARK: - Constants
 
-    static let navButtonHeight: CGFloat = 40
-    static let createBookMarkButtonWidth: CGFloat = 75
+  static let navButtonHeight: CGFloat = 40
+  static let createBookMarkButtonWidth: CGFloat = 75
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
+  var navigationController: UINavigationController
 
-    private let disposeBag = DisposeBag()
+  private let disposeBag = DisposeBag()
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
+  }
+
+  // MARK: - Methods
+
+  func start() {
+    let profileButton = UIButton().then {
+      $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
+      $0.setImage(R.image.home_icon_profile(), for: .normal)
+      $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
+      $0.layer.borderWidth = 1
+      $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
     }
 
-    // MARK: - Methods
-
-    func start() {
-        let profileButton = UIButton().then {
-            $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
-            $0.setImage(R.image.home_icon_profile(), for: .normal)
-            $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
-            $0.layer.borderWidth = 1
-            $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
-        }
-
-        let createBookMarkButton = UIButton().then {
-            $0.frame = CGRect(x: 0,
-                              y: 0,
-                              width: Self.createBookMarkButtonWidth,
-                              height: Self.navButtonHeight)
-            $0.setImage(R.image.home_icon_bookMark(), for: .normal)
-            $0.backgroundColor = .t_tidiBlue()
-            $0.layer.cornerRadius = Self.navButtonHeight / 2
-        }
-
-        let homeViewModel = HomeViewModel()
-        homeViewModel.delegate = self
-        let homeViewController = HomeViewController(viewModel: homeViewModel,
-                                                    leftButton: profileButton,
-                                                    rightButton: createBookMarkButton)
-        homeViewController.coordinator = self
-
-        profileButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.pushSettingView()
-            })
-            .disposed(by: disposeBag)
-
-        createBookMarkButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.pushRegisterView()
-            })
-            .disposed(by: disposeBag)
-
-        navigationController.pushViewController(homeViewController, animated: true)
+    let createBookMarkButton = UIButton().then {
+      $0.frame = CGRect(x: 0,
+                        y: 0,
+                        width: Self.createBookMarkButtonWidth,
+                        height: Self.navButtonHeight)
+      $0.setImage(R.image.home_icon_bookMark(), for: .normal)
+      $0.backgroundColor = .t_tidiBlue()
+      $0.layer.cornerRadius = Self.navButtonHeight / 2
     }
 
-    func startPush() -> UIViewController {
-        let profileButton = UIButton().then {
-            $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
-            $0.setImage(R.image.home_icon_profile(), for: .normal)
-            $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
-            $0.layer.borderWidth = 1
-            $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
-        }
+    let homeViewModel = HomeViewModel()
+    homeViewModel.delegate = self
+    let homeViewController = HomeViewController(viewModel: homeViewModel,
+                                                leftButton: profileButton,
+                                                rightButton: createBookMarkButton)
+    homeViewController.coordinator = self
 
-        let createBookMarkButton = UIButton().then {
-            $0.frame = CGRect(x: 0,
-                              y: 0,
-                              width: Self.createBookMarkButtonWidth,
-                              height: Self.navButtonHeight)
-            $0.setImage(R.image.home_icon_bookMark(), for: .normal)
-            $0.backgroundColor = .t_tidiBlue()
-            $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
-        }
+    profileButton.rx.tap.asDriver()
+      .drive(onNext: { [weak self] _ in
+        self?.pushSettingView()
+      })
+      .disposed(by: disposeBag)
 
-        let homeViewModel = HomeViewModel()
-        homeViewModel.delegate = self
-        let homeViewController = HomeViewController(viewModel: homeViewModel,
-                                                    leftButton: profileButton,
-                                                    rightButton: createBookMarkButton)
-        homeViewController.coordinator = self
+    createBookMarkButton.rx.tap.asDriver()
+      .drive(onNext: { [weak self] _ in
+        self?.pushRegisterView()
+      })
+      .disposed(by: disposeBag)
 
-        return homeViewController
+    navigationController.pushViewController(homeViewController, animated: true)
+  }
+
+  func startPush() -> UIViewController {
+    let profileButton = UIButton().then {
+      $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
+      $0.setImage(R.image.home_icon_profile(), for: .normal)
+      $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
+      $0.layer.borderWidth = 1
+      $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
     }
+
+    let createBookMarkButton = UIButton().then {
+      $0.frame = CGRect(x: 0,
+                        y: 0,
+                        width: Self.createBookMarkButtonWidth,
+                        height: Self.navButtonHeight)
+      $0.setImage(R.image.home_icon_bookMark(), for: .normal)
+      $0.backgroundColor = .t_tidiBlue()
+      $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
+    }
+
+    let homeViewModel = HomeViewModel()
+    homeViewModel.delegate = self
+    let homeViewController = HomeViewController(viewModel: homeViewModel,
+                                                leftButton: profileButton,
+                                                rightButton: createBookMarkButton)
+    homeViewController.coordinator = self
+
+    return homeViewController
+  }
 }
 
 // MARK: - 1 Depth
 
 extension HomeCoordinator: HomeViewModelDelegate {
-    func pushRegisterView() {
-        let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
-        registerCoordinator.parentCoordinator = self
-        childCoordinators.append(registerCoordinator)
+  func pushRegisterView() {
+    let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
+    registerCoordinator.parentCoordinator = self
+    childCoordinators.append(registerCoordinator)
 
-        registerCoordinator.start()
-    }
+    registerCoordinator.start()
+  }
 
-    func pushWebView(_ url: String) {
-        let webViewCoordinator = WebViewCoordinator(navigationController: navigationController,
-                                                    urlString: url)
-        webViewCoordinator.parentCoordinator = self
-        childCoordinators.append(webViewCoordinator)
+  func pushWebView(_ url: String) {
+    let webViewCoordinator = WebViewCoordinator(navigationController: navigationController,
+                                                urlString: url)
+    webViewCoordinator.parentCoordinator = self
+    childCoordinators.append(webViewCoordinator)
 
-        webViewCoordinator.start()
-    }
+    webViewCoordinator.start()
+  }
 }
 
 extension HomeCoordinator {
-    func pushSettingView() {
-        let settingCoordinator = SettingCoordinator(navigationController: navigationController)
-        settingCoordinator.parentCoordinator = self
-        childCoordinators.append(settingCoordinator)
+  func pushSettingView() {
+    let settingCoordinator = SettingCoordinator(navigationController: navigationController)
+    settingCoordinator.parentCoordinator = self
+    childCoordinators.append(settingCoordinator)
 
-        settingCoordinator.start()
-    }
+    settingCoordinator.start()
+  }
 }

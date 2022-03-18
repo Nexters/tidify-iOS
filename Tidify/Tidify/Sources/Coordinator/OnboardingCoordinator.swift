@@ -10,42 +10,42 @@ import UIKit
 
 class OnboardingCoordinator: Coordinator {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
 
-    var navigationController: UINavigationController
+  var navigationController: UINavigationController
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
-    }
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
+  }
 
-    func start() {
-        let onboardingViewModel = OnboardingViewModel()
-        onboardingViewModel.delegate = self
-        let onboardingViewController = OnboardingViewController(viewModel: onboardingViewModel)
-        self.navigationController.pushViewController(onboardingViewController, animated: false)
-    }
+  func start() {
+    let onboardingViewModel = OnboardingViewModel()
+    onboardingViewModel.delegate = self
+    let onboardingViewController = OnboardingViewController(viewModel: onboardingViewModel)
+    self.navigationController.pushViewController(onboardingViewController, animated: false)
+  }
 }
 
 extension OnboardingCoordinator: OnboardingViewModelDelegate {
-    func showNextPage() {
-        if let accessToken = UserDefaults.standard.string(forKey: "access_token") {
-            Environment.shared.authorization = accessToken
-            let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
-            tabBarCoordinator.parentCoordinator = self
-            self.childCoordinators.append(tabBarCoordinator)
+  func showNextPage() {
+    if let accessToken = UserDefaults.standard.string(forKey: "access_token") {
+      Environment.shared.authorization = accessToken
+      let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
+      tabBarCoordinator.parentCoordinator = self
+      self.childCoordinators.append(tabBarCoordinator)
 
-            tabBarCoordinator.start()
-        } else {
-            let signInCoordinator = SignInCoordinator(navigationController: navigationController)
-            signInCoordinator.parentCoordinator = self
-            self.childCoordinators.append(signInCoordinator)
+      tabBarCoordinator.start()
+    } else {
+      let signInCoordinator = SignInCoordinator(navigationController: navigationController)
+      signInCoordinator.parentCoordinator = self
+      self.childCoordinators.append(signInCoordinator)
 
-            signInCoordinator.start()
-        }
+      signInCoordinator.start()
     }
+  }
 }

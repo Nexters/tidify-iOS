@@ -13,24 +13,24 @@ import UIKit
 
 class BaseViewController: UIViewController {
 
-    // MARK: - LifeCycle
+  // MARK: - LifeCycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
-        view.backgroundColor = .t_background()
+    view.backgroundColor = .t_background()
 
-        setupViews()
-        setupLayoutConstraints()
-    }
+    setupViews()
+    setupLayoutConstraints()
+  }
 
-    // MARK: - Methods
+  // MARK: - Methods
 
-    func setupViews() {
-        // Override Layout
-    }
+  func setupViews() {
+    // Override Layout
+  }
 
-    func setupLayoutConstraints() {
-        // Override Constraints
-    }
+  func setupLayoutConstraints() {
+    // Override Constraints
+  }
 }

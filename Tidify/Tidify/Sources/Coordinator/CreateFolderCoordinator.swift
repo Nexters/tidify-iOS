@@ -12,40 +12,40 @@ import UIKit
 
 class CreateFolderCoordinator: Coordinator {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
+  var navigationController: UINavigationController
 
-    private let disposeBag = DisposeBag()
+  private let disposeBag = DisposeBag()
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
+  }
+
+  // MARK: - Methods
+
+  func start() {
+    let leftButton = UIButton().then {
+      $0.setImage(R.image.nav_icon_back(), for: .normal)
     }
 
-    // MARK: - Methods
+    let createFolderViewModel = CreateFolderViewModel()
+    let createFolderViewController = CreateFolderViewController(
+      viewModel: createFolderViewModel,
+      leftButton: leftButton
+    )
+    createFolderViewController.coordinator = self
 
-    func start() {
-        let leftButton = UIButton().then {
-            $0.setImage(R.image.nav_icon_back(), for: .normal)
-        }
+    leftButton.rx.tap.asDriver()
+      .drive(onNext: { _ in
+        createFolderViewController.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
 
-        let createFolderViewModel = CreateFolderViewModel()
-        let createFolderViewController = CreateFolderViewController(
-            viewModel: createFolderViewModel,
-            leftButton: leftButton
-        )
-        createFolderViewController.coordinator = self
-
-        leftButton.rx.tap.asDriver()
-            .drive(onNext: { _ in
-                createFolderViewController.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        navigationController.pushViewController(createFolderViewController, animated: true)
-    }
+    navigationController.pushViewController(createFolderViewController, animated: true)
+  }
 }

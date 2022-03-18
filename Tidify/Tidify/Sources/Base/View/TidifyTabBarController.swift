@@ -11,40 +11,40 @@ import UIKit
 
 class TidifyTabBarController: UITabBarController {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var coordinator: TabBarCoordinator?
-    private weak var tidifyTabBar: TidifyTabBar!
+  weak var coordinator: TabBarCoordinator?
+  private weak var tidifyTabBar: TidifyTabBar!
 
-    // MARK: - LifeCycle
+  // MARK: - LifeCycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
-        setupTabBar()
-        setupLayoutConstraints()
-    }
+    setupTabBar()
+    setupLayoutConstraints()
+  }
 }
 
 private extension TidifyTabBarController {
-    func setupTabBar() {
-        self.tidifyTabBar = TidifyTabBar().then {
-            $0.delegate = self
-            view.addSubview($0)
-        }
+  func setupTabBar() {
+    self.tidifyTabBar = TidifyTabBar().then {
+      $0.delegate = self
+      view.addSubview($0)
     }
+  }
 
-    func setupLayoutConstraints() {
-        tidifyTabBar.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(75)
-            $0.trailing.equalToSuperview().inset(75)
-            $0.bottom.equalToSuperview().inset(50)
-        }
+  func setupLayoutConstraints() {
+    tidifyTabBar.snp.makeConstraints {
+      $0.leading.equalToSuperview().offset(75)
+      $0.trailing.equalToSuperview().inset(75)
+      $0.bottom.equalToSuperview().inset(50)
     }
+  }
 }
 
 extension TidifyTabBarController: TidifyTabBarDelegate {
-    func didSelectTab(_ item: TabBarItem) {
-        self.selectedIndex = item.index
-    }
+  func didSelectTab(_ item: TabBarItem) {
+    self.selectedIndex = item.index
+  }
 }
