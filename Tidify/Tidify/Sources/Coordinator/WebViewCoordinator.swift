@@ -10,28 +10,28 @@ import UIKit
 
 class WebViewCoordinator: Coordinator {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
-    private let bookMarkURLString: String
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
+  var navigationController: UINavigationController
+  private let bookMarkURLString: String
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(navigationController: UINavigationController, urlString: String) {
-        self.navigationController = navigationController
-        self.bookMarkURLString = urlString
-    }
+  init(navigationController: UINavigationController, urlString: String) {
+    self.navigationController = navigationController
+    self.bookMarkURLString = urlString
+  }
 
-    // MARK: - Methods
+  // MARK: - Methods
 
-    func start() {
-        let webViewViewModel = WebViewViewModel(bookMarkURLString)
-        let webViewController = WebViewController(viewModel: webViewViewModel)
-        webViewController.coordinator = self
+  func start() {
+    let webViewViewModel = WebViewViewModel(bookMarkURLString)
+    let webViewController = WebViewController(viewModel: webViewViewModel)
+    webViewController.coordinator = self
 
-        navigationController.navigationBar.isHidden = false
-        navigationController.pushViewController(webViewController, animated: true)
-    }
+    navigationController.navigationBar.isHidden = false
+    navigationController.pushViewController(webViewController, animated: true)
+  }
 }

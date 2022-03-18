@@ -8,19 +8,19 @@
 import Foundation
 
 struct UserSessionDTO: Codable {
-    let authorization: String!
+  let authorization: String!
 
-    enum CodingKeys: String, CodingKey {
-        case authorization = "Authorization"
-    }
+  enum CodingKeys: String, CodingKey {
+    case authorization = "Authorization"
+  }
 }
 
 struct UserSession: Codable {
-    let accessToken: String!
-    let uid: String? = nil
+  let accessToken: String!
+  let uid: String? = nil
 
-    enum CodingKeys: String, CodingKey {
-        case uid
-        case accessToken = "access_token"
-    }
+  enum CodingKeys: String, CodingKey {
+    case uid
+    case accessToken = "access_token"
+  }
 }

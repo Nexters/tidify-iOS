@@ -12,50 +12,50 @@ import UIKit
 
 class SettingCoordinator: Coordinator {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
+  var navigationController: UINavigationController
 
-    private let disposeBag = DisposeBag()
+  private let disposeBag = DisposeBag()
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
+  }
+
+  // MARK: - Methods
+
+  func start() {
+    let backButton = UIButton().then {
+      $0.setImage(R.image.nav_icon_back(), for: .normal)
     }
 
-    // MARK: - Methods
+    let settingViewModel = SettingViewModel()
+    let settingViewController = SettingViewController(viewModel: settingViewModel,
+                                                      leftButton: backButton)
+    settingViewController.coordinator = self
 
-    func start() {
-        let backButton = UIButton().then {
-            $0.setImage(R.image.nav_icon_back(), for: .normal)
-        }
-
-        let settingViewModel = SettingViewModel()
-        let settingViewController = SettingViewController(viewModel: settingViewModel,
-                                                          leftButton: backButton)
-        settingViewController.coordinator = self
-
-        backButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.navigationController.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        navigationController.pushViewController(settingViewController, animated: true)
-    }
+    backButton.rx.tap.asDriver()
+      .drive(onNext: { [weak self] _ in
+        self?.navigationController.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
+    navigationController.pushViewController(settingViewController, animated: true)
+  }
 }
 
 extension SettingCoordinator {
-    func goToProfile() {
-        let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
-        profileCoordinator.parentCoordinator = self
-        childCoordinators.append(profileCoordinator)
-        profileCoordinator.start()
-    }
+  func goToProfile() {
+    let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
+    profileCoordinator.parentCoordinator = self
+    childCoordinators.append(profileCoordinator)
+    profileCoordinator.start()
+  }
 
-    func goToSocialLogin() {
-        print("GoToSocialLogin Tapped")
-    }
+  func goToSocialLogin() {
+    print("GoToSocialLogin Tapped")
+  }
 }

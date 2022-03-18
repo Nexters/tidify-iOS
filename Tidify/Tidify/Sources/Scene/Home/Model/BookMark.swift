@@ -8,84 +8,84 @@
 import Foundation
 
 struct BookMark {
-    let createdAt: String
-    let updatedAt: String
-    let id: Int
-    let memberId: Int
-    let urlString: String?
-    let title: String
-    let tag: String
+  let createdAt: String
+  let updatedAt: String
+  let id: Int
+  let memberId: Int
+  let urlString: String?
+  let title: String
+  let tag: String
 
-    var url: URL {
-        return URL(string: urlString ?? "")!
-    }
+  var url: URL {
+    return URL(string: urlString ?? "")!
+  }
 }
 
 struct BookMarkRequestDTO: Codable {
-    let memberId: Int
-    let title: String
-    let url: String
+  let memberId: Int
+  let title: String
+  let url: String
 
-    enum CodingKeys: String, CodingKey {
-        case memberId = "member_id"
-        case title
-        case url
-    }
+  enum CodingKeys: String, CodingKey {
+    case memberId = "member_id"
+    case title
+    case url
+  }
 }
 
 struct BookMarkListDTO: Codable {
-    let bookMarks: [BookMarkDTO]
-    let bookMarksCount: Int
+  let bookMarks: [BookMarkDTO]
+  let bookMarksCount: Int
 
-    enum CodingKeys: String, CodingKey {
-        case bookMarks = "bookmarks"
-        case bookMarksCount = "bookmarks_count"
-    }
+  enum CodingKeys: String, CodingKey {
+    case bookMarks = "bookmarks"
+    case bookMarksCount = "bookmarks_count"
+  }
 }
 
 struct BookMarkDTO: Codable {
-    let createdAt: String
-    let updatedAt: String
-    let id: Int
-    let memberId: Int
-    let urlString: String?
-    let title: String
-    let tag: String
+  let createdAt: String
+  let updatedAt: String
+  let id: Int
+  let memberId: Int
+  let urlString: String?
+  let title: String
+  let tag: String
 
-    init(createdAt: String,
-         updatedAt: String,
-         id: Int,
-         memberId: Int,
-         urlString: String,
-         title: String,
-         tag: String)
-    {
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-        self.id = id
-        self.memberId = memberId
-        self.urlString = urlString
-        self.title = title
-        self.tag = tag
-    }
+  init(createdAt: String,
+       updatedAt: String,
+       id: Int,
+       memberId: Int,
+       urlString: String,
+       title: String,
+       tag: String)
+  {
+    self.createdAt = createdAt
+    self.updatedAt = updatedAt
+    self.id = id
+    self.memberId = memberId
+    self.urlString = urlString
+    self.title = title
+    self.tag = tag
+  }
 
-    func toEntity() -> BookMark {
-        return BookMark(createdAt: self.createdAt,
-                        updatedAt: self.updatedAt,
-                        id: self.id,
-                        memberId: self.memberId,
-                        urlString: self.urlString,
-                        title: self.title,
-                        tag: self.tag)
-    }
+  func toEntity() -> BookMark {
+    return BookMark(createdAt: self.createdAt,
+                    updatedAt: self.updatedAt,
+                    id: self.id,
+                    memberId: self.memberId,
+                    urlString: self.urlString,
+                    title: self.title,
+                    tag: self.tag)
+  }
 
-    enum CodingKeys: String, CodingKey {
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case id
-        case memberId = "member_id"
-        case urlString = "url"
-        case title
-        case tag
-    }
+  enum CodingKeys: String, CodingKey {
+    case createdAt = "created_at"
+    case updatedAt = "updated_at"
+    case id
+    case memberId = "member_id"
+    case urlString = "url"
+    case title
+    case tag
+  }
 }

@@ -13,48 +13,48 @@ import WebKit
 
 class MainCoordinator: NSObject, Coordinator {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
+  var childCoordinators: [Coordinator] = []
+  var navigationController: UINavigationController
 
-    let window: UIWindow
+  let window: UIWindow
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(window: UIWindow) {
-        self.window = window
-        self.window.makeKeyAndVisible()
+  init(window: UIWindow) {
+    self.window = window
+    self.window.makeKeyAndVisible()
 
-        self.navigationController = UINavigationController()
-        self.window.rootViewController = navigationController
-        self.navigationController.navigationBar.isHidden = true
-        self.navigationController.view.backgroundColor = .systemBackground
-    }
+    self.navigationController = UINavigationController()
+    self.window.rootViewController = navigationController
+    self.navigationController.navigationBar.isHidden = true
+    self.navigationController.view.backgroundColor = .systemBackground
+  }
 
-    // MARK: - Methods
+  // MARK: - Methods
 
-    func start() {
-        let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
-        tabBarCoordinator.parentCoordinator = self
-        self.childCoordinators.append(tabBarCoordinator)
+  func start() {
+    let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
+    tabBarCoordinator.parentCoordinator = self
+    self.childCoordinators.append(tabBarCoordinator)
 
-        tabBarCoordinator.start()
-    }
+    tabBarCoordinator.start()
+  }
 
-    func startWithOnboarding() {
-        let coordinator = OnboardingCoordinator(navigationController: navigationController)
-        coordinator.parentCoordinator = self
-        self.childCoordinators.append(coordinator)
+  func startWithOnboarding() {
+    let coordinator = OnboardingCoordinator(navigationController: navigationController)
+    coordinator.parentCoordinator = self
+    self.childCoordinators.append(coordinator)
 
-        coordinator.start()
-    }
+    coordinator.start()
+  }
 
-    func startWithSignIn() {
-        let signInCoordinator = SignInCoordinator(navigationController: navigationController)
-        signInCoordinator.parentCoordinator = self
-        self.childCoordinators.append(signInCoordinator)
+  func startWithSignIn() {
+    let signInCoordinator = SignInCoordinator(navigationController: navigationController)
+    signInCoordinator.parentCoordinator = self
+    self.childCoordinators.append(signInCoordinator)
 
-        signInCoordinator.start()
-    }
+    signInCoordinator.start()
+  }
 }

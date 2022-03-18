@@ -9,13 +9,13 @@ import Foundation
 
 class Environment {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    static let shared = Environment()
+  static let shared = Environment()
 
-    let baseURL: String = "https://tidify.herokuapp.com"
+  let baseURL: String = "https://tidify.herokuapp.com"
 
-    var authorization: String?
+  var authorization: String?
 
-    private init() { }
+  private init() { }
 }

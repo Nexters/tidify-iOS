@@ -10,18 +10,18 @@ import UIKit
 
 enum UserDefaultManager: String {
 
-    // MARK: - Keys
+  // MARK: - Keys
 
-    case userImageData = "User.image.data"
-    case userNameString = "User.name.string"
+  case userImageData = "User.image.data"
+  case userNameString = "User.name.string"
 
-    // MARK: - Methods
+  // MARK: - Methods
 
-    static func getProfileImage() -> UIImage? {
-        guard let data = UserDefaults.standard.data(forKey: Self.userImageData.rawValue) else {
-            return nil
-        }
-
-        return UIImage(data: data)
+  static func getProfileImage() -> UIImage? {
+    guard let data = UserDefaults.standard.data(forKey: Self.userImageData.rawValue) else {
+      return nil
     }
+
+    return UIImage(data: data)
+  }
 }
