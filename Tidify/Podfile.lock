@@ -29,6 +29,8 @@ PODS:
   - Moya/RxSwift (14.0.0):
     - Moya/Core
     - RxSwift (~> 5.0)
+  - Nimble (9.2.1)
+  - Quick (4.0.0)
   - R.swift (5.4.0):
     - R.swift.Library (~> 5.3.0)
   - R.swift.Library (5.3.0)
@@ -90,6 +92,8 @@ PODS:
 DEPENDENCIES:
   - Kingfisher
   - Moya/RxSwift
+  - Nimble
+  - Quick
   - R.swift
   - RxAppState
   - RxCocoa
@@ -113,6 +117,8 @@ SPEC REPOS:
     - KakaoSDKUser
     - Kingfisher
     - Moya
+    - Nimble
+    - Quick
     - R.swift
     - R.swift.Library
     - RxAlamofire
@@ -144,6 +150,8 @@ SPEC CHECKSUMS:
   KakaoSDKUser: 285abc213101bd07a9b44735defd36994ea9ada8
   Kingfisher: 6c3df386db71d82c0817a429d2c9421a77396529
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
+  Nimble: e7e615c0335ee4bf5b0d786685451e62746117d5
+  Quick: 6473349e43b9271a8d43839d9ba1c442ed1b7ac4
   R.swift: c533450b0f7dc494e0993f5f1a1db925d84c3006
   R.swift.Library: 0fc583cb55a99e28901299cc451614cad1161962
   RxAlamofire: 8e144c62dcc01d68dcb366bfc542eb6dd46bab78
@@ -163,6 +171,6 @@ SPEC CHECKSUMS:
   SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: b41f345eaf47160a9138e17e0ff9db6accbcfa65
+PODFILE CHECKSUM: 3ef7f22c428064d96a3942ad1ec69acd6f607601
 
 COCOAPODS: 1.11.2
