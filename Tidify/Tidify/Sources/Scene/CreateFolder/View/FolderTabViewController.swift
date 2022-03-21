@@ -109,64 +109,11 @@ class FolderTabViewController: BaseViewController {
     }
   }
 
-<<<<<<< HEAD
-    func setupCollectionView() {
-        guard !viewModel.folderList.value.isEmpty else {
-            emptyLabel.isHidden = false
-            collectionView.isHidden = true
-            return
-        }
-        collectionView.isHidden = false
-
-        viewModel.folderList
-            .bind(to: collectionView.rx.items) { [weak self] _, row, item -> UICollectionViewCell in
-                guard let self = self else { return UICollectionViewCell() }
-                let cell = self.collectionView.t_dequeueReusableCell(
-                    cellType: FolderCollectionViewCell.self,
-                    indexPath: IndexPath.init(row: row, section: 0)
-                )
-
-                cell.editButton.addTarget(self,
-                                          action: #selector(self.editWasTapped(_:)),
-                                          for: .touchUpInside)
-                cell.deleteButton.addTarget(self,
-                                            action: #selector(self.deleteWasTapped(_:)),
-                                            for: .touchUpInside)
-                cell.setFolder(
-                    item,
-                    buttonTag: row,
-                    lastIndexObserver: self.viewModel.lastIndexSubject.asObserver()
-                )
-                return cell
-            }
-            .disposed(by: disposeBag)
-
-        viewModel.lastIndexSubject
-            .filter { [weak self] in $0 != (self?.viewModel.lastIndex ?? 0) }
-            .subscribe(onNext: { [weak self] in
-                let lastIndex = IndexPath(item: self?.viewModel.lastIndex ?? 0, section: 0)
-                guard let self = self,
-                      let cell = self.collectionView.cellForItem(at: lastIndex)
-                        as? FolderCollectionViewCell else { return }
-                cell.initSwipeView()
-                self.viewModel.lastIndex = $0
-            })
-            .disposed(by: disposeBag)
-
-      collectionView.rx.modelSelected(Folder.self)
-        .bind { [weak self] in
-          guard let self = self else { return }
-          self.coordinator?.pushFolderDetailView(titleString: $0.name)
-        }
-        .disposed(by: disposeBag)
-=======
   override func setupLayoutConstraints() {
     containerView.snp.makeConstraints {
       $0.top.equalTo(navigationBar.snp.bottom).offset(16)
       $0.leading.trailing.bottom.equalToSuperview()
->>>>>>> 2c8fe6ecaa66967a4a7357431a5446fbffc0a88e
     }
-
     collectionView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(24)
       $0.leading.trailing.equalToSuperview()
@@ -236,6 +183,13 @@ private extension FolderTabViewController {
         )
         self.viewModel.lastIndex = $0
       })
+      .disposed(by: disposeBag)
+
+    collectionView.rx.modelSelected(Folder.self)
+      .bind { [weak self] in
+        guard let self = self else { return }
+        self.coordinator?.pushFolderDetailView(titleString: $0.name)
+      }
       .disposed(by: disposeBag)
   }
 
