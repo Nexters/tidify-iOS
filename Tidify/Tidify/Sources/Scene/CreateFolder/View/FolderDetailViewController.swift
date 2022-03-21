@@ -125,6 +125,7 @@ class FolderDetailViewController: BaseViewController {
     }
   }
 }
+
 private extension FolderDetailViewController {
   func setupNavigationBar() {
     view.addSubview(navigationBar)
