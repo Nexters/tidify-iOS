@@ -11,6 +11,8 @@
 		407F2F1927E841080061E2B7 /* FolderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */; };
 		407F2F1B27E841390061E2B7 /* FolderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */; };
 		407F2F1D27E843570061E2B7 /* FolderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */; };
+		40C0023427E088F400941339 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C0023327E088F400941339 /* UICollectionViewCell+.swift */; };
+		74054C0E59CF4CBF363302BD /* Pods_TidifyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */; };
 		8661DECE27DDBF360005B02B /* AccountSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */; };
 		8661DED527DE118A0005B02B /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DED427DE118A0005B02B /* SearchCoordinator.swift */; };
 		8661DED927DE11DF0005B02B /* SearchHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DED827DE11DF0005B02B /* SearchHistoryHeaderView.swift */; };
@@ -18,6 +20,7 @@
 		8661DEDE27DE11FF0005B02B /* SearchHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DEDD27DE11FF0005B02B /* SearchHistoryCell.swift */; };
 		8661DEE127DE12110005B02B /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DEE027DE12110005B02B /* SearchViewModel.swift */; };
 		8680A0A327D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */; };
+		86E3D29E27E8A73100171084 /* TidifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E3D29D27E8A73100171084 /* TidifyTests.swift */; };
 		B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */; };
 		B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */; };
 		B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CC269C883500B34C5E /* HomeCoordinator.swift */; };
@@ -103,6 +106,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		86E3D29F27E8A73100171084 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B56D82F2269987AB00D5F513 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B56D82F9269987AB00D5F513;
+			remoteInfo = Tidify;
+		};
 		C7692C2126999C7800A2F699 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B56D82F2269987AB00D5F513 /* Project object */;
@@ -130,6 +140,8 @@
 		407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailViewController.swift; sourceTree = "<group>"; };
 		407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailCoordinator.swift; sourceTree = "<group>"; };
 		407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailViewModel.swift; sourceTree = "<group>"; };
+		2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TidifyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		40C0023327E088F400941339 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
 		8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -139,7 +151,10 @@
 		8661DEDD27DE11FF0005B02B /* SearchHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryCell.swift; sourceTree = "<group>"; };
 		8661DEE027DE12110005B02B /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
+		86E3D29B27E8A73100171084 /* TidifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TidifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		86E3D29D27E8A73100171084 /* TidifyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyTests.swift; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
+		8B89E49041036E11C75AC302 /* Pods-TidifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TidifyTests.debug.xcconfig"; path = "Target Support Files/Pods-TidifyTests/Pods-TidifyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetLabelColorTableViewCell.swift; sourceTree = "<group>"; };
 		B52982CC269C883500B34C5E /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
@@ -228,9 +243,18 @@
 		C7692C1B26999C7800A2F699 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		C7692C2026999C7800A2F699 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7AF275026BE900F00AE258B /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		E32540E4A68BCCB2149DB982 /* Pods-TidifyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TidifyTests.release.xcconfig"; path = "Target Support Files/Pods-TidifyTests/Pods-TidifyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		86E3D29827E8A73100171084 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74054C0E59CF4CBF363302BD /* Pods_TidifyTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B56D82F7269987AB00D5F513 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -283,6 +307,14 @@
 				8661DEE027DE12110005B02B /* SearchViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		86E3D29C27E8A73100171084 /* TidifyTests */ = {
+			isa = PBXGroup;
+			children = (
+				86E3D29D27E8A73100171084 /* TidifyTests.swift */,
+			);
+			path = TidifyTests;
 			sourceTree = "<group>";
 		};
 		B50A37C326C7ECC600E5EE31 /* Cells */ = {
@@ -362,6 +394,7 @@
 				B56D82FC269987AB00D5F513 /* Tidify */,
 				B56D8308269987AC00D5F513 /* LaunchScreen.storyboard */,
 				C7692C1A26999C7800A2F699 /* TidifyShareExtension */,
+				86E3D29C27E8A73100171084 /* TidifyTests */,
 				B56D82FB269987AB00D5F513 /* Products */,
 				C6C02FE7FEF98151B5063570 /* Pods */,
 				F9C32BA5670FB74E5BEFCDC3 /* Frameworks */,
@@ -374,6 +407,7 @@
 			children = (
 				B56D82FA269987AB00D5F513 /* Tidify.app */,
 				C7692C1926999C7800A2F699 /* TidifyShareExtension.appex */,
+				86E3D29B27E8A73100171084 /* TidifyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -420,6 +454,7 @@
 				B56D831926998A1300D5F513 /* Optional+.swift */,
 				B56D831B26998A2900D5F513 /* UIApplication+.swift */,
 				B56D831D26998A3E00D5F513 /* UICollectionView+.swift */,
+				40C0023327E088F400941339 /* UICollectionViewCell+.swift */,
 				B56D831F26998A4E00D5F513 /* UIColor+.swift */,
 				B56D832126998A5B00D5F513 /* UITableView+.swift */,
 				B56D832326998A7300D5F513 /* UIView+.swift */,
@@ -724,6 +759,8 @@
 			children = (
 				8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */,
 				7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */,
+				8B89E49041036E11C75AC302 /* Pods-TidifyTests.debug.xcconfig */,
+				E32540E4A68BCCB2149DB982 /* Pods-TidifyTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -753,6 +790,7 @@
 			children = (
 				C72F27C92699CC1B00104FE3 /* OSLog.framework */,
 				4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */,
+				2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -760,6 +798,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		86E3D29A27E8A73100171084 /* TidifyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86E3D2A327E8A73100171084 /* Build configuration list for PBXNativeTarget "TidifyTests" */;
+			buildPhases = (
+				3B238A0EDD39E3DD670FAE60 /* [CP] Check Pods Manifest.lock */,
+				86E3D29727E8A73100171084 /* Sources */,
+				86E3D29827E8A73100171084 /* Frameworks */,
+				86E3D29927E8A73100171084 /* Resources */,
+				B7E0C28D3DECA6E3C5A50793 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				86E3D2A027E8A73100171084 /* PBXTargetDependency */,
+			);
+			name = TidifyTests;
+			productName = TidifyTests;
+			productReference = 86E3D29B27E8A73100171084 /* TidifyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B56D82F9269987AB00D5F513 /* Tidify */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B56D830E269987AC00D5F513 /* Build configuration list for PBXNativeTarget "Tidify" */;
@@ -806,9 +864,13 @@
 		B56D82F2269987AB00D5F513 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
+					86E3D29A27E8A73100171084 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = B56D82F9269987AB00D5F513;
+					};
 					B56D82F9269987AB00D5F513 = {
 						CreatedOnToolsVersion = 12.5;
 					};
@@ -832,11 +894,19 @@
 			targets = (
 				B56D82F9269987AB00D5F513 /* Tidify */,
 				C7692C1826999C7800A2F699 /* TidifyShareExtension */,
+				86E3D29A27E8A73100171084 /* TidifyTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		86E3D29927E8A73100171084 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B56D82F8269987AB00D5F513 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -859,6 +929,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3B238A0EDD39E3DD670FAE60 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TidifyTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		59D0644373B4701FE7C48446 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -906,11 +998,28 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				$SRCROOT/Tidify/Configuration/R.generated.swift,
+				"$SRCROOT/Tidify/Configuration/R.generated.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/Tidify/Configuration/R.generated.swift\"\n";
+		};
+		B7E0C28D3DECA6E3C5A50793 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TidifyTests/Pods-TidifyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TidifyTests/Pods-TidifyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TidifyTests/Pods-TidifyTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		B9CE037148B8B5B3CF50B195 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -937,12 +1046,21 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		86E3D29727E8A73100171084 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86E3D29E27E8A73100171084 /* TidifyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B56D82F6269987AB00D5F513 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				B5314FAB2699DC2300769AB2 /* UIFont+.swift in Sources */,
 				B56D831C26998A2900D5F513 /* UIApplication+.swift in Sources */,
+				40C0023427E088F400941339 /* UICollectionViewCell+.swift in Sources */,
 				B5443B9A26C8E71500F7494A /* ProfileCoordinator.swift in Sources */,
 				B53B93F426DB7D4900EBCB21 /* OnboardingViewController.swift in Sources */,
 				B53B93F826DB7DD000EBCB21 /* OnboardingViewModel.swift in Sources */,
@@ -1039,6 +1157,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		86E3D2A027E8A73100171084 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B56D82F9269987AB00D5F513 /* Tidify */;
+			targetProxy = 86E3D29F27E8A73100171084 /* PBXContainerItemProxy */;
+		};
 		C7692C2226999C7800A2F699 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C7692C1826999C7800A2F699 /* TidifyShareExtension */;
@@ -1066,6 +1189,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		86E3D2A127E8A73100171084 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B89E49041036E11C75AC302 /* Pods-TidifyTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ian.TidifyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tidify.app/Tidify";
+			};
+			name = Debug;
+		};
+		86E3D2A227E8A73100171084 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E32540E4A68BCCB2149DB982 /* Pods-TidifyTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 857J3M5L6B;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ian.TidifyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tidify.app/Tidify";
+			};
+			name = Release;
+		};
 		B56D830C269987AC00D5F513 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1271,6 +1436,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		86E3D2A327E8A73100171084 /* Build configuration list for PBXNativeTarget "TidifyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86E3D2A127E8A73100171084 /* Debug */,
+				86E3D2A227E8A73100171084 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		B56D82F5269987AB00D5F513 /* Build configuration list for PBXProject "Tidify" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -9,12 +9,12 @@ import Foundation
 
 protocol ViewModelType {
 
-    // MARK: - Structure TYpe
+  // MARK: - Structure TYpe
 
-    associatedtype Input
-    associatedtype Output
+  associatedtype Input
+  associatedtype Output
 
-    // MARK: - Methods
+  // MARK: - Methods
 
-    func transform(_ input: Input) -> Output
+  func transform(_ input: Input) -> Output
 }

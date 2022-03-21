@@ -13,65 +13,65 @@ import RxKakaoSDKUser
 import RxSwift
 
 protocol SignInViewModelDelegate: AnyObject {
-    func didSuccessSignInWithKakao()
-    func didSuccessSingInWithApple()
+  func didSuccessSignInWithKakao()
+  func didSuccessSingInWithApple()
 }
 
 final class SignInViewModel: ViewModelType {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    struct Input {
-        let signInWithKakaoButtonTap: ControlEvent<Void>
-        let signInWithAppleButtonTap: ControlEvent<Void>
-        let withoutLoginButtonTap: ControlEvent<Void>
-    }
+  struct Input {
+    let signInWithKakaoButtonTap: ControlEvent<Void>
+    let signInWithAppleButtonTap: ControlEvent<Void>
+    let withoutLoginButtonTap: ControlEvent<Void>
+  }
 
-    struct Output {
-        let userSession: Driver<UserSession?>
-        let didTapWithoutLoginButton: Driver<Void>
-    }
+  struct Output {
+    let userSession: Driver<UserSession?>
+    let didTapWithoutLoginButton: Driver<Void>
+  }
 
-    weak var delegate: SignInViewModelDelegate?
+  weak var delegate: SignInViewModelDelegate?
 
-    // MARK: - Methods
+  // MARK: - Methods
 
-    func transform(_ input: Input) -> Output {
-        let userSession = input.signInWithKakaoButtonTap
-            .flatMap { UserApi.shared.rx.loginWithKakaoAccount() }
-            .flatMapLatest { oAuthToken in
-                return APIProvider.request(AuthAPI.auth(socialLoginType: .kakao,
-                                                        accessToken: oAuthToken.accessToken,
-                                                        refreshToken: oAuthToken.refreshToken))
-                    .map(UserSessionDTO.self)
-            }
-            .map { response -> UserSession? in
-                if let authorization = response.authorization {
-                    self.rememberAccessToken(authorization)
-                    return UserSession(accessToken: authorization)
-                }
+  func transform(_ input: Input) -> Output {
+    let userSession = input.signInWithKakaoButtonTap
+      .flatMap { UserApi.shared.rx.loginWithKakaoAccount() }
+      .flatMapLatest { oAuthToken in
+        return APIProvider.request(AuthAPI.auth(socialLoginType: .kakao,
+                                                accessToken: oAuthToken.accessToken,
+                                                refreshToken: oAuthToken.refreshToken))
+          .map(UserSessionDTO.self)
+      }
+      .map { response -> UserSession? in
+        if let authorization = response.authorization {
+          self.rememberAccessToken(authorization)
+          return UserSession(accessToken: authorization)
+        }
 
-                return nil
-            }
-            .do(onNext: { [weak self] userSession in
-                if userSession.t_isNotNil {
-                    self?.delegate?.didSuccessSignInWithKakao()
-                }
-            })
-            .asDriver(onErrorJustReturn: nil)
+        return nil
+      }
+      .do(onNext: { [weak self] userSession in
+        if userSession.t_isNotNil {
+          self?.delegate?.didSuccessSignInWithKakao()
+        }
+      })
+        .asDriver(onErrorJustReturn: nil)
 
         let didTapWithoutLoginButton = input.withoutLoginButtonTap
-            .asDriver()
-            .do(onNext: { [weak self] in
-                self?.delegate?.didSuccessSignInWithKakao()
-            })
-            .map { _ in }
+        .asDriver()
+        .do(onNext: { [weak self] in
+          self?.delegate?.didSuccessSignInWithKakao()
+        })
+          .map { _ in }
 
-        return Output(userSession: userSession,
-                      didTapWithoutLoginButton: didTapWithoutLoginButton)
-    }
+    return Output(userSession: userSession,
+                  didTapWithoutLoginButton: didTapWithoutLoginButton)
+  }
 
-    private func rememberAccessToken(_ accessToken: String) {
-        UserDefaults.standard.setValue(accessToken, forKey: "access_token")
-    }
+  private func rememberAccessToken(_ accessToken: String) {
+    UserDefaults.standard.setValue(accessToken, forKey: "access_token")
+  }
 }

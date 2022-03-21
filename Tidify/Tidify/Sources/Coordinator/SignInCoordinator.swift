@@ -10,48 +10,48 @@ import UIKit
 
 final class SignInCoordinator: Coordinator {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
 
-    var navigationController: UINavigationController
+  var navigationController: UINavigationController
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
-    }
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
+  }
 
-    func start() {
-        let signInViewModel = SignInViewModel()
-        signInViewModel.delegate = self
-        let signInViewController = SignInViewController(viewModel: signInViewModel)
+  func start() {
+    let signInViewModel = SignInViewModel()
+    signInViewModel.delegate = self
+    let signInViewController = SignInViewController(viewModel: signInViewModel)
 
-        navigationController.pushViewController(signInViewController, animated: true)
-    }
+    navigationController.pushViewController(signInViewController, animated: true)
+  }
 }
 
 extension SignInCoordinator: SignInViewModelDelegate {
-    func didSuccessSignInWithKakao() {
-        var mainCoordinator: MainCoordinator?
+  func didSuccessSignInWithKakao() {
+    var mainCoordinator: MainCoordinator?
 
-        if let parentCoordinator = parentCoordinator as? MainCoordinator {
-            // startWithSignIn으로 분기한 경우
-            mainCoordinator = parentCoordinator
-        } else {
-            // startWithOnboarding으로 분기한 경우
-            guard let onboardingCoordinator = parentCoordinator as? OnboardingCoordinator,
-                  let parentCoordinator = onboardingCoordinator.parentCoordinator
-                    as? MainCoordinator else { return }
-            mainCoordinator = parentCoordinator
-        }
-
-        mainCoordinator?.start()
+    if let parentCoordinator = parentCoordinator as? MainCoordinator {
+      // startWithSignIn으로 분기한 경우
+      mainCoordinator = parentCoordinator
+    } else {
+      // startWithOnboarding으로 분기한 경우
+      guard let onboardingCoordinator = parentCoordinator as? OnboardingCoordinator,
+            let parentCoordinator = onboardingCoordinator.parentCoordinator
+              as? MainCoordinator else { return }
+      mainCoordinator = parentCoordinator
     }
 
-    func didSuccessSingInWithApple() {
-        // 추후 연동 진행
-        print("⚠️ [Ian] \(#file) - \(#line): \(#function): Apple Login")
-    }
+    mainCoordinator?.start()
+  }
+
+  func didSuccessSingInWithApple() {
+    // 추후 연동 진행
+    print("⚠️ [Ian] \(#file) - \(#line): \(#function): Apple Login")
+  }
 }

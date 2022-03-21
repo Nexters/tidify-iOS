@@ -8,11 +8,11 @@
 import Foundation
 
 struct Folder: Codable {
-    let name: String
-    let color: String
-
-    enum CodingKeys: String, CodingKey {
-        case name
-        case color
-    }
+  let name: String
+  let color: String
+  
+  enum CodingKeys: String, CodingKey {
+    case name
+    case color
+  }
 }

@@ -12,71 +12,71 @@ import UIKit
 
 class RegisterCoordinator: Coordinator {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    weak var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
+  var navigationController: UINavigationController
 
-    private let disposeBag = DisposeBag()
+  private let disposeBag = DisposeBag()
 
-    // MARK: - Initialize
+  // MARK: - Initialize
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
+  }
+
+  // MARK: - Methods
+
+  func start() {
+    let backButton = UIButton().then {
+      $0.setImage(R.image.nav_icon_back(), for: .normal)
     }
 
-    // MARK: - Methods
+    let registerViewModel = RegisterViewModel()
+    let registerViewController = RegisterViewController(
+      viewModel: registerViewModel,
+      title: R.string.localizable.mainAddBookMarkTitle(),
+      leftButton: backButton
+    )
+    registerViewController.coordinator = self
 
-    func start() {
-        let backButton = UIButton().then {
-            $0.setImage(R.image.nav_icon_back(), for: .normal)
-        }
+    backButton.rx.tap.asDriver()
+      .drive(onNext: { [weak registerViewController] in
+        registerViewController?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
 
-        let registerViewModel = RegisterViewModel()
-        let registerViewController = RegisterViewController(
-            viewModel: registerViewModel,
-            title: R.string.localizable.mainAddBookMarkTitle(),
-            leftButton: backButton
-        )
-        registerViewController.coordinator = self
+    registerViewController.navigationItem.title = R.string.localizable.mainAddBookMarkTitle()
 
-        backButton.rx.tap.asDriver()
-            .drive(onNext: { [weak registerViewController] in
-                registerViewController?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
+    navigationController.pushViewController(registerViewController, animated: true)
+  }
 
-        registerViewController.navigationItem.title = R.string.localizable.mainAddBookMarkTitle()
-
-        navigationController.pushViewController(registerViewController, animated: true)
+  func startPush() -> UIViewController {
+    let backButton = UIButton().then {
+      $0.setImage(R.image.nav_icon_back(), for: .normal)
     }
 
-    func startPush() -> UIViewController {
-        let backButton = UIButton().then {
-            $0.setImage(R.image.nav_icon_back(), for: .normal)
-        }
+    let registerViewModel = RegisterViewModel()
+    let registerViewController = RegisterViewController(
+      viewModel: registerViewModel,
+      title: R.string.localizable.mainAddBookMarkTitle(),
+      leftButton: backButton
+    )
+    registerViewController.coordinator = self
 
-        let registerViewModel = RegisterViewModel()
-        let registerViewController = RegisterViewController(
-            viewModel: registerViewModel,
-            title: R.string.localizable.mainAddBookMarkTitle(),
-            leftButton: backButton
-        )
-        registerViewController.coordinator = self
+    backButton.rx.tap.asDriver()
+      .drive(onNext: { [weak registerViewController] in
+        registerViewController?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
 
-        backButton.rx.tap.asDriver()
-            .drive(onNext: { [weak registerViewController] in
-                registerViewController?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        return registerViewController
-    }
+    return registerViewController
+  }
 }
 
 extension RegisterCoordinator {
-    func popRegisterVC() {
-        navigationController.popViewController(animated: true)
-    }
+  func popRegisterVC() {
+    navigationController.popViewController(animated: true)
+  }
 }
