@@ -8,7 +8,7 @@
 import RxSwift
 
 class FolderDetailCoordinator: Coordinator {
-  
+
   // MARK: - Properties
 
   weak var parentCoordinator: Coordinator?

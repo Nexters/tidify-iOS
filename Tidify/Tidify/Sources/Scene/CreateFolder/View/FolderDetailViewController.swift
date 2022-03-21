@@ -132,6 +132,18 @@ private extension FolderDetailViewController {
       $0.top.equalTo(view.top)
       $0.leading.trailing.equalToSuperview()
     }
+
+    navigationBar.leftButton.snp.updateConstraints {
+      $0.width.height.equalTo(24)
+      $0.leading.equalToSuperview().offset(8)
+      $0.bottom.equalToSuperview().inset(32)
+    }
+
+    navigationBar.titleLabel.font = .t_B(20)
+    navigationBar.titleLabel.snp.makeConstraints {
+      $0.leading.equalTo(navigationBar.leftButton.snp.trailing).offset(16)
+    }
+
     navigationBar.t_cornerRadius([.bottomLeft, .bottomRight], radius: 16)
   }
 

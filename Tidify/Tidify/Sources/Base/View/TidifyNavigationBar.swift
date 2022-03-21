@@ -50,8 +50,8 @@ class TidifyNavigationBar: UIView {
 
     // MARK: - Properties
 
-    private weak var titleLabel: UILabel!
-    private weak var leftButton: UIButton!
+    weak var titleLabel: UILabel!
+    weak var leftButton: UIButton!
     private weak var rightStackView: UIStackView!
 
     private let navigationBarStyle: NavigationBarStyle
@@ -132,7 +132,7 @@ class TidifyNavigationBar: UIView {
         }
 
         rightStackView.snp.makeConstraints {
-            $0.centerY.equalTo(leftButton)
+            $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
             $0.trailing.equalToSuperview().inset(navigationBarStyle.trailingPadding)
             $0.height.equalTo(40)
             $0.width.equalTo(navigationBarStyle == .folder ? 40 : 75)
