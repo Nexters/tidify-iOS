@@ -60,8 +60,6 @@ class FolderDetailCoordinator: Coordinator {
   }
 }
 
-// MARK: - 1Depth
-
 extension FolderDetailCoordinator {
   func shareFolder() {
     //TODO: will be implemented.
