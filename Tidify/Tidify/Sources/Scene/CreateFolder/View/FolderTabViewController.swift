@@ -180,6 +180,13 @@ private extension FolderTabViewController {
                 self.viewModel.lastIndex = $0
             })
             .disposed(by: disposeBag)
+
+      collectionView.rx.modelSelected(Folder.self)
+        .bind { [weak self] in
+          guard let self = self else { return }
+          self.coordinator?.pushFolderDetailView(titleString: $0.name)
+        }
+        .disposed(by: disposeBag)
     }
 
     @objc
