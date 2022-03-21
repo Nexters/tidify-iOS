@@ -15,39 +15,45 @@ protocol OnboardingViewModelDelegate: AnyObject {
 
 class OnboardingViewModel: ViewModelType {
   struct Input {
-    let nextButtonTap: Driver<Void>
-    let currentPage: Driver<Int>
+    let nextButtonTap: Observable<Void>
   }
 
   struct Output {
-    let didTapNextButton: Driver<Void>
+    let didTapNextButton: Observable<Void>
+    let onboardingContent: Observable<(Onboarding, Int)?>
   }
 
   var onboardingDataSource: [Onboarding] {
-    return setOnboardingResource()
+    setOnboardingResource()
   }
+
+  var currentPageRelay = BehaviorRelay<Int>(value: 0)
 
   weak var delegate: OnboardingViewModelDelegate?
 
   func transform(_ input: Input) -> Output {
+
     let didTapNextButton = input.nextButtonTap
-      .withLatestFrom(input.currentPage)
-      .filter { [weak self] index in
-        guard let strongSelf = self else {
-          return false
-        }
+      .do(onNext: { [weak self] in
+        guard let self = self else { return }
+        let currentValue = self.currentPageRelay.value
 
-        if index < strongSelf.onboardingDataSource.count - 1 {
-          return true
+        if currentValue + 1 > self.onboardingDataSource.count - 1 {
+          UserDefaults.standard.setValue(true, forKey: "didOnborded")
+          self.delegate?.showNextPage()
         } else {
-          UserDefaults.standard.setValue(true, forKey: "didOnboarded")
-          self?.delegate?.showNextPage()
-          return false
+          self.currentPageRelay.accept(currentValue + 1)
         }
-      }
-      .map { _ in }
+      })
 
-    return Output(didTapNextButton: didTapNextButton)
+      let onboardingContent = currentPageRelay
+        .map { [weak self] currentValue -> (Onboarding, Int)? in
+          guard let self = self else { return nil }
+          return (self.onboardingDataSource[currentValue], currentValue)
+        }
+
+    return Output(didTapNextButton: didTapNextButton,
+                  onboardingContent: onboardingContent)
   }
 }
 
