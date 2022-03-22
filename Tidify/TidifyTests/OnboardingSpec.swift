@@ -13,19 +13,24 @@ import Quick
 class OnboardingSpec: QuickSpec {
   override func spec() {
     var viewModel: OnboardingViewModel!
+    var viewController: OnboardingViewController!
 
-    describe("Onboarding ViewModel") {
+    describe("Onboarding ViewController") {
       beforeEach {
         viewModel = OnboardingViewModel()
+        viewController = OnboardingViewController(viewModel: viewModel)
+        _ = viewController.view
       }
-      context("When Created") {
-        it("contents count will be 5", closure: {
-          expect(viewModel.onboardingDataSource.count).to(equal(5))
-        })
+      context("when view is loaded") {
+        it("collectionView should have same item count with viewModel's dataSources count") {
+          expect(viewController.collectionView.numberOfItems(inSection: 0))
+            .to(equal(viewModel.onboardingDataSource.count))
+        }
       }
     }
     afterEach {
       viewModel = nil
+      viewController = nil
     }
   }
 }

@@ -20,7 +20,7 @@ class OnboardingViewController: BaseViewController {
   // MARK: - Properties
 
   private weak var pageControl: UIPageControl!
-  private weak var collectionView: UICollectionView!
+  private (set) weak var collectionView: UICollectionView!
   private weak var nextButton: UIButton!
 
   private let viewModel: OnboardingViewModel!
