@@ -8,24 +8,24 @@
 import Foundation
 
 class WebViewViewModel: ViewModelType {
-  
+
   // MARK: - Properties
   var bookMarkURLString: String = ""
-  
+
   init(_ urlString: String) {
     self.bookMarkURLString = urlString
   }
-  
+
   struct Input {
-    
+
   }
-  
+
   struct Output {
-    
+
   }
-  
+
   // MARK: - Methods
-  
+
   func transform(_ input: Input) -> Output {
     return Output()
   }

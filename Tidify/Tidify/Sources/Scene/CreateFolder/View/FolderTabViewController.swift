@@ -151,7 +151,7 @@ private extension FolderTabViewController {
         guard let self = self else { return UICollectionViewCell() }
         let cell = self.collectionView.t_dequeueReusableCell(
           cellType: FolderCollectionViewCell.self,
-          indexPath: IndexPath.init(row: row, section: 0)
+          indexPath: IndexPath(row: row, section: 0)
         )
 
         cell.editButton.addTarget(self,

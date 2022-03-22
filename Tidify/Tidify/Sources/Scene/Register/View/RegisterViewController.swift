@@ -11,17 +11,17 @@ import Then
 import UIKit
 
 class RegisterViewController: BaseViewController {
-  
+
   // MARK: - Constants
-  
+
   static let textFieldWidth: CGFloat = 335
   static let textFieldHeight: CGFloat = 48
   static let sidePadding: CGFloat = 20
-  
+
   // MARK: - Properties
-  
+
   weak var coordinator: RegisterCoordinator?
-  
+
   private weak var urlTitleLabel: UILabel!
   private weak var urlTextField: UITextField!
   private weak var bookMarkTitleLabel: UILabel!
@@ -32,19 +32,19 @@ class RegisterViewController: BaseViewController {
   private weak var notifyInvalidFormatUrlLabel: UILabel!
   private let leftButton: UIButton!
   private let navTitle: String!
-  
+
   private let selectedTagIndexSubject = PublishSubject<Int>()
   private let selectedTagSubject = PublishSubject<String>()
-  
+
   private let viewModel: RegisterViewModel!
   private let disposeBag = DisposeBag()
-  
+
   private var isInvalidFormatURL: Bool = true {
     didSet {
       self.notifyInvalidFormatUrlLabel.isHidden = !isInvalidFormatURL
     }
   }
-  
+
   private var registerButtonEnabled: Bool = false {
     didSet {
       self.registerButton.backgroundColor = registerButtonEnabled ? .t_tidiBlue() : .white
@@ -52,42 +52,42 @@ class RegisterViewController: BaseViewController {
                                         for: .normal)
     }
   }
-  
+
   lazy var navigationBar = TidifyNavigationBar(.default,
                                                title: navTitle,
                                                leftButton: leftButton,
                                                rightButtons: [])
-  
+
   let demoTagList = ["tag name / 0", "tag name / 1", "tag name / 2", "tag name / 3"]
-  
+
   // MARK: - Initialize
-  
+
   init(viewModel: RegisterViewModel, title: String, leftButton: UIButton) {
     self.viewModel = viewModel
     self.navTitle = title
     self.leftButton = leftButton
-    
+
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   // MARK: - LifeCycle
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     urlTextField.becomeFirstResponder()
-    
+
     view.t_addTap().rx.event.asDriver()
       .drive(onNext: { [weak self] _ in
         self?.urlTextField.resignFirstResponder()
         self?.bookMarkTextField.resignFirstResponder()
       })
       .disposed(by: disposeBag)
-    
+
     urlTextField.rx.text.asDriver()
       .filter { string in
         guard let string = string else {
@@ -104,7 +104,7 @@ class RegisterViewController: BaseViewController {
         self?.registerButtonEnabled = !(text.isEmpty)
       })
       .disposed(by: disposeBag)
-    
+
     tagTextField.t_addTap().rx.event.asDriver()
       .drive(onNext: { [weak self] _ in
         guard let strongSelf = self else {
@@ -113,7 +113,7 @@ class RegisterViewController: BaseViewController {
         strongSelf.showBottomSheet(strongSelf.demoTagList)
       })
       .disposed(by: disposeBag)
-    
+
     selectedTagIndexSubject.t_asDriverSkipError()
       .drive(onNext: { [weak self] index in
         guard let strongSelf = self else {
@@ -123,11 +123,11 @@ class RegisterViewController: BaseViewController {
         self?.selectedTagSubject.onNext(strongSelf.demoTagList[index])
       })
       .disposed(by: disposeBag)
-    
+
     let urlTextField = urlTextField.rx.text.asDriver()
       .filter { $0.t_isNotNil }
       .map { $0.t_unwrap }
-    
+
     let input = RegisterViewModel.Input(
       urlInputText: urlTextField,
       bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
@@ -135,9 +135,9 @@ class RegisterViewController: BaseViewController {
       registerButtonTap: registerButton.rx.tap.asDriver()
     )
     let output = viewModel.transform(input)
-    
+
     output.didReceivePreviewResponse.drive().disposed(by: disposeBag)
-    
+
     output.didSaveBookMark
       .drive(onNext: { [weak self] _ in
         self?.registerButtonEnabled = false
@@ -145,36 +145,36 @@ class RegisterViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
   }
-  
+
   // MARK: - Methods
-  
+
   override func setupViews() {
     setupNavigationBar()
     view.backgroundColor = .white
-    
+
     self.urlTitleLabel = makeTitleLabel(title: R.string.localizable.registerAddressTitle())
-    
+
     let urlTextFieldPlaceholder = NSAttributedString(
       string: R.string.localizable.registerAddressPlaceHolder(),
       attributes: [.foregroundColor: UIColor.gray])
     self.urlTextField = makeTextField(placeholder: urlTextFieldPlaceholder)
-    
+
     self.bookMarkTitleLabel = makeTitleLabel(
       title: R.string.localizable.registerBookMarkTitle()
     )
-    
+
     let bookMarkTextFieldPlaceholder = NSAttributedString(
       string: R.string.localizable.registerBookMarkPlaceHolder(),
       attributes: [.foregroundColor: UIColor.gray])
     self.bookMarkTextField = makeTextField(placeholder: bookMarkTextFieldPlaceholder)
-    
+
     self.tagTitleLabel = makeTitleLabel(title: R.string.localizable.registerFolderTitle())
-    
+
     let tagTextFieldPlaceholder = NSAttributedString(
       string: R.string.localizable.registerFolderPlaceHolder(),
       attributes: [.foregroundColor: UIColor.gray])
     self.tagTextField = makeTextField(placeholder: tagTextFieldPlaceholder)
-    
+
     self.registerButton = UIButton().then {
       $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
       $0.titleLabel?.font = .t_B(20)
@@ -184,7 +184,7 @@ class RegisterViewController: BaseViewController {
       $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
       view.addSubview($0)
     }
-    
+
     self.notifyInvalidFormatUrlLabel = UILabel().then {
       $0.font = UIFont.t_SB(14)
       $0.textColor = .systemRed
@@ -193,47 +193,47 @@ class RegisterViewController: BaseViewController {
       $0.isHidden = true
     }
   }
-  
+
   override func setupLayoutConstraints() {
     urlTitleLabel.snp.makeConstraints {
       $0.top.equalTo(navigationBar.snp.bottom).offset(30)
       $0.leading.equalToSuperview().offset(Self.sidePadding)
     }
-    
+
     urlTextField.snp.makeConstraints {
       $0.top.equalTo(urlTitleLabel.snp.bottom).offset(16)
       $0.leading.equalToSuperview().offset(Self.sidePadding)
       $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
     }
-    
+
     bookMarkTitleLabel.snp.makeConstraints {
       $0.top.equalTo(urlTextField.snp.bottom).offset(40)
       $0.leading.equalToSuperview().offset(Self.sidePadding)
     }
-    
+
     bookMarkTextField.snp.makeConstraints {
       $0.top.equalTo(bookMarkTitleLabel.snp.bottom).offset(16)
       $0.leading.equalToSuperview().offset(Self.sidePadding)
       $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
     }
-    
+
     tagTitleLabel.snp.makeConstraints {
       $0.top.equalTo(bookMarkTextField.snp.bottom).offset(40)
       $0.left.equalToSuperview().offset(Self.sidePadding)
     }
-    
+
     tagTextField.snp.makeConstraints {
       $0.top.equalTo(tagTitleLabel.snp.bottom).offset(16)
       $0.leading.equalToSuperview().offset(Self.sidePadding)
       $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
     }
-    
+
     registerButton.snp.makeConstraints {
       $0.leading.trailing.equalTo(tagTextField)
       $0.height.equalTo(56)
       $0.bottom.equalToSuperview().offset(-40)
     }
-    
+
     notifyInvalidFormatUrlLabel.snp.makeConstraints {
       $0.centerY.equalTo(urlTitleLabel)
       $0.trailing.equalToSuperview().inset(Self.sidePadding)
@@ -248,7 +248,7 @@ private extension RegisterViewController {
       $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
   }
-  
+
   func showBottomSheet(_ tagList: [String]) {
     let bottomSheet = BottomSheetViewController(
       .chooseFolder,
@@ -256,10 +256,10 @@ private extension RegisterViewController {
       selectedEventObserver: selectedTagIndexSubject.asObserver()
     )
     bottomSheet.modalPresentationStyle = .overFullScreen
-    
+
     self.present(bottomSheet, animated: false, completion: nil)
   }
-  
+
   func makeTitleLabel(title: String) -> UILabel {
     return UILabel().then {
       $0.text = title
@@ -268,7 +268,7 @@ private extension RegisterViewController {
       view.addSubview($0)
     }
   }
-  
+
   func makeTextField(placeholder: NSAttributedString) -> UITextField {
     return UITextField().then {
       $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))

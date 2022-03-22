@@ -13,40 +13,40 @@ import UIKit
 import WebKit
 
 class WebViewController: BaseViewController {
-  
+
   // MARK: - Properties
-  
+
   weak var coordinator: Coordinator?
-  
+
   private weak var webView: WKWebView!
-  
+
   private let viewModel: WebViewViewModel
   private let disposeBag = DisposeBag()
-  
+
   // MARK: - Initialize
-  
+
   init(viewModel: WebViewViewModel) {
     self.viewModel = viewModel
-    
+
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   // MARK: - LifeCycle
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     let url = URL(string: viewModel.bookMarkURLString)!
     let request = URLRequest(url: url)
     webView.load(request)
   }
-  
+
   // MARK: - Methods
-  
+
   override func setupViews() {
     let webView = WKWebView().then {
       $0.allowsBackForwardNavigationGestures = true
@@ -57,7 +57,7 @@ class WebViewController: BaseViewController {
     }
     self.webView = webView
   }
-  
+
   override func setupLayoutConstraints() {
     webView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
@@ -66,9 +66,9 @@ class WebViewController: BaseViewController {
 }
 
 extension WebViewController: WKUIDelegate {
-  
+
 }
 
 extension WebViewController: WKNavigationDelegate {
-  
+
 }
