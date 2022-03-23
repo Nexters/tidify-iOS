@@ -114,7 +114,6 @@ class FolderTabViewController: BaseViewController {
       $0.top.equalTo(navigationBar.snp.bottom).offset(16)
       $0.leading.trailing.bottom.equalToSuperview()
     }
-
     collectionView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(24)
       $0.leading.trailing.equalToSuperview()
@@ -155,10 +154,10 @@ private extension FolderTabViewController {
         )
 
         cell.editButton.addTarget(self,
-                                  action: #selector(self.editWasTapped(_:)),
+                                  action: #selector(self.didTapEditButton(_:)),
                                   for: .touchUpInside)
         cell.deleteButton.addTarget(self,
-                                    action: #selector(self.deleteWasTapped(_:)),
+                                    action: #selector(self.didTapDeleteButton(_:)),
                                     for: .touchUpInside)
         cell.setFolder(
           item,
@@ -185,15 +184,22 @@ private extension FolderTabViewController {
         self.viewModel.lastIndex = $0
       })
       .disposed(by: disposeBag)
+
+    collectionView.rx.modelSelected(Folder.self)
+      .bind { [weak self] in
+        guard let self = self else { return }
+        self.coordinator?.pushFolderDetailView(titleString: $0.name)
+      }
+      .disposed(by: disposeBag)
   }
 
   @objc
-  func editWasTapped(_ sender: UIButton) {
+  func didTapEditButton(_ sender: UIButton) {
     print("edit Was Tapped") // TODO
   }
 
   @objc
-  func deleteWasTapped(_ sender: UIButton) {
+  func didTapDeleteButton(_ sender: UIButton) {
     var data = viewModel.folderList.value
     data.remove(at: sender.tag)
     viewModel.folderList.accept(data)
