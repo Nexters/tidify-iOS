@@ -154,10 +154,10 @@ private extension FolderTabViewController {
         )
 
         cell.editButton.addTarget(self,
-                                  action: #selector(self.editWasTapped(_:)),
+                                  action: #selector(self.didTapEditButton(_:)),
                                   for: .touchUpInside)
         cell.deleteButton.addTarget(self,
-                                    action: #selector(self.deleteWasTapped(_:)),
+                                    action: #selector(self.didTapDeleteButton(_:)),
                                     for: .touchUpInside)
         cell.setFolder(
           item,
@@ -194,12 +194,12 @@ private extension FolderTabViewController {
   }
 
   @objc
-  func editWasTapped(_ sender: UIButton) {
+  func didTapEditButton(_ sender: UIButton) {
     print("edit Was Tapped") // TODO
   }
 
   @objc
-  func deleteWasTapped(_ sender: UIButton) {
+  func didTapDeleteButton(_ sender: UIButton) {
     var data = viewModel.folderList.value
     data.remove(at: sender.tag)
     viewModel.folderList.accept(data)

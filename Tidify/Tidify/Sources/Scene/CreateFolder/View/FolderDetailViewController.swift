@@ -193,10 +193,10 @@ private extension FolderDetailViewController {
   }
 
   @objc
-  func editWasTapped(_ sender: UIButton) {
+  func didTapEditButton(_ sender: UIButton) {
   }
 
   @objc
-  func deleteWasTapped(_ sender: UIButton) {
+  func didTapDeleteButton(_ sender: UIButton) {
   }
 }
