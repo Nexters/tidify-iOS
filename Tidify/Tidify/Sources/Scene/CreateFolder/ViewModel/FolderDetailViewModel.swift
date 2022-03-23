@@ -7,6 +7,7 @@
 
 import RxCocoa
 import RxSwift
+import Foundation
 
 class FolderDetailViewModel: ViewModelType {
 
@@ -38,6 +39,14 @@ class FolderDetailViewModel: ViewModelType {
       memberId: 0,
       urlString: "https://www.naver.com/",
       title: "네이버",
+      tag: "tag222"),
+    BookMark(
+      createdAt: "createdAt222",
+      updatedAt: "updatedAt222",
+      id: 0,
+      memberId: 0,
+      urlString: "https://picsum.photos/200/300",
+      title: "테스트북마크",
       tag: "tag222")
   ])
 
