@@ -20,7 +20,7 @@
 		8661DEDE27DE11FF0005B02B /* SearchHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DEDD27DE11FF0005B02B /* SearchHistoryCell.swift */; };
 		8661DEE127DE12110005B02B /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DEE027DE12110005B02B /* SearchViewModel.swift */; };
 		8680A0A327D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */; };
-		86E3D29E27E8A73100171084 /* TidifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E3D29D27E8A73100171084 /* TidifyTests.swift */; };
+		868326A427E8CCC600140EAE /* OnboardingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868326A327E8CCC600140EAE /* OnboardingSpec.swift */; };
 		B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */; };
 		B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */; };
 		B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CC269C883500B34C5E /* HomeCoordinator.swift */; };
@@ -151,8 +151,8 @@
 		8661DEDD27DE11FF0005B02B /* SearchHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryCell.swift; sourceTree = "<group>"; };
 		8661DEE027DE12110005B02B /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
+		868326A327E8CCC600140EAE /* OnboardingSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSpec.swift; sourceTree = "<group>"; };
 		86E3D29B27E8A73100171084 /* TidifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TidifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		86E3D29D27E8A73100171084 /* TidifyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyTests.swift; sourceTree = "<group>"; };
 		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
 		8B89E49041036E11C75AC302 /* Pods-TidifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TidifyTests.debug.xcconfig"; path = "Target Support Files/Pods-TidifyTests/Pods-TidifyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -312,7 +312,7 @@
 		86E3D29C27E8A73100171084 /* TidifyTests */ = {
 			isa = PBXGroup;
 			children = (
-				86E3D29D27E8A73100171084 /* TidifyTests.swift */,
+				868326A327E8CCC600140EAE /* OnboardingSpec.swift */,
 			);
 			path = TidifyTests;
 			sourceTree = "<group>";
@@ -998,7 +998,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$SRCROOT/Tidify/Configuration/R.generated.swift",
+				$SRCROOT/Tidify/Configuration/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1050,7 +1050,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86E3D29E27E8A73100171084 /* TidifyTests.swift in Sources */,
+				868326A427E8CCC600140EAE /* OnboardingSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
