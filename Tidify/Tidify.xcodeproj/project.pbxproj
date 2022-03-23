@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
+		407F2F1927E841080061E2B7 /* FolderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */; };
+		407F2F1B27E841390061E2B7 /* FolderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */; };
+		407F2F1D27E843570061E2B7 /* FolderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */; };
 		40C0023427E088F400941339 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C0023327E088F400941339 /* UICollectionViewCell+.swift */; };
 		74054C0E59CF4CBF363302BD /* Pods_TidifyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */; };
 		8661DECE27DDBF360005B02B /* AccountSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */; };
@@ -134,6 +137,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailViewController.swift; sourceTree = "<group>"; };
+		407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailCoordinator.swift; sourceTree = "<group>"; };
+		407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailViewModel.swift; sourceTree = "<group>"; };
 		2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TidifyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C0023327E088F400941339 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -511,6 +517,7 @@
 				B588C69926D0CA6E003F4308 /* Cells */,
 				B588C69526D0C957003F4308 /* FolderTabViewController.swift */,
 				B588C69E26D0D175003F4308 /* CreateFolderViewController.swift */,
+				407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -520,6 +527,7 @@
 			children = (
 				B588C69726D0C96E003F4308 /* FolderTabViewModel.swift */,
 				B588C6A026D0D181003F4308 /* CreateFolderViewModel.swift */,
+				407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -682,6 +690,7 @@
 				B5443B9926C8E71500F7494A /* ProfileCoordinator.swift */,
 				B57833E326CA7BC2000AC589 /* TabBarCoordinator.swift */,
 				B588C69C26D0CED2003F4308 /* FolderTabCoordinator.swift */,
+				407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */,
 				B588C6A226D0D23C003F4308 /* CreateFolderCoordinator.swift */,
 				B53B93F026DB7D0300EBCB21 /* OnboardingCoordinator.swift */,
 				B53B93FE26DBC9B600EBCB21 /* SignInCoordinator.swift */,
@@ -1065,6 +1074,7 @@
 				B52982CF269C8A3800B34C5E /* RegisterCoordinator.swift in Sources */,
 				B5F19C1126999E3700D1E8BB /* MainCoordinator.swift in Sources */,
 				B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */,
+				407F2F1927E841080061E2B7 /* FolderDetailViewController.swift in Sources */,
 				8680A0A327D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift in Sources */,
 				B5F19C262699D05200D1E8BB /* APIProvider.swift in Sources */,
 				B5CA8B1926B0438600D9C6D3 /* SettingViewController.swift in Sources */,
@@ -1090,6 +1100,7 @@
 				B577660626C17E1600533276 /* BottomSheetFolderTableViewCell.swift in Sources */,
 				B57833E226CA465F000AC589 /* TidifyTabBarController.swift in Sources */,
 				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,
+				407F2F1B27E841390061E2B7 /* FolderDetailCoordinator.swift in Sources */,
 				B53B93FD26DBA6E300EBCB21 /* OnboardingCollectionViewCell.swift in Sources */,
 				B56D831E26998A3E00D5F513 /* UICollectionView+.swift in Sources */,
 				B53B93F126DB7D0300EBCB21 /* OnboardingCoordinator.swift in Sources */,
@@ -1117,6 +1128,7 @@
 				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
 				8661DEE127DE12110005B02B /* SearchViewModel.swift in Sources */,
+				407F2F1D27E843570061E2B7 /* FolderDetailViewModel.swift in Sources */,
 				B5F19C142699A04400D1E8BB /* WebViewController.swift in Sources */,
 				B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */,
 				8661DED927DE11DF0005B02B /* SearchHistoryHeaderView.swift in Sources */,

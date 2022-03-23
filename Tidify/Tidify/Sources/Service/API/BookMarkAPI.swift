@@ -60,7 +60,7 @@ extension BookMarkAPI: TargetType {
     }
     return nil
   }
-  
+
   private var parameters: [String: Any]? {
     switch self {
     case let .createBookMark(url, title, ogImageUrl, tags):

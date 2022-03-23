@@ -10,19 +10,19 @@ import RxCocoa
 import RxSwift
 
 class FolderTabViewModel: ViewModelType {
-  
+
   // MARK: - Properties
-  
+
   struct Input {
   }
-  
+
   struct Output {
     let didReceiveFolders: Driver<Void>
   }
-  
+
   let lastIndexSubject = PublishSubject<Int>()
   var lastIndex: Int = 0
-  
+
   var folderList: BehaviorRelay<[Folder]> = BehaviorRelay<[Folder]>(value: [
     Folder(name: "테스트폴더0", color: "#ff9500"),
     Folder(name: "테스트폴더1", color: "#ff2d54"),
@@ -36,12 +36,12 @@ class FolderTabViewModel: ViewModelType {
     Folder(name: "테스트폴더9", color: "#ff2d54"),
     Folder(name: "테스트폴더10", color: "#ff9500")
   ])
-  
+
   func transform(_ input: Input) -> Output {
-    
+
     // 폴더 리스트 가져오기
     let didReceiveFolders = Driver.just(())
-    
+
     return Output(didReceiveFolders: didReceiveFolders)
   }
 }

@@ -53,7 +53,7 @@ class BottomSheetFolderTableViewCell: UITableViewCell {
     checkStatusImageView.image = selected ?
     R.image.bottomSheet_ico_checked() : R.image.bottomSheet_ico_unChecked()
   }
-  
+
   func setFolder(_ folderName: String) {
     self.folderLabel.text = folderName
   }

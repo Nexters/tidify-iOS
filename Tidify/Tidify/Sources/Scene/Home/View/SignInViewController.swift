@@ -24,7 +24,6 @@ final class SignInViewController: BaseViewController {
   private weak var tooltipImageView: UIImageView!
 
   private weak var loginMethodStackView: UIStackView!
-  // TODO: 추후 모든 SNS 로그인 연동을 완료하면 버튼들을 StackView에 담아 관리한다.
   private weak var kakaoSignInButton: UIButton!
   private weak var appleSignInButton: ASAuthorizationAppleIDButton!
   private weak var withoutLoginButton: UIButton!
@@ -117,11 +116,12 @@ final class SignInViewController: BaseViewController {
 
     self.appleSignInButton = ASAuthorizationAppleIDButton(
       authorizationButtonType: .signIn,
-      authorizationButtonStyle: .black).then {
+      authorizationButtonStyle: .black).then
+    {
         $0.addTarget(self, action: #selector(appleSignInButtonTap), for: .touchUpInside)
         $0.cornerRadius = 14
         loginMethodStackView.addArrangedSubview($0)
-      }
+    }
 
     self.withoutLoginButton = UIButton().then {
       let attributedString = NSAttributedString(

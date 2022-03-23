@@ -21,11 +21,11 @@ class OnboardingViewController: BaseViewController {
 
   private weak var pageControl: UIPageControl!
   private (set) weak var collectionView: UICollectionView!
+  weak var collectionView: UICollectionView!
   private weak var nextButton: UIButton!
 
   private let viewModel: OnboardingViewModel!
   private let disposeBag = DisposeBag()
-  private let currentPageRelay = BehaviorRelay<Int>(value: 0)
 
   // MARK: - Initialize
 
@@ -44,33 +44,25 @@ class OnboardingViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let input = OnboardingViewModel.Input(nextButtonTap: nextButton.rx.tap.asDriver(),
-                                          currentPage: currentPageRelay.asDriver())
-
+    let input = OnboardingViewModel.Input(nextButtonTap: nextButton.rx.tap.asObservable())
     let output = viewModel.transform(input)
 
-    currentPageRelay.asDriver()
-      .do(onNext: { [weak self] index in
-        guard let onboarding = self?.viewModel.onboardingDataSource[safe: index] else {
-          return
-        }
-        self?.pageControl.currentPage = index
-        self?.nextButton.setTitle(onboarding.buttonTitle, for: .normal)
-      })
-      .drive(onNext: { [weak self] index in
-        self?.collectionView.scrollToItem(at: IndexPath(item: index, section: 0),
-                                          at: .centeredHorizontally, animated: true)
-      })
+    output.didTapNextButton
+      .subscribe()
       .disposed(by: disposeBag)
 
-    output.didTapNextButton
-      .drive(onNext: { [weak self] _ in
-        guard let strongSelf = self else {
-          return
-        }
+    output.onboardingContent
+      .t_asDriverSkipError()
+      .drive(onNext: { [weak self] onboardingContent in
+        guard let onboardingContent = onboardingContent,
+              let self = self else { return }
+        let (onboarding, currentIndex) = onboardingContent
 
-        let currentIndex = strongSelf.currentPageRelay.value
-        self?.currentPageRelay.accept(currentIndex + 1)
+        self.pageControl.currentPage = currentIndex
+        self.nextButton.setTitle(onboarding.buttonTitle, for: .normal)
+        self.collectionView.scrollToItem(at: IndexPath(item: currentIndex, section: 0),
+                                         at: .centeredHorizontally,
+                                         animated: true)
       })
       .disposed(by: disposeBag)
     }
@@ -169,7 +161,6 @@ extension OnboardingViewController: UICollectionViewDelegate {
                                  withVelocity velocity: CGPoint,
                                  targetContentOffset: UnsafeMutablePointer<CGPoint>) {
     let pageIndex = Int(targetContentOffset.pointee.x / collectionView.frame.width)
-
-    currentPageRelay.accept(pageIndex)
+    viewModel.currentPageRelay.accept(pageIndex)
   }
 }

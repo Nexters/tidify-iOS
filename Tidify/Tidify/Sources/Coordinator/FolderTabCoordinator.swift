@@ -46,6 +46,7 @@ class FolderTabCoordinator: Coordinator {
                                                           leftButton: leftButton,
                                                           rightButton: rightButton)
     folderTabViewController.coordinator = self
+
     leftButton.rx.tap.asDriver()
       .drive(onNext: { [weak self] _ in
         self?.pushSettingView()
@@ -114,5 +115,15 @@ extension FolderTabCoordinator {
     childCoordinators.append(folderCoordinator)
 
     folderCoordinator.start()
+  }
+
+  func pushFolderDetailView(titleString: String) {
+    let folderDetailCoordinator = FolderDetailCoordinator(
+      titleString: titleString,
+      navigationController: navigationController)
+    folderDetailCoordinator.parentCoordinator = self
+    childCoordinators.append(folderDetailCoordinator)
+
+    folderDetailCoordinator.start()
   }
 }
