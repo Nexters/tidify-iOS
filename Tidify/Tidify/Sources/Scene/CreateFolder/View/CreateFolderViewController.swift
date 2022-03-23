@@ -15,10 +15,9 @@ class CreateFolderViewController: BaseViewController {
 
   // MARK: - Constants
 
-  static let textFieldHeight: CGFloat = 48
-  static let labelSidePadding: CGFloat = 32
+  static let textFieldHeight: CGFloat = 56
+  static let labelSidePadding: CGFloat = 20
   static let textFieldSidePadding: CGFloat = 20
-  static let saveButtonHeight: CGFloat = 96
 
   // MARK: - Properties
 
@@ -129,8 +128,10 @@ class CreateFolderViewController: BaseViewController {
       $0.leftViewMode = .always
       $0.placeholder = R.string.localizable.folderFolderPlaceHolder()
       $0.backgroundColor = .white
-      $0.font = .t_R(16)
-      setupTextFieldLayer($0)
+      $0.font = .t_SB(16)
+      $0.layer.borderWidth = 1
+      $0.layer.cornerRadius = 16
+      $0.layer.borderColor = UIColor(hexString: "3C3C43", alpha: 0.08).cgColor
       view.addSubview($0)
     }
 
@@ -148,14 +149,17 @@ class CreateFolderViewController: BaseViewController {
       $0.rightView = UIImageView(image: R.image.arrow_down_gray())
       $0.rightViewMode = .always
       $0.backgroundColor = .white
-      $0.font = .t_B(16)
-      setupTextFieldLayer($0)
+      $0.font = .t_SB(16)
+      $0.layer.borderWidth = 1
+      $0.layer.cornerRadius = 16
+      $0.layer.borderColor = UIColor(hexString: "3C3C43", alpha: 0.08).cgColor
       view.addSubview($0)
     }
 
     self.saveButton = UIButton().then {
       $0.setTitle(R.string.localizable.folderSaveButtonTitle(), for: .normal)
-      $0.titleLabel?.font = .t_B(20)
+      $0.titleLabel?.font = .t_SB(18)
+      $0.layer.cornerRadius = 16
       $0.setTitleColor(.systemGray2, for: .normal)
       view.addSubview($0)
     }
@@ -163,7 +167,7 @@ class CreateFolderViewController: BaseViewController {
 
   override func setupLayoutConstraints() {
     folderNameLabel.snp.makeConstraints {
-      $0.top.equalTo(navigationBar.snp.bottom).offset(30)
+      $0.top.equalTo(navigationBar.snp.bottom).offset(40)
       $0.leading.equalToSuperview().offset(Self.labelSidePadding)
     }
 
@@ -187,8 +191,9 @@ class CreateFolderViewController: BaseViewController {
     }
 
     saveButton.snp.makeConstraints {
-      $0.leading.trailing.bottom.equalToSuperview()
-      $0.height.equalTo(Self.saveButtonHeight)
+      $0.leading.trailing.equalToSuperview().inset(Self.textFieldSidePadding)
+      $0.bottom.equalToSuperview().offset(-40)
+      $0.height.equalTo(Self.textFieldHeight)
     }
   }
 }
@@ -200,15 +205,16 @@ private extension CreateFolderViewController {
       $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.leading.trailing.equalToSuperview()
     }
-  }
+    navigationBar.leftButton.snp.removeConstraints()
+    navigationBar.titleLabel.snp.removeConstraints()
 
-  func setupTextFieldLayer(_ textFiled: UITextField) {
-    textFiled.layer.cornerRadius = Self.textFieldHeight / 3
-    textFiled.layer.shadowColor = UIColor.black.cgColor
-    textFiled.layer.shadowOpacity = 0.5
-    textFiled.layer.shadowOffset = CGSize(w: 0, h: 2)
-    textFiled.layer.shadowRadius = Self.textFieldHeight / 3
-    textFiled.layer.masksToBounds = false
+    navigationBar.leftButton.snp.makeConstraints {
+      $0.leading.equalToSuperview().offset(15)
+      $0.centerY.equalToSuperview()
+    }
+    navigationBar.titleLabel.snp.makeConstraints {
+      $0.center.equalToSuperview()
+    }
   }
 
   func showBottomSheet() {

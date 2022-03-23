@@ -91,7 +91,7 @@
 "Folder.notice.bookmark.empty.title" = "폴더가 비어있어요!";
 "Folder.navigation.title" = "폴더 생성";
 "Folder.folder.title" = "폴더 이름";
-"Folder.folder.placeHolder" = "어떤 폴더인가요?";
+"Folder.folder.placeHolder" = "어떤 북마크를 모을까요?";
 "Folder.label.title" = "라벨 컬러";
-"Folder.label.placeHolder" = "깔끔한 북마크 정리";
+"Folder.label.placeHolder" = "라벨을 달아봐요!";
 "Folder.save.button.title" = "저장";
