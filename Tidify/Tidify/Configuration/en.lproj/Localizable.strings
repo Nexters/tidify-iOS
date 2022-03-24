@@ -80,6 +80,7 @@
 
 // BottomSheet
 "BottomSheet.folder.title" = "폴더 선택";
+"BottomSheet.label.title" = "라벨 달기";
 
 // Profile
 "Profile.setting.title" = "프로필 사진 편집";
@@ -92,6 +93,9 @@
 "Folder.navigation.title" = "폴더 생성";
 "Folder.folder.title" = "폴더 이름";
 "Folder.folder.placeHolder" = "어떤 북마크를 모을까요?";
+"Folder.title.error" = "폴더 이름이 필요해요!";
 "Folder.label.title" = "라벨 컬러";
 "Folder.label.placeHolder" = "라벨을 달아봐요!";
+"Folder.label.placeHolder.selected" = "이 컬러의 라벨을 달았어요";
+"Folder.label.error" = "라벨을 달아주세요!";
 "Folder.save.button.title" = "저장";

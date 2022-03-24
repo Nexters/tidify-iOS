@@ -25,13 +25,16 @@ class CreateFolderViewController: BaseViewController {
 
   private weak var folderNameLabel: UILabel!
   private weak var folderNameTextField: UITextField!
+  private weak var folderNameErrorLabel: UILabel!
   private weak var folderColorLabel: UILabel!
   private weak var folderColorTextfield: UITextField!
+  private weak var folderColorErrorLabel: UILabel!
   private weak var saveButton: UIButton!
   private let backButton: UIButton!
 
   private let viewModel: CreateFolderViewModel
   private let selectedTagIndexSubject = PublishSubject<Int>()
+  private var selectedTagIndex: Int?
   private let disposeBag = DisposeBag()
 
   private var saveButtonEnabled: Bool = false {
@@ -76,6 +79,14 @@ class CreateFolderViewController: BaseViewController {
       saveButtonTap: saveButton.rx.tap.asDriver()
     )
 
+    let output = viewModel.transform(input)
+
+    output.saveButtonStatus.asDriver()
+      .drive(onNext: { [weak self] in
+        self?.saveButtonEnabled = $0
+      })
+      .disposed(by: disposeBag)
+
     view.t_addTap().rx.event.asDriver()
       .drive(onNext: { [weak self] _ in
         self?.folderColorTextfield.resignFirstResponder()
@@ -94,36 +105,44 @@ class CreateFolderViewController: BaseViewController {
         guard let self = self else { return }
 
         let attributedString = NSAttributedString(
-          string: R.string.localizable.folderLabelPlaceHolder(),
+          string: R.string.localizable.folderLabelPlaceHolderSelected(),
           attributes: [.foregroundColor: self.viewModel.dataSource[safe: index] ?? .black]
         )
         self.folderColorTextfield.attributedPlaceholder = attributedString
         self.selectedColorHexStringSubject.onNext(
           (self.viewModel.dataSource[safe: index])?.toHexString() ?? ""
         )
+        self.selectedTagIndex = index
       })
       .disposed(by: disposeBag)
 
     folderNameTextField.rx.text
+      .orEmpty
       .asDriver()
-      .drive(onNext: { [weak self] text in
-        self?.saveButtonEnabled = (text?.count ?? 0) > 0
+      .drive(onNext: { [weak self] in
+        guard let self = self else { return }
+        self.folderNameErrorLabel.isHidden = !$0.isEmpty ? true : false
       })
       .disposed(by: disposeBag)
+
+    selectedColorHexStringSubject.bind { [weak self] in
+      self?.folderColorErrorLabel.isHidden = !$0.isEmpty ? true : false
+    }
+    .disposed(by: disposeBag)
   }
 
   override func setupViews() {
     view.backgroundColor = .white
     setupNavigationBar()
 
-    self.folderNameLabel = UILabel().then {
+    folderNameLabel = UILabel().then {
       $0.font = .t_B(16)
       $0.text = R.string.localizable.folderFolderTitle()
       $0.textColor = .black
       view.addSubview($0)
     }
 
-    self.folderNameTextField = UITextField().then {
+    folderNameTextField = UITextField().then {
       $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
       $0.leftViewMode = .always
       $0.placeholder = R.string.localizable.folderFolderPlaceHolder()
@@ -135,14 +154,21 @@ class CreateFolderViewController: BaseViewController {
       view.addSubview($0)
     }
 
-    self.folderColorLabel = UILabel().then {
+    folderNameErrorLabel = UILabel().then {
+      $0.font = .t_SB(14)
+      $0.textColor = .systemRed
+      $0.text = R.string.localizable.folderTitleError()
+      view.addSubview($0)
+    }
+
+    folderColorLabel = UILabel().then {
       $0.font = .t_B(16)
       $0.text = R.string.localizable.folderLabelTitle()
       $0.textColor = .black
       view.addSubview($0)
     }
 
-    self.folderColorTextfield = UITextField().then {
+    folderColorTextfield = UITextField().then {
       $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
       $0.leftViewMode = .always
       $0.placeholder = R.string.localizable.folderLabelPlaceHolder()
@@ -156,7 +182,14 @@ class CreateFolderViewController: BaseViewController {
       view.addSubview($0)
     }
 
-    self.saveButton = UIButton().then {
+    folderColorErrorLabel = UILabel().then {
+      $0.font = .t_SB(14)
+      $0.textColor = .systemRed
+      $0.text = R.string.localizable.folderLabelError()
+      view.addSubview($0)
+    }
+
+    saveButton = UIButton().then {
       $0.setTitle(R.string.localizable.folderSaveButtonTitle(), for: .normal)
       $0.titleLabel?.font = .t_SB(18)
       $0.layer.cornerRadius = 16
@@ -178,6 +211,11 @@ class CreateFolderViewController: BaseViewController {
       $0.height.equalTo(Self.textFieldHeight)
     }
 
+    folderNameErrorLabel.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(20)
+      $0.centerY.equalTo(folderNameLabel)
+    }
+
     folderColorLabel.snp.makeConstraints {
       $0.top.equalTo(folderNameTextField.snp.bottom).offset(48)
       $0.leading.equalToSuperview().offset(Self.labelSidePadding)
@@ -188,6 +226,11 @@ class CreateFolderViewController: BaseViewController {
       $0.leading.equalToSuperview().offset(Self.textFieldSidePadding)
       $0.trailing.equalToSuperview().offset(-Self.textFieldSidePadding)
       $0.height.equalTo(Self.textFieldHeight)
+    }
+
+    folderColorErrorLabel.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(20)
+      $0.centerY.equalTo(folderColorLabel)
     }
 
     saveButton.snp.makeConstraints {
@@ -221,9 +264,10 @@ private extension CreateFolderViewController {
     let bottomSheet = BottomSheetViewController(
       .labelColor,
       dataSource: viewModel.dataSource,
-      selectedEventObserver: selectedTagIndexSubject.asObserver()
+      selectedEventObserver: selectedTagIndexSubject.asObserver(),
+      previousIndex: selectedTagIndex
     )
-    bottomSheet.modalPresentationStyle = .overFullScreen
+    bottomSheet.modalPresentationStyle = .overCurrentContext
 
     self.present(bottomSheet, animated: false, completion: nil)
   }

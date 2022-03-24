@@ -33,6 +33,7 @@ class CreateFolderViewModel: ViewModelType {
 
   struct Output {
     let didTapSaveButton: Driver<Void>
+    let saveButtonStatus: Driver<Bool>
   }
 
   func transform(_ input: Input) -> Output {
@@ -46,6 +47,10 @@ class CreateFolderViewModel: ViewModelType {
         return .just(())
       }
 
-    return Output(didTapSaveButton: didTapSaveButton)
+    let saveButtonStatus = folderNameAndColor.map {
+      return !$0.isEmpty && !$1.isEmpty
+    }.t_asDriverSkipError()
+
+    return Output(didTapSaveButton: didTapSaveButton, saveButtonStatus: saveButtonStatus)
   }
 }

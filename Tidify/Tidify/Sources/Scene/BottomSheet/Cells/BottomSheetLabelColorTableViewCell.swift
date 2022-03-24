@@ -53,6 +53,8 @@ class BottomSheetLabelColorTableViewCell: UITableViewCell {
 
 private extension BottomSheetLabelColorTableViewCell {
   func setupViews() {
+    self.selectionStyle = .none
+
     self.checkStatusImageView = UIImageView().then {
       $0.image = R.image.bottomSheet_ico_unChecked()
       contentView.addSubview($0)
