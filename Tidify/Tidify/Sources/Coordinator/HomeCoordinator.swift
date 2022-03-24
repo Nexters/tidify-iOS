@@ -110,7 +110,7 @@ extension HomeCoordinator: HomeViewModelDelegate {
   func pushRegisterView() {
     let registerCoordinator = RegisterCoordinator(navigationController: navigationController)
     registerCoordinator.parentCoordinator = self
-    childCoordinators.append(registerCoordinator)
+    addChild(registerCoordinator)
 
     registerCoordinator.start()
   }
@@ -119,7 +119,7 @@ extension HomeCoordinator: HomeViewModelDelegate {
     let webViewCoordinator = WebViewCoordinator(navigationController: navigationController,
                                                 urlString: url)
     webViewCoordinator.parentCoordinator = self
-    childCoordinators.append(webViewCoordinator)
+    addChild(webViewCoordinator)
 
     webViewCoordinator.start()
   }
@@ -129,7 +129,7 @@ extension HomeCoordinator {
   func pushSettingView() {
     let settingCoordinator = SettingCoordinator(navigationController: navigationController)
     settingCoordinator.parentCoordinator = self
-    childCoordinators.append(settingCoordinator)
+    addChild(settingCoordinator)
 
     settingCoordinator.start()
   }

@@ -37,7 +37,6 @@ class RegisterViewController: BaseViewController {
   private let selectedTagSubject = PublishSubject<String>()
 
   private let viewModel: RegisterViewModel!
-  private let disposeBag = DisposeBag()
 
   private var isInvalidFormatURL: Bool = true {
     didSet {

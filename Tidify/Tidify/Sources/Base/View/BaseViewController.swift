@@ -5,13 +5,15 @@
 //  Created by 여정수 on 2021/07/27.
 //
 
-import Foundation
 import RxCocoa
 import RxSwift
 import SnapKit
+
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController, BaseViewControllable {
+
+  var disposeBag = DisposeBag()
 
   // MARK: - LifeCycle
 
@@ -32,5 +34,13 @@ class BaseViewController: UIViewController {
 
   func setupLayoutConstraints() {
     // Override Constraints
+  }
+
+  func bindOutput() {
+    // Bind ViewModel's Output
+  }
+
+  deinit {
+    disposeBag = DisposeBag()
   }
 }

@@ -104,7 +104,7 @@ extension FolderTabCoordinator {
   func pushSettingView() {
     let settingCoordinator = SettingCoordinator(navigationController: navigationController)
     settingCoordinator.parentCoordinator = self
-    childCoordinators.append(settingCoordinator)
+    addChild(settingCoordinator)
 
     settingCoordinator.start()
   }
@@ -112,7 +112,7 @@ extension FolderTabCoordinator {
   func pushCreateFolderView() {
     let folderCoordinator = CreateFolderCoordinator(navigationController: navigationController)
     folderCoordinator.parentCoordinator = self
-    childCoordinators.append(folderCoordinator)
+    addChild(folderCoordinator)
 
     folderCoordinator.start()
   }

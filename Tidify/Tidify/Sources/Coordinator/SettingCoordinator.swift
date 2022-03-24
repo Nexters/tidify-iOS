@@ -51,7 +51,7 @@ extension SettingCoordinator {
   func goToProfile() {
     let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
     profileCoordinator.parentCoordinator = self
-    childCoordinators.append(profileCoordinator)
+    addChild(profileCoordinator)
     profileCoordinator.start()
   }
 

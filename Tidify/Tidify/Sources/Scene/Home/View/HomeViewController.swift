@@ -23,7 +23,6 @@ class HomeViewController: BaseViewController {
   private let viewModel: HomeViewModel!
   private let didTapCellSubject = PublishSubject<BookMark>()
   private let addListItemSubject = PublishSubject<URL>()
-  private let disposeBag = DisposeBag()
 
   private let didSwipeBookMarkCellSubject = PublishSubject<BookMarkCellSwipeOption>()
 
