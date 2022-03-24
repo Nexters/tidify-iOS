@@ -24,6 +24,7 @@ class BaseViewController: UIViewController, BaseViewControllable {
 
     setupViews()
     setupLayoutConstraints()
+    bindOutput()
   }
 
   // MARK: - Methods
