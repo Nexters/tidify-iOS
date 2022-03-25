@@ -24,7 +24,6 @@ class OnboardingViewController: BaseViewController {
   private weak var nextButton: UIButton!
 
   private let viewModel: OnboardingViewModel!
-  private let disposeBag = DisposeBag()
 
   // MARK: - Initialize
 

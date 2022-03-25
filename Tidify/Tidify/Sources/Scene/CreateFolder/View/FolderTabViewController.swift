@@ -24,7 +24,6 @@ class FolderTabViewController: BaseViewController {
   private let createFolderButton: UIButton!
 
   private let viewModel: FolderTabViewModel
-  private let disposeBag = DisposeBag()
 
   private lazy var navigationBar = TidifyNavigationBar(.folder,
                                                        leftButton: profileButton,

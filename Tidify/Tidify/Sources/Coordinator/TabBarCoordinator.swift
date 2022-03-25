@@ -59,17 +59,17 @@ private extension TabBarCoordinator {
 
     let homeCoordinator = HomeCoordinator(navigationController: navigationController)
     homeCoordinator.parentCoordinator = self
-    childCoordinators.append(homeCoordinator)
+    addChild(homeCoordinator)
     homeViewController = homeCoordinator.startPush()
 
     let searchCoordinator = SearchCoordinator(navigationController: navigationController)
     searchCoordinator.parentCoordinator = self
-    childCoordinators.append(searchCoordinator)
+    addChild(searchCoordinator)
     searchViewController = searchCoordinator.startPush()
 
     let folderTabCoordinator = FolderTabCoordinator(navigationController: navigationController)
     folderTabCoordinator.parentCoordinator = self
-    childCoordinators.append(folderTabCoordinator)
+    addChild(folderTabCoordinator)
     folderTabController = folderTabCoordinator.startPush()
 
     tidifyTabBarController.setViewControllers(

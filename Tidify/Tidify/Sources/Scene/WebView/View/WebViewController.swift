@@ -21,7 +21,6 @@ class WebViewController: BaseViewController {
   private weak var webView: WKWebView!
 
   private let viewModel: WebViewViewModel
-  private let disposeBag = DisposeBag()
 
   // MARK: - Initialize
 

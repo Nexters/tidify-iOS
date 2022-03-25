@@ -30,7 +30,6 @@ final class SignInViewController: BaseViewController {
   private weak var resultLabel: UILabel!
 
   private let viewModel: SignInViewModel!
-  private let disposeBag = DisposeBag()
 
   // MARK: - Initialize
 

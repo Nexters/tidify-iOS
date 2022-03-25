@@ -21,7 +21,6 @@ class FolderDetailViewController: BaseViewController {
   private let shareFolderButton: UIButton!
 
   private let viewModel: FolderDetailViewModel
-  private let disposeBag = DisposeBag()
 
   private lazy var navigationBar = TidifyNavigationBar(.folder,
                                                        title: naviTitleString,

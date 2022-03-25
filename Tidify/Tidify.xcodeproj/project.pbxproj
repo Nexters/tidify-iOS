@@ -14,6 +14,7 @@
 		407F2F1D27E843570061E2B7 /* FolderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */; };
 		40C0023427E088F400941339 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C0023327E088F400941339 /* UICollectionViewCell+.swift */; };
 		74054C0E59CF4CBF363302BD /* Pods_TidifyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */; };
+		8652F8B327ECA69400C50A90 /* BaseViewControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8652F8B227ECA69400C50A90 /* BaseViewControllable.swift */; };
 		8661DECE27DDBF360005B02B /* AccountSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */; };
 		8661DED527DE118A0005B02B /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DED427DE118A0005B02B /* SearchCoordinator.swift */; };
 		8661DED927DE11DF0005B02B /* SearchHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DED827DE11DF0005B02B /* SearchHistoryHeaderView.swift */; };
@@ -146,6 +147,7 @@
 		40C0023327E088F400941339 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
+		8652F8B227ECA69400C50A90 /* BaseViewControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewControllable.swift; sourceTree = "<group>"; };
 		8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSectionHeaderView.swift; sourceTree = "<group>"; };
 		8661DED427DE118A0005B02B /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
 		8661DED827DE11DF0005B02B /* SearchHistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryHeaderView.swift; sourceTree = "<group>"; };
@@ -667,6 +669,7 @@
 			children = (
 				B5F19C0D26999D7A00D1E8BB /* AbstractCoordinator.swift */,
 				B5CA8B2326B0442800D9C6D3 /* ViewModelType.swift */,
+				8652F8B227ECA69400C50A90 /* BaseViewControllable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1067,6 +1070,7 @@
 				B5443B9A26C8E71500F7494A /* ProfileCoordinator.swift in Sources */,
 				B53B93F426DB7D4900EBCB21 /* OnboardingViewController.swift in Sources */,
 				B53B93F826DB7DD000EBCB21 /* OnboardingViewModel.swift in Sources */,
+				8652F8B327ECA69400C50A90 /* BaseViewControllable.swift in Sources */,
 				B588C69626D0C958003F4308 /* FolderTabViewController.swift in Sources */,
 				B588C6A726D0E12E003F4308 /* Array+.swift in Sources */,
 				C7AF275126BE900F00AE258B /* R.generated.swift in Sources */,
