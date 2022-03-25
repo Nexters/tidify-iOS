@@ -33,7 +33,6 @@ class CreateFolderViewController: BaseViewController {
 
   private let viewModel: CreateFolderViewModel
   private let selectedTagIndexSubject = PublishSubject<Int>()
-  private let disposeBag = DisposeBag()
 
   private var saveButtonEnabled: Bool = false {
     didSet {

@@ -17,7 +17,6 @@ final class SearchViewController: BaseViewController {
   private weak var tableView: UITableView!
 
   private let viewModel: SearchViewModel
-  private let disposeBag = DisposeBag()
   private let eraseAllHistorySubject = PublishSubject<Void>()
 
   // MARK: - Initializer

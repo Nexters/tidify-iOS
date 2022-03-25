@@ -31,7 +31,6 @@ class ProfileViewController: BaseViewController {
   private let rightButton: UIButton!
 
   private let saveDataSubject: PublishSubject<Void>
-  private let disposeBag = DisposeBag()
 
   lazy var navigationBar = TidifyNavigationBar(.default,
                                                leftButton: leftButton,

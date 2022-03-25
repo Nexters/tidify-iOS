@@ -29,7 +29,6 @@ class SettingViewController: BaseViewController {
   private let userTapEvent = PublishSubject<SettingUserTapCase>()
   private let appLockTapEvent = PublishSubject<Void>()
   private let appLockIsOn = PublishSubject<Bool>()
-  private let disposeBag = DisposeBag()
 
   lazy var navigationBar = TidifyNavigationBar(
     .default,

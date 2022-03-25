@@ -29,7 +29,6 @@ class BottomSheetViewController: BaseViewController {
   private var dataSource: [Any]?
   private let selectedEventObserver: AnyObserver<Int>
   private let closeButtonTap = PublishSubject<Void>()
-  private let disposeBag = DisposeBag()
   private var bottomSheetType: BottomSheetType
 
   // MARK: - Initialize

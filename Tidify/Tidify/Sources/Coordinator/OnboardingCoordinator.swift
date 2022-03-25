@@ -37,13 +37,13 @@ extension OnboardingCoordinator: OnboardingViewModelDelegate {
       Environment.shared.authorization = accessToken
       let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
       tabBarCoordinator.parentCoordinator = self
-      self.childCoordinators.append(tabBarCoordinator)
+      addChild(tabBarCoordinator)
 
       tabBarCoordinator.start()
     } else {
       let signInCoordinator = SignInCoordinator(navigationController: navigationController)
       signInCoordinator.parentCoordinator = self
-      self.childCoordinators.append(signInCoordinator)
+      addChild(signInCoordinator)
 
       signInCoordinator.start()
     }
