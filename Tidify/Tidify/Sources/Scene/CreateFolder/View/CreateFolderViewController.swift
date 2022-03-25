@@ -38,7 +38,7 @@ class CreateFolderViewController: BaseViewController {
 
   private var saveButtonEnabled: Bool = false {
     didSet {
-      self.saveButton.backgroundColor = saveButtonEnabled ? .t_tidiBlue() : .white
+      self.saveButton.backgroundColor = saveButtonEnabled ? .t_tidiBlue00() : .white
       self.saveButton.setTitleColor(saveButtonEnabled ? .white : .systemGray2, for: .normal)
     }
   }

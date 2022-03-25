@@ -78,14 +78,14 @@ final class SignInViewController: BaseViewController {
     self.titleLabel = UILabel().then {
       $0.text = R.string.localizable.mainTitle()
       $0.font = .t_B(32)
-      $0.textColor = .t_tidiBlue()
+      $0.textColor = .t_tidiBlue00()
       view.addSubview($0)
     }
 
     self.subTitleLabel = UILabel().then {
       $0.text = R.string.localizable.loginTitle()
       $0.font = .t_B(18)
-      $0.textColor = .t_tidiBlue()
+      $0.textColor = .t_tidiBlue00()
       view.addSubview($0)
     }
 

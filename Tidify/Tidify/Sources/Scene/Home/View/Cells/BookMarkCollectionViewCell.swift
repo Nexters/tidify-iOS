@@ -109,7 +109,7 @@ private extension BookMarkCollectionViewCell {
 
     editButton = UIButton().then {
       $0.setTitle(R.string.localizable.mainCellEditTitle(), for: .normal)
-      $0.setTitleColor(UIColor.t_indigo(), for: .normal)
+      $0.setTitleColor(UIColor.t_indigo00(), for: .normal)
       $0.titleLabel?.font = UIFont.t_SB(14)
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor(hexString: "3C3C43").withAlphaComponent(0.08).cgColor
