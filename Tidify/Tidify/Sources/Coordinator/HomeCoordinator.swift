@@ -48,7 +48,7 @@ class HomeCoordinator: Coordinator {
                         width: Self.createBookMarkButtonWidth,
                         height: Self.navButtonHeight)
       $0.setImage(R.image.home_icon_bookMark(), for: .normal)
-      $0.backgroundColor = .t_tidiBlue()
+      $0.backgroundColor = .t_tidiBlue00()
       $0.layer.cornerRadius = Self.navButtonHeight / 2
     }
 
@@ -89,7 +89,7 @@ class HomeCoordinator: Coordinator {
                         width: Self.createBookMarkButtonWidth,
                         height: Self.navButtonHeight)
       $0.setImage(R.image.home_icon_bookMark(), for: .normal)
-      $0.backgroundColor = .t_tidiBlue()
+      $0.backgroundColor = .t_tidiBlue00()
       $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
     }
 

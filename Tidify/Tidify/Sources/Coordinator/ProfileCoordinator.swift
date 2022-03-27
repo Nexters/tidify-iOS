@@ -47,7 +47,7 @@ private extension ProfileCoordinator {
 
     let rightButton = UIButton().then {
       $0.setTitle(R.string.localizable.profileNavButtonTitle(), for: .normal)
-      $0.setTitleColor(.t_tidiBlue(), for: .normal)
+      $0.setTitleColor(.t_tidiBlue00(), for: .normal)
     }
 
     let profileViewController = ProfileViewController(saveDataSubject,

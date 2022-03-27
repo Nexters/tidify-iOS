@@ -24,7 +24,7 @@ enum Notifier {
     alertController.setValue(
       NSAttributedString(string: title,
                          attributes: [.font: UIFont.t_B(20),
-                                      .foregroundColor: UIColor.t_tidiBlue()]), forKey: "attributedTitle")
+                                      .foregroundColor: UIColor.t_tidiBlue00()]), forKey: "attributedTitle")
 
     alertController.addAction(UIAlertAction(title: buttons.first?.title ?? "OK",
                                             style: .default,

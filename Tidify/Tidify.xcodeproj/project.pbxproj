@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
+		406D154927EB628D00007C5A /* BookMarkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406D154827EB628D00007C5A /* BookMarkCollectionViewCell.swift */; };
 		407F2F1927E841080061E2B7 /* FolderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */; };
 		407F2F1B27E841390061E2B7 /* FolderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */; };
 		407F2F1D27E843570061E2B7 /* FolderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */; };
@@ -138,10 +139,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TidifyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		406D154827EB628D00007C5A /* BookMarkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkCollectionViewCell.swift; sourceTree = "<group>"; };
 		407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailViewController.swift; sourceTree = "<group>"; };
 		407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailCoordinator.swift; sourceTree = "<group>"; };
 		407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailViewModel.swift; sourceTree = "<group>"; };
-		2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TidifyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C0023327E088F400941339 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 			isa = PBXGroup;
 			children = (
 				8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */,
+				406D154827EB628D00007C5A /* BookMarkCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1101,6 +1104,7 @@
 				C72F27D62699CF2700104FE3 /* SignInViewModel.swift in Sources */,
 				C72F27D22699CF1C00104FE3 /* SignInViewController.swift in Sources */,
 				B5AF0AE0269A134A00D8DCF5 /* WebViewViewModel.swift in Sources */,
+				406D154927EB628D00007C5A /* BookMarkCollectionViewCell.swift in Sources */,
 				B577660626C17E1600533276 /* BottomSheetFolderTableViewCell.swift in Sources */,
 				B57833E226CA465F000AC589 /* TidifyTabBarController.swift in Sources */,
 				B5F19C242699CFA800D1E8BB /* Environment.swift in Sources */,

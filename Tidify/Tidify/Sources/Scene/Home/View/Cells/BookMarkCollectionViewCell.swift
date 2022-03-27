@@ -1,30 +1,27 @@
 //
-//  FolderCollectionViewCell.swift
+//  BookMarkCollectionViewCell.swift
 //  Tidify
 //
-//  Created by 여정수 on 2021/08/21.
+//  Created by 한상진 on 2022/03/23.
 //
 
-import RxRelay
+import Kingfisher
+import RxCocoa
 import RxSwift
-import SnapKit
-import Then
-import UIKit
 
-final class FolderCollectionViewCell: UICollectionViewCell {
+final class BookMarkCollectionViewCell: UICollectionViewCell {
 
   // MARK: - Constants
 
   static let width: CGFloat = 335
   static let height: CGFloat = 56
-  static let folderColorViewWidth: CGFloat = 16
-  static let colorViewToNameHorizontalSpacing: CGFloat = 24
   static let swipedPositionX: CGFloat = 191
 
   // MARK: - Properties
 
-  private weak var folderColorView: UIView!
-  private weak var folderNameLabel: UILabel!
+  private weak var thumbnailImageView: UIImageView!
+  private weak var bookMarkImageView: UIImageView!
+  private weak var bookMarkNameLabel: UILabel!
   weak var editButton: UIButton!
   weak var deleteButton: UIButton!
   weak var swipeView: UIStackView!
@@ -33,7 +30,7 @@ final class FolderCollectionViewCell: UICollectionViewCell {
 
   private var disposeBag = DisposeBag()
   private var buttonTag: Int?
-  private var folder: Folder?
+  private var bookMark: BookMark?
 
   // MARK: - Initialize
   override init(frame: CGRect) {
@@ -61,20 +58,22 @@ final class FolderCollectionViewCell: UICollectionViewCell {
   }
 }
 
-extension FolderCollectionViewCell: UIGestureRecognizerDelegate {
+extension BookMarkCollectionViewCell {
   func setFolder(
-    _ folder: Folder,
+    _ bookMark: BookMark,
     buttonTag: Int,
     lastIndexObserver: AnyObserver<Int>
   ) {
-    self.folder = folder
+    self.bookMark = bookMark
     self.buttonTag = buttonTag
     self.editButton.tag = buttonTag
     self.deleteButton.tag = buttonTag
 
-    folderNameLabel.text = folder.name
-    folderNameLabel.textColor = UIColor(hexString: folder.color)
-    folderColorView.backgroundColor = UIColor(hexString: folder.color)
+    bookMarkNameLabel.text = bookMark.title
+
+    guard let urlString = bookMark.urlString else { return }
+    let url = URL(string: urlString)
+    thumbnailImageView.kf.setImage(with: url)
 
     panGestureRecognizer.rx.event
       .asDriver()
@@ -85,20 +84,22 @@ extension FolderCollectionViewCell: UIGestureRecognizerDelegate {
       })
       .disposed(by: disposeBag)
   }
+}
 
+extension BookMarkCollectionViewCell: UIGestureRecognizerDelegate {
   func gestureRecognizer(
     _ gestureRecognizer: UIGestureRecognizer,
     shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
   ) -> Bool { return true }
 }
 
-private extension FolderCollectionViewCell {
+private extension BookMarkCollectionViewCell {
   func setupViews() {
     t_cornerRadius(radius: 8)
     layer.borderWidth = 1
     layer.borderColor = UIColor(hexString: "3C3C43").withAlphaComponent(0.08).cgColor
 
-    self.panGestureRecognizer = UIPanGestureRecognizer(
+    panGestureRecognizer = UIPanGestureRecognizer(
       target: self,
       action: #selector(onPan)
     ).then {
@@ -106,7 +107,7 @@ private extension FolderCollectionViewCell {
       addGestureRecognizer($0)
     }
 
-    self.editButton = UIButton().then {
+    editButton = UIButton().then {
       $0.setTitle(R.string.localizable.mainCellEditTitle(), for: .normal)
       $0.setTitleColor(UIColor.t_indigo00(), for: .normal)
       $0.titleLabel?.font = UIFont.t_SB(14)
@@ -114,14 +115,14 @@ private extension FolderCollectionViewCell {
       $0.layer.borderColor = UIColor(hexString: "3C3C43").withAlphaComponent(0.08).cgColor
     }
 
-    self.deleteButton = UIButton().then {
+    deleteButton = UIButton().then {
       $0.setTitle(R.string.localizable.mainCellDeleteTitle(), for: .normal)
       $0.setTitleColor(.white, for: .normal)
       $0.titleLabel?.font = UIFont.t_SB(14)
       $0.backgroundColor = .red
     }
 
-    self.swipeView = UIStackView().then {
+    swipeView = UIStackView().then {
       $0.axis = .horizontal
       $0.t_cornerRadius([.topRight, .bottomRight], radius: 8)
       $0.alignment = .fill
@@ -132,27 +133,36 @@ private extension FolderCollectionViewCell {
       contentView.addSubview($0)
     }
 
-    self.folderColorView = UIView().then {
-      $0.t_cornerRadius([.topLeft, .bottomLeft], radius: 8)
+    bookMarkNameLabel = UILabel().then {
+      $0.font = .t_B(16)
       contentView.addSubview($0)
     }
 
-    self.folderNameLabel = UILabel().then {
-      $0.font = .t_B(16)
+    bookMarkImageView = UIImageView().then {
+      $0.image = R.image.bookMark_default_Image()
       contentView.addSubview($0)
+    }
+
+    thumbnailImageView = UIImageView().then {
+      $0.t_cornerRadius(radius: 4)
+      bookMarkImageView.addSubview($0)
     }
   }
 
   func setupLayoutConstraints() {
-    folderColorView.snp.makeConstraints {
-      $0.leading.top.bottom.equalToSuperview()
-      $0.width.equalTo(Self.folderColorViewWidth)
+    bookMarkImageView.snp.makeConstraints {
+      $0.leading.equalToSuperview().offset(10)
+      $0.top.bottom.equalToSuperview().inset(8)
+      $0.width.equalTo(40)
     }
 
-    folderNameLabel.snp.makeConstraints {
-      $0.leading.equalTo(folderColorView.snp.trailing)
-        .offset(Self.colorViewToNameHorizontalSpacing)
+    bookMarkNameLabel.snp.makeConstraints {
+      $0.leading.equalTo(bookMarkImageView.snp.trailing).offset(16)
       $0.centerY.equalToSuperview()
+    }
+
+    thumbnailImageView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
   }
 

@@ -46,7 +46,7 @@ class RegisterViewController: BaseViewController {
 
   private var registerButtonEnabled: Bool = false {
     didSet {
-      self.registerButton.backgroundColor = registerButtonEnabled ? .t_tidiBlue() : .white
+      self.registerButton.backgroundColor = registerButtonEnabled ? .t_tidiBlue00() : .white
       self.registerButton.setTitleColor(registerButtonEnabled ? .white : .systemGray2,
                                         for: .normal)
     }

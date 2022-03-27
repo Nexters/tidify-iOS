@@ -100,7 +100,7 @@ class FolderTabViewController: BaseViewController {
 
     self.emptyLabel = UILabel().then {
       $0.text = R.string.localizable.folderNoticeEmptyTitle()
-      $0.textColor = .t_indigo2()
+      $0.textColor = .t_indigo02()
       $0.font = .t_B(16)
       $0.textAlignment = .center
       $0.isHidden = true

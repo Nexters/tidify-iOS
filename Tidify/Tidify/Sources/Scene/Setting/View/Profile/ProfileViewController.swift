@@ -86,7 +86,7 @@ class ProfileViewController: BaseViewController {
 
     self.editButton = UIButton().then {
       $0.setTitle(R.string.localizable.profileSettingTitle(), for: .normal)
-      $0.setTitleColor(.t_tidiBlue(), for: .normal)
+      $0.setTitleColor(.t_tidiBlue00(), for: .normal)
       $0.titleLabel?.font = UIFont.t_SB(14)
       view.addSubview($0)
     }

@@ -40,7 +40,7 @@ private extension SearchHistoryHeaderView {
     self.historyListGuideLabel = UILabel().then {
       $0.text = R.string.localizable.settingHistoryListGuideTitle()
       $0.font = .t_SB(14)
-      $0.textColor = .t_tidiBlue()
+      $0.textColor = .t_tidiBlue00()
       addSubview($0)
     }
 

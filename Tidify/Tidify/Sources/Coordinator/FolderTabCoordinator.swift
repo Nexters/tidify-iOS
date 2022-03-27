@@ -84,7 +84,7 @@ class FolderTabCoordinator: Coordinator {
         height: Self.navButtonSize
       )
       $0.setImage(R.image.nav_icon_createFolder(), for: .normal)
-      $0.backgroundColor = .t_tidiBlue()
+      $0.backgroundColor = .t_tidiBlue00()
       $0.layer.cornerRadius = Self.navButtonSize / 2
     }
 

@@ -31,23 +31,27 @@ public extension UIColor {
     self.init(red:red, green:green, blue:blue, alpha:alpha)
   }
 
-  static func t_tidiBlue() -> UIColor {
+  static func t_tidiBlue00() -> UIColor {
     return .init(28, 100, 234)
   }
 
-  static func t_tidiBlue2() -> UIColor {
+  static func t_tidiBlue01() -> UIColor {
+    return .init(55, 154, 240)
+  }
+
+  static func t_tidiBlue02() -> UIColor {
     return .init(84, 200, 245)
   }
 
-  static func t_indigo() -> UIColor {
+  static func t_indigo00() -> UIColor {
     return .init(80, 78, 210)
   }
 
-  static func t_indigo1() -> UIColor {
+  static func t_indigo01() -> UIColor {
     return .init(105, 103, 215)
   }
 
-  static func t_indigo2() -> UIColor {
+  static func t_indigo02() -> UIColor {
     return .init(137, 152, 233)
   }
 

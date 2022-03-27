@@ -69,7 +69,7 @@ class OnboardingViewController: BaseViewController {
     view.backgroundColor = .white
 
     self.pageControl = UIPageControl().then {
-      $0.currentPageIndicatorTintColor = .t_indigo()
+      $0.currentPageIndicatorTintColor = .t_indigo00()
       $0.pageIndicatorTintColor = .systemGray
       $0.currentPage = 0
       $0.numberOfPages = viewModel.onboardingDataSource.count
@@ -95,7 +95,7 @@ class OnboardingViewController: BaseViewController {
     }
 
     self.nextButton = UIButton().then {
-      $0.backgroundColor = .t_tidiBlue()
+      $0.backgroundColor = .t_tidiBlue00()
       $0.titleLabel?.font = .t_B(16)
       $0.t_cornerRadius(radius: 16)
       view.addSubview($0)

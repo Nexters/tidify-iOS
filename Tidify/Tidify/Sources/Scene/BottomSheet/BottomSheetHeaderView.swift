@@ -13,8 +13,8 @@ class BottomSheetHeaderView: UIView {
 
   // MARK: - Constants
 
-  static let superViewToTitleHorizontalSpacing: CGFloat = 42
-  static let closeToSuperViewHorizontalSpacing: CGFloat = 20
+  static let superViewToTitleHorizontalSpacing: CGFloat = 32
+  static let closeToSuperViewHorizontalSpacing: CGFloat = 31
 
   // MARK: - Properties
 
@@ -53,27 +53,27 @@ private extension BottomSheetHeaderView {
   func setupViews() {
     self.backgroundColor = .white
 
-    let titleLabel = UILabel()
-    titleLabel.font = .t_B(28)
-    titleLabel.textColor = .black
-    addSubview(titleLabel)
-    self.titleLabel = titleLabel
+    titleLabel = UILabel().then {
+      $0.font = .t_B(28)
+      $0.textColor = .black
+      addSubview($0)
+    }
 
-    let closeButton = UIButton()
-    closeButton.setImage(R.image.bottomSheet_close(), for: .normal)
-    addSubview(closeButton)
-    self.closeButton = closeButton
+    closeButton = UIButton().then {
+      $0.setImage(R.image.bottomSheet_close(), for: .normal)
+      addSubview($0)
+    }
   }
 
   func setupLayoutConstraints() {
-    titleLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().offset(Self.superViewToTitleHorizontalSpacing)
-      make.centerY.equalToSuperview()
+    titleLabel.snp.makeConstraints {
+      $0.leading.equalToSuperview().offset(Self.superViewToTitleHorizontalSpacing)
+      $0.centerY.equalToSuperview()
     }
 
-    closeButton.snp.makeConstraints { make in
-      make.centerY.equalToSuperview()
-      make.trailing.equalToSuperview().inset(Self.closeToSuperViewHorizontalSpacing)
+    closeButton.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.trailing.equalToSuperview().inset(Self.closeToSuperViewHorizontalSpacing)
     }
   }
 }

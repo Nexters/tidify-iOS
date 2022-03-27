@@ -91,17 +91,17 @@ class FolderDetailViewController: BaseViewController {
       collectionViewLayout: flowLayout
     ).then {
       $0.backgroundColor = .white
-//      $0.t_registerCellClass(cellType: FolderCollectionViewCell.self)
+      $0.t_registerCellClass(cellType: BookMarkCollectionViewCell.self)
       $0.isHidden = true
       containerView.addSubview($0)
     }
 
     self.emptyLabel = UILabel().then {
       $0.text = R.string.localizable.folderNoticeBookmarkEmptyTitle()
-      $0.textColor = .t_indigo2()
+      $0.textColor = .t_indigo02()
       $0.font = .t_B(16)
       $0.textAlignment = .center
-//      $0.isHidden = true
+      $0.isHidden = true
       containerView.addSubview($0)
     }
   }
@@ -148,47 +148,52 @@ private extension FolderDetailViewController {
   }
 
   func setupCollectionView() {
-//    guard !viewModel.bookMarkList.value.isEmpty else {
-//      emptyLabel.isHidden = false
-//      collectionView.isHidden = true
-//      return
-//    }
-//    collectionView.isHidden = false
-//
-//    viewModel.bookMarkList
-//      .bind(to: collectionView.rx.items) { [weak self] _, row, item -> UICollectionViewCell in
-//        guard let self = self else { return UICollectionViewCell() }
-//        let cell = self.collectionView.t_dequeueReusableCell(
-//          cellType: FolderCollectionViewCell.self,
-//          indexPath: IndexPath.init(row: row, section: 0)
-//        )
-//
-//        cell.editButton.addTarget(self,
-//                                  action: #selector(self.editWasTapped(_:)),
-//                                  for: .touchUpInside)
-//        cell.deleteButton.addTarget(self,
-//                                    action: #selector(self.deleteWasTapped(_:)),
-//                                    for: .touchUpInside)
-//        cell.setFolder(
-//          item,
-//          buttonTag: row,
-//          lastIndexObserver: self.viewModel.lastIndexSubject.asObserver()
-//        )
-//        return cell
-//      }
-//      .disposed(by: disposeBag)
-//
-//    viewModel.lastIndexSubject
-//      .filter { [weak self] in $0 != (self?.viewModel.lastIndex ?? 0) }
-//      .subscribe(onNext: { [weak self] in
-//        let lastIndex = IndexPath(item: self?.viewModel.lastIndex ?? 0, section: 0)
-//        guard let self = self,
-//              let cell = self.collectionView.cellForItem(at: lastIndex)
-//                as? FolderCollectionViewCell else { return }
-//        cell.initSwipeView()
-//        self.viewModel.lastIndex = $0
-//      })
-//      .disposed(by: disposeBag)
+    guard !viewModel.bookMarkList.value.isEmpty else {
+      emptyLabel.isHidden = false
+      collectionView.isHidden = true
+      return
+    }
+    collectionView.isHidden = false
+
+    viewModel.bookMarkList
+      .bind(to: collectionView.rx.items) { [weak self] _, row, item -> UICollectionViewCell in
+        guard let self = self else { return UICollectionViewCell() }
+        let cell = self.collectionView.t_dequeueReusableCell(
+          cellType: BookMarkCollectionViewCell.self,
+          indexPath: IndexPath(row: row, section: 0)
+        )
+
+        cell.editButton.addTarget(self,
+                                  action: #selector(self.didTapEditButton(_:)),
+                                  for: .touchUpInside)
+        cell.deleteButton.addTarget(self,
+                                    action: #selector(self.didTapDeleteButton(_:)),
+                                    for: .touchUpInside)
+        cell.setFolder(
+          item,
+          buttonTag: row,
+          lastIndexObserver: self.viewModel.lastIndexSubject.asObserver()
+        )
+        return cell
+      }
+      .disposed(by: disposeBag)
+
+    viewModel.lastIndexSubject
+      .filter { [weak self] in $0 != (self?.viewModel.lastIndex ?? 0) }
+      .subscribe(onNext: { [weak self] in
+        let lastIndex = IndexPath(item: self?.viewModel.lastIndex ?? 0, section: 0)
+        guard let self = self,
+              let cell = self.collectionView.cellForItem(at: lastIndex)
+                as? BookMarkCollectionViewCell else { return }
+
+        cell.t_initSwipeView(
+          swipeView: cell.swipeView,
+          width: cell.width,
+          isSwiped: cell.isSwiped
+        )
+        self.viewModel.lastIndex = $0
+      })
+      .disposed(by: disposeBag)
   }
 
   @objc

@@ -14,16 +14,16 @@ class CreateFolderViewModel: ViewModelType {
 
   // MARK: - Properties
 
-  let dataSource: [UIColor] = [UIColor.t_tidiBlue(),
-                               UIColor.t_indigo(),
-                               UIColor.t_tidiBlue2(),
-                               UIColor.systemRed,
-                               UIColor.systemOrange,
-                               UIColor.systemYellow,
-                               UIColor.systemPink,
-                               UIColor.systemGreen,
-                               UIColor.black,
-                               UIColor.systemGray]
+  let dataSource: [UIColor] = [
+    UIColor.t_tidiBlue01(),
+    UIColor.t_tidiBlue00(),
+    UIColor.t_indigo00(),
+    UIColor.systemGreen,
+    UIColor.systemYellow,
+    UIColor.systemOrange,
+    UIColor.systemRed,
+    UIColor.black
+  ]
 
   struct Input {
     let folderNameText: Driver<String>
@@ -33,6 +33,7 @@ class CreateFolderViewModel: ViewModelType {
 
   struct Output {
     let didTapSaveButton: Driver<Void>
+    let saveButtonStatus: Driver<Bool>
   }
 
   func transform(_ input: Input) -> Output {
@@ -46,6 +47,10 @@ class CreateFolderViewModel: ViewModelType {
         return .just(())
       }
 
-    return Output(didTapSaveButton: didTapSaveButton)
+    let saveButtonStatus = folderNameAndColor.map {
+      return !$0.isEmpty && !$1.isEmpty
+    }.t_asDriverSkipError()
+
+    return Output(didTapSaveButton: didTapSaveButton, saveButtonStatus: saveButtonStatus)
   }
 }
