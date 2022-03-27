@@ -120,12 +120,12 @@ class CreateFolderViewController: BaseViewController {
       .asDriver()
       .drive(onNext: { [weak self] in
         guard let self = self else { return }
-        self.folderNameErrorLabel.isHidden = !$0.isEmpty ? true : false
+        self.folderNameErrorLabel.isHidden = $0.isEmpty ? false : true
       })
       .disposed(by: disposeBag)
 
     selectedColorHexStringSubject.bind { [weak self] in
-      self?.folderColorErrorLabel.isHidden = !$0.isEmpty ? true : false
+      self?.folderColorErrorLabel.isHidden = $0.isEmpty ? false : true
     }
     .disposed(by: disposeBag)
   }
