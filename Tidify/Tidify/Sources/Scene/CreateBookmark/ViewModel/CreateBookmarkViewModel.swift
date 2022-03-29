@@ -1,5 +1,5 @@
 //
-//  RegisterViewModel.swift
+//  CreateBookmarkViewModel.swift
 //  Tidify
 //
 //  Created by 여정수 on 2021/07/11.
@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 import SwiftLinkPreview
 
-class RegisterViewModel: ViewModelType {
+class CreateBookmarkViewModel: ViewModelType {
   // (url, title, og_img_url, tags)
   typealias PreviewResponse = (String, String?, String?, String?)
 

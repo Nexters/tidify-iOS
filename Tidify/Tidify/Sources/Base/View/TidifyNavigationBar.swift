@@ -26,7 +26,7 @@ class TidifyNavigationBar: UIView {
     var leadingPadding: CGFloat {
       switch self {
       case .default: return 9
-      case .rounded: return 28
+      case .rounded: return 20
       case .folder: return 20
       }
     }
@@ -42,7 +42,7 @@ class TidifyNavigationBar: UIView {
     var bottomPadding: CGFloat {
       switch self {
       case .default: return 8
-      case .rounded: return 18
+      case .rounded: return 24
       case .folder: return 24
       }
     }
