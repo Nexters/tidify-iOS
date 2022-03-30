@@ -14,7 +14,7 @@ class HomeCoordinator: Coordinator {
 
   // MARK: - Constants
 
-  static let navButtonHeight: CGFloat = 40
+  static let navButtonSize: CGFloat = 40
   static let createBookMarkButtonWidth: CGFloat = 75
 
   // MARK: - Properties
@@ -35,28 +35,32 @@ class HomeCoordinator: Coordinator {
 
   func start() {
     let profileButton = UIButton().then {
-      $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
+      $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonSize, height: Self.navButtonSize)
       $0.setImage(R.image.home_icon_profile(), for: .normal)
       $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
       $0.layer.borderWidth = 1
-      $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
+      $0.t_cornerRadius(radius: Self.navButtonSize / 2)
     }
 
     let createBookMarkButton = UIButton().then {
-      $0.frame = CGRect(x: 0,
-                        y: 0,
-                        width: Self.createBookMarkButtonWidth,
-                        height: Self.navButtonHeight)
+      $0.frame = CGRect(
+        x: 0,
+        y: 0,
+        width: Self.createBookMarkButtonWidth,
+        height: Self.navButtonSize
+      )
       $0.setImage(R.image.home_icon_bookMark(), for: .normal)
       $0.backgroundColor = .t_tidiBlue00()
-      $0.layer.cornerRadius = Self.navButtonHeight / 2
+      $0.layer.cornerRadius = Self.navButtonSize / 2
     }
 
     let homeViewModel = HomeViewModel()
     homeViewModel.delegate = self
-    let homeViewController = HomeViewController(viewModel: homeViewModel,
-                                                leftButton: profileButton,
-                                                rightButton: createBookMarkButton)
+    let homeViewController = HomeViewController(
+      viewModel: homeViewModel,
+      leftButton: profileButton,
+      rightButton: createBookMarkButton
+    )
     homeViewController.coordinator = self
 
     profileButton.rx.tap.asDriver()
@@ -76,28 +80,38 @@ class HomeCoordinator: Coordinator {
 
   func startPush() -> UIViewController {
     let profileButton = UIButton().then {
-      $0.frame = CGRect(x: 0, y: 0, width: Self.navButtonHeight, height: Self.navButtonHeight)
+      $0.frame = CGRect(
+        x: 0,
+        y: 0,
+        width: Self.navButtonSize,
+        height: Self.navButtonSize
+      )
       $0.setImage(R.image.home_icon_profile(), for: .normal)
       $0.layer.borderColor = UIColor(hexString: "#3C3C43", alpha: 0.08).cgColor
       $0.layer.borderWidth = 1
-      $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
+      $0.t_cornerRadius(radius: Self.navButtonSize / 2)
+      $0.layer.masksToBounds = false
     }
 
     let createBookMarkButton = UIButton().then {
-      $0.frame = CGRect(x: 0,
-                        y: 0,
-                        width: Self.createBookMarkButtonWidth,
-                        height: Self.navButtonHeight)
+      $0.frame = CGRect(
+        x: 0,
+        y: 0,
+        width: Self.createBookMarkButtonWidth,
+        height: Self.navButtonSize
+      )
       $0.setImage(R.image.home_icon_bookMark(), for: .normal)
       $0.backgroundColor = .t_tidiBlue00()
-      $0.t_cornerRadius(radius: Self.navButtonHeight / 2)
+      $0.t_cornerRadius(radius: Self.navButtonSize / 2)
     }
 
     let homeViewModel = HomeViewModel()
     homeViewModel.delegate = self
-    let homeViewController = HomeViewController(viewModel: homeViewModel,
-                                                leftButton: profileButton,
-                                                rightButton: createBookMarkButton)
+    let homeViewController = HomeViewController(
+      viewModel: homeViewModel,
+      leftButton: profileButton,
+      rightButton: createBookMarkButton
+    )
     homeViewController.coordinator = self
 
     return homeViewController

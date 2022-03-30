@@ -71,8 +71,8 @@
 		B588C6A726D0E12E003F4308 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B588C6A626D0E12E003F4308 /* Array+.swift */; };
 		B5A9536E269F31ED00290D64 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B5A9536D269F31ED00290D64 /* .swiftlint.yml */; };
 		B5A95370269F323B00290D64 /* WebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9536F269F323B00290D64 /* WebViewCoordinator.swift */; };
-		B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */; };
-		B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0ADB269A117400D8DCF5 /* RegisterViewModel.swift */; };
+		B5AF0ADA269A0D9700D8DCF5 /* CreateBookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0AD9269A0D9700D8DCF5 /* CreateBookmarkViewController.swift */; };
+		B5AF0ADC269A117400D8DCF5 /* CreateBookmarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0ADB269A117400D8DCF5 /* CreateBookmarkViewModel.swift */; };
 		B5AF0AE0269A134A00D8DCF5 /* WebViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF0ADF269A134A00D8DCF5 /* WebViewViewModel.swift */; };
 		B5CA8B1926B0438600D9C6D3 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B1826B0438600D9C6D3 /* SettingViewController.swift */; };
 		B5CA8B1D26B043A700D9C6D3 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA8B1C26B043A700D9C6D3 /* SettingViewModel.swift */; };
@@ -209,8 +209,8 @@
 		B588C6A626D0E12E003F4308 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		B5A9536D269F31ED00290D64 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B5A9536F269F323B00290D64 /* WebViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewCoordinator.swift; sourceTree = "<group>"; };
-		B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		B5AF0ADB269A117400D8DCF5 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		B5AF0AD9269A0D9700D8DCF5 /* CreateBookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBookmarkViewController.swift; sourceTree = "<group>"; };
+		B5AF0ADB269A117400D8DCF5 /* CreateBookmarkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBookmarkViewModel.swift; sourceTree = "<group>"; };
 		B5AF0ADF269A134A00D8DCF5 /* WebViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewModel.swift; sourceTree = "<group>"; };
 		B5CA8B1526B042CF00D9C6D3 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
 		B5CA8B1826B0438600D9C6D3 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -569,7 +569,7 @@
 				B577660226C17DFF00533276 /* BottomSheet */,
 				B56D8314269989BF00D5F513 /* Home */,
 				8661DED627DE11C90005B02B /* Search */,
-				B5AF0AD6269A0D7200D8DCF5 /* Register */,
+				B5AF0AD6269A0D7200D8DCF5 /* CreateBookmark */,
 				B5CA8B1726B0436900D9C6D3 /* Setting */,
 				B5F19C122699A01700D1E8BB /* WebView */,
 			);
@@ -588,19 +588,19 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
-		B5AF0AD6269A0D7200D8DCF5 /* Register */ = {
+		B5AF0AD6269A0D7200D8DCF5 /* CreateBookmark */ = {
 			isa = PBXGroup;
 			children = (
 				B5AF0AD7269A0D7B00D8DCF5 /* View */,
 				B5AF0AD8269A0D8300D8DCF5 /* ViewModel */,
 			);
-			path = Register;
+			path = CreateBookmark;
 			sourceTree = "<group>";
 		};
 		B5AF0AD7269A0D7B00D8DCF5 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B5AF0AD9269A0D9700D8DCF5 /* RegisterViewController.swift */,
+				B5AF0AD9269A0D9700D8DCF5 /* CreateBookmarkViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -608,7 +608,7 @@
 		B5AF0AD8269A0D8300D8DCF5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				B5AF0ADB269A117400D8DCF5 /* RegisterViewModel.swift */,
+				B5AF0ADB269A117400D8DCF5 /* CreateBookmarkViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1133,7 +1133,7 @@
 				8661DEDB27DE11EE0005B02B /* SearchViewController.swift in Sources */,
 				C72F27DA2699D4EE00104FE3 /* UserSession.swift in Sources */,
 				B588C6A126D0D181003F4308 /* CreateFolderViewModel.swift in Sources */,
-				B5AF0ADA269A0D9700D8DCF5 /* RegisterViewController.swift in Sources */,
+				B5AF0ADA269A0D9700D8DCF5 /* CreateBookmarkViewController.swift in Sources */,
 				B56B67EB2699972F0099C46D /* ObservableConvertibleType+.swift in Sources */,
 				8661DEE127DE12110005B02B /* SearchViewModel.swift in Sources */,
 				407F2F1D27E843570061E2B7 /* FolderDetailViewModel.swift in Sources */,
@@ -1141,7 +1141,7 @@
 				B570F9F226BEB57E0095A0F0 /* UINavigationBar+.swift in Sources */,
 				8661DED927DE11DF0005B02B /* SearchHistoryHeaderView.swift in Sources */,
 				B588C6A326D0D23C003F4308 /* CreateFolderCoordinator.swift in Sources */,
-				B5AF0ADC269A117400D8DCF5 /* RegisterViewModel.swift in Sources */,
+				B5AF0ADC269A117400D8DCF5 /* CreateBookmarkViewModel.swift in Sources */,
 				B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */,
 				B588C6A526D0DF32003F4308 /* Folder.swift in Sources */,
 				B588C69826D0C96E003F4308 /* FolderTabViewModel.swift in Sources */,

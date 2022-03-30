@@ -33,9 +33,9 @@ class RegisterCoordinator: Coordinator {
       $0.setImage(R.image.nav_icon_back(), for: .normal)
     }
 
-    let registerViewModel = RegisterViewModel()
-    let registerViewController = RegisterViewController(
-      viewModel: registerViewModel,
+    let createBookmarkViewModel = CreateBookmarkViewModel()
+    let registerViewController = CreateBookmarkViewController(
+      viewModel: createBookmarkViewModel,
       title: R.string.localizable.mainAddBookMarkTitle(),
       leftButton: backButton
     )
@@ -57,9 +57,9 @@ class RegisterCoordinator: Coordinator {
       $0.setImage(R.image.nav_icon_back(), for: .normal)
     }
 
-    let registerViewModel = RegisterViewModel()
-    let registerViewController = RegisterViewController(
-      viewModel: registerViewModel,
+    let createBookmarkViewModel = CreateBookmarkViewModel()
+    let registerViewController = CreateBookmarkViewController(
+      viewModel: createBookmarkViewModel,
       title: R.string.localizable.mainAddBookMarkTitle(),
       leftButton: backButton
     )

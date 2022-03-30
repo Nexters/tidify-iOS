@@ -7,7 +7,6 @@
 
 import RxCocoa
 import RxSwift
-import Foundation
 
 class FolderDetailViewModel: ViewModelType {
 

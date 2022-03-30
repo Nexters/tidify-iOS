@@ -1,5 +1,5 @@
 //
-//  RegisterViewController.swift
+//  CreateBookmarkViewController.swift
 //  Tidify
 //
 //  Created by 여정수 on 2021/07/11.
@@ -10,7 +10,7 @@ import RxSwift
 import Then
 import UIKit
 
-class RegisterViewController: BaseViewController {
+class CreateBookmarkViewController: BaseViewController {
 
   // MARK: - Constants
 
@@ -27,7 +27,7 @@ class RegisterViewController: BaseViewController {
   private weak var bookMarkTitleLabel: UILabel!
   private weak var bookMarkTextField: UITextField!
   private weak var tagTitleLabel: UILabel!
-  private weak var tagTextField: UITextField!
+  private weak var folderTextField: UITextField!
   private weak var registerButton: UIButton!
   private weak var notifyInvalidFormatUrlLabel: UILabel!
   private let leftButton: UIButton!
@@ -36,7 +36,7 @@ class RegisterViewController: BaseViewController {
   private let selectedTagIndexSubject = PublishSubject<Int>()
   private let selectedTagSubject = PublishSubject<String>()
 
-  private let viewModel: RegisterViewModel!
+  private let viewModel: CreateBookmarkViewModel!
 
   private var isInvalidFormatURL: Bool = true {
     didSet {
@@ -61,7 +61,7 @@ class RegisterViewController: BaseViewController {
 
   // MARK: - Initialize
 
-  init(viewModel: RegisterViewModel, title: String, leftButton: UIButton) {
+  init(viewModel: CreateBookmarkViewModel, title: String, leftButton: UIButton) {
     self.viewModel = viewModel
     self.navTitle = title
     self.leftButton = leftButton
@@ -104,7 +104,7 @@ class RegisterViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
 
-    tagTextField.t_addTap().rx.event.asDriver()
+    folderTextField.t_addTap().rx.event.asDriver()
       .drive(onNext: { [weak self] _ in
         guard let strongSelf = self else {
           return
@@ -118,7 +118,7 @@ class RegisterViewController: BaseViewController {
         guard let strongSelf = self else {
           return
         }
-        self?.tagTextField.text = self?.demoTagList[index]
+        self?.folderTextField.text = self?.demoTagList[index]
         self?.selectedTagSubject.onNext(strongSelf.demoTagList[index])
       })
       .disposed(by: disposeBag)
@@ -127,7 +127,7 @@ class RegisterViewController: BaseViewController {
       .filter { $0.t_isNotNil }
       .map { $0.t_unwrap }
 
-    let input = RegisterViewModel.Input(
+    let input = CreateBookmarkViewModel.Input(
       urlInputText: urlTextField,
       bookMarkNameInputText: bookMarkTextField.rx.text.asDriver(),
       tagInputText: selectedTagSubject.t_asDriverSkipError(),
@@ -169,10 +169,13 @@ class RegisterViewController: BaseViewController {
 
     self.tagTitleLabel = makeTitleLabel(title: R.string.localizable.registerFolderTitle())
 
-    let tagTextFieldPlaceholder = NSAttributedString(
+    let folderTextFieldPlaceholder = NSAttributedString(
       string: R.string.localizable.registerFolderPlaceHolder(),
       attributes: [.foregroundColor: UIColor.gray])
-    self.tagTextField = makeTextField(placeholder: tagTextFieldPlaceholder)
+    let folderTextField = makeTextField(placeholder: folderTextFieldPlaceholder)
+    folderTextField.rightView = UIImageView(image: R.image.arrow_down_gray())
+    folderTextField.rightViewMode = .always
+    self.folderTextField = folderTextField
 
     self.registerButton = UIButton().then {
       $0.setTitle(R.string.localizable.registerButtonTitle(), for: .normal)
@@ -221,14 +224,14 @@ class RegisterViewController: BaseViewController {
       $0.left.equalToSuperview().offset(Self.sidePadding)
     }
 
-    tagTextField.snp.makeConstraints {
+    folderTextField.snp.makeConstraints {
       $0.top.equalTo(tagTitleLabel.snp.bottom).offset(16)
       $0.leading.equalToSuperview().offset(Self.sidePadding)
       $0.size.equalTo(CGSize(w: Self.textFieldWidth, h: Self.textFieldHeight))
     }
 
     registerButton.snp.makeConstraints {
-      $0.leading.trailing.equalTo(tagTextField)
+      $0.leading.trailing.equalTo(folderTextField)
       $0.height.equalTo(56)
       $0.bottom.equalToSuperview().offset(-40)
     }
@@ -240,7 +243,7 @@ class RegisterViewController: BaseViewController {
   }
 }
 
-private extension RegisterViewController {
+private extension CreateBookmarkViewController {
   func setupNavigationBar() {
     view.addSubview(navigationBar)
     navigationBar.snp.makeConstraints {
@@ -275,7 +278,7 @@ private extension RegisterViewController {
       $0.attributedPlaceholder = placeholder
       $0.backgroundColor = .white
       $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.gray.cgColor
+      $0.layer.borderColor = UIColor(hexString: "3C3C43", alpha: 0.08).cgColor
       $0.t_cornerRadius(radius: Self.textFieldHeight / 3)
       $0.font = .t_R(16)
       $0.textColor = .black
