@@ -198,9 +198,31 @@ private extension FolderDetailViewController {
 
   @objc
   func didTapEditButton(_ sender: UIButton) {
+    print("edit Was Tapped") // TODO
   }
 
   @objc
   func didTapDeleteButton(_ sender: UIButton) {
+    let nextAction: Notifier.AlertButtonAction = (
+      R.string.localizable.mainNotifierBookMarkButtonNext(),
+      nil,
+      .default
+    )
+    let deleteAction: Notifier.AlertButtonAction = (
+      R.string.localizable.mainNotifierBookMarkButtonDelete(),
+      { [weak self] in
+        guard let self = self else { return }
+        var data = self.viewModel.bookMarkList.value
+        data.remove(at: sender.tag)
+        self.viewModel.bookMarkList.accept(data)
+      },
+      .destructive
+    )
+    Notifier.alert(
+      on: self,
+      title: R.string.localizable.mainNotifierBookMarkDeleteTitle(),
+      message: R.string.localizable.mainNotifierBookMarkDeleteDesc(),
+      buttons: [nextAction, deleteAction]
+    )
   }
 }

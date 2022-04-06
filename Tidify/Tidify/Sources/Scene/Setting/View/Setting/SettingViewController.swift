@@ -249,12 +249,16 @@ extension SettingViewController: UITableViewDelegate {
       case 1:
         let cancelButton: Notifier.AlertButtonAction = (
           R.string.localizable.settingAlertImageCacheCancelTitle(),
-          { [weak self] in self?.dismiss(animated: true, completion: nil) })
+          { [weak self] in self?.dismiss(animated: true, completion: nil) },
+          .default
+        )
 
         let okButton: Notifier.AlertButtonAction = (
           R.string.localizable.settingAlertImageCacheOkTitle(),
           { [weak self] in ImageCache.default.clearCache()
-            self?.dismiss(animated: true, completion: nil) })
+            self?.dismiss(animated: true, completion: nil) },
+          .destructive
+        )
 
         Notifier.alert(on: self,
                        title: R.string.localizable.settingAlertImageCacheTitle(),
@@ -263,13 +267,17 @@ extension SettingViewController: UITableViewDelegate {
       case 2:
         let cancelButton: Notifier.AlertButtonAction = (
           R.string.localizable.settingAlertAllCacheCancelTitle(),
-          { [weak self] in  self?.dismiss(animated: true, completion: nil) })
+          { [weak self] in  self?.dismiss(animated: true, completion: nil) },
+          .default
+        )
 
         let okButton: Notifier.AlertButtonAction = (
           R.string.localizable.settingAlertAllCacheOkTitle(),
           { [weak self] in ImageCache.default.clearCache()
             URLCache.shared.removeAllCachedResponses()
-            self?.dismiss(animated: true, completion: nil) })
+            self?.dismiss(animated: true, completion: nil) },
+          .destructive
+        )
 
         Notifier.alert(on: self,
                        title: R.string.localizable.settingAlertAllCacheTitle(),

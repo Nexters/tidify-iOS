@@ -199,8 +199,27 @@ private extension FolderTabViewController {
 
   @objc
   func didTapDeleteButton(_ sender: UIButton) {
-    var data = viewModel.folderList.value
-    data.remove(at: sender.tag)
-    viewModel.folderList.accept(data)
+    let nextAction: Notifier.AlertButtonAction = (
+      R.string.localizable.folderNotifierDeleteCancel(),
+      nil,
+      .default
+    )
+    let deleteAction: Notifier.AlertButtonAction = (
+      R.string.localizable.folderNotifierDeleteAccept(),
+      { [weak self] in
+        guard let self = self else { return }
+        var data = self.viewModel.folderList.value
+        data.remove(at: sender.tag)
+        self.viewModel.folderList.accept(data)
+      },
+      .destructive
+    )
+
+    Notifier.alert(
+      on: self,
+      title: R.string.localizable.folderNotifierDeleteTitle(),
+      message: R.string.localizable.folderNotifierDeleteMessage(),
+      buttons: [nextAction, deleteAction]
+    )
   }
 }

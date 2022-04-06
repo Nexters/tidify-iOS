@@ -22,7 +22,6 @@ class HomeViewModel: ViewModelType {
   let swiftLinkPreview = SwiftLinkPreview()
 
   struct Input {
-    let didSwipeBookMarkCell: Driver<BookMarkCellSwipeOption>
     let didTapCell: Driver<BookMark>
   }
 
@@ -33,22 +32,51 @@ class HomeViewModel: ViewModelType {
 
   weak var delegate: HomeViewModelDelegate?
 
-  var bookMarkList: [BookMark] = []
+  var bookMarkList = BehaviorRelay<[BookMark]>(value: [
+    BookMark(
+      createdAt: "createdAt",
+      updatedAt: "updatedAt",
+      id: 0,
+      memberId: 0,
+      urlString: "https://www.google.com/",
+      title: "구글",
+      tag: "tag"),
+    BookMark(
+      createdAt: "createdAt222",
+      updatedAt: "updatedAt222",
+      id: 0,
+      memberId: 0,
+      urlString: "https://www.naver.com/",
+      title: "네이버",
+      tag: "tag222"),
+    BookMark(
+      createdAt: "createdAt222",
+      updatedAt: "updatedAt222",
+      id: 0,
+      memberId: 0,
+      urlString: "https://picsum.photos/200/300",
+      title: "테스트북마크",
+      tag: "tag222")
+  ])
+
+  let lastIndexSubject = PublishSubject<Int>()
+  var lastIndex: Int = 0
 
   // MARK: - Methods
 
   func transform(_ input: Input) -> Output {
+    //TODO: 서버 연동 후 수정 예정
     let didReceiveBookMarks = Driver.just(())
-      .flatMapLatest { _ -> Driver<[BookMark]> in
-        return APIProvider.request(BookMarkAPI.getBookMarkList(id: 1))
-          .map(BookMarkListDTO.self)
-          .map { $0.bookMarks.map { $0.toEntity() } }
-          .t_asDriverSkipError()
-      }
-      .do(onNext: {
-        self.bookMarkList = $0
-      })
-        .map { _ in }
+//      .flatMapLatest { _ -> Driver<[BookMark]> in
+//        return APIProvider.request(BookMarkAPI.getBookMarkList(id: 1))
+//          .map(BookMarkListDTO.self)
+//          .map { $0.bookMarks.map { $0.toEntity() } }
+//          .t_asDriverSkipError()
+//      }
+//      .do(onNext: {
+//        self.bookMarkList = $0
+//      })
+//        .map { _ in }
 
     let didTapCell = input.didTapCell
       .do(onNext: { [weak self] in

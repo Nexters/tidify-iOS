@@ -10,7 +10,7 @@ import UIKit
 
 enum Notifier {
   typealias Action = () -> Void
-  typealias AlertButtonAction = (title: String, Action: Action?)
+  typealias AlertButtonAction = (title: String, Action: Action?, style: UIAlertAction.Style)
 
   static func alert(on viewController: UIViewController?,
                     title: String,
@@ -34,7 +34,7 @@ enum Notifier {
 
     if buttons.count > 1 {
       for button in buttons[1...] {
-        alertController.addAction(UIAlertAction(title: button.title, style: .default, handler: { _ in
+        alertController.addAction(UIAlertAction(title: button.title, style: button.style, handler: { _ in
           button.Action?()
         }))
       }
