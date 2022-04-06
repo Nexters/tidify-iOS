@@ -13,10 +13,6 @@ import UIKit
 
 class OnboardingViewController: BaseViewController {
 
-  // MARK: - Constants
-
-  static let sidePadding: CGFloat = 40
-
   // MARK: - Properties
 
   private weak var pageControl: UIPageControl!
@@ -83,8 +79,9 @@ class OnboardingViewController: BaseViewController {
     flowLayout.minimumLineSpacing = .zero
     flowLayout.minimumInteritemSpacing = .zero
 
-    self.collectionView = UICollectionView(frame: .zero,
-                                           collectionViewLayout: flowLayout).then {
+    self.collectionView = UICollectionView(
+      frame: .zero,
+      collectionViewLayout: flowLayout).then {
       $0.delegate = self
       $0.dataSource = self
       $0.isPagingEnabled = true
@@ -105,7 +102,7 @@ class OnboardingViewController: BaseViewController {
   override func setupLayoutConstraints() {
     pageControl.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(38)
-      $0.leading.equalToSuperview().offset(Self.sidePadding)
+      $0.centerX.equalToSuperview()
     }
 
     collectionView.snp.makeConstraints {

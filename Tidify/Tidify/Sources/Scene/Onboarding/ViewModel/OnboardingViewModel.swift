@@ -60,21 +60,13 @@ class OnboardingViewModel: ViewModelType {
 private extension OnboardingViewModel {
   func setOnboardingResource() -> [Onboarding] {
     let dataSource = [
-      Onboarding(title: R.string.localizable.onboardingTitle1(),
-                 description: R.string.localizable.onboardingDesc1(),
-                 image: R.image.onboarding_0()!,
+      Onboarding(image: R.image.onboarding_0()!,
                  buttonTitle: R.string.localizable.onboardingButtonTitle1()),
-      Onboarding(title: R.string.localizable.onboardingTitle2(),
-                 description: R.string.localizable.onboardingDesc2(),
-                 image: R.image.onboarding_1()!,
+      Onboarding(image: R.image.onboarding_1()!,
                  buttonTitle: R.string.localizable.onboardingButtonTitle2()),
-      Onboarding(title: R.string.localizable.onboardingTitle3(),
-                 description: R.string.localizable.onboardingDesc3(),
-                 image: R.image.onboarding_2()!,
+      Onboarding(image: R.image.onboarding_2()!,
                  buttonTitle: R.string.localizable.onboardingButtonTitle3()),
-      Onboarding(title: R.string.localizable.onboardingTitle4(),
-                 description: R.string.localizable.onboardingDesc4(),
-                 image: R.image.onboarding_3()!,
+      Onboarding(image: R.image.onboarding_3()!,
                  buttonTitle: R.string.localizable.onboardingButtonTitle4())
     ]
 
