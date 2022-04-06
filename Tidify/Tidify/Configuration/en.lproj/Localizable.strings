@@ -9,11 +9,10 @@
 "MainTitle" = "Tidify";
 
 // Onboarding
-"Onboarding.title1" = "북마크 저장해볼까요?";
-"Onboarding.title2" = "원하는 링크를 저장";
-"Onboarding.title3" = "이름, 고민하지 마세요";
-"Onboarding.title4" = "나만의 정리방법";
-"Onboarding.title5" = "폴더 공유";
+"Onboarding.title1" = "공유버튼 누르면 바로 북마크 저장";
+"Onboarding.title2" = "링크주소만 넣어주세요";
+"Onboarding.title3" = "누구보다 빠르게 기억할게요";
+"Onboarding.title4" = "필요한 것만 쏙쏙 공유해주기";
 "Onboarding.desc1" = "앱, 브라우저를 자유롭게 사용하며 언제든지 북마크 만들기!";
 "Onboarding.desc2" = "저장하고 싶은 링크가 있을때도 문제없어요! 원하는 만큼 저장하세요.";
 "Onboarding.desc3" = "그냥 버튼만 누르세요, 알아서 깔끔하게 저장해 드려요!";

@@ -62,24 +62,20 @@ private extension OnboardingViewModel {
     let dataSource = [
       Onboarding(title: R.string.localizable.onboardingTitle1(),
                  description: R.string.localizable.onboardingDesc1(),
-                 image: R.image.tidify_logo()!,
+                 image: R.image.onboarding_0()!,
                  buttonTitle: R.string.localizable.onboardingButtonTitle1()),
       Onboarding(title: R.string.localizable.onboardingTitle2(),
                  description: R.string.localizable.onboardingDesc2(),
-                 image: R.image.tidify_logo()!,
+                 image: R.image.onboarding_1()!,
                  buttonTitle: R.string.localizable.onboardingButtonTitle2()),
       Onboarding(title: R.string.localizable.onboardingTitle3(),
                  description: R.string.localizable.onboardingDesc3(),
-                 image: R.image.tidify_logo()!,
+                 image: R.image.onboarding_2()!,
                  buttonTitle: R.string.localizable.onboardingButtonTitle3()),
       Onboarding(title: R.string.localizable.onboardingTitle4(),
                  description: R.string.localizable.onboardingDesc4(),
-                 image: R.image.tidify_logo()!,
-                 buttonTitle: R.string.localizable.onboardingButtonTitle4()),
-      Onboarding(title: R.string.localizable.onboardingTitle5(),
-                 description: R.string.localizable.onboardingDesc5(),
-                 image: R.image.tidify_logo()!,
-                 buttonTitle: R.string.localizable.onboardingButtonTitle5())
+                 image: R.image.onboarding_3()!,
+                 buttonTitle: R.string.localizable.onboardingButtonTitle4())
     ]
 
     return dataSource
