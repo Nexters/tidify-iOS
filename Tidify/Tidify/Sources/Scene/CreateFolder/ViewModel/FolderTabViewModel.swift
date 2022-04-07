@@ -23,7 +23,7 @@ class FolderTabViewModel: ViewModelType {
   let lastIndexSubject = PublishSubject<Int>()
   var lastIndex: Int = 0
 
-  var folderList: BehaviorRelay<[Folder]> = BehaviorRelay<[Folder]>(value: [
+  var folderListRelay: BehaviorRelay<[Folder]> = BehaviorRelay<[Folder]>(value: [
     Folder(name: "테스트폴더0", color: "#ff9500"),
     Folder(name: "테스트폴더1", color: "#ff2d54"),
     Folder(name: "테스트폴더2", color: "#ff9500"),

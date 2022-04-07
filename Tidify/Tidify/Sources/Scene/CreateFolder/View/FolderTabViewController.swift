@@ -137,14 +137,14 @@ private extension FolderTabViewController {
   }
 
   func setupCollectionView() {
-    guard !viewModel.folderList.value.isEmpty else {
+    guard !viewModel.folderListRelay.value.isEmpty else {
       emptyLabel.isHidden = false
       collectionView.isHidden = true
       return
     }
     collectionView.isHidden = false
 
-    viewModel.folderList
+    viewModel.folderListRelay
       .bind(to: collectionView.rx.items) { [weak self] _, row, item -> UICollectionViewCell in
         guard let self = self else { return UICollectionViewCell() }
         let cell = self.collectionView.t_dequeueReusableCell(
@@ -208,9 +208,9 @@ private extension FolderTabViewController {
       R.string.localizable.folderNotifierDeleteAccept(),
       { [weak self] in
         guard let self = self else { return }
-        var data = self.viewModel.folderList.value
-        data.remove(at: sender.tag)
-        self.viewModel.folderList.accept(data)
+        var folderList = self.viewModel.folderListRelay.value
+          folderList.remove(at: sender.tag)
+        self.viewModel.folderListRelay.accept(folderList)
       },
       .destructive
     )

@@ -22,7 +22,7 @@ class FolderDetailViewModel: ViewModelType {
   let lastIndexSubject = PublishSubject<Int>()
   var lastIndex: Int = 0
 
-  var bookMarkList: BehaviorRelay<[BookMark]> = BehaviorRelay<[BookMark]>(value: [
+  var bookMarkListRelay: BehaviorRelay<[BookMark]> = BehaviorRelay<[BookMark]>(value: [
     BookMark(
       createdAt: "createdAt",
       updatedAt: "updatedAt",

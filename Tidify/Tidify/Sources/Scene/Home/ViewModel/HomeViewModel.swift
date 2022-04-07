@@ -32,7 +32,7 @@ class HomeViewModel: ViewModelType {
 
   weak var delegate: HomeViewModelDelegate?
 
-  var bookMarkList = BehaviorRelay<[BookMark]>(value: [
+  var bookMarkListRelay = BehaviorRelay<[BookMark]>(value: [
     BookMark(
       createdAt: "createdAt",
       updatedAt: "updatedAt",
