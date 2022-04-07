@@ -148,14 +148,14 @@ private extension FolderDetailViewController {
   }
 
   func setupCollectionView() {
-    guard !viewModel.bookMarkList.value.isEmpty else {
+    guard !viewModel.bookMarkListRelay.value.isEmpty else {
       emptyLabel.isHidden = false
       collectionView.isHidden = true
       return
     }
     collectionView.isHidden = false
 
-    viewModel.bookMarkList
+    viewModel.bookMarkListRelay
       .bind(to: collectionView.rx.items) { [weak self] _, row, item -> UICollectionViewCell in
         guard let self = self else { return UICollectionViewCell() }
         let cell = self.collectionView.t_dequeueReusableCell(
@@ -198,9 +198,31 @@ private extension FolderDetailViewController {
 
   @objc
   func didTapEditButton(_ sender: UIButton) {
+    print("edit Was Tapped") // TODO
   }
 
   @objc
   func didTapDeleteButton(_ sender: UIButton) {
+    let nextAction: Notifier.AlertButtonAction = (
+      R.string.localizable.mainNotifierBookMarkButtonNext(),
+      nil,
+      .default
+    )
+    let deleteAction: Notifier.AlertButtonAction = (
+      R.string.localizable.mainNotifierBookMarkButtonDelete(),
+      { [weak self] in
+        guard let self = self else { return }
+        var bookMarkList = self.viewModel.bookMarkListRelay.value
+          bookMarkList.remove(at: sender.tag)
+        self.viewModel.bookMarkListRelay.accept(bookMarkList)
+      },
+      .destructive
+    )
+    Notifier.alert(
+      on: self,
+      title: R.string.localizable.mainNotifierBookMarkDeleteTitle(),
+      message: R.string.localizable.mainNotifierBookMarkDeleteDesc(),
+      buttons: [nextAction, deleteAction]
+    )
   }
 }

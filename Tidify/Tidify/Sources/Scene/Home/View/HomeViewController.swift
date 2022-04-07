@@ -16,15 +16,15 @@ class HomeViewController: BaseViewController {
   // MARK: - Properties
   weak var coordinator: HomeCoordinator?
 
-  private weak var tableView: UITableView!
+  private weak var collectionView: UICollectionView!
+  private var containerView: UIView!
+  private var emptyLabel: UILabel!
   private let profileButton: UIButton!
   private let createBookMarkButton: UIButton!
 
   private let viewModel: HomeViewModel!
   private let didTapCellSubject = PublishSubject<BookMark>()
   private let addListItemSubject = PublishSubject<URL>()
-
-  private let didSwipeBookMarkCellSubject = PublishSubject<BookMarkCellSwipeOption>()
 
   private lazy var navigationBar = TidifyNavigationBar(.rounded,
                                                        leftButton: profileButton,
@@ -67,96 +67,74 @@ class HomeViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let input = HomeViewModel.Input(
-      didSwipeBookMarkCell: didSwipeBookMarkCellSubject.t_asDriverSkipError(),
-      didTapCell: didTapCellSubject.t_asDriverSkipError()
-    )
-
+    let input = HomeViewModel.Input(didTapCell: didTapCellSubject.t_asDriverSkipError())
     let output = viewModel.transform(input)
 
     output.didReceiveBookMarks
       .drive(onNext: { [weak self] _ in
-        self?.tableView.reloadData()
+        self?.collectionView.reloadData()
       })
       .disposed(by: disposeBag)
 
     output.didTapCell
       .drive()
       .disposed(by: disposeBag)
+
+    setupCollectionView()
   }
 
   override func setupViews() {
     setupNavigationBar()
 
-    self.tableView = UITableView().then {
-      $0.delegate = self
-      $0.dataSource = self
+    let flowLayout = UICollectionViewFlowLayout().then {
+      $0.itemSize = CGSize(
+        w: FolderCollectionViewCell.width,
+        h: FolderCollectionViewCell.height
+      )
+    }
+
+    self.containerView = UIView().then {
       $0.backgroundColor = .white
-      $0.t_registerCellClass(cellType: BookMarkTableViewCell.self)
       $0.t_cornerRadius([.topLeft, .topRight], radius: 16)
       view.addSubview($0)
+    }
+
+    self.collectionView = UICollectionView(
+      frame: .zero,
+      collectionViewLayout: flowLayout
+    ).then {
+      $0.backgroundColor = .white
+      $0.t_registerCellClass(cellType: BookMarkCollectionViewCell.self)
+      $0.isHidden = true
+      containerView.addSubview($0)
+    }
+
+    self.emptyLabel = UILabel().then {
+      $0.text = R.string.localizable.mainNoticeEmptyTitle()
+      $0.textColor = .t_indigo02()
+      $0.font = .t_B(16)
+      $0.textAlignment = .center
+      $0.isHidden = true
+      containerView.addSubview($0)
     }
   }
 
   override func setupLayoutConstraints() {
-    tableView.snp.makeConstraints {
-      $0.top.equalTo(navigationBar.snp.bottom).offset(15)
+    containerView.snp.makeConstraints {
+      $0.top.equalTo(navigationBar.snp.bottom).offset(16)
       $0.leading.trailing.bottom.equalToSuperview()
     }
-  }
-}
 
-// MARK: - TableViewDataSource
-extension HomeViewController: UITableViewDataSource {
-  func tableView(_ tableView: UITableView,
-                 numberOfRowsInSection section: Int) -> Int {
-    return viewModel.bookMarkList.count
-  }
-
-  func tableView(_ tableView: UITableView,
-                 cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let bookMark = viewModel.bookMarkList[safe: indexPath.row] else {
-      return UITableViewCell()
+    collectionView.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(24)
+      $0.leading.trailing.equalToSuperview()
+      $0.bottom.equalToSuperview().offset(-140)
     }
 
-    let cell = tableView.t_dequeueReusableCell(cellType: BookMarkTableViewCell.self,
-                                               indexPath: indexPath)
-
-    cell.configure(bookMark)
-    return cell
-  }
-}
-
-// MARK: - TableViewDelegate
-extension HomeViewController: UITableViewDelegate {
-  func tableView(
-    _ tableView: UITableView,
-    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-  ) -> UISwipeActionsConfiguration? {
-    guard let bookMark = viewModel.bookMarkList[safe: indexPath.row] else {
-      return .none
+    emptyLabel.snp.makeConstraints{
+      $0.top.equalToSuperview().offset(70)
+      $0.leading.trailing.equalToSuperview()
     }
-
-    let editAction = UIContextualAction(style: .normal,
-                                        title: R.string.localizable.mainCellEditTitle(),
-                                        handler: { [weak self] _, _, _ in
-      self?.showAlertForDeleteBookMark(bookMark: bookMark)
-    })
-
-    let deleteAction = UIContextualAction(style: .destructive,
-                                          title: R.string.localizable.mainCellDeleteTitle(),
-                                          handler: { [weak self] _, _, _ in
-      self?.didSwipeBookMarkCellSubject.onNext(.delete(bookMark))
-    })
-
-    return .init(actions: [editAction, deleteAction])
-  }
-
-  func tableView(_ tableView: UITableView,
-                 didSelectRowAt indexPath: IndexPath) {
-    guard let bookMark = viewModel.bookMarkList[safe: indexPath.row] else { return }
-
-    didTapCellSubject.onNext(bookMark)
   }
 }
 
@@ -181,18 +159,87 @@ private extension HomeViewController {
     }
   }
 
-  func showAlertForDeleteBookMark(bookMark: BookMark) {
-    let nextAction: Notifier.AlertButtonAction = (
-      R.string.localizable.mainNotifierBookMarkButtonNext(), nil)
+  func setupCollectionView() {
+    guard !viewModel.bookMarkListRelay.value.isEmpty else {
+      emptyLabel.isHidden = false
+      collectionView.isHidden = true
+      return
+    }
+    collectionView.isHidden = false
 
+    viewModel.bookMarkListRelay
+      .bind(to: collectionView.rx.items) { [weak self] _, row, item -> UICollectionViewCell in
+        guard let self = self else { return UICollectionViewCell() }
+        let cell = self.collectionView.t_dequeueReusableCell(
+          cellType: BookMarkCollectionViewCell.self,
+          indexPath: IndexPath(row: row, section: 0)
+        )
+
+        cell.editButton.addTarget(self,
+                                  action: #selector(self.didTapEditButton(_:)),
+                                  for: .touchUpInside)
+        cell.deleteButton.addTarget(self,
+                                    action: #selector(self.didTapDeleteButton(_:)),
+                                    for: .touchUpInside)
+        cell.setFolder(
+          item,
+          buttonTag: row,
+          lastIndexObserver: self.viewModel.lastIndexSubject.asObserver()
+        )
+        return cell
+      }
+      .disposed(by: disposeBag)
+
+    viewModel.lastIndexSubject
+      .filter { [weak self] in $0 != (self?.viewModel.lastIndex ?? 0) }
+      .subscribe(onNext: { [weak self] in
+        let lastIndex = IndexPath(item: self?.viewModel.lastIndex ?? 0, section: 0)
+        guard let self = self,
+              let cell = self.collectionView.cellForItem(at: lastIndex)
+                as? BookMarkCollectionViewCell else { return }
+
+        cell.t_initSwipeView(
+          swipeView: cell.swipeView,
+          width: cell.width,
+          isSwiped: cell.isSwiped
+        )
+        self.viewModel.lastIndex = $0
+      })
+      .disposed(by: disposeBag)
+
+    collectionView.rx.modelSelected(BookMark.self)
+      .bind(to: didTapCellSubject)
+      .disposed(by: disposeBag)
+  }
+
+  @objc
+  func didTapEditButton(_ sender: UIButton) {
+    print("edit Was Tapped") // TODO
+  }
+
+  @objc
+  func didTapDeleteButton(_ sender: UIButton) {
+    let nextAction: Notifier.AlertButtonAction = (
+      R.string.localizable.mainNotifierBookMarkButtonNext(),
+      nil,
+      .default
+    )
     let deleteAction: Notifier.AlertButtonAction = (
       R.string.localizable.mainNotifierBookMarkButtonDelete(),
-      { [weak self] in self?.didSwipeBookMarkCellSubject.onNext(.delete(bookMark)) }
+      { [weak self] in
+        guard let self = self else { return }
+        var bookMarkList = self.viewModel.bookMarkListRelay.value
+          bookMarkList.remove(at: sender.tag)
+        self.viewModel.bookMarkListRelay.accept(bookMarkList)
+      },
+      .destructive
     )
 
-    Notifier.alert(on: self,
-                   title: R.string.localizable.mainNotifierBookMarkDeleteTitle(),
-                   message: R.string.localizable.mainNotifierBookMarkDeleteDesc(),
-                   buttons: [nextAction, deleteAction])
+    Notifier.alert(
+      on: self,
+      title: R.string.localizable.mainNotifierBookMarkDeleteTitle(),
+      message: R.string.localizable.mainNotifierBookMarkDeleteDesc(),
+      buttons: [nextAction, deleteAction]
+    )
   }
 }
