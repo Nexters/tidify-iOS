@@ -15,6 +15,7 @@
 		40C0023427E088F400941339 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C0023327E088F400941339 /* UICollectionViewCell+.swift */; };
 		74054C0E59CF4CBF363302BD /* Pods_TidifyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */; };
 		8652F8B327ECA69400C50A90 /* BaseViewControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8652F8B227ECA69400C50A90 /* BaseViewControllable.swift */; };
+		86572BE42868842F004F2571 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86572BE32868842F004F2571 /* BaseView.swift */; };
 		8661DECE27DDBF360005B02B /* AccountSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */; };
 		8661DED527DE118A0005B02B /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DED427DE118A0005B02B /* SearchCoordinator.swift */; };
 		8661DED927DE11DF0005B02B /* SearchHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DED827DE11DF0005B02B /* SearchHistoryHeaderView.swift */; };
@@ -148,6 +149,7 @@
 		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
 		8652F8B227ECA69400C50A90 /* BaseViewControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewControllable.swift; sourceTree = "<group>"; };
+		86572BE32868842F004F2571 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSectionHeaderView.swift; sourceTree = "<group>"; };
 		8661DED427DE118A0005B02B /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
 		8661DED827DE11DF0005B02B /* SearchHistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryHeaderView.swift; sourceTree = "<group>"; };
@@ -677,10 +679,11 @@
 		B5CA8B2526B0446900D9C6D3 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B5CA8B1F26B043CD00D9C6D3 /* BaseViewController.swift */,
 				B5E554A726C9506C00C948A0 /* TidifyNavigationBar.swift */,
 				B57833DF26CA41E6000AC589 /* TidifyTabBar.swift */,
 				B57833E126CA465F000AC589 /* TidifyTabBarController.swift */,
+				B5CA8B1F26B043CD00D9C6D3 /* BaseViewController.swift */,
+				86572BE32868842F004F2571 /* BaseView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1064,6 +1067,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86572BE42868842F004F2571 /* BaseView.swift in Sources */,
 				B5314FAB2699DC2300769AB2 /* UIFont+.swift in Sources */,
 				B56D831C26998A2900D5F513 /* UIApplication+.swift in Sources */,
 				40C0023427E088F400941339 /* UICollectionViewCell+.swift in Sources */,

@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import UIKit
 
-class OnboardingViewController: BaseViewController {
+final class OnboardingViewController: BaseViewController {
 
   // MARK: - Properties
 

@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 import SwiftLinkPreview
 
-class CreateBookmarkViewModel: ViewModelType {
+final class CreateBookmarkViewModel: ViewModelType {
   // (url, title, og_img_url, tags)
   typealias PreviewResponse = (String, String?, String?, String?)
 

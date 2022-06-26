@@ -7,7 +7,7 @@
 
 import RxSwift
 
-class FolderDetailViewController: BaseViewController {
+final class FolderDetailViewController: BaseViewController {
 
   // MARK: - Properties
 

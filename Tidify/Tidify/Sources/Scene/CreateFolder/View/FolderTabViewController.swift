@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import UIKit
 
-class FolderTabViewController: BaseViewController {
+final class FolderTabViewController: BaseViewController {
 
   // MARK: - Properties
 

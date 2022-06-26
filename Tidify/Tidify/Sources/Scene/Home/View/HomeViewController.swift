@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import UIKit
 
-class HomeViewController: BaseViewController {
+final class HomeViewController: BaseViewController {
 
   // MARK: - Properties
   weak var coordinator: HomeCoordinator?

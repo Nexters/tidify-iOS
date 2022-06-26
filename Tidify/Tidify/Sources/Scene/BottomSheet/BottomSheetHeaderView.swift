@@ -9,7 +9,7 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-class BottomSheetHeaderView: UIView {
+final class BottomSheetHeaderView: UIView {
 
   // MARK: - Constants
 

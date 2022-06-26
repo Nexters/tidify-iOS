@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import UIKit
 
-class CreateFolderViewController: BaseViewController {
+final class CreateFolderViewController: BaseViewController {
 
   // MARK: - Constants
 

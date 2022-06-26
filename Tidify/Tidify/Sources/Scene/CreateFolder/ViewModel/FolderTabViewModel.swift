@@ -9,7 +9,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class FolderTabViewModel: ViewModelType {
+final class FolderTabViewModel: ViewModelType {
 
   // MARK: - Properties
 

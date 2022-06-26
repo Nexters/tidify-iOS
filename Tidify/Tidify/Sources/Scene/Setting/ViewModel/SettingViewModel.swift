@@ -19,7 +19,7 @@ enum SettingUserTapCase {
   case socialLogin
 }
 
-class SettingViewModel: ViewModelType {
+final class SettingViewModel: ViewModelType {
 
   // MARK: - Properties
 

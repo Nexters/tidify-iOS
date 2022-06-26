@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class OnboardingCollectionViewCell: UICollectionViewCell {
+final class OnboardingCollectionViewCell: UICollectionViewCell {
 
   // MARK: - Constants
 

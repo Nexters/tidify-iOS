@@ -20,8 +20,6 @@ class BaseViewController: UIViewController, BaseViewControllable {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .t_background()
-
     setupViews()
     setupLayoutConstraints()
     bindOutput()
@@ -31,6 +29,7 @@ class BaseViewController: UIViewController, BaseViewControllable {
 
   func setupViews() {
     // Override Layout
+    view.backgroundColor = .t_background()
   }
 
   func setupLayoutConstraints() {

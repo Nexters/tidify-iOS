@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import UIKit
 
-class BottomSheetLabelColorTableViewCell: UITableViewCell {
+final class BottomSheetLabelColorTableViewCell: UITableViewCell {
 
   // MARK: - Constants
 

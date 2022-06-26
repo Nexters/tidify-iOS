@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class StickColorView: UIView {
+final class StickColorView: UIView {
 
   // MARK: - Constnats
 

@@ -14,7 +14,7 @@ enum BottomSheetType {
   case labelColor
 }
 
-class BottomSheetViewController: BaseViewController {
+final class BottomSheetViewController: BaseViewController {
 
   // MARK: - Constants
 

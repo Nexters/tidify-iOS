@@ -9,7 +9,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class TabViewViewModel: ViewModelType {
+final class TabViewViewModel: ViewModelType {
 
   // MARK: - Properties
 

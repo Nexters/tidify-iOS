@@ -12,7 +12,7 @@ import Then
 import UIKit
 import WebKit
 
-class WebViewController: BaseViewController {
+final class WebViewController: BaseViewController {
 
   // MARK: - Properties
 

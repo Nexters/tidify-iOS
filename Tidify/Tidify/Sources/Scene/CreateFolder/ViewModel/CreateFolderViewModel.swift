@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-class CreateFolderViewModel: ViewModelType {
+final class CreateFolderViewModel: ViewModelType {
 
   // MARK: - Properties
 

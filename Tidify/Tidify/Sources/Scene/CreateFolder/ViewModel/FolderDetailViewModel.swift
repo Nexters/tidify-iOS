@@ -8,7 +8,7 @@
 import RxCocoa
 import RxSwift
 
-class FolderDetailViewModel: ViewModelType {
+final class FolderDetailViewModel: ViewModelType {
 
   // MARK: - Properties
 

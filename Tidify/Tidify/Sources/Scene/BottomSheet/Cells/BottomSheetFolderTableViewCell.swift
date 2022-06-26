@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import UIKit
 
-class BottomSheetFolderTableViewCell: UITableViewCell {
+final class BottomSheetFolderTableViewCell: UITableViewCell {
 
   // MARK: - Constants
 

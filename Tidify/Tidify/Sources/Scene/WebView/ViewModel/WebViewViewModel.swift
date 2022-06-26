@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WebViewViewModel: ViewModelType {
+final class WebViewViewModel: ViewModelType {
 
   // MARK: - Properties
   var bookMarkURLString: String = ""

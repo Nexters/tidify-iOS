@@ -13,7 +13,7 @@ protocol OnboardingViewModelDelegate: AnyObject {
   func showNextPage()
 }
 
-class OnboardingViewModel: ViewModelType {
+final class OnboardingViewModel: ViewModelType {
   struct Input {
     let nextButtonTap: Observable<Void>
   }

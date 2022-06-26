@@ -12,7 +12,7 @@ import SnapKit
 import Then
 import UIKit
 
-class SettingViewController: BaseViewController {
+final class SettingViewController: BaseViewController {
 
   // MARK: - Constants
 

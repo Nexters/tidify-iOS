@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import UIKit
 
-class ProfileViewController: BaseViewController {
+final class ProfileViewController: BaseViewController {
 
   // MARK: - Constants
 

@@ -15,7 +15,7 @@ protocol HomeViewModelDelegate: AnyObject {
   func pushWebView(_ url: String)
 }
 
-class HomeViewModel: ViewModelType {
+final class HomeViewModel: ViewModelType {
 
   // MARK: - Properties
   let imagePlaceholder = "https://via.placeholder.com/150"

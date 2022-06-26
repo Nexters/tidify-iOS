@@ -10,7 +10,7 @@ import RxSwift
 import Then
 import UIKit
 
-class CreateBookmarkViewController: BaseViewController {
+final class CreateBookmarkViewController: BaseViewController {
 
   // MARK: - Constants
 

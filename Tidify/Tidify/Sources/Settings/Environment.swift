@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Environment {
+final class Environment {
 
   // MARK: - Properties
 
