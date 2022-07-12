@@ -315,6 +315,40 @@
 			path = Interfaces;
 			sourceTree = "<group>";
 		};
+		865A8389287D9DE900C819D6 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				865A838A287D9DEC00C819D6 /* Repositories */,
+				865A838B287D9DF900C819D6 /* Network */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		865A838A287D9DEC00C819D6 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				B5443B9B26C8F11D00F7494A /* UserDefaultManager.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		865A838B287D9DF900C819D6 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B57765FF26C1731400533276 /* API */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		865A838C287D9E6A00C819D6 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B5F19C232699CFA800D1E8BB /* Environment.swift */,
+				B5CA8B1E26B043C600D9C6D3 /* Base */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		8661DED627DE11C90005B02B /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -458,11 +492,11 @@
 		B56D8313269989B800D5F513 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				865A838C287D9E6A00C819D6 /* Common */,
 				865A8384287D9CF800C819D6 /* Domain */,
-				B5CA8B1E26B043C600D9C6D3 /* Base */,
+				865A8389287D9DE900C819D6 /* Data */,
 				B5F19C0F26999D9200D1E8BB /* Coordinator */,
 				B5A9536B269F2F4C00290D64 /* Scene */,
-				B5F19C1E2699CB3F00D1E8BB /* Service */,
 				B5F19C222699CF9B00D1E8BB /* Settings */,
 			);
 			path = Sources;
@@ -754,19 +788,9 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		B5F19C1E2699CB3F00D1E8BB /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				B57765FF26C1731400533276 /* API */,
-				B5443B9B26C8F11D00F7494A /* UserDefaultManager.swift */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
 		B5F19C222699CF9B00D1E8BB /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				B5F19C232699CFA800D1E8BB /* Environment.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";

@@ -1,39 +1,36 @@
 //
-//  AuthAPI.swift
+//  BookMarkAPI.swift
 //  Tidify
 //
-//  Created by 여정수 on 2021/08/09.
+//  Created by 여정수 on 2021/07/10.
 //
 
-import Foundation
 import Moya
 
-enum SocialLoginType: String {
-  case kakao
-  case apple
+enum BookMarkAPI {
+  case getBookMarkList(id: Int)
+  case createBookMark(url: String, title: String?, ogImageUrl: String?, tags: String?)
 }
 
-enum AuthAPI {
-  case auth(socialLoginType: SocialLoginType, accessToken: String, refreshToken: String)
-}
-
-extension AuthAPI: TargetType {
+extension BookMarkAPI: TargetType {
   var baseURL: URL {
     return URL(string: Environment.shared.baseURL)!
   }
 
   var path: String {
-    let baseRoutePath = "/api/v1/oauth"
+    let baseRoutePath = "/api/v1/bookmarks"
 
     switch self {
-    case .auth:
+    case .getBookMarkList, .createBookMark:
       return baseRoutePath
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .auth:
+    case .getBookMarkList:
+      return .get
+    case .createBookMark:
       return .post
     }
   }
@@ -57,15 +54,21 @@ extension AuthAPI: TargetType {
   }
 
   var headers: [String: String]? {
+    if let authorization = Environment.shared.authorization {
+      return ["tidify-auth": authorization]
+    }
     return nil
   }
 
   private var parameters: [String: Any]? {
     switch self {
-    case let .auth(socialLoginType, accessToken, refreshToken):
-      return ["sns_type": socialLoginType.rawValue,
-              "access_token": accessToken,
-              "refresh_token": refreshToken]
+    case let .createBookMark(url, title, ogImageUrl, tags):
+      return ["url": url,
+              "title": title ?? "",
+              "og_img_url": ogImageUrl ?? "",
+              "tags": tags ?? ""]
+    case .getBookMarkList:
+      return nil
     }
   }
 }
