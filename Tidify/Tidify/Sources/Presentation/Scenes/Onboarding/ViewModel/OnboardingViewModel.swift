@@ -34,7 +34,8 @@ extension OnboardingViewModel: ViewModelType {
 
   struct Output {
     let didTapNextButton: Observable<Void>
-    let onboardingContent: Observable<(Onboarding, Int)?>
+    let content: Observable<[Onboarding]>
+    let currentPage: Observable<Int>
   }
 
   func transform(_ input: Input) -> Output {
@@ -51,14 +52,10 @@ extension OnboardingViewModel: ViewModelType {
         }
       })
 
-    let onboardingContent = currentPageRelay
-      .map { [weak self] currentValue -> (Onboarding, Int)? in
-        guard let self = self else { return nil }
-        return (self.onboardingDataSource[currentValue], currentValue)
-      }
-
     return Output(didTapNextButton: didTapNextButton,
-                  onboardingContent: onboardingContent)
+                  content: Observable.just(onboardingDataSource),
+                  currentPage: currentPageRelay.asObservable()
+    )
   }
 }
 

@@ -37,29 +37,6 @@ final class OnboardingViewController: BaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    let input = OnboardingViewModel.Input(nextButtonTap: nextButton.rx.tap.asObservable())
-    let output = viewModel.transform(input)
-
-    output.didTapNextButton
-      .t_asDriverSkipError()
-      .drive()
-      .disposed(by: disposeBag)
-
-    output.onboardingContent
-      .t_asDriverSkipError()
-      .drive(onNext: { [weak self] onboardingContent in
-        guard let onboardingContent = onboardingContent,
-              let self = self else { return }
-        let (onboarding, currentIndex) = onboardingContent
-
-        self.pageControl.currentPage = currentIndex
-        self.nextButton.setTitle(onboarding.buttonTitle, for: .normal)
-        self.collectionView.scrollToItem(at: IndexPath(item: currentIndex, section: 0),
-                                         at: .centeredHorizontally,
-                                         animated: true)
-      })
-      .disposed(by: disposeBag)
   }
 
   override func setupViews() {
@@ -82,12 +59,11 @@ final class OnboardingViewController: BaseViewController {
     }
 
     collectionView = .init(frame: .zero, collectionViewLayout: flowLayout).then {
-      $0.delegate = self
-      $0.dataSource = self
       $0.isPagingEnabled = true
       $0.showsHorizontalScrollIndicator = false
       $0.t_registerCellClass(cellType: OnboardingCollectionViewCell.self)
       $0.backgroundColor = .white
+      $0.rx.setDelegate(self).disposed(by: disposeBag)
       view.addSubview($0)
     }
 
@@ -118,26 +94,37 @@ final class OnboardingViewController: BaseViewController {
       $0.bottom.equalToSuperview().offset(-40)
     }
   }
-}
 
-// MARK: - DataSource
+  override func bindOutput() -> Disposable {
+    let input = OnboardingViewModel.Input(nextButtonTap: nextButton.rx.tap.asObservable())
+    let output = viewModel.transform(input)
 
-extension OnboardingViewController: UICollectionViewDataSource {
-  func collectionView(_ collectionView: UICollectionView,
-                      numberOfItemsInSection section: Int) -> Int {
-    return viewModel.onboardingDataSource.count
-  }
+    return Disposables.create([
+      output.didTapNextButton
+        .t_asDriverSkipError()
+        .drive(),
 
-  func collectionView(_ collectionView: UICollectionView,
-                      cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let onboarding = viewModel.onboardingDataSource[safe: indexPath.item] else {
-      return UICollectionViewCell()
-    }
-    let cell = collectionView.t_dequeueReusableCell(cellType: OnboardingCollectionViewCell.self,
-                                                    indexPath: indexPath)
-    cell.configure(onboarding)
+      output.content
+        .t_asDriverSkipError()
+        .drive(collectionView.rx.items(
+          cellIdentifier: OnboardingCollectionViewCell.identifer,
+          cellType: OnboardingCollectionViewCell.self)) { _, content, cell in
+            cell.configure(content)
+        },
 
-    return cell
+      output.currentPage
+        .do(onNext: { [weak self] in
+          self?.collectionView.scrollToItem(
+            at: .init(item: $0, section: 0),
+            at: .centeredHorizontally,
+            animated: true)
+
+          self?.nextButton.setTitle(
+            self?.viewModel.onboardingDataSource[$0].buttonTitle,
+            for: .normal)
+        })
+        .bind(to: pageControl.rx.currentPage)
+    ])
   }
 }
 

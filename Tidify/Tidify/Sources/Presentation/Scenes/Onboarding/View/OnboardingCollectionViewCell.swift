@@ -12,6 +12,7 @@ import UIKit
 final class OnboardingCollectionViewCell: UICollectionViewCell {
 
   // MARK: - Constants
+  static let identifer: String = "\(OnboardingCollectionViewCell.self)"
 
   // MARK: - Properties
   private weak var imageView: UIImageView!
