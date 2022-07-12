@@ -343,10 +343,20 @@
 		865A838C287D9E6A00C819D6 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				B5F19C232699CFA800D1E8BB /* Environment.swift */,
 				B5CA8B1E26B043C600D9C6D3 /* Base */,
+				B5CC174526C69DFB00E827CF /* Notifier.swift */,
+				B5F19C232699CFA800D1E8BB /* Environment.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		865A838D287D9F8200C819D6 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				B5F19C0F26999D9200D1E8BB /* Coordinator */,
+				B5A9536B269F2F4C00290D64 /* Scenes */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		8661DED627DE11C90005B02B /* Search */ = {
@@ -495,9 +505,7 @@
 				865A838C287D9E6A00C819D6 /* Common */,
 				865A8384287D9CF800C819D6 /* Domain */,
 				865A8389287D9DE900C819D6 /* Data */,
-				B5F19C0F26999D9200D1E8BB /* Coordinator */,
-				B5A9536B269F2F4C00290D64 /* Scene */,
-				B5F19C222699CF9B00D1E8BB /* Settings */,
+				865A838D287D9F8200C819D6 /* Presentation */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -514,7 +522,6 @@
 		B56D8315269989C500D5F513 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B5CC174526C69DFB00E827CF /* Notifier.swift */,
 				B5CC174726C6A48600E827CF /* UIAlertAction+.swift */,
 				B56D8316269989F600D5F513 /* CGSIze+.swift */,
 				B56D831926998A1300D5F513 /* Optional+.swift */,
@@ -614,7 +621,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		B5A9536B269F2F4C00290D64 /* Scene */ = {
+		B5A9536B269F2F4C00290D64 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
 				B53B93F226DB7D3B00EBCB21 /* Onboarding */,
@@ -626,7 +633,7 @@
 				B5CA8B1726B0436900D9C6D3 /* Setting */,
 				B5F19C122699A01700D1E8BB /* WebView */,
 			);
-			path = Scene;
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		B5A9536C269F2FBB00290D64 /* Configuration */ = {
@@ -786,13 +793,6 @@
 				C72F27D12699CF1C00104FE3 /* SignInViewController.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		B5F19C222699CF9B00D1E8BB /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 		C6C02FE7FEF98151B5063570 /* Pods */ = {
