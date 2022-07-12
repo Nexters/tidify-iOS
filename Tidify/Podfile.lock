@@ -85,7 +85,6 @@ PODS:
     - RxSwift (~> 5)
   - RxSwift (5.1.2)
   - SnapKit (5.0.1)
-  - SwiftLinkPreview (3.3.0)
   - SwiftLint (0.43.1)
   - Then (2.7.0)
 
@@ -100,7 +99,6 @@ DEPENDENCIES:
   - RxKakaoSDK
   - RxSwift
   - SnapKit
-  - SwiftLinkPreview
   - SwiftLint
   - Then
 
@@ -134,7 +132,6 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - SnapKit
-    - SwiftLinkPreview
     - SwiftLint
     - Then
 
@@ -167,7 +164,6 @@ SPEC CHECKSUMS:
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 1e2e1f9570186967f617e49128ed26ccf1bafc8e
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SwiftLinkPreview: 0b3863c119044c814c5dac57c4eceabd1e525547
   SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
