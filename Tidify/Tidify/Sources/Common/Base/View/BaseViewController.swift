@@ -23,6 +23,7 @@ class BaseViewController: UIViewController, BaseViewControllable {
     setupViews()
     setupLayoutConstraints()
     bindOutput()
+      .disposed(by: disposeBag)
   }
 
   // MARK: - Methods
@@ -36,8 +37,9 @@ class BaseViewController: UIViewController, BaseViewControllable {
     // Override Constraints
   }
 
-  func bindOutput() {
+  func bindOutput() -> Disposable {
     // Bind ViewModel's Output
+    return Disposables.create()
   }
 
   deinit {
