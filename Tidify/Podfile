@@ -16,7 +16,7 @@ target 'Tidify' do
     pod 'R.swift'
     pod 'RxKakaoSDK'
     pod 'Kingfisher'
-    pod 'SwiftLinkPreview'
+#    pod 'SwiftLinkPreview'
 
   target 'TidifyTests' do
       inherit! :search_paths
