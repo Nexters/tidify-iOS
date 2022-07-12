@@ -17,10 +17,20 @@ protocol SignInViewModelDelegate: AnyObject {
   func didSuccessSingInWithApple()
 }
 
-final class SignInViewModel: ViewModelType {
+final class SignInViewModel {
 
-  // MARK: - Properties
+  struct Dependencies {
+    let coordinator: SignInCoordinator
+  }
 
+  private let dependencies: Dependencies
+
+  init(dependencies: Dependencies) {
+    self.dependencies = dependencies
+  }
+}
+
+extension SignInViewModel: ViewModelType {
   struct Input {
     let signInWithKakaoButtonTap: ControlEvent<Void>
     let signInWithAppleButtonTap: ControlEvent<Void>
@@ -32,22 +42,24 @@ final class SignInViewModel: ViewModelType {
     let didTapWithoutLoginButton: Driver<Void>
   }
 
-  weak var delegate: SignInViewModelDelegate?
-
   // MARK: - Methods
 
   func transform(_ input: Input) -> Output {
     let userSession = input.signInWithKakaoButtonTap
       .flatMap { UserApi.shared.rx.loginWithKakaoAccount() }
       .flatMapLatest { oAuthToken in
-        return APIProvider.request(AuthAPI.auth(socialLoginType: .kakao,
-                                                accessToken: oAuthToken.accessToken,
-                                                refreshToken: oAuthToken.refreshToken))
+        return APIProvider.request(
+          AuthAPI.auth(
+            socialLoginType: .kakao,
+            accessToken: oAuthToken.accessToken,
+            refreshToken: oAuthToken.refreshToken
+          )
+        )
           .map(UserSessionDTO.self)
       }
-      .map { response -> UserSession? in
+      .map { [weak self] response -> UserSession? in
         if let authorization = response.authorization {
-          self.rememberAccessToken(authorization)
+          self?.rememberAccessToken(authorization)
           return UserSession(accessToken: authorization)
         }
 
@@ -55,7 +67,7 @@ final class SignInViewModel: ViewModelType {
       }
       .do(onNext: { [weak self] userSession in
         if userSession.t_isNotNil {
-          self?.delegate?.didSuccessSignInWithKakao()
+          self?.dependencies.coordinator.didSuccessSignInWithKakao()
         }
       })
         .asDriver(onErrorJustReturn: nil)
@@ -63,15 +75,19 @@ final class SignInViewModel: ViewModelType {
         let didTapWithoutLoginButton = input.withoutLoginButtonTap
         .asDriver()
         .do(onNext: { [weak self] in
-          self?.delegate?.didSuccessSignInWithKakao()
+          self?.dependencies.coordinator.didSuccessSingInWithApple()
         })
           .map { _ in }
 
-    return Output(userSession: userSession,
-                  didTapWithoutLoginButton: didTapWithoutLoginButton)
+    return Output(
+      userSession: userSession,
+      didTapWithoutLoginButton: didTapWithoutLoginButton
+    )
   }
+}
 
-  private func rememberAccessToken(_ accessToken: String) {
+private extension SignInViewModel {
+  func rememberAccessToken(_ accessToken: String) {
     UserDefaults.standard.setValue(accessToken, forKey: "access_token")
   }
 }

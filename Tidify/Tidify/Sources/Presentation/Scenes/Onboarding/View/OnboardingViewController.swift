@@ -42,7 +42,8 @@ final class OnboardingViewController: BaseViewController {
     let output = viewModel.transform(input)
 
     output.didTapNextButton
-      .subscribe()
+      .t_asDriverSkipError()
+      .drive()
       .disposed(by: disposeBag)
 
     output.onboardingContent
@@ -59,12 +60,12 @@ final class OnboardingViewController: BaseViewController {
                                          animated: true)
       })
       .disposed(by: disposeBag)
-    }
+  }
 
   override func setupViews() {
     view.backgroundColor = .white
 
-    self.pageControl = UIPageControl().then {
+    pageControl = .init().then {
       $0.currentPageIndicatorTintColor = .t_indigo00()
       $0.pageIndicatorTintColor = .systemGray
       $0.currentPage = 0
@@ -73,15 +74,14 @@ final class OnboardingViewController: BaseViewController {
       view.addSubview($0)
     }
 
-    let flowLayout = UICollectionViewFlowLayout()
-    flowLayout.scrollDirection = .horizontal
-    flowLayout.sectionInset = .zero
-    flowLayout.minimumLineSpacing = .zero
-    flowLayout.minimumInteritemSpacing = .zero
+    let flowLayout: UICollectionViewFlowLayout = .init().then {
+      $0.scrollDirection = .horizontal
+      $0.sectionInset = .zero
+      $0.minimumLineSpacing = .zero
+      $0.minimumInteritemSpacing = .zero
+    }
 
-    self.collectionView = UICollectionView(
-      frame: .zero,
-      collectionViewLayout: flowLayout).then {
+    collectionView = .init(frame: .zero, collectionViewLayout: flowLayout).then {
       $0.delegate = self
       $0.dataSource = self
       $0.isPagingEnabled = true
@@ -91,7 +91,7 @@ final class OnboardingViewController: BaseViewController {
       view.addSubview($0)
     }
 
-    self.nextButton = UIButton().then {
+    nextButton = .init().then {
       $0.backgroundColor = .t_tidiBlue00()
       $0.titleLabel?.font = .t_B(16)
       $0.t_cornerRadius(radius: 16)
@@ -135,7 +135,7 @@ extension OnboardingViewController: UICollectionViewDataSource {
     }
     let cell = collectionView.t_dequeueReusableCell(cellType: OnboardingCollectionViewCell.self,
                                                     indexPath: indexPath)
-    cell.setOnboarding(onboarding)
+    cell.configure(onboarding)
 
     return cell
   }

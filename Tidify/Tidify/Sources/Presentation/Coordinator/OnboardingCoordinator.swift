@@ -5,10 +5,13 @@
 //  Created by 여정수 on 2021/08/29.
 //
 
-import Foundation
 import UIKit
 
-class OnboardingCoordinator: Coordinator {
+protocol OnboardingCoordinator: Coordinator {
+  func showNextPage()
+}
+
+final class DefaultOnboardingCoordinator: OnboardingCoordinator {
 
   // MARK: - Properties
 
@@ -24,28 +27,36 @@ class OnboardingCoordinator: Coordinator {
   }
 
   func start() {
-    let onboardingViewModel = OnboardingViewModel()
-    onboardingViewModel.delegate = self
-    let onboardingViewController = OnboardingViewController(viewModel: onboardingViewModel)
-    self.navigationController.pushViewController(onboardingViewController, animated: false)
+    navigationController.pushViewController(getViewController(), animated: false)
   }
-}
 
-extension OnboardingCoordinator: OnboardingViewModelDelegate {
   func showNextPage() {
     if let accessToken = UserDefaults.standard.string(forKey: "access_token") {
       Environment.shared.authorization = accessToken
-      let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
+      let tabBarCoordinator: DefaultTabBarCoordinator = .init(
+        navigationController: navigationController
+      )
       tabBarCoordinator.parentCoordinator = self
       addChild(tabBarCoordinator)
 
       tabBarCoordinator.start()
     } else {
-      let signInCoordinator = SignInCoordinator(navigationController: navigationController)
+      let signInCoordinator: DefaultSignInCoordinator = .init(
+        navigationController: navigationController
+      )
       signInCoordinator.parentCoordinator = self
       addChild(signInCoordinator)
 
       signInCoordinator.start()
     }
+  }
+}
+
+private extension DefaultOnboardingCoordinator {
+  func getViewController() -> OnboardingViewController {
+    let viewModel: OnboardingViewModel = .init(dependencies: .init(coordinator: self))
+    let viewController: OnboardingViewController = .init(viewModel: viewModel)
+
+    return viewController
   }
 }

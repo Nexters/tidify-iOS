@@ -5,13 +5,17 @@
 //  Created by 여정수 on 2021/07/10.
 //
 
-import Foundation
 import RxCocoa
 import RxSwift
 import UIKit
 import WebKit
 
-class MainCoordinator: NSObject, Coordinator {
+protocol MainCoordinator: Coordinator {
+  func startWithOnboarding()
+  func startWithSignIn()
+}
+
+final class DefaultMainCoordinator: NSObject, MainCoordinator {
 
   // MARK: - Properties
 
@@ -35,7 +39,9 @@ class MainCoordinator: NSObject, Coordinator {
   // MARK: - Methods
 
   func start() {
-    let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
+    let tabBarCoordinator: DefaultTabBarCoordinator = .init(
+      navigationController: navigationController
+    )
     tabBarCoordinator.parentCoordinator = self
     addChild(tabBarCoordinator)
 
@@ -43,7 +49,9 @@ class MainCoordinator: NSObject, Coordinator {
   }
 
   func startWithOnboarding() {
-    let onboardingCoordinator = OnboardingCoordinator(navigationController: navigationController)
+    let onboardingCoordinator: DefaultOnboardingCoordinator = .init(
+      navigationController: navigationController
+    )
     onboardingCoordinator.parentCoordinator = self
     addChild(onboardingCoordinator)
 
@@ -51,7 +59,9 @@ class MainCoordinator: NSObject, Coordinator {
   }
 
   func startWithSignIn() {
-    let signInCoordinator = SignInCoordinator(navigationController: navigationController)
+    let signInCoordinator: DefaultSignInCoordinator = .init(
+      navigationController: navigationController
+    )
     signInCoordinator.parentCoordinator = self
     addChild(signInCoordinator)
 
