@@ -280,6 +280,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8642718E287DB72B00EDF511 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
 		865A8383287D9C2700C819D6 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -295,17 +302,10 @@
 			isa = PBXGroup;
 			children = (
 				865A8383287D9C2700C819D6 /* Entities */,
-				865A8385287D9D5B00C819D6 /* UseCases */,
+				8642718E287DB72B00EDF511 /* UseCases */,
 				865A8386287D9D6400C819D6 /* Interfaces */,
 			);
 			path = Domain;
-			sourceTree = "<group>";
-		};
-		865A8385287D9D5B00C819D6 /* UseCases */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UseCases;
 			sourceTree = "<group>";
 		};
 		865A8386287D9D6400C819D6 /* Interfaces */ = {
@@ -440,8 +440,8 @@
 		B53B93F226DB7D3B00EBCB21 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				B53B93F626DB7DC600EBCB21 /* ViewModel */,
 				B53B93F526DB7DC200EBCB21 /* View */,
+				B53B93F626DB7DC600EBCB21 /* ViewModel */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";

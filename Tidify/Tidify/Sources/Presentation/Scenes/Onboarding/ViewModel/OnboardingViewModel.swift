@@ -5,34 +5,40 @@
 //  Created by 여정수 on 2021/08/29.
 //
 
-import Foundation
 import RxCocoa
 import RxSwift
 
-protocol OnboardingViewModelDelegate: AnyObject {
-  func showNextPage()
+final class OnboardingViewModel {
+
+  struct Dependencies {
+    let coordinator: OnboardingCoordinator
+  }
+
+  private let dependencies: Dependencies
+
+  var currentPageRelay = BehaviorRelay<Int>(value: 0)
+
+  var onboardingDataSource: [Onboarding] {
+    setOnboardingResource()
+  }
+
+  init(dependencies: Dependencies) {
+    self.dependencies = dependencies
+  }
 }
 
-final class OnboardingViewModel: ViewModelType {
+extension OnboardingViewModel: ViewModelType {
   struct Input {
     let nextButtonTap: Observable<Void>
   }
 
   struct Output {
     let didTapNextButton: Observable<Void>
-    let onboardingContent: Observable<(Onboarding, Int)?>
+    let content: Observable<[Onboarding]>
+    let currentPage: Observable<Int>
   }
-
-  var onboardingDataSource: [Onboarding] {
-    setOnboardingResource()
-  }
-
-  var currentPageRelay = BehaviorRelay<Int>(value: 0)
-
-  weak var delegate: OnboardingViewModelDelegate?
 
   func transform(_ input: Input) -> Output {
-
     let didTapNextButton = input.nextButtonTap
       .do(onNext: { [weak self] in
         guard let self = self else { return }
@@ -40,20 +46,16 @@ final class OnboardingViewModel: ViewModelType {
 
         if currentValue + 1 > self.onboardingDataSource.count - 1 {
           UserDefaults.standard.setValue(true, forKey: "didOnborded")
-          self.delegate?.showNextPage()
+          self.dependencies.coordinator.showNextPage()
         } else {
           self.currentPageRelay.accept(currentValue + 1)
         }
       })
 
-      let onboardingContent = currentPageRelay
-        .map { [weak self] currentValue -> (Onboarding, Int)? in
-          guard let self = self else { return nil }
-          return (self.onboardingDataSource[currentValue], currentValue)
-        }
-
     return Output(didTapNextButton: didTapNextButton,
-                  onboardingContent: onboardingContent)
+                  content: Observable.just(onboardingDataSource),
+                  currentPage: currentPageRelay.asObservable()
+    )
   }
 }
 

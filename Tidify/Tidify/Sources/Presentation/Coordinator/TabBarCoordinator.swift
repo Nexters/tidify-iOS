@@ -23,7 +23,9 @@ enum TabBarItem: CaseIterable {
   }
 }
 
-class TabBarCoordinator: Coordinator {
+protocol TabBarCoordinator: Coordinator { }
+
+final class DefaultTabBarCoordinator: TabBarCoordinator {
 
   // MARK: - Properties
 
@@ -49,7 +51,7 @@ class TabBarCoordinator: Coordinator {
   }
 }
 
-private extension TabBarCoordinator {
+private extension DefaultTabBarCoordinator {
   func setupTabBarCoordinator() {
     tidifyTabBarController.tabBar.isHidden = true
 

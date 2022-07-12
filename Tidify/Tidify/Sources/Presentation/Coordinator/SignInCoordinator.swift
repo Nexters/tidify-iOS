@@ -5,10 +5,14 @@
 //  Created by 여정수 on 2021/08/29.
 //
 
-import Foundation
 import UIKit
 
-final class SignInCoordinator: Coordinator {
+protocol SignInCoordinator: Coordinator {
+  func didSuccessSignInWithKakao()
+  func didSuccessSingInWithApple()
+}
+
+final class DefaultSignInCoordinator: SignInCoordinator {
 
   // MARK: - Properties
 
@@ -24,15 +28,9 @@ final class SignInCoordinator: Coordinator {
   }
 
   func start() {
-    let signInViewModel = SignInViewModel()
-    signInViewModel.delegate = self
-    let signInViewController = SignInViewController(viewModel: signInViewModel)
-
-    navigationController.pushViewController(signInViewController, animated: true)
+    navigationController.pushViewController(getViewController(), animated: true)
   }
-}
 
-extension SignInCoordinator: SignInViewModelDelegate {
   func didSuccessSignInWithKakao() {
     var mainCoordinator: MainCoordinator?
 
@@ -41,7 +39,7 @@ extension SignInCoordinator: SignInViewModelDelegate {
       mainCoordinator = parentCoordinator
     } else {
       // startWithOnboarding으로 분기한 경우
-      guard let onboardingCoordinator = parentCoordinator as? OnboardingCoordinator,
+      guard let onboardingCoordinator = parentCoordinator as? DefaultOnboardingCoordinator,
             let parentCoordinator = onboardingCoordinator.parentCoordinator
               as? MainCoordinator else { return }
       mainCoordinator = parentCoordinator
@@ -53,5 +51,14 @@ extension SignInCoordinator: SignInViewModelDelegate {
   func didSuccessSingInWithApple() {
     // 추후 연동 진행
     print("⚠️ [Ian] \(#file) - \(#line): \(#function): Apple Login")
+  }
+}
+
+private extension DefaultSignInCoordinator {
+  func getViewController() -> SignInViewController {
+    let viewModel: SignInViewModel = .init(dependencies: .init(coordinator: self))
+    let viewController: SignInViewController = .init(viewModel: viewModel)
+
+    return viewController
   }
 }

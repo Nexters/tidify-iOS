@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
 
       let window = UIWindow(frame: UIScreen.main.bounds)
-      let mainCoordinator = MainCoordinator(window: window)
+      let mainCoordinator = DefaultMainCoordinator(window: window)
       self.mainCoordinator = mainCoordinator
 
       if !UserDefaults.standard.bool(forKey: "didOnboarded") {

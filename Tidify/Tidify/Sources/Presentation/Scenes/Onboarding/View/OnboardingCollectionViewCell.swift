@@ -12,6 +12,7 @@ import UIKit
 final class OnboardingCollectionViewCell: UICollectionViewCell {
 
   // MARK: - Constants
+  static let identifer: String = "\(OnboardingCollectionViewCell.self)"
 
   // MARK: - Properties
   private weak var imageView: UIImageView!
@@ -33,7 +34,7 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
     imageView.image = nil
   }
 
-  func setOnboarding(_ onboarding: Onboarding) {
+  func configure(_ onboarding: Onboarding) {
     imageView.image = onboarding.image
   }
 }

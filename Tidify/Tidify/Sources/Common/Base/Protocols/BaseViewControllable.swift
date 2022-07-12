@@ -12,5 +12,4 @@ protocol BaseViewControllable {
 
   func setupViews()
   func setupLayoutConstraints()
-  func bindOutput()
 }
