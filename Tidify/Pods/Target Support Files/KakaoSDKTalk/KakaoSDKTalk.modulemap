@@ -1,6 +1,0 @@
-framework module KakaoSDKTalk {
-  umbrella header "KakaoSDKTalk-umbrella.h"
-
-  export *
-  module * { export * }
-}

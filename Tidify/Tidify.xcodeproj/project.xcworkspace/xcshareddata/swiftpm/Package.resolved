@@ -1,0 +1,151 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
+        "state": {
+          "branch": null,
+          "revision": "8dd85aee02e39dd280c75eef88ffdb86eed4b07b",
+          "version": "5.6.2"
+        }
+      },
+      {
+        "package": "CwlCatchException",
+        "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
+        "state": {
+          "branch": null,
+          "revision": "35f9e770f54ce62dd8526470f14c6e137cef3eea",
+          "version": "2.1.1"
+        }
+      },
+      {
+        "package": "CwlPreconditionTesting",
+        "repositoryURL": "https://github.com/mattgallagher/CwlPreconditionTesting.git",
+        "state": {
+          "branch": null,
+          "revision": "c21f7bab5ca8eee0a9998bbd17ca1d0eb45d4688",
+          "version": "2.1.0"
+        }
+      },
+      {
+        "package": "KakaoOpenSDK",
+        "repositoryURL": "https://github.com/kakao/kakao-ios-sdk.git",
+        "state": {
+          "branch": null,
+          "revision": "4aee2605de323bdb54d42fb5108a414838efac08",
+          "version": "2.11.0"
+        }
+      },
+      {
+        "package": "RxKakaoOpenSDK",
+        "repositoryURL": "https://github.com/kakao/kakao-ios-sdk-rx",
+        "state": {
+          "branch": "master",
+          "revision": "c04c754c6e2b69b028d4fbcd4996d0c2f2b408ab",
+          "version": null
+        }
+      },
+      {
+        "package": "Kingfisher",
+        "repositoryURL": "https://github.com/onevcat/Kingfisher",
+        "state": {
+          "branch": "master",
+          "revision": "2235a22ca249199cb736237f4bb9cc12b6ed416a",
+          "version": null
+        }
+      },
+      {
+        "package": "Moya",
+        "repositoryURL": "https://github.com/Moya/Moya",
+        "state": {
+          "branch": "master",
+          "revision": "42b4da6cf00ce35874f2aebebefb9564c2fdb799",
+          "version": null
+        }
+      },
+      {
+        "package": "Nimble",
+        "repositoryURL": "https://github.com/Quick/Nimble",
+        "state": {
+          "branch": null,
+          "revision": "c93f16c25af5770f0d3e6af27c9634640946b068",
+          "version": "9.2.1"
+        }
+      },
+      {
+        "package": "OHHTTPStubs",
+        "repositoryURL": "https://github.com/AliSoftware/OHHTTPStubs.git",
+        "state": {
+          "branch": null,
+          "revision": "12f19662426d0434d6c330c6974d53e2eb10ecd9",
+          "version": "9.1.0"
+        }
+      },
+      {
+        "package": "Quick",
+        "repositoryURL": "https://github.com/Quick/Quick",
+        "state": {
+          "branch": null,
+          "revision": "f9d519828bb03dfc8125467d8f7b93131951124c",
+          "version": "5.0.1"
+        }
+      },
+      {
+        "package": "ReactiveSwift",
+        "repositoryURL": "https://github.com/ReactiveCocoa/ReactiveSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "c43bae3dac73fdd3cb906bd5a1914686ca71ed3c",
+          "version": "6.7.0"
+        }
+      },
+      {
+        "package": "RxAlamofire",
+        "repositoryURL": "https://github.com/RxSwiftCommunity/RxAlamofire.git",
+        "state": {
+          "branch": null,
+          "revision": "9535b58695b91fb67f56d58d6fd0c76462d7743a",
+          "version": "6.1.2"
+        }
+      },
+      {
+        "package": "RxSwift",
+        "repositoryURL": "https://github.com/ReactiveX/RxSwift",
+        "state": {
+          "branch": "main",
+          "revision": "e0ab8c4e18baf6679a65b325155923276b832687",
+          "version": null
+        }
+      },
+      {
+        "package": "SnapKit",
+        "repositoryURL": "https://github.com/SnapKit/SnapKit",
+        "state": {
+          "branch": "develop",
+          "revision": "07c5d1f6044701d97e94dc11157259e8811977be",
+          "version": null
+        }
+      },
+      {
+        "package": "SwiftLinkPreview",
+        "repositoryURL": "https://github.com/LeonardoCardoso/SwiftLinkPreview",
+        "state": {
+          "branch": "main",
+          "revision": "250e85010831c63cda8b83e175ca1e0fd6b630c6",
+          "version": null
+        }
+      },
+      {
+        "package": "Then",
+        "repositoryURL": "https://github.com/devxoul/Then",
+        "state": {
+          "branch": "master",
+          "revision": "d41ef523faef0f911369f79c0b96815d9dbb6d7a",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

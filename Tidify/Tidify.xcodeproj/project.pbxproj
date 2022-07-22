@@ -3,17 +3,26 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */; };
 		406D154927EB628D00007C5A /* BookMarkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406D154827EB628D00007C5A /* BookMarkCollectionViewCell.swift */; };
 		407F2F1927E841080061E2B7 /* FolderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */; };
 		407F2F1B27E841390061E2B7 /* FolderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */; };
 		407F2F1D27E843570061E2B7 /* FolderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */; };
 		40C0023427E088F400941339 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C0023327E088F400941339 /* UICollectionViewCell+.swift */; };
-		74054C0E59CF4CBF363302BD /* Pods_TidifyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */; };
+		40D76368288B2D3D006FC99C /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 40D76367288B2D3D006FC99C /* Quick */; };
+		40D7636B288B2D56006FC99C /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 40D7636A288B2D56006FC99C /* Nimble */; };
+		40D7636E288B2D63006FC99C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40D7636D288B2D63006FC99C /* SnapKit */; };
+		40D76371288B2D6D006FC99C /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 40D76370288B2D6D006FC99C /* Then */; };
+		40D76374288B2D7F006FC99C /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 40D76373288B2D7F006FC99C /* RxCocoa */; };
+		40D76376288B2D7F006FC99C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 40D76375288B2D7F006FC99C /* RxSwift */; };
+		40D76379288B2D96006FC99C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 40D76378288B2D96006FC99C /* Moya */; };
+		40D7637B288B2D96006FC99C /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 40D7637A288B2D96006FC99C /* RxMoya */; };
+		40D7637E288B2DAE006FC99C /* SwiftLinkPreview in Frameworks */ = {isa = PBXBuildFile; productRef = 40D7637D288B2DAE006FC99C /* SwiftLinkPreview */; };
+		40D76381288B2DD4006FC99C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 40D76380288B2DD4006FC99C /* Kingfisher */; };
+		40D76384288B2DEB006FC99C /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 40D76383288B2DEB006FC99C /* RxKakaoSDK */; };
 		8652F8B327ECA69400C50A90 /* BaseViewControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8652F8B227ECA69400C50A90 /* BaseViewControllable.swift */; };
 		86572BE42868842F004F2571 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86572BE32868842F004F2571 /* BaseView.swift */; };
 		8661DECE27DDBF360005B02B /* AccountSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */; };
@@ -140,14 +149,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TidifyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		406D154827EB628D00007C5A /* BookMarkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkCollectionViewCell.swift; sourceTree = "<group>"; };
 		407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailViewController.swift; sourceTree = "<group>"; };
 		407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailCoordinator.swift; sourceTree = "<group>"; };
 		407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailViewModel.swift; sourceTree = "<group>"; };
 		40C0023327E088F400941339 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
-		4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tidify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.release.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.release.xcconfig"; sourceTree = "<group>"; };
 		8652F8B227ECA69400C50A90 /* BaseViewControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewControllable.swift; sourceTree = "<group>"; };
 		86572BE32868842F004F2571 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		8661DECD27DDBF360005B02B /* AccountSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -159,8 +165,6 @@
 		8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkTableViewCell.swift; sourceTree = "<group>"; };
 		868326A327E8CCC600140EAE /* OnboardingSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSpec.swift; sourceTree = "<group>"; };
 		86E3D29B27E8A73100171084 /* TidifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TidifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tidify.debug.xcconfig"; path = "Target Support Files/Pods-Tidify/Pods-Tidify.debug.xcconfig"; sourceTree = "<group>"; };
-		8B89E49041036E11C75AC302 /* Pods-TidifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TidifyTests.debug.xcconfig"; path = "Target Support Files/Pods-TidifyTests/Pods-TidifyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetLabelColorTableViewCell.swift; sourceTree = "<group>"; };
 		B52982CC269C883500B34C5E /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
@@ -249,7 +253,6 @@
 		C7692C1B26999C7800A2F699 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		C7692C2026999C7800A2F699 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7AF275026BE900F00AE258B /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
-		E32540E4A68BCCB2149DB982 /* Pods-TidifyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TidifyTests.release.xcconfig"; path = "Target Support Files/Pods-TidifyTests/Pods-TidifyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,7 +260,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74054C0E59CF4CBF363302BD /* Pods_TidifyTests.framework in Frameworks */,
+				40D76368288B2D3D006FC99C /* Quick in Frameworks */,
+				40D7636B288B2D56006FC99C /* Nimble in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +270,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				C72F27CA2699CC1B00104FE3 /* OSLog.framework in Frameworks */,
-				15EBCBD283FA314D8857D7B8 /* Pods_Tidify.framework in Frameworks */,
+				40D76371288B2D6D006FC99C /* Then in Frameworks */,
+				40D76379288B2D96006FC99C /* Moya in Frameworks */,
+				40D76381288B2DD4006FC99C /* Kingfisher in Frameworks */,
+				40D76376288B2D7F006FC99C /* RxSwift in Frameworks */,
+				40D7637B288B2D96006FC99C /* RxMoya in Frameworks */,
+				40D7637E288B2DAE006FC99C /* SwiftLinkPreview in Frameworks */,
+				40D76374288B2D7F006FC99C /* RxCocoa in Frameworks */,
+				40D7636E288B2D63006FC99C /* SnapKit in Frameworks */,
+				40D76384288B2DEB006FC99C /* RxKakaoSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,7 +484,6 @@
 				C7692C1A26999C7800A2F699 /* TidifyShareExtension */,
 				86E3D29C27E8A73100171084 /* TidifyTests */,
 				B56D82FB269987AB00D5F513 /* Products */,
-				C6C02FE7FEF98151B5063570 /* Pods */,
 				F9C32BA5670FB74E5BEFCDC3 /* Frameworks */,
 				C7AF270D26BE867A00AE258B /* Recovered References */,
 			);
@@ -795,17 +806,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		C6C02FE7FEF98151B5063570 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */,
-				7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */,
-				8B89E49041036E11C75AC302 /* Pods-TidifyTests.debug.xcconfig */,
-				E32540E4A68BCCB2149DB982 /* Pods-TidifyTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		C7692C1A26999C7800A2F699 /* TidifyShareExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -830,8 +830,6 @@
 			isa = PBXGroup;
 			children = (
 				C72F27C92699CC1B00104FE3 /* OSLog.framework */,
-				4D23A29FC7484A8F9140C1C9 /* Pods_Tidify.framework */,
-				2D924E621B61F1DB2B2CF1D7 /* Pods_TidifyTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -843,11 +841,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 86E3D2A327E8A73100171084 /* Build configuration list for PBXNativeTarget "TidifyTests" */;
 			buildPhases = (
-				3B238A0EDD39E3DD670FAE60 /* [CP] Check Pods Manifest.lock */,
 				86E3D29727E8A73100171084 /* Sources */,
 				86E3D29827E8A73100171084 /* Frameworks */,
 				86E3D29927E8A73100171084 /* Resources */,
-				B7E0C28D3DECA6E3C5A50793 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -855,6 +851,10 @@
 				86E3D2A027E8A73100171084 /* PBXTargetDependency */,
 			);
 			name = TidifyTests;
+			packageProductDependencies = (
+				40D76367288B2D3D006FC99C /* Quick */,
+				40D7636A288B2D56006FC99C /* Nimble */,
+			);
 			productName = TidifyTests;
 			productReference = 86E3D29B27E8A73100171084 /* TidifyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -863,14 +863,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B56D830E269987AC00D5F513 /* Build configuration list for PBXNativeTarget "Tidify" */;
 			buildPhases = (
-				B9CE037148B8B5B3CF50B195 /* [CP] Check Pods Manifest.lock */,
-				B5314FAF2699E71400769AB2 /* ShellScript */,
 				B56D82F6269987AB00D5F513 /* Sources */,
 				B56D82F7269987AB00D5F513 /* Frameworks */,
 				B56D82F8269987AB00D5F513 /* Resources */,
-				59D0644373B4701FE7C48446 /* [CP] Embed Pods Frameworks */,
 				C7692C2426999C7800A2F699 /* Embed App Extensions */,
-				B5314FAC2699E34200769AB2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -878,6 +874,17 @@
 				C7692C2226999C7800A2F699 /* PBXTargetDependency */,
 			);
 			name = Tidify;
+			packageProductDependencies = (
+				40D7636D288B2D63006FC99C /* SnapKit */,
+				40D76370288B2D6D006FC99C /* Then */,
+				40D76373288B2D7F006FC99C /* RxCocoa */,
+				40D76375288B2D7F006FC99C /* RxSwift */,
+				40D76378288B2D96006FC99C /* Moya */,
+				40D7637A288B2D96006FC99C /* RxMoya */,
+				40D7637D288B2DAE006FC99C /* SwiftLinkPreview */,
+				40D76380288B2DD4006FC99C /* Kingfisher */,
+				40D76383288B2DEB006FC99C /* RxKakaoSDK */,
+			);
 			productName = Tidify;
 			productReference = B56D82FA269987AB00D5F513 /* Tidify.app */;
 			productType = "com.apple.product-type.application";
@@ -929,6 +936,17 @@
 				Base,
 			);
 			mainGroup = B56D82F1269987AB00D5F513;
+			packageReferences = (
+				40D76366288B2D3D006FC99C /* XCRemoteSwiftPackageReference "Quick" */,
+				40D76369288B2D56006FC99C /* XCRemoteSwiftPackageReference "Nimble" */,
+				40D7636C288B2D63006FC99C /* XCRemoteSwiftPackageReference "SnapKit" */,
+				40D7636F288B2D6D006FC99C /* XCRemoteSwiftPackageReference "Then" */,
+				40D76372288B2D7F006FC99C /* XCRemoteSwiftPackageReference "RxSwift" */,
+				40D76377288B2D96006FC99C /* XCRemoteSwiftPackageReference "Moya" */,
+				40D7637C288B2DAE006FC99C /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */,
+				40D7637F288B2DD4006FC99C /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				40D76382288B2DEB006FC99C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+			);
 			productRefGroup = B56D82FB269987AB00D5F513 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -968,123 +986,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		3B238A0EDD39E3DD670FAE60 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TidifyTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		59D0644373B4701FE7C48446 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tidify/Pods-Tidify-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tidify/Pods-Tidify-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tidify/Pods-Tidify-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B5314FAC2699E34200769AB2 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
-		};
-		B5314FAF2699E71400769AB2 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$TEMP_DIR/rswift-lastrun",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				$SRCROOT/Tidify/Configuration/R.generated.swift,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/Tidify/Configuration/R.generated.swift\"\n";
-		};
-		B7E0C28D3DECA6E3C5A50793 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TidifyTests/Pods-TidifyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TidifyTests/Pods-TidifyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TidifyTests/Pods-TidifyTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B9CE037148B8B5B3CF50B195 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tidify-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		86E3D29727E8A73100171084 /* Sources */ = {
@@ -1235,7 +1136,6 @@
 /* Begin XCBuildConfiguration section */
 		86E3D2A127E8A73100171084 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B89E49041036E11C75AC302 /* Pods-TidifyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1256,7 +1156,6 @@
 		};
 		86E3D2A227E8A73100171084 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E32540E4A68BCCB2149DB982 /* Pods-TidifyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1393,7 +1292,6 @@
 		};
 		B56D830F269987AC00D5F513 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8AF22BA20F15740882C56F7F /* Pods-Tidify.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1415,7 +1313,6 @@
 		};
 		B56D8310269987AC00D5F513 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A4A791031FC1A94EE4CE0E8 /* Pods-Tidify.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1517,6 +1414,139 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		40D76366288B2D3D006FC99C /* XCRemoteSwiftPackageReference "Quick" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Quick";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		40D76369288B2D56006FC99C /* XCRemoteSwiftPackageReference "Nimble" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Nimble";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+		40D7636C288B2D63006FC99C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+		40D7636F288B2D6D006FC99C /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		40D76372288B2D7F006FC99C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		40D76377288B2D96006FC99C /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		40D7637C288B2DAE006FC99C /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LeonardoCardoso/SwiftLinkPreview";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		40D7637F288B2DD4006FC99C /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		40D76382288B2DEB006FC99C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		40D76367288B2D3D006FC99C /* Quick */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D76366288B2D3D006FC99C /* XCRemoteSwiftPackageReference "Quick" */;
+			productName = Quick;
+		};
+		40D7636A288B2D56006FC99C /* Nimble */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D76369288B2D56006FC99C /* XCRemoteSwiftPackageReference "Nimble" */;
+			productName = Nimble;
+		};
+		40D7636D288B2D63006FC99C /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D7636C288B2D63006FC99C /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		40D76370288B2D6D006FC99C /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D7636F288B2D6D006FC99C /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		40D76373288B2D7F006FC99C /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D76372288B2D7F006FC99C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		40D76375288B2D7F006FC99C /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D76372288B2D7F006FC99C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		40D76378288B2D96006FC99C /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D76377288B2D96006FC99C /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		40D7637A288B2D96006FC99C /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D76377288B2D96006FC99C /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
+		};
+		40D7637D288B2DAE006FC99C /* SwiftLinkPreview */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D7637C288B2DAE006FC99C /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */;
+			productName = SwiftLinkPreview;
+		};
+		40D76380288B2DD4006FC99C /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D7637F288B2DD4006FC99C /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		40D76383288B2DEB006FC99C /* RxKakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40D76382288B2DEB006FC99C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B56D82F2269987AB00D5F513 /* Project object */;
 }
