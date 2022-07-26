@@ -33,6 +33,7 @@
 		8661DEE127DE12110005B02B /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661DEE027DE12110005B02B /* SearchViewModel.swift */; };
 		8680A0A327D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8680A0A227D0EF1F00EB2DF7 /* BookMarkTableViewCell.swift */; };
 		868326A427E8CCC600140EAE /* OnboardingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868326A327E8CCC600140EAE /* OnboardingSpec.swift */; };
+		86DABDDE288BC85300766FD1 /* Rswift in Frameworks */ = {isa = PBXBuildFile; productRef = 86DABDDD288BC85300766FD1 /* Rswift */; };
 		B50A37C926C7F74C00E5EE31 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A37C826C7F74C00E5EE31 /* ProfileViewController.swift */; };
 		B50E18D426D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18D326D8966D00207062 /* BottomSheetLabelColorTableViewCell.swift */; };
 		B52982CD269C883500B34C5E /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52982CC269C883500B34C5E /* HomeCoordinator.swift */; };
@@ -271,6 +272,7 @@
 			files = (
 				C72F27CA2699CC1B00104FE3 /* OSLog.framework in Frameworks */,
 				40D76371288B2D6D006FC99C /* Then in Frameworks */,
+				86DABDDE288BC85300766FD1 /* Rswift in Frameworks */,
 				40D76379288B2D96006FC99C /* Moya in Frameworks */,
 				40D76381288B2DD4006FC99C /* Kingfisher in Frameworks */,
 				40D76376288B2D7F006FC99C /* RxSwift in Frameworks */,
@@ -884,6 +886,7 @@
 				40D7637D288B2DAE006FC99C /* SwiftLinkPreview */,
 				40D76380288B2DD4006FC99C /* Kingfisher */,
 				40D76383288B2DEB006FC99C /* RxKakaoSDK */,
+				86DABDDD288BC85300766FD1 /* Rswift */,
 			);
 			productName = Tidify;
 			productReference = B56D82FA269987AB00D5F513 /* Tidify.app */;
@@ -946,6 +949,7 @@
 				40D7637C288B2DAE006FC99C /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */,
 				40D7637F288B2DD4006FC99C /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				40D76382288B2DEB006FC99C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				86DABDDC288BC85300766FD1 /* XCRemoteSwiftPackageReference "R.swift" */,
 			);
 			productRefGroup = B56D82FB269987AB00D5F513 /* Products */;
 			projectDirPath = "";
@@ -1488,6 +1492,14 @@
 				kind = branch;
 			};
 		};
+		86DABDDC288BC85300766FD1 /* XCRemoteSwiftPackageReference "R.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift.Library";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1545,6 +1557,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 40D76382288B2DEB006FC99C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
 			productName = RxKakaoSDK;
+		};
+		86DABDDD288BC85300766FD1 /* Rswift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 86DABDDC288BC85300766FD1 /* XCRemoteSwiftPackageReference "R.swift" */;
+			productName = Rswift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

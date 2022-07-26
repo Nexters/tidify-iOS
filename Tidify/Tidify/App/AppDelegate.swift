@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
       if let kakaoApiKey = Bundle.main.infoDictionary?["KAKAO_API_KEY"] as? String {
-        RxKakaoSDKCommon.initSDK(appKey: kakaoApiKey)
+        RxKakaoSDK.initSDK(appKey: kakaoApiKey)
       } else {
         Log.info("카카오 SDK가 초기화되지 않았습니다.")
       }
