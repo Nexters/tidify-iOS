@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		406D154927EB628D00007C5A /* BookMarkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406D154827EB628D00007C5A /* BookMarkCollectionViewCell.swift */; };
+		407BBF5728908B3300786BB7 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 407BBF5628908B3300786BB7 /* ReactorKit */; };
 		407F2F1927E841080061E2B7 /* FolderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1827E841080061E2B7 /* FolderDetailViewController.swift */; };
 		407F2F1B27E841390061E2B7 /* FolderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1A27E841390061E2B7 /* FolderDetailCoordinator.swift */; };
 		407F2F1D27E843570061E2B7 /* FolderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407F2F1C27E843570061E2B7 /* FolderDetailViewModel.swift */; };
@@ -280,6 +281,7 @@
 				40D7637E288B2DAE006FC99C /* SwiftLinkPreview in Frameworks */,
 				40D76374288B2D7F006FC99C /* RxCocoa in Frameworks */,
 				40D7636E288B2D63006FC99C /* SnapKit in Frameworks */,
+				407BBF5728908B3300786BB7 /* ReactorKit in Frameworks */,
 				40D76384288B2DEB006FC99C /* RxKakaoSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -887,6 +889,7 @@
 				40D76380288B2DD4006FC99C /* Kingfisher */,
 				40D76383288B2DEB006FC99C /* RxKakaoSDK */,
 				86DABDDD288BC85300766FD1 /* Rswift */,
+				407BBF5628908B3300786BB7 /* ReactorKit */,
 			);
 			productName = Tidify;
 			productReference = B56D82FA269987AB00D5F513 /* Tidify.app */;
@@ -950,6 +953,7 @@
 				40D7637F288B2DD4006FC99C /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				40D76382288B2DEB006FC99C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				86DABDDC288BC85300766FD1 /* XCRemoteSwiftPackageReference "R.swift" */,
+				407BBF5528908B3300786BB7 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 			);
 			productRefGroup = B56D82FB269987AB00D5F513 /* Products */;
 			projectDirPath = "";
@@ -1420,6 +1424,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		407BBF5528908B3300786BB7 /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		40D76366288B2D3D006FC99C /* XCRemoteSwiftPackageReference "Quick" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Quick/Quick";
@@ -1503,6 +1515,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		407BBF5628908B3300786BB7 /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 407BBF5528908B3300786BB7 /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
+		};
 		40D76367288B2D3D006FC99C /* Quick */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 40D76366288B2D3D006FC99C /* XCRemoteSwiftPackageReference "Quick" */;
