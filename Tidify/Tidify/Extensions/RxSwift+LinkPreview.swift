@@ -5,6 +5,8 @@
 //  Created by Manjong Han on 2021/07/11.
 //
 
+import Foundation
+
 import RxSwift
 import SwiftLinkPreview
 

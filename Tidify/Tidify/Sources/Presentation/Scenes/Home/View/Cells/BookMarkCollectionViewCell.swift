@@ -5,6 +5,8 @@
 //  Created by 한상진 on 2022/03/23.
 //
 
+import UIKit
+
 import Kingfisher
 import RxCocoa
 import RxSwift
