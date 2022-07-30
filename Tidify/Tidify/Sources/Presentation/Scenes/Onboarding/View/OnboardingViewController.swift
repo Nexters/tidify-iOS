@@ -5,26 +5,25 @@
 //  Created by 여정수 on 2021/08/29.
 //
 
-import RxCocoa
-import RxSwift
+import ReactorKit
 import SnapKit
 import Then
 import UIKit
 
-final class OnboardingViewController: BaseViewController {
+final class OnboardingViewController: BaseViewController, View {
 
-  // MARK: - Properties
+  // MARK: Properties
 
   private weak var pageControl: UIPageControl!
   private (set) weak var collectionView: UICollectionView!
   private weak var nextButton: UIButton!
 
-  private let viewModel: OnboardingViewModel!
+  private let reactor: OnboardingReactor!
 
   // MARK: - Initialize
 
-  init(viewModel: OnboardingViewModel) {
-    self.viewModel = viewModel
+  init(reactor: OnboardingReactor) {
+    self.reactor = reactor
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -37,6 +36,8 @@ final class OnboardingViewController: BaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    bind(reactor: reactor)
   }
 
   override func setupViews() {
@@ -46,7 +47,7 @@ final class OnboardingViewController: BaseViewController {
       $0.currentPageIndicatorTintColor = .t_indigo00()
       $0.pageIndicatorTintColor = .systemGray
       $0.currentPage = 0
-      $0.numberOfPages = viewModel.onboardingDataSource.count
+      $0.numberOfPages = reactor.initialState.contents.count
       $0.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
       view.addSubview($0)
     }
@@ -95,36 +96,45 @@ final class OnboardingViewController: BaseViewController {
     }
   }
 
-  override func bindOutput() -> Disposable {
-    let input = OnboardingViewModel.Input(nextButtonTap: nextButton.rx.tap.asObservable())
-    let output = viewModel.transform(input)
+  func bind(reactor: OnboardingReactor) {
+    typealias Action = OnboardingReactor.Action
 
-    return Disposables.create([
-      output.didTapNextButton
-        .t_asDriverSkipError()
-        .drive(),
+    nextButton.rx.tap
+      .map { Action.showNextContent }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
 
-      output.content
-        .t_asDriverSkipError()
-        .drive(collectionView.rx.items(
-          cellIdentifier: OnboardingCollectionViewCell.identifer,
-          cellType: OnboardingCollectionViewCell.self)) { _, content, cell in
-            cell.configure(content)
-        },
+    collectionView.rx.willEndDragging
+      .map { [weak self] (_, targetContentOffset: UnsafeMutablePointer<CGPoint>) in
+        let index = self?.calculatePageIndex(targetOffset: targetContentOffset) ?? 0
+        return Action.willEndDragging(index: index)
+      }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
 
-      output.currentPage
-        .do(onNext: { [weak self] in
-          self?.collectionView.scrollToItem(
-            at: .init(item: $0, section: 0),
-            at: .centeredHorizontally,
-            animated: true)
+    reactor.state
+      .map { $0.contents }
+      .bind(to: collectionView.rx.items(
+        cellIdentifier: OnboardingCollectionViewCell.identifer, cellType: OnboardingCollectionViewCell.self)
+      ) { _, onboarding, cell in
+        cell.configure(onboarding)
+      }
+      .disposed(by: disposeBag)
 
-          self?.nextButton.setTitle(
-            self?.viewModel.onboardingDataSource[$0].buttonTitle,
-            for: .normal)
-        })
-        .bind(to: pageControl.rx.currentPage)
-    ])
+    reactor.state
+      .map { $0.contentIndex }
+      .do(onNext: { [weak self] index in
+        let buttonTitle: String = reactor.initialState.contents[index].buttonTitle
+
+        self?.collectionView.scrollToItem(
+          at: .init(item: index, section: 0),
+          at: .centeredHorizontally,
+          animated: true)
+
+        self?.nextButton.setTitle(buttonTitle, for: .normal)
+      })
+      .bind(to: pageControl.rx.currentPage)
+      .disposed(by: disposeBag)
   }
 }
 
@@ -136,13 +146,8 @@ extension OnboardingViewController: UICollectionViewDelegateFlowLayout {
   }
 }
 
-// MARK: - Delegate
-
-extension OnboardingViewController: UICollectionViewDelegate {
-  func scrollViewWillEndDragging(_ scrollView: UIScrollView,
-                                 withVelocity velocity: CGPoint,
-                                 targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-    let pageIndex = Int(targetContentOffset.pointee.x / collectionView.frame.width)
-    viewModel.currentPageRelay.accept(pageIndex)
+private extension OnboardingViewController {
+  func calculatePageIndex(targetOffset: UnsafeMutablePointer<CGPoint>) -> Int {
+    return Int(targetOffset.pointee.x / collectionView.frame.width)
   }
 }
