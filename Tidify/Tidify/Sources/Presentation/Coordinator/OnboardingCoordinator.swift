@@ -55,7 +55,8 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
 private extension DefaultOnboardingCoordinator {
   func getViewController() -> OnboardingViewController {
     let reactor: OnboardingReactor = .init(coordinator: self)
-    let viewController: OnboardingViewController = .init(reactor: reactor)
+    let viewController: OnboardingViewController = .init(nibName: nil, bundle: nil)
+    viewController.reactor = reactor
 
     return viewController
   }
