@@ -61,7 +61,7 @@ extension OnboardingReactor: Reactor {
     switch mutation {
     case .didShowNextContent:
       if state.contentIndex == state.contents.count - 1 {
-        coordinator.showNextPage()
+        coordinator.showNextScene()
       } else {
         newState.contentIndex += 1
       }

@@ -59,7 +59,7 @@ extension SignInViewModel: ViewModelType {
       }
       .map { [weak self] response -> UserSession? in
         if let authorization = response.authorization {
-          self?.rememberAccessToken(authorization)
+          UserDefaultManager.accessToken = authorization
           return UserSession(accessToken: authorization)
         }
 
@@ -83,11 +83,5 @@ extension SignInViewModel: ViewModelType {
       userSession: userSession,
       didTapWithoutLoginButton: didTapWithoutLoginButton
     )
-  }
-}
-
-private extension SignInViewModel {
-  func rememberAccessToken(_ accessToken: String) {
-    UserDefaults.standard.setValue(accessToken, forKey: "access_token")
   }
 }

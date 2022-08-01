@@ -16,7 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: - Properties
 
   var window: UIWindow?
-  var mainCoordinator: MainCoordinator?
+  private var mainCoordinator: MainCoordinator?
+  private let accessToken = UserDefaultManager.accessToken
 
   // MARK: - Methods
 
@@ -34,12 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       let mainCoordinator = DefaultMainCoordinator(window: window)
       self.mainCoordinator = mainCoordinator
 
-      if !UserDefaults.standard.bool(forKey: "didOnboarded") {
+      if !UserDefaultManager.didOnboarded {
         mainCoordinator.startWithOnboarding()
         return true
       }
 
-      if let accessToken = UserDefaults.standard.string(forKey: "access_token") {
+      if accessToken != "" {
         Environment.shared.authorization = accessToken
       } else {
         mainCoordinator.startWithSignIn()
@@ -50,9 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return true
     }
 
-  open func application(_ app: UIApplication, open url: URL,
-                        options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-
+  open func application(
+    _ app: UIApplication, open url: URL,
+    options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     if AuthApi.isKakaoTalkLoginUrl(url) {
       return AuthController.rx.handleOpenUrl(url: url)
     }

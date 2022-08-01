@@ -8,20 +8,10 @@
 import Foundation
 import UIKit
 
-enum UserDefaultManager: String {
+enum UserDefaultManager {
+  @UserDefault(key: .didOnboarded, defaultValue: false)
+  static var didOnboarded: Bool
 
-  // MARK: - Keys
-
-  case userImageData = "User.image.data"
-  case userNameString = "User.name.string"
-
-  // MARK: - Methods
-
-  static func getProfileImage() -> UIImage? {
-    guard let data = UserDefaults.standard.data(forKey: Self.userImageData.rawValue) else {
-      return nil
-    }
-
-    return UIImage(data: data)
-  }
+  @UserDefault(key: .accessToken, defaultValue: "")
+  static var accessToken
 }
