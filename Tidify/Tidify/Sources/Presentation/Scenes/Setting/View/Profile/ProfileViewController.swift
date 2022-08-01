@@ -163,12 +163,12 @@ private extension ProfileViewController {
   }
 
   func saveProfileData() {
-    guard let imageData = self.profileImageView.image?.pngData(),
-          let nameText = self.nameTextField.text else {
-            return
-          }
+//    guard let imageData = self.profileImageView.image?.pngData(),
+//          let nameText = self.nameTextField.text else {
+//            return
+//          }
 
-    UserDefaults.standard.setValue(imageData, forKey: UserDefaultManager.userImageData.rawValue)
-    UserDefaults.standard.setValue(nameText, forKey: UserDefaultManager.userNameString.rawValue)
+//    UserDefaults.standard.setValue(imageData, forKey: UserDefaultManager.userImageData.rawValue)
+//    UserDefaults.standard.setValue(nameText, forKey: UserDefaultManager.userNameString.rawValue)
   }
 }

@@ -39,6 +39,8 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
       tabBarCoordinator.parentCoordinator = self
       addChild(tabBarCoordinator)
 
+      UserDefaultManager.didOnboarded = true
+
       tabBarCoordinator.start()
     } else {
       let signInCoordinator: DefaultSignInCoordinator = .init(
