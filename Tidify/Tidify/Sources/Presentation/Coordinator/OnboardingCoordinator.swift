@@ -8,7 +8,7 @@
 import UIKit
 
 protocol OnboardingCoordinator: Coordinator {
-  func showNextPage()
+  func showNextScene()
 }
 
 final class DefaultOnboardingCoordinator: OnboardingCoordinator {
@@ -19,6 +19,7 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
   var childCoordinators: [Coordinator] = []
 
   var navigationController: UINavigationController
+  private var accessToken = UserDefaultManager.accessToken
 
   // MARK: - Initialize
 
@@ -30,26 +31,14 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
     navigationController.pushViewController(getViewController(), animated: false)
   }
 
-  func showNextPage() {
-    if let accessToken = UserDefaults.standard.string(forKey: "access_token") {
+  func showNextScene() {
+    UserDefaultManager.didOnboarded = true
+
+    if accessToken != "" {
       Environment.shared.authorization = accessToken
-      let tabBarCoordinator: DefaultTabBarCoordinator = .init(
-        navigationController: navigationController
-      )
-      tabBarCoordinator.parentCoordinator = self
-      addChild(tabBarCoordinator)
-
-      UserDefaultManager.didOnboarded = true
-
-      tabBarCoordinator.start()
+      startTabBarController()
     } else {
-      let signInCoordinator: DefaultSignInCoordinator = .init(
-        navigationController: navigationController
-      )
-      signInCoordinator.parentCoordinator = self
-      addChild(signInCoordinator)
-
-      signInCoordinator.start()
+      startSignInViewController()
     }
   }
 }
@@ -61,5 +50,21 @@ private extension DefaultOnboardingCoordinator {
     viewController.reactor = reactor
 
     return viewController
+  }
+
+  func startTabBarController() {
+    let tabBarCoordinator = DefaultTabBarCoordinator(navigationController: navigationController)
+    tabBarCoordinator.parentCoordinator = self
+    addChild(tabBarCoordinator)
+
+    tabBarCoordinator.start()
+  }
+
+  func startSignInViewController() {
+    let signInCoordinator = DefaultSignInCoordinator(navigationController: navigationController)
+    signInCoordinator.parentCoordinator = self
+    addChild(signInCoordinator)
+
+    signInCoordinator.start()
   }
 }
