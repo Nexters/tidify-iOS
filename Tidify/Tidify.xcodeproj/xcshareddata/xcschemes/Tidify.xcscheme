@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1240"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B56D82F9269987AB00D5F513"
+               BlueprintIdentifier = "0F545AE0036228B4C70EB993"
                BuildableName = "Tidify.app"
                BlueprintName = "Tidify"
                ReferencedContainer = "container:Tidify.xcodeproj">
@@ -26,18 +26,9 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      disableMainThreadChecker = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "86E3D29A27E8A73100171084"
-               BuildableName = "TidifyTests.xctest"
-               BlueprintName = "TidifyTests"
-               ReferencedContainer = "container:Tidify.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -54,7 +45,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B56D82F9269987AB00D5F513"
+            BlueprintIdentifier = "0F545AE0036228B4C70EB993"
             BuildableName = "Tidify.app"
             BlueprintName = "Tidify"
             ReferencedContainer = "container:Tidify.xcodeproj">
@@ -71,7 +62,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B56D82F9269987AB00D5F513"
+            BlueprintIdentifier = "0F545AE0036228B4C70EB993"
             BuildableName = "Tidify.app"
             BlueprintName = "Tidify"
             ReferencedContainer = "container:Tidify.xcodeproj">
