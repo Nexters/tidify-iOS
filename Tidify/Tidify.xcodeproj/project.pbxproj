@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		07D972146FE26B0D7745F320 /* Rswift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B69E89D638AF22019D3F6FEC /* Rswift.framework */; platformFilter = ios; };
-		082A1141A959274B94C5141D /* TidifyPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FB0C8263CA3C347F14ECF3 /* TidifyPresentation.swift */; };
 		0DCE8318FD53ADBF47665DCF /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7890E953FE38C48A3471B /* RxSwift.framework */; platformFilter = ios; };
 		116D9B0A97D533D95390DAD7 /* TidifyPresentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 062A2C298BC9BEFDC5D0D51A /* TidifyPresentation.framework */; platformFilter = ios; };
 		183C9CBD1F1412CB11C2E1D1 /* TidifyDomain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD918E39C9616C978AE6108A /* TidifyDomain.framework */; platformFilter = ios; };
@@ -38,6 +37,11 @@
 		861CBE21289E5A7A00217723 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE20289E5A7A00217723 /* UIViewController+.swift */; };
 		861CBE23289E5AF500217723 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE22289E5AF500217723 /* Coordinator.swift */; };
 		861CBE25289E5B8700217723 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE24289E5B8700217723 /* MainCoordinator.swift */; };
+		864C7D7B289E792B0097089A /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C7D7A289E792B0097089A /* OnboardingViewController.swift */; };
+		864C7D7F289E793C0097089A /* OnboardingReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C7D7E289E793C0097089A /* OnboardingReactor.swift */; };
+		864C7D81289E79910097089A /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C7D80289E79910097089A /* OnboardingCoordinator.swift */; };
+		864C7D84289E7A280097089A /* OnboardingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C7D83289E7A280097089A /* OnboardingCollectionViewCell.swift */; };
+		864C7D87289E7A4C0097089A /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C7D86289E7A4C0097089A /* Onboarding.swift */; };
 		8A041B29A74D1CB50E5D786A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EE287A1A961A9BBEB2E8A5 /* LaunchScreen.storyboard */; };
 		8C3B690AF2C2A0798429F12F /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7890E953FE38C48A3471B /* RxSwift.framework */; platformFilter = ios; };
 		8F21B88959700D73D7734232 /* RxCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 87514243C58846E40B4A173A /* RxCocoa.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -248,7 +252,6 @@
 		2A1135149F3B705ECECDED05 /* Moya.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Moya.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CCDC0F9548738AEE39AA48A /* TidifyDataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TidifyDataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F160717F8E4F43E9C449A7B /* TidifyCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TidifyCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		35FB0C8263CA3C347F14ECF3 /* TidifyPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyPresentation.swift; sourceTree = "<group>"; };
 		3BB937D34E9855BBA407A31F /* RxCocoaRuntime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxCocoaRuntime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B6F424E32D05AEC0837804 /* TidifyDomainTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyDomainTests-Info.plist"; sourceTree = "<group>"; };
 		434AD846A5CC48C0CC471348 /* TidifyData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TidifyData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,6 +278,11 @@
 		861CBE20289E5A7A00217723 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		861CBE22289E5AF500217723 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		861CBE24289E5B8700217723 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		864C7D7A289E792B0097089A /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		864C7D7E289E793C0097089A /* OnboardingReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingReactor.swift; sourceTree = "<group>"; };
+		864C7D80289E79910097089A /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
+		864C7D83289E7A280097089A /* OnboardingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCollectionViewCell.swift; sourceTree = "<group>"; };
+		864C7D86289E7A4C0097089A /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		87514243C58846E40B4A173A /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		878F40D0D39CC169F8416744 /* TidifyDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyDataTests.swift; sourceTree = "<group>"; };
 		93159D57525548F2CA69EB16 /* TidifyCore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyCore-Info.plist"; sourceTree = "<group>"; };
@@ -393,6 +401,7 @@
 		0325A92C27E5EF589340086A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				864C7D85289E7A3C0097089A /* Entities */,
 				938BFD1DB590D4CC97EF733F /* TidifyDomain.swift */,
 			);
 			path = Sources;
@@ -552,6 +561,49 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		864C7D79289E79130097089A /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				864C7D80289E79910097089A /* OnboardingCoordinator.swift */,
+				864C7D7C289E792F0097089A /* View */,
+				864C7D7D289E79320097089A /* Reactor */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		864C7D7C289E792F0097089A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				864C7D82289E7A210097089A /* Cell */,
+				864C7D7A289E792B0097089A /* OnboardingViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		864C7D7D289E79320097089A /* Reactor */ = {
+			isa = PBXGroup;
+			children = (
+				864C7D7E289E793C0097089A /* OnboardingReactor.swift */,
+			);
+			path = Reactor;
+			sourceTree = "<group>";
+		};
+		864C7D82289E7A210097089A /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				864C7D83289E7A280097089A /* OnboardingCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		864C7D85289E7A3C0097089A /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				864C7D86289E7A4C0097089A /* Onboarding.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
 		9264CD33534AAABAC726770A /* Project */ = {
 			isa = PBXGroup;
 			children = (
@@ -623,8 +675,8 @@
 		DDA6453296B420F8FBCC06DE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				864C7D79289E79130097089A /* Onboarding */,
 				861CBE12289E597300217723 /* Base */,
-				35FB0C8263CA3C347F14ECF3 /* TidifyPresentation.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -935,6 +987,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				864C7D87289E7A4C0097089A /* Onboarding.swift in Sources */,
 				AAC020E3D59CEB11CAA4F939 /* TidifyDomain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -977,14 +1030,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				864C7D84289E7A280097089A /* OnboardingCollectionViewCell.swift in Sources */,
 				861CBE15289E598000217723 /* CGSize+.swift in Sources */,
+				864C7D81289E79910097089A /* OnboardingCoordinator.swift in Sources */,
 				861CBE17289E59C100217723 /* UICollectionView+.swift in Sources */,
 				861CBE21289E5A7A00217723 /* UIViewController+.swift in Sources */,
 				861CBE25289E5B8700217723 /* MainCoordinator.swift in Sources */,
+				864C7D7F289E793C0097089A /* OnboardingReactor.swift in Sources */,
 				861CBE1F289E5A6200217723 /* UIView+.swift in Sources */,
 				861CBE19289E59ED00217723 /* UITableView+.swift in Sources */,
-				082A1141A959274B94C5141D /* TidifyPresentation.swift in Sources */,
 				861CBE1D289E5A4500217723 /* UIFont+.swift in Sources */,
+				864C7D7B289E792B0097089A /* OnboardingViewController.swift in Sources */,
 				861CBE1B289E5A2600217723 /* UIColor+.swift in Sources */,
 				861CBE23289E5AF500217723 /* Coordinator.swift in Sources */,
 			);

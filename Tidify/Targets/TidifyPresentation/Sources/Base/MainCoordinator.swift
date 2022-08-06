@@ -28,7 +28,13 @@ public final class DefaultMainCoordinator: MainCoordinator {
 
   // MARK: - Methods
   public func start() {
-    // TODO: Implementation
+    let onboardingCoordinator: DefaultOnboardingCoordinator = .init(
+      navigationController: navigationController
+    )
+    onboardingCoordinator.parentCoordinator = self
+    addChild(onboardingCoordinator)
+
+    onboardingCoordinator.start()
   }
 }
 
