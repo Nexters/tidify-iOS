@@ -8,42 +8,51 @@
 
 /* Begin PBXBuildFile section */
 		07D972146FE26B0D7745F320 /* Rswift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B69E89D638AF22019D3F6FEC /* Rswift.framework */; platformFilter = ios; };
+		082A1141A959274B94C5141D /* TidifyPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FB0C8263CA3C347F14ECF3 /* TidifyPresentation.swift */; };
 		0DCE8318FD53ADBF47665DCF /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7890E953FE38C48A3471B /* RxSwift.framework */; platformFilter = ios; };
 		116D9B0A97D533D95390DAD7 /* TidifyPresentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 062A2C298BC9BEFDC5D0D51A /* TidifyPresentation.framework */; platformFilter = ios; };
 		183C9CBD1F1412CB11C2E1D1 /* TidifyDomain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD918E39C9616C978AE6108A /* TidifyDomain.framework */; platformFilter = ios; };
-		190B6E3445C59219745122D7 /* TidifyDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4C390746184B7D348A0853 /* TidifyDataTests.swift */; };
+		27D9603CBCEC43A666C6D1BF /* TidifyDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878F40D0D39CC169F8416744 /* TidifyDataTests.swift */; };
 		2AA321EF98D827778D72C077 /* TidifyDomain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD918E39C9616C978AE6108A /* TidifyDomain.framework */; platformFilter = ios; };
 		2C07D5F0198EF5F4ADA080CA /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070E4F5D8A940C1B1ABEC2DC /* RxRelay.framework */; platformFilter = ios; };
 		316218859B94ADA70379A237 /* TidifyCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F160717F8E4F43E9C449A7B /* TidifyCore.framework */; platformFilter = ios; };
 		3CE4D7B1946A34F85441694B /* ReactorKitRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C5EEBBCCDA8D616AACECDF /* ReactorKitRuntime.framework */; platformFilter = ios; };
+		423458F7CDF26B0B29EC3A27 /* TidifyCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637A2A1B2F33A2AE5E80F1CB /* TidifyCore.swift */; };
 		44179D5CC6773E94F8C583C4 /* SwiftyBeaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814750AB2FBCE5EB045FE848 /* SwiftyBeaver.framework */; platformFilter = ios; };
-		48D6153DD3CF48B1560BACAF /* TidifyPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742B82689660892809484B56 /* TidifyPresentationTests.swift */; };
+		5B496B0F255F7E286FA9DE7B /* TidifyDomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64AFD931AD898E9B0063D906 /* TidifyDomainTests.swift */; };
+		5C57CDFAFCEC714E40E67581 /* TidifyCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6B6BA9ACA277935CB7EA0F /* TidifyCoreTests.swift */; };
 		72D88AEB2622FB7694A8CB18 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7890E953FE38C48A3471B /* RxSwift.framework */; platformFilter = ios; };
+		78CAEA5B0E2ED012A8D835D0 /* TuistAssets+Tidify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215096EF5888231A19462E79 /* TuistAssets+Tidify.swift */; };
 		799B117823CCE6F81AC7A93E /* RxMoya.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AD9F953DE0CECC11C747F6 /* RxMoya.framework */; platformFilter = ios; };
 		7C5C2615362B90097F2904F1 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4761FD3BCF23EE996F72C8 /* Alamofire.framework */; platformFilter = ios; };
 		7D4DFA0E63D3FAC6BFE804B5 /* TidifyCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2F160717F8E4F43E9C449A7B /* TidifyCore.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7F085770D8F70C623FCBD5AF /* WeakMapTable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6D95E33166267E233FBAA0 /* WeakMapTable.framework */; platformFilter = ios; };
-		8663A639289A50230052B569 /* TidifyCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8663A638289A50230052B569 /* TidifyCore.swift */; };
-		8663A63A289A50230052B569 /* TidifyCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8663A638289A50230052B569 /* TidifyCore.swift */; };
-		8663A63C289A50340052B569 /* TidifyCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8663A63B289A50340052B569 /* TidifyCoreTests.swift */; };
-		8663A63E289A5F550052B569 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8663A63D289A5F550052B569 /* Assets.xcassets */; };
+		861CBE0F289E58E800217723 /* ObservableType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE0E289E58E800217723 /* ObservableType+.swift */; };
+		861CBE11289E594000217723 /* SahredSequenceConvertibeType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE10289E594000217723 /* SahredSequenceConvertibeType+.swift */; };
+		861CBE15289E598000217723 /* CGSize+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE14289E598000217723 /* CGSize+.swift */; };
+		861CBE17289E59C100217723 /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE16289E59C100217723 /* UICollectionView+.swift */; };
+		861CBE19289E59ED00217723 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE18289E59ED00217723 /* UITableView+.swift */; };
+		861CBE1B289E5A2600217723 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE1A289E5A2600217723 /* UIColor+.swift */; };
+		861CBE1D289E5A4500217723 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE1C289E5A4500217723 /* UIFont+.swift */; };
+		861CBE1F289E5A6200217723 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE1E289E5A6200217723 /* UIView+.swift */; };
+		861CBE21289E5A7A00217723 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE20289E5A7A00217723 /* UIViewController+.swift */; };
 		8A041B29A74D1CB50E5D786A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EE287A1A961A9BBEB2E8A5 /* LaunchScreen.storyboard */; };
 		8C3B690AF2C2A0798429F12F /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7890E953FE38C48A3471B /* RxSwift.framework */; platformFilter = ios; };
 		8F21B88959700D73D7734232 /* RxCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 87514243C58846E40B4A173A /* RxCocoa.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		91BDD08464AABB77E98C3358 /* ReactorKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C556EBA34109AF3012AF27C /* ReactorKit.framework */; platformFilter = ios; };
-		91EF69EAEC4CD22A9C602A84 /* TidifyDomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0782F5E9DB5A349C7D0BD554 /* TidifyDomainTests.swift */; };
+		97C082987A81C3D3C960E94E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F4A3C60B38B4A8C55E20E0A /* Assets.xcassets */; };
 		99E5F6C1578A4C1DBA40613F /* Then.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 441CBCD12A9EF44019964DC6 /* Then.framework */; platformFilter = ios; };
 		A2D2B5AB6DC3D4794F843849 /* Moya.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A1135149F3B705ECECDED05 /* Moya.framework */; platformFilter = ios; };
 		A309AF77ABD0C9C2DAA7111A /* TidifyDomain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AD918E39C9616C978AE6108A /* TidifyDomain.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A452FF59825AD7C2303BF102 /* TidifyPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E7F82736C545D41868EE84 /* TidifyPresentation.swift */; };
-		A933D613B4DEB11249EAFFA8 /* TidifyDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35219E5F90D961E4C90E6E68 /* TidifyDomain.swift */; };
+		AAC020E3D59CEB11CAA4F939 /* TidifyDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938BFD1DB590D4CC97EF733F /* TidifyDomain.swift */; };
 		B1D69F2B58CCDCDF12D85DA5 /* RxCocoaRuntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3BB937D34E9855BBA407A31F /* RxCocoaRuntime.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B3F89B3B37366C39FD783664 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A882691396E5C4E138A0DFCC /* CFNetwork.framework */; };
 		B73EB74DD46AD3B412E550B5 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 460458A091AC21EEDA5A11A1 /* SnapKit.framework */; platformFilter = ios; };
+		BB4E5B5EE1A8B50BC9F46D55 /* TidifyPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C9444A8EFF628699490EB7 /* TidifyPresentationTests.swift */; };
 		BECB4E53B33EA66C1BCC4163 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB59798104EA5DCA21D3A311 /* AppDelegate.swift */; };
 		C7E72CF02CE54CA37D6876C1 /* TuistBundle+Tidify.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAA609FC7ACEFA299500183 /* TuistBundle+Tidify.swift */; };
 		C9E8B97432796CDDCAAC8B66 /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7890E953FE38C48A3471B /* RxSwift.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D56298680168C1DAD232524A /* TidifyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DD125BDE868E7CB1CD0219 /* TidifyData.swift */; };
+		CB9A43B13E3C08BB43B01492 /* TidifyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81473675D7A5A5D7A634D1B9 /* TidifyData.swift */; };
 		DDFB1235CBFFF80B5BC8DA12 /* RxRelay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 070E4F5D8A940C1B1ABEC2DC /* RxRelay.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DE992B054F04C17C69A84B3F /* TidifyData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434AD846A5CC48C0CC471348 /* TidifyData.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E1946D9817BF2AB88828D5A4 /* TidifyCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F160717F8E4F43E9C449A7B /* TidifyCore.framework */; platformFilter = ios; };
@@ -229,48 +238,58 @@
 		0195028BD1C21F90DC0CE7D1 /* TidifyDomain-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyDomain-Info.plist"; sourceTree = "<group>"; };
 		062A2C298BC9BEFDC5D0D51A /* TidifyPresentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TidifyPresentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		070E4F5D8A940C1B1ABEC2DC /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0782F5E9DB5A349C7D0BD554 /* TidifyDomainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyDomainTests.swift; sourceTree = "<group>"; };
 		085D0285C1EF12D6291A5FB7 /* TidifyCoreTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyCoreTests-Info.plist"; sourceTree = "<group>"; };
 		08EE287A1A961A9BBEB2E8A5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0C6D95E33166267E233FBAA0 /* WeakMapTable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeakMapTable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E84FF60F4EE069145740516 /* TidifyData-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyData-Info.plist"; sourceTree = "<group>"; };
-		20DD125BDE868E7CB1CD0219 /* TidifyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyData.swift; sourceTree = "<group>"; };
+		215096EF5888231A19462E79 /* TuistAssets+Tidify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistAssets+Tidify.swift"; sourceTree = "<group>"; };
 		2A1135149F3B705ECECDED05 /* Moya.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Moya.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CCDC0F9548738AEE39AA48A /* TidifyDataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TidifyDataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F160717F8E4F43E9C449A7B /* TidifyCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TidifyCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		35219E5F90D961E4C90E6E68 /* TidifyDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyDomain.swift; sourceTree = "<group>"; };
+		35FB0C8263CA3C347F14ECF3 /* TidifyPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyPresentation.swift; sourceTree = "<group>"; };
 		3BB937D34E9855BBA407A31F /* RxCocoaRuntime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxCocoaRuntime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B6F424E32D05AEC0837804 /* TidifyDomainTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyDomainTests-Info.plist"; sourceTree = "<group>"; };
 		434AD846A5CC48C0CC471348 /* TidifyData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TidifyData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		441CBCD12A9EF44019964DC6 /* Then.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Then.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		460458A091AC21EEDA5A11A1 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C556EBA34109AF3012AF27C /* ReactorKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactorKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		637A2A1B2F33A2AE5E80F1CB /* TidifyCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyCore.swift; sourceTree = "<group>"; };
 		63AD9F953DE0CECC11C747F6 /* RxMoya.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxMoya.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		64AFD931AD898E9B0063D906 /* TidifyDomainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyDomainTests.swift; sourceTree = "<group>"; };
 		64E84954667817AD78E48F7E /* TidifyPresentationTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyPresentationTests-Info.plist"; sourceTree = "<group>"; };
 		690549E86F9B5B91884F7150 /* Kingfisher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Kingfisher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F7888BD1ED5D6DAF2E091A9 /* TidifyDomainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TidifyDomainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		742B82689660892809484B56 /* TidifyPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyPresentationTests.swift; sourceTree = "<group>"; };
 		798D84CC1E6FB747D25E61D6 /* TidifyCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TidifyCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		81473675D7A5A5D7A634D1B9 /* TidifyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyData.swift; sourceTree = "<group>"; };
 		814750AB2FBCE5EB045FE848 /* SwiftyBeaver.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyBeaver.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8663A638289A50230052B569 /* TidifyCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyCore.swift; sourceTree = "<group>"; };
-		8663A63B289A50340052B569 /* TidifyCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyCoreTests.swift; sourceTree = "<group>"; };
-		8663A63D289A5F550052B569 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		861CBE0E289E58E800217723 /* ObservableType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableType+.swift"; sourceTree = "<group>"; };
+		861CBE10289E594000217723 /* SahredSequenceConvertibeType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SahredSequenceConvertibeType+.swift"; sourceTree = "<group>"; };
+		861CBE14289E598000217723 /* CGSize+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+.swift"; sourceTree = "<group>"; };
+		861CBE16289E59C100217723 /* UICollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
+		861CBE18289E59ED00217723 /* UITableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
+		861CBE1A289E5A2600217723 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		861CBE1C289E5A4500217723 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		861CBE1E289E5A6200217723 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		861CBE20289E5A7A00217723 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		87514243C58846E40B4A173A /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		878F40D0D39CC169F8416744 /* TidifyDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyDataTests.swift; sourceTree = "<group>"; };
 		93159D57525548F2CA69EB16 /* TidifyCore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyCore-Info.plist"; sourceTree = "<group>"; };
-		A6E7F82736C545D41868EE84 /* TidifyPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyPresentation.swift; sourceTree = "<group>"; };
+		938BFD1DB590D4CC97EF733F /* TidifyDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyDomain.swift; sourceTree = "<group>"; };
+		9F4A3C60B38B4A8C55E20E0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A882691396E5C4E138A0DFCC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		AD918E39C9616C978AE6108A /* TidifyDomain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TidifyDomain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADAA456C8B21F95A8804767E /* Tidify-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Tidify-Info.plist"; sourceTree = "<group>"; };
 		B03D315812D76162499B271D /* TidifyDataTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyDataTests-Info.plist"; sourceTree = "<group>"; };
 		B1AE39192A5DDBAD4348B38D /* Tidify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tidify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B69E89D638AF22019D3F6FEC /* Rswift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Rswift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9C9444A8EFF628699490EB7 /* TidifyPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyPresentationTests.swift; sourceTree = "<group>"; };
 		BAAA609FC7ACEFA299500183 /* TuistBundle+Tidify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+Tidify.swift"; sourceTree = "<group>"; };
 		BAC07B8CD617C16DA99E344B /* TidifyPresentationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TidifyPresentationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB59798104EA5DCA21D3A311 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9C5EEBBCCDA8D616AACECDF /* ReactorKitRuntime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactorKitRuntime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4761FD3BCF23EE996F72C8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DF4C390746184B7D348A0853 /* TidifyDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyDataTests.swift; sourceTree = "<group>"; };
 		E7A7890E953FE38C48A3471B /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF6B6BA9ACA277935CB7EA0F /* TidifyCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyCoreTests.swift; sourceTree = "<group>"; };
 		F15254925A8FA2BC1E41AE85 /* TidifyPresentation-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyPresentation-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -370,9 +389,18 @@
 		0325A92C27E5EF589340086A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				35219E5F90D961E4C90E6E68 /* TidifyDomain.swift */,
+				938BFD1DB590D4CC97EF733F /* TidifyDomain.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		1EA938D88505098802F0C599 /* TidifyCore */ = {
+			isa = PBXGroup;
+			children = (
+				2807EB69E3FA07E9247B1A57 /* Sources */,
+				EAF4F7B8D0C75AD8520FA6A3 /* Tests */,
+			);
+			path = TidifyCore;
 			sourceTree = "<group>";
 		};
 		1FB1545DCC1D8D5FA118F9B5 /* InfoPlists */ = {
@@ -394,10 +422,20 @@
 		254C357FF6E839FBBD2B3CF4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9F4A3C60B38B4A8C55E20E0A /* Assets.xcassets */,
 				08EE287A1A961A9BBEB2E8A5 /* LaunchScreen.storyboard */,
-				8663A63D289A5F550052B569 /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		2807EB69E3FA07E9247B1A57 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				637A2A1B2F33A2AE5E80F1CB /* TidifyCore.swift */,
+				861CBE0E289E58E800217723 /* ObservableType+.swift */,
+				861CBE10289E594000217723 /* SahredSequenceConvertibeType+.swift */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		35D193581EA8BE550A1532B8 /* Sources */ = {
@@ -412,9 +450,9 @@
 			isa = PBXGroup;
 			children = (
 				833011CBE32F162DB09514D6 /* Tidify */,
-				8663A631289A4D860052B569 /* TidifyCore */,
-				7AF05CE15E7B9957AD98D23E /* TidifyDomain */,
+				1EA938D88505098802F0C599 /* TidifyCore */,
 				D7A80A57E229328B37C6CCF1 /* TidifyData */,
+				7AF05CE15E7B9957AD98D23E /* TidifyDomain */,
 				A55501F33E4B808700100E5D /* TidifyPresentation */,
 			);
 			path = Targets;
@@ -423,7 +461,7 @@
 		7331BFC2D977C8BADA733C1B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				20DD125BDE868E7CB1CD0219 /* TidifyData.swift */,
+				81473675D7A5A5D7A634D1B9 /* TidifyData.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -486,29 +524,26 @@
 			path = Tidify;
 			sourceTree = "<group>";
 		};
-		8663A631289A4D860052B569 /* TidifyCore */ = {
+		861CBE12289E597300217723 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				8663A633289A4D860052B569 /* Sources */,
-				8663A632289A4D860052B569 /* Tests */,
+				861CBE13289E597600217723 /* Extension */,
 			);
-			path = TidifyCore;
+			path = Base;
 			sourceTree = "<group>";
 		};
-		8663A632289A4D860052B569 /* Tests */ = {
+		861CBE13289E597600217723 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				8663A63B289A50340052B569 /* TidifyCoreTests.swift */,
+				861CBE14289E598000217723 /* CGSize+.swift */,
+				861CBE16289E59C100217723 /* UICollectionView+.swift */,
+				861CBE18289E59ED00217723 /* UITableView+.swift */,
+				861CBE1A289E5A2600217723 /* UIColor+.swift */,
+				861CBE1C289E5A4500217723 /* UIFont+.swift */,
+				861CBE1E289E5A6200217723 /* UIView+.swift */,
+				861CBE20289E5A7A00217723 /* UIViewController+.swift */,
 			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		8663A633289A4D860052B569 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				8663A638289A50230052B569 /* TidifyCore.swift */,
-			);
-			path = Sources;
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		9264CD33534AAABAC726770A /* Project */ = {
@@ -523,7 +558,7 @@
 		9D4561F3A59D1DBC045902F9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				0782F5E9DB5A349C7D0BD554 /* TidifyDomainTests.swift */,
+				64AFD931AD898E9B0063D906 /* TidifyDomainTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -531,7 +566,7 @@
 		A206ADB8E24EDEEEC19CDCC7 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				742B82689660892809484B56 /* TidifyPresentationTests.swift */,
+				B9C9444A8EFF628699490EB7 /* TidifyPresentationTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -557,7 +592,7 @@
 		B2336B688A4E0F3973AAFAC8 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				DF4C390746184B7D348A0853 /* TidifyDataTests.swift */,
+				878F40D0D39CC169F8416744 /* TidifyDataTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -582,14 +617,24 @@
 		DDA6453296B420F8FBCC06DE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				A6E7F82736C545D41868EE84 /* TidifyPresentation.swift */,
+				861CBE12289E597300217723 /* Base */,
+				35FB0C8263CA3C347F14ECF3 /* TidifyPresentation.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		EAF4F7B8D0C75AD8520FA6A3 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				EF6B6BA9ACA277935CB7EA0F /* TidifyCoreTests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		FE33653FA8022427D487D8AF /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				215096EF5888231A19462E79 /* TuistAssets+Tidify.swift */,
 				BAAA609FC7ACEFA299500183 /* TuistBundle+Tidify.swift */,
 			);
 			path = Sources;
@@ -776,11 +821,6 @@
 			isa = PBXProject;
 			attributes = {
 				ORGANIZATIONNAME = Tidify;
-				TargetAttributes = {
-					16B2C1D641F085759C3925DB = {
-						LastSwiftMigration = 1340;
-					};
-				};
 			};
 			buildConfigurationList = 392050119467099F2F9122DD /* Build configuration list for PBXProject "Tidify" */;
 			compatibilityVersion = "Xcode 13.0";
@@ -795,15 +835,15 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0F545AE0036228B4C70EB993 /* Tidify */,
-				B46C131AEA440246F20EB8CE /* TidifyData */,
-				16B2C1D641F085759C3925DB /* TidifyCore */,
 				906E922D3AA32425225E22E8 /* TidifyDomainTests */,
-				E374A064AFA7FEDFECC0A577 /* TidifyDataTests */,
-				06A1CE75BAD4613048C16895 /* TidifyDomain */,
 				621E6EAABBD1868141A779E6 /* TidifyCoreTests */,
-				B5ECD98033F66B793BC3C9BA /* TidifyPresentation */,
+				0F545AE0036228B4C70EB993 /* Tidify */,
+				16B2C1D641F085759C3925DB /* TidifyCore */,
 				A822DD121C930CB60739AC9B /* TidifyPresentationTests */,
+				E374A064AFA7FEDFECC0A577 /* TidifyDataTests */,
+				B5ECD98033F66B793BC3C9BA /* TidifyPresentation */,
+				B46C131AEA440246F20EB8CE /* TidifyData */,
+				06A1CE75BAD4613048C16895 /* TidifyDomain */,
 			);
 		};
 /* End PBXProject section */
@@ -862,7 +902,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8663A63E289A5F550052B569 /* Assets.xcassets in Resources */,
+				97C082987A81C3D3C960E94E /* Assets.xcassets in Resources */,
 				8A041B29A74D1CB50E5D786A /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -881,8 +921,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91EF69EAEC4CD22A9C602A84 /* TidifyDomainTests.swift in Sources */,
-				8663A63C289A50340052B569 /* TidifyCoreTests.swift in Sources */,
+				5B496B0F255F7E286FA9DE7B /* TidifyDomainTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -890,7 +929,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A933D613B4DEB11249EAFFA8 /* TidifyDomain.swift in Sources */,
+				AAC020E3D59CEB11CAA4F939 /* TidifyDomain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -898,7 +937,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48D6153DD3CF48B1560BACAF /* TidifyPresentationTests.swift in Sources */,
+				BB4E5B5EE1A8B50BC9F46D55 /* TidifyPresentationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -906,7 +945,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D56298680168C1DAD232524A /* TidifyData.swift in Sources */,
+				CB9A43B13E3C08BB43B01492 /* TidifyData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -914,7 +953,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8663A63A289A50230052B569 /* TidifyCore.swift in Sources */,
+				861CBE0F289E58E800217723 /* ObservableType+.swift in Sources */,
+				861CBE11289E594000217723 /* SahredSequenceConvertibeType+.swift in Sources */,
+				423458F7CDF26B0B29EC3A27 /* TidifyCore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -922,6 +963,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C57CDFAFCEC714E40E67581 /* TidifyCoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -929,7 +971,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A452FF59825AD7C2303BF102 /* TidifyPresentation.swift in Sources */,
+				861CBE15289E598000217723 /* CGSize+.swift in Sources */,
+				861CBE17289E59C100217723 /* UICollectionView+.swift in Sources */,
+				861CBE21289E5A7A00217723 /* UIViewController+.swift in Sources */,
+				861CBE1F289E5A6200217723 /* UIView+.swift in Sources */,
+				861CBE19289E59ED00217723 /* UITableView+.swift in Sources */,
+				082A1141A959274B94C5141D /* TidifyPresentation.swift in Sources */,
+				861CBE1D289E5A4500217723 /* UIFont+.swift in Sources */,
+				861CBE1B289E5A2600217723 /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -937,7 +986,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8663A639289A50230052B569 /* TidifyCore.swift in Sources */,
+				78CAEA5B0E2ED012A8D835D0 /* TuistAssets+Tidify.swift in Sources */,
 				C7E72CF02CE54CA37D6876C1 /* TuistBundle+Tidify.swift in Sources */,
 				BECB4E53B33EA66C1BCC4163 /* AppDelegate.swift in Sources */,
 			);
@@ -947,7 +996,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				190B6E3445C59219745122D7 /* TidifyDataTests.swift in Sources */,
+				27D9603CBCEC43A666C6D1BF /* TidifyDataTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1058,7 +1107,6 @@
 		20C503D32DF6FB435B547111 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1223,7 +1271,6 @@
 		57D7388F95071A06E183C87C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1255,7 +1302,6 @@
 		7BCD187D4FA7E7190F8085D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1364,7 +1410,6 @@
 		BBCB8C8BD60E2DA45EFF7F59 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Derived/InfoPlists/TidifyCoreTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1419,7 +1464,6 @@
 		CAF316E649DC3C4DA4B829CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1507,7 +1551,6 @@
 		DDEB2148CD89DF3532B0F32F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Derived/InfoPlists/TidifyCoreTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
