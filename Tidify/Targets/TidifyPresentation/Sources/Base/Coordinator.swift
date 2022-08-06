@@ -21,7 +21,7 @@ public protocol Coordinator: AnyObject {
 }
 
 // MARK: - Default Implementation
-extension Coordinator {
+public extension Coordinator {
   func addChild(_ child: Coordinator) {
     childCoordinators.append(child)
   }
