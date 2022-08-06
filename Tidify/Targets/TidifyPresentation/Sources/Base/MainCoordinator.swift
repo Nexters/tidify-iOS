@@ -18,16 +18,12 @@ public final class DefaultMainCoordinator: MainCoordinator {
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
 
-  let window: UIWindow
-
   // MARK: - Initialize
   public init(window: UIWindow) {
     self.navigationController = .init(nibName: nil, bundle: nil)
     self.navigationController.view.backgroundColor = .systemBackground
 
     window.rootViewController = navigationController
-    window.makeKeyAndVisible()
-    self.window = window
   }
 
   // MARK: - Methods
