@@ -36,6 +36,7 @@
 		861CBE1D289E5A4500217723 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE1C289E5A4500217723 /* UIFont+.swift */; };
 		861CBE1F289E5A6200217723 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE1E289E5A6200217723 /* UIView+.swift */; };
 		861CBE21289E5A7A00217723 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE20289E5A7A00217723 /* UIViewController+.swift */; };
+		861CBE23289E5AF500217723 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861CBE22289E5AF500217723 /* Coordinator.swift */; };
 		8A041B29A74D1CB50E5D786A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EE287A1A961A9BBEB2E8A5 /* LaunchScreen.storyboard */; };
 		8C3B690AF2C2A0798429F12F /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7890E953FE38C48A3471B /* RxSwift.framework */; platformFilter = ios; };
 		8F21B88959700D73D7734232 /* RxCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 87514243C58846E40B4A173A /* RxCocoa.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -271,6 +272,7 @@
 		861CBE1C289E5A4500217723 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		861CBE1E289E5A6200217723 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		861CBE20289E5A7A00217723 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		861CBE22289E5AF500217723 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		87514243C58846E40B4A173A /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		878F40D0D39CC169F8416744 /* TidifyDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyDataTests.swift; sourceTree = "<group>"; };
 		93159D57525548F2CA69EB16 /* TidifyCore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyCore-Info.plist"; sourceTree = "<group>"; };
@@ -528,6 +530,7 @@
 			isa = PBXGroup;
 			children = (
 				861CBE13289E597600217723 /* Extension */,
+				861CBE22289E5AF500217723 /* Coordinator.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -979,6 +982,7 @@
 				082A1141A959274B94C5141D /* TidifyPresentation.swift in Sources */,
 				861CBE1D289E5A4500217723 /* UIFont+.swift in Sources */,
 				861CBE1B289E5A2600217723 /* UIColor+.swift in Sources */,
+				861CBE23289E5AF500217723 /* Coordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
