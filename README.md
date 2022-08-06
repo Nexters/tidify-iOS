@@ -6,10 +6,8 @@
 
 Nexters 19th **테스토스테론** 팀 **tidify-iOS** 저장소입니다.
 
-<br>
 
 ## 프로젝트 설명
-
 
 <br>
 
@@ -24,11 +22,15 @@ Nexters 19th **테스토스테론** 팀 **tidify-iOS** 저장소입니다.
 - RxSwift
 - RxCocoa
 - RxKakaoSDK
-- R.swift
-- SwiftLint
+- ReactorKit
 - SnapKit
+- SwiftLint
+- SwiftyBeaver
 - Then
 
 <br>
 
-## 팀원 소개
+## 코딩 컨벤션
+
+- [Tidify Coding Convetion](https://github.com/Nexters/tidify-iOS/wiki/Tidify-Coding-Convention)
+
