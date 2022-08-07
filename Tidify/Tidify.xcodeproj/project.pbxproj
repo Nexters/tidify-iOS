@@ -444,9 +444,8 @@
 		2807EB69E3FA07E9247B1A57 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				864C7D88289F7BE10097089A /* Extension */,
 				637A2A1B2F33A2AE5E80F1CB /* TidifyCore.swift */,
-				861CBE0E289E58E800217723 /* ObservableType+.swift */,
-				861CBE10289E594000217723 /* SahredSequenceConvertibeType+.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -604,6 +603,15 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
+		864C7D88289F7BE10097089A /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				861CBE0E289E58E800217723 /* ObservableType+.swift */,
+				861CBE10289E594000217723 /* SahredSequenceConvertibeType+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		9264CD33534AAABAC726770A /* Project */ = {
 			isa = PBXGroup;
 			children = (
@@ -675,8 +683,8 @@
 		DDA6453296B420F8FBCC06DE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				864C7D79289E79130097089A /* Onboarding */,
 				861CBE12289E597300217723 /* Base */,
+				864C7D79289E79130097089A /* Onboarding */,
 			);
 			path = Sources;
 			sourceTree = "<group>";

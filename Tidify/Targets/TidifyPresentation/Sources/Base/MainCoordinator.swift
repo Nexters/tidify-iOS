@@ -17,6 +17,7 @@ public final class DefaultMainCoordinator: MainCoordinator {
   // MARK: - Properties
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
+  private let didOnboard: Bool = UserDefaults.standard.bool(forKey: "didOnboard")
 
   // MARK: - Initialize
   public init(window: UIWindow) {
@@ -28,6 +29,14 @@ public final class DefaultMainCoordinator: MainCoordinator {
 
   // MARK: - Methods
   public func start() {
+    if !didOnboard {
+      startOnboarding()
+    }
+  }
+}
+
+private extension DefaultMainCoordinator {
+  func startOnboarding() {
     let onboardingCoordinator: DefaultOnboardingCoordinator = .init(
       navigationController: navigationController
     )
@@ -35,12 +44,6 @@ public final class DefaultMainCoordinator: MainCoordinator {
     addChild(onboardingCoordinator)
 
     onboardingCoordinator.start()
-  }
-}
-
-private extension DefaultMainCoordinator {
-  func startOnboarding() {
-    // TODO: Implementation
   }
 
   func startSignIn() {
