@@ -15,7 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window.makeKeyAndVisible()
     self.window = window
 
-    mainCoordinator = DefaultMainCoordinator(window: window)
+    self.mainCoordinator = DefaultMainCoordinator(window: window)
+
+    mainCoordinator?.start()
 
     return true
   }
