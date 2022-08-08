@@ -6,14 +6,15 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyData
 import TidifyDomain
+
 import UIKit
 
 protocol SignInCoordinator: Coordinator {
   func didSuccessSignInWithKakao()
   func didSuccessSignInWithApple()
   func didSuccessSignInWithGoogle()
-  func skipSignIn()
 }
 
 final class DefaultSignInCoordinator: SignInCoordinator {
@@ -29,7 +30,6 @@ final class DefaultSignInCoordinator: SignInCoordinator {
 
   func start() {
     navigationController.viewControllers = [getViewController()]
-//    navigationController.pushViewController(getViewController(), animated: true)
   }
 
   func didSuccessSignInWithKakao() {
@@ -43,16 +43,15 @@ final class DefaultSignInCoordinator: SignInCoordinator {
   func didSuccessSignInWithGoogle() {
     // TODO: Implementation
   }
-
-  func skipSignIn() {
-    // TODO: Implementation
-  }
 }
 
 // MARK: - Private
 private extension DefaultSignInCoordinator {
   func getViewController() -> SignInViewController {
-    let reactor: SignInReactor = .init(coordinator: self, usecase: DefaultSignInUseCase())
+    let reactor: SignInReactor = .init(
+      coordinator: self,
+      usecase: DefaultSignInUseCase(repository: DefaultSignInRepository())
+    )
     let viewController: SignInViewController = .init(nibName: nil, bundle: nil)
     viewController.reactor = reactor
 
