@@ -120,7 +120,8 @@ let project: Project = .init(
       name: Layer.domain.layerName,
       platform: .iOS,
       dependencies: [
-        .target(name: Layer.core.layerName)
+        .target(name: Layer.core.layerName),
+        .external(name: "RxKakaoSDK")
       ]),
     makeTidifyFrameworkTargets(
       name: Layer.core.layerName,
