@@ -6,6 +6,8 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import Foundation
+import SwiftyBeaver
+
+public typealias Beaver = SwiftyBeaver
 
 final class TidifyCore { } 

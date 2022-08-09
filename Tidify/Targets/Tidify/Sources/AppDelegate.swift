@@ -1,6 +1,9 @@
 import TidifyPresentation
 import UIKit
 
+import KakaoSDKCommon
+import SwiftyBeaver
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -15,10 +18,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window.makeKeyAndVisible()
     self.window = window
 
+    setupLibrary()
+
     self.mainCoordinator = DefaultMainCoordinator(window: window)
 
     mainCoordinator?.start()
 
     return true
+  }
+}
+
+private extension AppDelegate {
+  func setupLibrary() {
+    // Setup SwiftyBeaver
+    SwiftyBeaver.addDestination(ConsoleDestination())
+
+    // KakaoSDK
+    guard let appKey: String = Bundle.main.object(forInfoDictionaryKey: "KAKAO_API_KEY") as? String
+    else { return }
+    KakaoSDK.initSDK(appKey: appKey)
   }
 }

@@ -31,7 +31,13 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
 
   func showNextScene() {
 //    UserDefaults.standard.set(true, forKey: "didOnboard")
-    // TODO: Implementation
+    let signInCoordinator: DefaultSignInCoordinator = .init(
+      navigationController: navigationController
+    )
+    signInCoordinator.parentCoordinator = self
+    addChild(signInCoordinator)
+
+    signInCoordinator.start()
   }
 }
 
