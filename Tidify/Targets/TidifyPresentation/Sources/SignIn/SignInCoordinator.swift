@@ -12,9 +12,7 @@ import TidifyDomain
 import UIKit
 
 protocol SignInCoordinator: Coordinator {
-  func didSuccessSignInWithKakao()
-  func didSuccessSignInWithApple()
-  func didSuccessSignInWithGoogle()
+  func didSuccessSignIn(type: SocialLoginType)
 }
 
 final class DefaultSignInCoordinator: SignInCoordinator {
@@ -32,15 +30,7 @@ final class DefaultSignInCoordinator: SignInCoordinator {
     navigationController.viewControllers = [getViewController()]
   }
 
-  func didSuccessSignInWithKakao() {
-    // TODO: Implementation
-  }
-
-  func didSuccessSignInWithApple() {
-    // TODO: Implementation
-  }
-
-  func didSuccessSignInWithGoogle() {
+  func didSuccessSignIn(type: SocialLoginType) {
     // TODO: Implementation
   }
 }

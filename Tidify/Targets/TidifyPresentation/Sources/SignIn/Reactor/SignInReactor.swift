@@ -49,15 +49,7 @@ final class SignInReactor: Reactor {
     switch mutation {
     case .trySignIn(let type):
       newState.successSignIn = true
-
-      switch type {
-      case .google:
-        coordinator.didSuccessSignInWithGoogle()
-      case .apple:
-        coordinator.didSuccessSignInWithApple()
-      case .kakao:
-        coordinator.didSuccessSignInWithKakao()
-      }
+      coordinator.didSuccessSignIn(type: type)
     }
 
     return newState
