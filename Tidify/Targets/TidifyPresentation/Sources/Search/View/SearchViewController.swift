@@ -13,6 +13,5 @@ final class SearchViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    print(2)
   }
 }

@@ -13,6 +13,5 @@ final class FolderViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    print(3)
   }
 }

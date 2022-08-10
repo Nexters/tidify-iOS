@@ -37,6 +37,7 @@
 		404A6E8C28A4212E007EDA76 /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404A6E7828A41DB4007EDA76 /* SearchCoordinator.swift */; };
 		404A6E8D28A42131007EDA76 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404A6E8328A41DE2007EDA76 /* FolderViewController.swift */; };
 		404A6E8E28A42134007EDA76 /* FolderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404A6E7A28A41DBD007EDA76 /* FolderCoordinator.swift */; };
+		404A6E9028A427A3007EDA76 /* TidifyTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404A6E8F28A427A2007EDA76 /* TidifyTabBar.swift */; };
 		423458F7CDF26B0B29EC3A27 /* TidifyCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637A2A1B2F33A2AE5E80F1CB /* TidifyCore.swift */; };
 		44179D5CC6773E94F8C583C4 /* SwiftyBeaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814750AB2FBCE5EB045FE848 /* SwiftyBeaver.framework */; platformFilter = ios; };
 		49055A0F7E282489B9C09CF9 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A785D1363B471186B4FC696 /* UserSession.swift */; };
@@ -306,6 +307,7 @@
 		404A6E7D28A41DCF007EDA76 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		404A6E8028A41DDA007EDA76 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		404A6E8328A41DE2007EDA76 /* FolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
+		404A6E8F28A427A2007EDA76 /* TidifyTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TidifyTabBar.swift; sourceTree = "<group>"; };
 		424857FC8EF70DBB4F5FAEC6 /* RxAlamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxAlamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B6F424E32D05AEC0837804 /* TidifyDomainTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TidifyDomainTests-Info.plist"; sourceTree = "<group>"; };
 		434AD846A5CC48C0CC471348 /* TidifyData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TidifyData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -855,6 +857,7 @@
 				5034CD3970F26F29CA061D2A /* Extension */,
 				E2EACD735EA4627A29DE7594 /* Coordinator.swift */,
 				5CD6137C60E35FB4C983C5D9 /* MainCoordinator.swift */,
+				404A6E8F28A427A2007EDA76 /* TidifyTabBar.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1303,6 +1306,7 @@
 				404A6E8D28A42131007EDA76 /* FolderViewController.swift in Sources */,
 				07CC7A10C721B3BFFF1D9C95 /* SignInCoordinator.swift in Sources */,
 				B46D9F65ED65E9288FB27DB9 /* SignInViewController.swift in Sources */,
+				404A6E9028A427A3007EDA76 /* TidifyTabBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

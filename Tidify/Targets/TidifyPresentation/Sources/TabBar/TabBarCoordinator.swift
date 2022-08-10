@@ -9,6 +9,20 @@
 import Then
 import UIKit
 
+enum TabBarItem: CaseIterable {
+  case home
+  case search
+  case folder
+
+  var index: Int {
+    switch self {
+    case .home: return 0
+    case .search: return 1
+    case .folder: return 2
+    }
+  }
+}
+
 protocol TabBarCoordinator: Coordinator {}
 
 final class DefaultTabBarCoordinator: TabBarCoordinator {
@@ -34,7 +48,7 @@ final class DefaultTabBarCoordinator: TabBarCoordinator {
 
 private extension DefaultTabBarCoordinator {
   func setupTabBar() {
-//    tabBarController.tabBar.isHidden = true
+    tabBarController.tabBar.isHidden = true
     
     let homeCoordinator: DefaultHomeCoordinator =
       .init(navigationController: navigationController)
