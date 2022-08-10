@@ -49,4 +49,14 @@ private extension DefaultMainCoordinator {
   func startSignIn() {
     // TODO: Implementation
   }
+  
+  func startTabBar() {
+    let tabBarCoordinator: DefaultTabBarCoordinator = .init(
+      navigationController: navigationController
+    )
+    tabBarCoordinator.parentCoordinator = self
+    addChild(tabBarCoordinator)
+    
+    tabBarCoordinator.start()
+  }
 }
