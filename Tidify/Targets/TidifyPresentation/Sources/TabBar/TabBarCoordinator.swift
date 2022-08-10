@@ -50,22 +50,26 @@ private extension DefaultTabBarCoordinator {
   func setupTabBar() {
     tabBarController.tabBar.isHidden = true
     
-    let homeCoordinator: DefaultHomeCoordinator =
-      .init(navigationController: navigationController)
+    let homeCoordinator: DefaultHomeCoordinator = .init(
+      navigationController: navigationController
+    )
     homeCoordinator.parentCoordinator = self
     addChild(homeCoordinator)
-    let homeViewController = homeCoordinator.startPush()
     
-    let searchCoordinator: DefaultSearchCoordinator =
-      .init(navigationController: navigationController)
+    let searchCoordinator: DefaultSearchCoordinator = .init(
+      navigationController: navigationController
+    )
     searchCoordinator.parentCoordinator = self
     addChild(searchCoordinator)
-    let searchViewController = searchCoordinator.startPush()
     
-    let folderCoordinator: DefaultFolderCoordinator =
-      .init(navigationController: navigationController)
+    let folderCoordinator: DefaultFolderCoordinator = .init(
+      navigationController: navigationController
+    )
     folderCoordinator.parentCoordinator = self
     addChild(folderCoordinator)
+    
+    let homeViewController = homeCoordinator.startPush()
+    let searchViewController = searchCoordinator.startPush()
     let folderViewController = folderCoordinator.startPush()
     
     tabBarController.setViewControllers(
