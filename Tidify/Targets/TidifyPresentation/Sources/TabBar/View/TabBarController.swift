@@ -1,33 +1,38 @@
 //
 //  TabBarController.swift
-//  TidifyDataTests
+//  TidifyPresentation
 //
 //  Created by 한상진 on 2022/08/11.
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import SnapKit
-import Then
 import UIKit
 
-class TabBarController: UITabBarController {
+import SnapKit
+import Then
+
+final class TabBarController: UITabBarController {
   
   // MARK: - Properties
-  weak var coordinator: TabBarCoordinator?
-  
   private let tidifyTabBar: TidifyTabBar = .init()
   
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupTabBar()
     setupUI()
   }
 }
 
 // MARK: - Methods
 private extension TabBarController {
-  func setupUI() {
+  func setupTabBar() {
     tidifyTabBar.delegate = self
+    let reactor: TidifyTabBarReactor = .init()
+    tidifyTabBar.reactor = reactor
+  }
+  
+  func setupUI() {
     view.addSubview(tidifyTabBar)
     
     tidifyTabBar.snp.makeConstraints {

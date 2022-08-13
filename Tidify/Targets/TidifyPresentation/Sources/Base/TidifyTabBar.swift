@@ -6,22 +6,23 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import UIKit
+
+import ReactorKit
 import RxCocoa
-import RxSwift
 import SnapKit
 import Then
-import UIKit
 
 protocol TidifyTabBarDelegate: AnyObject {
   func didSelectTab(_ item: TabBarItem)
 }
 
-final class TidifyTabBar: UIView {
+final class TidifyTabBar: UIView, View {
   
   // MARK: - Properties
   weak var delegate: TidifyTabBarDelegate?
   
-  private let blurEffectView = UIVisualEffectView().then {
+  private let blurEffectView: UIVisualEffectView = .init().then {
     $0.effect = UIBlurEffect(style: .regular)
     $0.frame = $0.bounds
     $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -29,7 +30,7 @@ final class TidifyTabBar: UIView {
     $0.clipsToBounds = true
   }
   
-  private let backgroundView = UIView().then {
+  private let backgroundView: UIView = .init().then {
     $0.layer.shadowColor = UIColor.black.cgColor
     $0.layer.shadowOpacity = 0.25
     $0.layer.shadowOffset = CGSize(w: 0, h: 8)
@@ -37,42 +38,48 @@ final class TidifyTabBar: UIView {
     $0.backgroundColor = UIAccessibility.isReduceTransparencyEnabled ? .gray : .clear
   }
   
-  private let stackView = UIStackView().then {
+  private let stackView: UIStackView = .init().then {
     $0.distribution = .fillEqually
   }
   
-  private let homeTabButton = UIButton().then {
+  private let homeTabButton: UIButton = .init().then {
     $0.setImage(UIImage(named: "homeSelectedIcon"), for: .selected)
     $0.setImage(UIImage(named: "homeDeselectedIcon"), for: .normal)
   }
   
-  private let searchTabButton = UIButton().then {
+  private let searchTabButton: UIButton = .init().then {
     $0.setImage(UIImage(named: "searchSelectedIcon"), for: .selected)
     $0.setImage(UIImage(named: "searchDeselectedIcon"), for: .normal)
   }
   
-  private let folderTabButton = UIButton().then {
+  private let folderTabButton: UIButton = .init().then {
     $0.setImage(UIImage(named: "folderSelectedIcon"), for: .selected)
     $0.setImage(UIImage(named: "folderDeselectedIcon"), for: .normal)
   }
   
-  private lazy var disposeBag = DisposeBag()
+  var disposeBag: DisposeBag = .init()
   
   // MARK: - Initialize
   init() {
     super.init(frame: .zero)
     
     setupUI()
-    binding()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  func bind(reactor: TidifyTabBarReactor) {
+    bindAction(reactor: reactor)
+    bindState(reactor: reactor)
+  }
 }
 
 // MARK: - Methods
 private extension TidifyTabBar {
+  typealias Action = TidifyTabBarReactor.Action
+  
   func setupUI() {
     backgroundColor = .clear
     
@@ -112,28 +119,28 @@ private extension TidifyTabBar {
     }
   }
   
-  func binding() {
-    let didHomeTap = homeTabButton.rx.tap.asDriver()
-      .do(onNext: { [weak self] _ in
-        self?.delegate?.didSelectTab(.home)
-      })
-      .map { TabBarItem.home }
+  func bindAction(reactor: TidifyTabBarReactor) {
+    homeTabButton.rx.tap
+      .map { Action.selectHomeTab }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
     
-    let didSearchTap = searchTabButton.rx.tap.asDriver()
-      .do(onNext: { [weak self] _ in
-        self?.delegate?.didSelectTab(.search)
-      })
-      .map { TabBarItem.search }
+    searchTabButton.rx.tap
+      .map { Action.selectSearchTab }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
     
-    let didFolderTap = folderTabButton.rx.tap.asDriver()
-      .do(onNext: { [weak self] _ in
-        self?.delegate?.didSelectTab(.folder)
-      })
-      .map { TabBarItem.folder }
-    
-    Driver.merge(didHomeTap, didSearchTap, didFolderTap).startWith(.home)
-      .drive(onNext: { [weak self] tab in
-        self?.updateTabBar(tab)
+    folderTabButton.rx.tap
+      .map { Action.selectFolderTab }
+      .bind(to: reactor.action )
+      .disposed(by: disposeBag)
+  }
+  
+  func bindState(reactor: TidifyTabBarReactor) {
+    reactor.state
+      .map { $0.selectedTab }
+      .bind(onNext: { [weak self] in
+        self?.updateTabBar($0)
       })
       .disposed(by: disposeBag)
   }

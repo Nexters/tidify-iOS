@@ -1,6 +1,6 @@
 //
 //  TabBarCoordinator.swift
-//  TidifyDataTests
+//  TidifyPresentation
 //
 //  Created by 한상진 on 2022/08/11.
 //  Copyright © 2022 Tidify. All rights reserved.
@@ -32,7 +32,7 @@ final class DefaultTabBarCoordinator: TabBarCoordinator {
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
   
-  private let tabBarController = TabBarController()
+  private let tabBarController: TabBarController = .init()
   
   // MARK: - Initialize
   init(navigationController: UINavigationController) {
@@ -68,9 +68,9 @@ private extension DefaultTabBarCoordinator {
     folderCoordinator.parentCoordinator = self
     addChild(folderCoordinator)
     
-    let homeViewController = homeCoordinator.startPush()
-    let searchViewController = searchCoordinator.startPush()
-    let folderViewController = folderCoordinator.startPush()
+    let homeViewController: UIViewController = homeCoordinator.startPush()
+    let searchViewController: UIViewController = searchCoordinator.startPush()
+    let folderViewController: UIViewController = folderCoordinator.startPush()
     
     tabBarController.setViewControllers(
       [homeViewController, searchViewController, folderViewController],
