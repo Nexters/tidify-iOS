@@ -29,10 +29,9 @@ public final class DefaultMainCoordinator: MainCoordinator {
 
   // MARK: - Methods
   public func start() {
-//    if !didOnboard {
-//      startOnboarding()
-//    }
-    startTabBar()
+    if !didOnboard {
+      startOnboarding()
+    }
   }
 }
 
