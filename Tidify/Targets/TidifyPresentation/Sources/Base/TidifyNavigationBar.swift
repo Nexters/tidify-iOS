@@ -19,25 +19,19 @@ final class TidifyNavigationBar: UIView {
     case normal
     case home
     case folder
-    
-    var height: CGFloat {
-      switch self {
-      case .normal: return 44
-      case .home, .folder: return 144
-      }
-    }
+    case folderDetail
     
     var sidePadding: CGFloat {
       switch self {
-      case .normal: return 8
-      case .home, .folder: return 20
+      case .normal, .folderDetail: return 8
+      case .home, .folder : return 20
       }
     }
     
     var bottomPadding: CGFloat {
       switch self {
       case .normal: return 10
-      case .home, .folder: return 24
+      case .home, .folder, .folderDetail: return 24
       }
     }
   }
@@ -45,7 +39,7 @@ final class TidifyNavigationBar: UIView {
   // MARK: - Properties
   
   private lazy var titleLabel: UILabel = .init().then {
-    $0.font = .t_B(16)
+    $0.font = .t_EB(16)
     $0.textColor = .black
   }
   
@@ -92,12 +86,14 @@ final class TidifyNavigationBar: UIView {
     
     addSubview(leftButton)
     
-    if let _ = title {
-      addSubview(titleLabel)
-      titleLabel.snp.makeConstraints {
-        $0.centerX.equalToSuperview()
-        $0.centerY.equalTo(leftButton)
-      }
+    if navigationBarStyle != .normal {
+      cornerRadius([.bottomLeft, .bottomRight], radius: 16)
+    }
+    
+    leftButton.snp.makeConstraints {
+      $0.leading.equalToSuperview().offset(navigationBarStyle.sidePadding)
+      $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
+      $0.size.equalTo(Self.viewWidth * 0.106)
     }
     
     if let rightButton = rightButton {
@@ -110,19 +106,17 @@ final class TidifyNavigationBar: UIView {
       }
     }
     
-    if navigationBarStyle != .normal {
-      cornerRadius([.bottomLeft, .bottomRight], radius: 16)
+    if let _ = title {
+      addSubview(titleLabel)
+      titleLabel.snp.makeConstraints {
+        $0.centerY.equalTo(leftButton).offset(-3)
+        if navigationBarStyle != .folderDetail {
+          $0.centerX.equalToSuperview()
+        } else {
+          $0.leading.equalTo(leftButton.snp.trailing).offset(16)
+        }
+      }
     }
     
-    self.snp.makeConstraints {
-      $0.leading.top.trailing.equalTo(safeAreaLayoutGuide)
-      $0.height.equalTo(navigationBarStyle.height)
-    }
-    
-    leftButton.snp.makeConstraints {
-      $0.leading.equalToSuperview().offset(navigationBarStyle.sidePadding)
-      $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
-      $0.size.equalTo(Self.viewWidth * 0.106)
-    }
   }
 }
