@@ -90,6 +90,10 @@ final class TidifyNavigationBar: UIView {
       cornerRadius([.bottomLeft, .bottomRight], radius: 16)
     }
     
+    if navigationBarStyle == .folderDetail {
+      titleLabel.font = .t_EB(20)
+    }
+    
     leftButton.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(navigationBarStyle.sidePadding)
       $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
