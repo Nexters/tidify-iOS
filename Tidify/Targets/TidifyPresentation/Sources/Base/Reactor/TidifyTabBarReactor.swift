@@ -6,8 +6,9 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import ReactorKit
 import UIKit
+
+import ReactorKit
 
 final class TidifyTabBarReactor {
 
