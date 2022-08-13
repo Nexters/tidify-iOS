@@ -12,6 +12,11 @@ import UIKit
 import RxCocoa
 import RxSwift
 
+public extension UIViewController {
+  static let viewHeight = UIScreen.main.bounds.height
+  static let viewWidth = UIScreen.main.bounds.width
+}
+
 public extension Reactive where Base: UIViewController {
   var viewDidLoad: Observable<Void> {
     self.methodInvoked(#selector(UIViewController.viewDidLoad))
