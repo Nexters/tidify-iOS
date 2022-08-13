@@ -6,8 +6,9 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import Then
 import UIKit
+
+import Then
 
 enum TabBarItem: CaseIterable {
   case home
