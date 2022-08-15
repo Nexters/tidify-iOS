@@ -98,7 +98,7 @@ final class TidifyNavigationBar: UIView {
     leftButton.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(navigationBarStyle.sidePadding)
       $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
-      $0.size.equalTo(Self.viewWidth * 0.106)
+      $0.size.equalTo(viewWidth * 0.106)
     }
     
     if let rightButton = rightButton {
@@ -106,8 +106,8 @@ final class TidifyNavigationBar: UIView {
       rightButton.snp.makeConstraints {
         $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
         $0.trailing.equalToSuperview().inset(navigationBarStyle.sidePadding)
-        $0.height.equalTo(Self.viewHeight * 0.049)
-        $0.width.equalTo(Self.viewWidth * (navigationBarStyle == .home ? 0.208 : 0.106))
+        $0.height.equalTo(viewHeight * 0.049)
+        $0.width.equalTo(viewWidth * (navigationBarStyle == .home ? 0.208 : 0.106))
       }
     }
     
