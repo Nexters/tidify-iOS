@@ -141,6 +141,7 @@ private extension TidifyTabBar {
       .map { $0.selectedTab }
       .bind(onNext: { [weak self] in
         self?.updateTabBar($0)
+        self?.delegate?.didSelectTab($0)
       })
       .disposed(by: disposeBag)
   }
