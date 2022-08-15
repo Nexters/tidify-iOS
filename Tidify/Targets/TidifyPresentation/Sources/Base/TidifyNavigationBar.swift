@@ -12,8 +12,8 @@ import SnapKit
 import Then
 
 final class TidifyNavigationBar: UIView {
-  private static let viewHeight = UIScreen.main.bounds.height
-  private static let viewWidth = UIScreen.main.bounds.width
+  private let viewHeight = UIScreen.main.bounds.height
+  private let viewWidth = UIScreen.main.bounds.width
   
   enum NavigationBarStyle {
     case normal
