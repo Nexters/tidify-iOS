@@ -51,10 +51,11 @@ final class TidifyNavigationBar: UIView {
   
   // MARK: - Initialize
   
-  init(_ navigationBarStyle: NavigationBarStyle,
-       title: String? = nil,
-       leftButton: UIButton,
-       rightButton: UIButton? = nil
+  init(
+    _ navigationBarStyle: NavigationBarStyle,
+    title: String? = nil,
+    leftButton: UIButton,
+    rightButton: UIButton? = nil
   ) {
     self.navigationBarStyle = navigationBarStyle
     self.leftButton = leftButton
