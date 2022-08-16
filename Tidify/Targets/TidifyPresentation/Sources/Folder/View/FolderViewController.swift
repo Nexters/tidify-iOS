@@ -18,14 +18,39 @@ final class FolderViewController: UIViewController {
     $0.backgroundColor = .white
   }
   
+  private lazy var emptyLabel: UILabel = .init().then {
+    $0.textColor = .t_indigo02()
+    $0.font = .t_EB(16)
+  }
+  
+  private lazy var folderTableView: UITableView = .init().then {
+    $0.t_registerCellClass(cellType: FolderTableViewCell.self)
+    $0.showsVerticalScrollIndicator = false
+  }
+  
+  private lazy var cellEditButton: UIButton = .init().then {
+    $0.setTitle("편집", for: .normal)
+    $0.setTitleColor(.t_indigo00(), for: .normal)
+    $0.titleLabel?.font = .t_SB(14)
+    $0.layer.borderWidth = 1
+    $0.layer.borderColor = UIColor(hex: "3C3C43")?.withAlphaComponent(0.08).cgColor
+  }
+  
+  private lazy var cellDeleteButton: UIButton = .init().then {
+    $0.setTitle("삭제", for: .normal)
+    $0.setTitleColor(.white, for: .normal)
+    $0.titleLabel?.font = .t_SB(14)
+    $0.backgroundColor = .red
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupUI()
   }
   
   init(_ navigationBar: TidifyNavigationBar) {
     self.navigationBar = navigationBar
     super.init(nibName: nil, bundle: nil)
-    setupUI()
   }
   
   required init?(coder: NSCoder) {
@@ -39,6 +64,7 @@ private extension FolderViewController {
     
     view.addSubview(navigationBar)
     view.addSubview(containerView)
+    containerView.addSubview(folderTableView)
     
     navigationBar.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
@@ -48,6 +74,11 @@ private extension FolderViewController {
     containerView.snp.makeConstraints {
       $0.top.equalTo(navigationBar.snp.bottom).offset(16)
       $0.leading.bottom.trailing.equalToSuperview()
+    }
+    
+    folderTableView.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview().offset(20)
+      $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
     }
   }
 }
