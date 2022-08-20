@@ -23,14 +23,11 @@ final class DefaultHomeCoordinator: HomeCoordinator {
   // MARK: - Methods
   func start() {
     let homeViewController: HomeViewController = .init(nibName: nil, bundle: nil)
-    homeViewController.coordinator = self
     navigationController.pushViewController(homeViewController, animated: true)
   }
   
   func startPush() -> UIViewController {
     let homeViewController: HomeViewController = .init(nibName: nil, bundle: nil)
-    homeViewController.coordinator = self
-    
     return homeViewController
   }
 }

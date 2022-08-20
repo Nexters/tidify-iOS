@@ -22,16 +22,20 @@ final class DefaultSignInCoordinator: SignInCoordinator {
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
 
+  // MARK: - Initialize
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
   }
 
+  // MARK: - Methods
   func start() {
     navigationController.viewControllers = [getViewController()]
   }
 
   func didSuccessSignIn(type: SocialLoginType) {
-    // TODO: Implementation
+    guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self)
+            as? DefaultTabBarCoordinator else { return }
+    tabBarCoordinator.start()
   }
 }
 
