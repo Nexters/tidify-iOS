@@ -21,11 +21,12 @@ public final class DIContainer: DIContainable {
 
   // MARK: - Properties
   public static let shared: DIContainer = .init()
-
-  private init() {}
-
   var services: [String: DependencyFactoryClosure] = [:]
 
+  // MARK: - Initializer
+  private init() {}
+
+  // MARK: - Methods
   public func register<Service>(type: Service.Type, factoryClosure: @escaping DependencyFactoryClosure) {
     services["\(type)"] = factoryClosure
   }

@@ -11,8 +11,10 @@ import TidifyDomain
 
 public struct DataAssembly: Assemblable {
 
+  // MARK: - Initializer
   public init() {}
 
+  // MARK: - Methods
   public func assemble(container: DIContainer) {
     container.register(type: SignInRepository.self) { _ in DefaultSignInRepository() }
   }

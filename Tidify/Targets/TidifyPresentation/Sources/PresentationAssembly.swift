@@ -8,17 +8,21 @@
 
 import TidifyCore
 import TidifyDomain
+
 import UIKit
 
 
 public struct PresentationAssembly: Assemblable {
 
+  // MARK: - Properties
   private let navigationController: UINavigationController
 
+  // MARK: - Initializer
   public init(navigationController: UINavigationController) {
     self.navigationController = navigationController
   }
 
+  // MARK: - Methods
   public func assemble(container: DIContainer) {
     container.register(type: OnboardingCoordinator.self) { _ in
       DefaultOnboardingCoordinator(navigationController: navigationController)
