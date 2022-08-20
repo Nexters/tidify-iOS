@@ -6,7 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import TidifyData
+import TidifyCore
 import TidifyDomain
 
 import UIKit
@@ -38,10 +38,10 @@ final class DefaultSignInCoordinator: SignInCoordinator {
 // MARK: - Private
 private extension DefaultSignInCoordinator {
   func getViewController() -> SignInViewController {
-    let reactor: SignInReactor = .init(
-      coordinator: self,
-      usecase: DefaultSignInUseCase(repository: DefaultSignInRepository())
-    )
+    guard let usecase: SignInUseCase = DIContainer.shared.resolve(type: SignInUseCase.self)
+    else { fatalError() }
+
+    let reactor: SignInReactor = .init(coordinator: self,usecase: usecase)
     let viewController: SignInViewController = .init(nibName: nil, bundle: nil)
     viewController.reactor = reactor
 
