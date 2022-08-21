@@ -7,7 +7,7 @@
 //
 
 public struct UserSessionDTO: Decodable {
-  let authorization: String
+  public let authorization: String
 
   enum CodingKeys: String, CodingKey {
     case authorization = "Authorization"

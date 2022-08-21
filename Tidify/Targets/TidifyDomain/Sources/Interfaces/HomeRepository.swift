@@ -9,5 +9,6 @@
 import RxSwift
 
 public protocol HomeRepository {
-  func fetchBookmark() -> Single<BookmarkListDTO>
+  func fetchBookmark(id: Int) -> Single<BookmarkListDTO>
+  func createBookmark(url: String, title: String?, ogImageURL: String?, tags: String?) -> Single<Void>
 }
