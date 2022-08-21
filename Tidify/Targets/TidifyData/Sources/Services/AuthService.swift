@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import TidifyCore
 import TidifyDomain
 
 import Moya
@@ -17,7 +18,7 @@ enum AuthService {
 
 extension AuthService: TargetType {
   var baseURL: URL {
-    return URL(string: "https://tidify.herokuapp.com")!
+    return .init(string: AppProperties.baseURL)!
   }
 
   var path: String {
