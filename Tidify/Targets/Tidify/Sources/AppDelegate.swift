@@ -1,3 +1,6 @@
+import TidifyCore
+import TidifyData
+import TidifyDomain
 import TidifyPresentation
 import UIKit
 
@@ -9,6 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   private var mainCoordinator: MainCoordinator?
+  private var navigationController: UINavigationController?
 
   func application(
     _ application: UIApplication,
@@ -18,9 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window.makeKeyAndVisible()
     self.window = window
 
-    setupLibrary()
+    let navigationController: UINavigationController = .init(nibName: nil, bundle: nil)
+    self.navigationController = navigationController
+    window.rootViewController = navigationController
 
-    self.mainCoordinator = DefaultMainCoordinator(window: window)
+    setupLibrary()
+    assemble()
+
+    self.mainCoordinator = DefaultMainCoordinator(navigationController: navigationController)
 
     mainCoordinator?.start()
 
@@ -37,5 +46,13 @@ private extension AppDelegate {
     guard let appKey: String = Bundle.main.object(forInfoDictionaryKey: "KAKAO_API_KEY") as? String
     else { return }
     KakaoSDK.initSDK(appKey: appKey)
+  }
+
+  func assemble() {
+    guard let navigationController = navigationController else { return }
+    let container: DIContainer = .shared
+    DataAssembly().assemble(container: container)
+    DomainAssembly().assemble(container: container)
+    PresentationAssembly(navigationController: navigationController).assemble(container: container)
   }
 }

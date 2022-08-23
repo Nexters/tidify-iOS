@@ -144,6 +144,5 @@ private extension SignInViewController {
       .map { $0.successSignIn }
       .subscribe()
       .disposed(by: disposeBag)
-
   }
 }
