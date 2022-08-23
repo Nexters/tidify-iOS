@@ -6,8 +6,8 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import TidifyDomain
 import TidifyCore
+import TidifyDomain
 
 import KakaoSDKAuth
 import KakaoSDKUser
@@ -61,7 +61,7 @@ private extension DefaultSignInRepository {
       )
     )
     .asObservable()
-    .map(UserSession.self)
+    .map(UserSessionDTO.self)
     .do(onNext: { userSession in
       Beaver.info(userSession)
     })

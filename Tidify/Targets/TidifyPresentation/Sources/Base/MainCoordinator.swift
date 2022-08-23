@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
 import UIKit
 
 public protocol MainCoordinator: Coordinator {
@@ -17,14 +18,13 @@ public final class DefaultMainCoordinator: MainCoordinator {
   // MARK: - Properties
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
+  private let container: DIContainer = .shared
   private let didOnboard: Bool = UserDefaults.standard.bool(forKey: "didOnboard")
 
   // MARK: - Initialize
-  public init(window: UIWindow) {
-    self.navigationController = .init(nibName: nil, bundle: nil)
-    self.navigationController.view.backgroundColor = .systemBackground
-
-    window.rootViewController = navigationController
+  public init(navigationController: UINavigationController) {
+    navigationController.view.backgroundColor = .systemBackground
+    self.navigationController = navigationController
   }
 
   // MARK: - Methods
@@ -37,9 +37,9 @@ public final class DefaultMainCoordinator: MainCoordinator {
 
 private extension DefaultMainCoordinator {
   func startOnboarding() {
-    let onboardingCoordinator: DefaultOnboardingCoordinator = .init(
-      navigationController: navigationController
-    )
+    guard let onboardingCoordinator = container.resolve(type: OnboardingCoordinator.self)
+            as? DefaultOnboardingCoordinator else { return }
+
     onboardingCoordinator.parentCoordinator = self
     addChild(onboardingCoordinator)
 
@@ -47,13 +47,19 @@ private extension DefaultMainCoordinator {
   }
 
   func startSignIn() {
-    // TODO: Implementation
+    guard let signInCoordinator = container.resolve(type: SignInCoordinator.self)
+            as? DefaultSignInCoordinator else { return }
+
+    signInCoordinator.parentCoordinator = self
+    addChild(signInCoordinator)
+
+    signInCoordinator.start()
   }
   
   func startTabBar() {
-    let tabBarCoordinator: DefaultTabBarCoordinator = .init(
-      navigationController: navigationController
-    )
+    guard let tabBarCoordinator = container.resolve(type: TabBarCoordinator.self)
+            as? DefaultTabBarCoordinator else { return }
+
     tabBarCoordinator.parentCoordinator = self
     addChild(tabBarCoordinator)
     
