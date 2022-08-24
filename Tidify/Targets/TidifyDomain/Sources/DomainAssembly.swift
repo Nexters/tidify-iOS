@@ -18,5 +18,9 @@ public struct DomainAssembly: Assemblable {
     container.register(type: SignInUseCase.self) { container in
       return DefaultSignInUseCase(repository: container.resolve(type: SignInRepository.self)!)
     }
+    
+    container.register(type: FolderUseCase.self) { container in
+      return DefaultFolderUseCase(repository: container.resolve(type: FolderRepository.self)!)
+    }
   }
 }
