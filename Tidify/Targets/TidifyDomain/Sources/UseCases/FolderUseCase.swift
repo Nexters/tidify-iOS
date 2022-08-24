@@ -6,8 +6,6 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import RxSwift
-
 public protocol FolderUseCase {
   var folderRepository: FolderRepository { get set }
 

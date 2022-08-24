@@ -8,8 +8,6 @@
 
 import TidifyDomain
 
-import RxSwift
-
 public struct DefaultFolderRepository: FolderRepository {
   public init() {}
   

@@ -6,8 +6,6 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import RxSwift
-
 public protocol FolderRepository {
   
   //MARK: - 추후 실서버 연동 후 변경 예정
