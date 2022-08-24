@@ -34,10 +34,6 @@ final class FolderTableViewCell: UITableViewCell {
     setupPadding()
   }
   
-  override func prepareForReuse() {
-    super.prepareForReuse()
-  }
-  
   func setupUI(folderName: String, folderColor: String) {
     nameLabel.text = folderName
     nameLabel.textColor = UIColor(hex: folderColor)
