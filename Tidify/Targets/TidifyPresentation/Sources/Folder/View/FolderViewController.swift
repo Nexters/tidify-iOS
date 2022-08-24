@@ -8,9 +8,9 @@
 
 import UIKit
 
-final class FolderViewController: UIViewController {
-  weak var coordinator: FolderCoordinator?
-  
+import ReactorKit
+
+final class FolderViewController: UIViewController, View {
   private let navigationBar: TidifyNavigationBar
   
   private let containerView: UIView = .init().then {
@@ -25,6 +25,8 @@ final class FolderViewController: UIViewController {
   
   private lazy var folderTableView: UITableView = .init().then {
     $0.t_registerCellClass(cellType: FolderTableViewCell.self)
+    $0.separatorStyle = .none
+    $0.rowHeight = (Self.viewHeight * 0.0689) + 24
     $0.showsVerticalScrollIndicator = false
   }
   
@@ -33,7 +35,7 @@ final class FolderViewController: UIViewController {
     $0.setTitleColor(.t_indigo00(), for: .normal)
     $0.titleLabel?.font = .t_SB(14)
     $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor(hex: "3C3C43")?.withAlphaComponent(0.08).cgColor
+    $0.layer.borderColor = UIColor.t_borderColor().cgColor
   }
   
   private lazy var cellDeleteButton: UIButton = .init().then {
@@ -42,6 +44,8 @@ final class FolderViewController: UIViewController {
     $0.titleLabel?.font = .t_SB(14)
     $0.backgroundColor = .red
   }
+  
+  var disposeBag: DisposeBag = .init()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -56,9 +60,16 @@ final class FolderViewController: UIViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  func bind(reactor: FolderReactor) {
+    bindAction(reactor: reactor)
+    bindState(reactor: reactor)
+  }
 }
 
 private extension FolderViewController {
+  typealias Action = FolderReactor.Action
+  
   func setupUI() {
     view.backgroundColor = .init(235, 235, 240)
     
@@ -77,8 +88,31 @@ private extension FolderViewController {
     }
     
     folderTableView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview().offset(20)
+      $0.top.leading.trailing.equalToSuperview().inset(20)
       $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
     }
+  }
+  
+  func bindAction(reactor: FolderReactor) {
+    self.rx.viewDidLoad
+      .map { Action.fetchFolders }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+  }
+  
+  func bindState(reactor: FolderReactor) {
+    reactor.state
+      .map { $0.folders }
+      .bind(to: folderTableView.rx.items) { tableView, row, item in
+        guard let cell = tableView.dequeueReusableCell(
+          withIdentifier: "FolderTableViewCell",
+          for: IndexPath(row: row, section: 0)
+        ) as? FolderTableViewCell
+        else { return UITableViewCell() }
+
+        cell.setupUI(folderName: item.name, folderColor: item.color)
+        return cell
+      }
+      .disposed(by: disposeBag)
   }
 }

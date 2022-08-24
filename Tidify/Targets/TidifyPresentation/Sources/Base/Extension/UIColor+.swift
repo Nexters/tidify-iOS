@@ -13,28 +13,21 @@ public extension UIColor {
     self.init(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: alpha)
   }
 
-  convenience init?(hex: String) {
-    let r, g, b: CGFloat
-
-    if hex.hasPrefix("#") {
-      let start = hex.index(hex.startIndex, offsetBy: 1)
-      let hexColor = String(hex[start...])
-
-      if hexColor.count == 8 {
-        let scanner = Scanner(string: hexColor)
-        var hexNumber: UInt64 = 0
-
-        if scanner.scanHexInt64(&hexNumber) {
-          r = CGFloat((hexNumber & 0xff0000) >> 24) / 255
-          g = CGFloat((hexNumber & 0x00ff00) >> 16) / 255
-          b = CGFloat((hexNumber & 0x0000ff) >> 8) / 255
-          self.init(red: r, green: g, blue: b, alpha: 1)
-          return
-        }
-      }
+  convenience init(hex: String) {
+    var hexFormatted: String = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+    
+    if hexFormatted.hasPrefix("#") {
+      hexFormatted = String(hexFormatted.dropFirst())
     }
-
-    return nil
+    
+    var color: UInt64 = 0
+    Scanner(string: hexFormatted).scanHexInt64(&color)
+    
+    let red = CGFloat((color & 0xFF0000) >> 16) / 255.0
+    let green = CGFloat((color & 0x00FF00) >> 8) / 255.0
+    let blue = CGFloat(color & 0x0000FF) / 255.0
+    
+    self.init(red: red, green: green, blue: blue, alpha: 1)
   }
 
   static func t_tidiBlue00() -> UIColor {
@@ -63,6 +56,10 @@ public extension UIColor {
 
   static func t_background() -> UIColor {
     return .init(235, 235, 240)
+  }
+  
+  static func t_borderColor() -> UIColor {
+    return .init(60, 60, 67, 0.08)
   }
 
   func toHexString() -> String {

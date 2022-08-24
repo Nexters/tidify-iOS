@@ -9,9 +9,10 @@
 import RxSwift
 
 public protocol FolderRepository {
-  //TODO: 추후 실서버 연동 후 변경 예정
-  func createFolder(name: String, color: String) -> Observable<Folder>
-  func updateFolder(name: String, color: String) -> Observable<Folder>
-  func deleteFolder(folderID: Int) -> Observable<Void>
-  func fetchFolders() -> Observable<[Folder]?>
+  
+  //MARK: - 추후 실서버 연동 후 변경 예정
+  func createFolder(name: String, color: String) -> Folder
+  func updateFolder(name: String, color: String)
+  func deleteFolder(folderID: Int)
+  func fetchFolders() -> [Folder]?
 }

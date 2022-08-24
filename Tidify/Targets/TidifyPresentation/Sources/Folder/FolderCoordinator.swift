@@ -8,6 +8,9 @@
 
 import UIKit
 
+import TidifyCore
+import TidifyDomain
+
 protocol FolderCoordinator: Coordinator {}
 
 final class DefaultFolderCoordinator: FolderCoordinator {
@@ -37,18 +40,25 @@ final class DefaultFolderCoordinator: FolderCoordinator {
 
   // MARK: - Methods
   func start() {
-    guard let navigationBar = navigationBar else { return }
-    let folderViewController: FolderViewController = .init(navigationBar)
-    folderViewController.coordinator = self
-    
-    navigationController.pushViewController(folderViewController, animated: true)
+    navigationController.pushViewController(getViewController(), animated: true)
   }
   
   func startPush() -> UIViewController {
-    guard let navigationBar = navigationBar else { return UIViewController.init() }
-    let folderViewController: FolderViewController = .init(navigationBar)
-    folderViewController.coordinator = self
-    
-    return folderViewController
+    return getViewController()
+  }
+}
+
+// MARK: - Private
+private extension DefaultFolderCoordinator {
+  func getViewController() -> FolderViewController {
+    guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self),
+          let navigationBar = navigationBar
+    else { fatalError() }
+
+    let reactor: FolderReactor = .init(coordinator: self, usecase: usecase)
+    let viewController: FolderViewController = .init(navigationBar)
+    viewController.reactor = reactor
+
+    return viewController
   }
 }

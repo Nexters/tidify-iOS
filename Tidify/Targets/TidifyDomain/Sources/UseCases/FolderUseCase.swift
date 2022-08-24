@@ -11,7 +11,7 @@ import RxSwift
 public protocol FolderUseCase {
   var folderRepository: FolderRepository { get set }
 
-  func fetchFolders() -> Observable<[Folder]?>
+  func fetchFolders() -> [Folder]?
 }
 
 public final class DefaultFolderUseCase: FolderUseCase {
@@ -25,7 +25,7 @@ public final class DefaultFolderUseCase: FolderUseCase {
   }
 
   // MARK: - Methods
-  public func fetchFolders() -> Observable<[Folder]?> {
+  public func fetchFolders() -> [Folder]? {
     return folderRepository.fetchFolders()
   }
 }

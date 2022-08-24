@@ -37,11 +37,24 @@ final class FolderTableViewCell: UITableViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
   }
+  
+  func setupUI(folderName: String, folderColor: String) {
+    nameLabel.text = folderName
+    nameLabel.textColor = UIColor(hex: folderColor)
+    colorView.backgroundColor = UIColor(hex: folderColor)
+  }
 }
 
 private extension FolderTableViewCell {
   func setupUI() {
+    backgroundColor = .white
+    selectionStyle = .none
+    
     contentView.backgroundColor = .white
+    contentView.layer.cornerRadius = 8
+    contentView.layer.borderWidth = 1
+    contentView.layer.borderColor = UIColor.t_borderColor().cgColor
+    
     contentView.addSubview(colorView)
     contentView.addSubview(nameLabel)
     
@@ -59,7 +72,7 @@ private extension FolderTableViewCell {
   func setupPadding() {
     contentView.frame = contentView.frame.inset(
       by: UIEdgeInsets(
-        top: 24,
+        top: 0,
         left: 0,
         bottom: 24,
         right: 0
