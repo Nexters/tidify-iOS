@@ -9,9 +9,9 @@
 import RxSwift
 
 public protocol HomeUseCase {
-  var repository: HomeRepository { get set }
+  var repository: HomeRepository { get }
 
-  func fetchBookmark(id: Int) -> Observable<BookmarkListDTO>
+  func fetchBookmark(id: Int) -> Observable<[Bookmark]>
   func createBookmark(url: String, title: String?, ogImageURL: String?, tags: String?) -> Single<Void>
 }
 
@@ -26,8 +26,8 @@ public final class DefaultHomeUseCase: HomeUseCase {
   }
 
   // MARK: - Methods
-  public func fetchBookmark(id: Int) -> Observable<BookmarkListDTO> {
-    return repository.fetchBookmark(id: id)
+  public func fetchBookmark(id: Int) -> Observable<[Bookmark]> {
+    return repository.fetchBookmarks(id: id)
       .asObservable()
   }
 

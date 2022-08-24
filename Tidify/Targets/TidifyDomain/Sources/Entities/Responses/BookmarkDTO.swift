@@ -29,20 +29,22 @@ public struct BookmarkDTO: Decodable {
 }
 
 extension BookmarkDTO {
-  func toDomain() -> Bookmark {
-    .init(id: id,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-          memberID: memberID,
-          urlString: urlString,
-          title: title,
-          tag: tag)
+  public func toDomain() -> Bookmark {
+    .init(
+      id: id,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      memberID: memberID,
+      urlString: urlString,
+      title: title,
+      tag: tag
+    )
   }
 }
 
 public struct BookmarkListDTO: Decodable {
-  let bookmarks: [BookmarkDTO]
-  let bookmarksCount: Int
+  public let bookmarks: [BookmarkDTO]
+  public let bookmarksCount: Int
 
   enum CodingKeys: String, CodingKey {
     case bookmarks
