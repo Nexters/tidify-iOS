@@ -18,12 +18,15 @@ import Moya
 
 public struct DefaultSignInRepository: SignInRepository {
 
+  // MARK: - Properties
   private let authService: MoyaProvider<AuthService>
 
+  // MARK: - Initializer
   public init() {
     self.authService = .init(plugins: [NetworkPlugin()])
   }
 
+  // MARK: - Methods
   public func trySocialLogin(type: SocialLoginType) -> Observable<Void> {
     switch type {
     case .kakao:
@@ -63,6 +66,7 @@ private extension DefaultSignInRepository {
     .asObservable()
     .map(UserSessionDTO.self)
     .do(onNext: { userSession in
+      AppProperties.authorization = userSession.authorization
       Beaver.info(userSession)
     })
     .mapToVoid()
