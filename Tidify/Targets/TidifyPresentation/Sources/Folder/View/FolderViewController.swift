@@ -20,6 +20,7 @@ final class FolderViewController: UIViewController, View {
   
   private lazy var emptyLabel: UILabel = .init().then {
     $0.textColor = .t_indigo02()
+    $0.text = "폴더에 정리하고 싶지 않나요?"
     $0.font = .t_EB(16)
   }
   
@@ -28,21 +29,6 @@ final class FolderViewController: UIViewController, View {
     $0.separatorStyle = .none
     $0.rowHeight = (Self.viewHeight * 0.0689) + 24
     $0.showsVerticalScrollIndicator = false
-  }
-  
-  private lazy var cellEditButton: UIButton = .init().then {
-    $0.setTitle("편집", for: .normal)
-    $0.setTitleColor(.t_indigo00(), for: .normal)
-    $0.titleLabel?.font = .t_SB(14)
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.t_borderColor().cgColor
-  }
-  
-  private lazy var cellDeleteButton: UIButton = .init().then {
-    $0.setTitle("삭제", for: .normal)
-    $0.setTitleColor(.white, for: .normal)
-    $0.titleLabel?.font = .t_SB(14)
-    $0.backgroundColor = .red
   }
   
   var disposeBag: DisposeBag = .init()
@@ -75,6 +61,7 @@ private extension FolderViewController {
     
     view.addSubview(navigationBar)
     view.addSubview(containerView)
+    containerView.addSubview(emptyLabel)
     containerView.addSubview(folderTableView)
     
     navigationBar.snp.makeConstraints {
@@ -90,6 +77,11 @@ private extension FolderViewController {
     folderTableView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview().inset(20)
       $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
+    }
+    
+    emptyLabel.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(72)
+      $0.centerX.equalToSuperview()
     }
   }
   
@@ -113,6 +105,14 @@ private extension FolderViewController {
         cell.setupUI(folderName: item.name, folderColor: item.color)
         return cell
       }
+      .disposed(by: disposeBag)
+    
+    reactor.state
+      .map { $0.folders }
+      .asDriver(onErrorJustReturn: [])
+      .drive(onNext: { [weak self] in
+        self?.folderTableView.isHidden = $0.isEmpty
+      })
       .disposed(by: disposeBag)
   }
 }
