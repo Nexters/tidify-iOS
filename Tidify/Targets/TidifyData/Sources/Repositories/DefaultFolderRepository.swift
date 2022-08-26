@@ -8,19 +8,22 @@
 
 import TidifyDomain
 
+import RxSwift
+
 public struct DefaultFolderRepository: FolderRepository {
   public init() {}
   
   //MARK: - 추후 실서버 연동 후 변경 예정
-  public func createFolder(name: String, color: String) -> Folder {
-    return Folder(name: name, color: color)
+  public func createFolder(name: String, color: String) -> Single<Void> {
+    let folder = Folder(name: name, color: color)
+    return Single.just(folder).map { _ in }
   }
   
   public func updateFolder(name: String, color: String) {}
   
   public func deleteFolder(folderID: Int) {}
   
-  public func fetchFolders() -> [Folder]? {
+  public func fetchFolders() -> Single<[Folder]?> {
     let folders = [
       Folder(name: "테스트폴더0", color: "#ff9500"),
       Folder(name: "테스트폴더1", color: "#ff2d54"),
@@ -35,6 +38,6 @@ public struct DefaultFolderRepository: FolderRepository {
       Folder(name: "테스트폴더10", color: "#ff9500")
     ]
     
-    return folders
+    return Single.just(folders)
   }
 }

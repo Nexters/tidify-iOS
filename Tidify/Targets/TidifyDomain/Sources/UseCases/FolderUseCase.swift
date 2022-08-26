@@ -6,10 +6,12 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import RxSwift
+
 public protocol FolderUseCase {
   var folderRepository: FolderRepository { get set }
 
-  func fetchFolders() -> [Folder]?
+  func fetchFolders() -> Observable<[Folder]?>
 }
 
 public final class DefaultFolderUseCase: FolderUseCase {
@@ -23,7 +25,7 @@ public final class DefaultFolderUseCase: FolderUseCase {
   }
 
   // MARK: - Methods
-  public func fetchFolders() -> [Folder]? {
-    return folderRepository.fetchFolders()
+  public func fetchFolders() -> Observable<[Folder]?> {
+    return folderRepository.fetchFolders().asObservable()
   }
 }

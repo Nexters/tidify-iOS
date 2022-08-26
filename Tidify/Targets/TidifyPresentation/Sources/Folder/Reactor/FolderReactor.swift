@@ -36,7 +36,8 @@ final class FolderReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .fetchFolders:
-      return Observable.of(.setupFolders(usecase.fetchFolders()))
+      return usecase.fetchFolders()
+        .map { .setupFolders($0) }
     }
   }
 

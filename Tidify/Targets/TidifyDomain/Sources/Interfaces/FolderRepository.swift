@@ -6,11 +6,13 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import RxSwift
+
 public protocol FolderRepository {
   
   //MARK: - 추후 실서버 연동 후 변경 예정
-  func createFolder(name: String, color: String) -> Folder
+  func createFolder(name: String, color: String) -> Single<Void>
   func updateFolder(name: String, color: String)
   func deleteFolder(folderID: Int)
-  func fetchFolders() -> [Folder]?
+  func fetchFolders() -> Single<[Folder]?>
 }

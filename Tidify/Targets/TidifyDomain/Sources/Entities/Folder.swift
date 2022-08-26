@@ -9,9 +9,9 @@
 public struct Folder {
   public private(set) var name: String
   public private(set) var color: String
-  public private(set) var bookMarks: [BookMark]?
+  public private(set) var bookMarks: [Bookmark]?
   
-  public init(name: String, color: String, bookMarks: [BookMark]? = nil) {
+  public init(name: String, color: String, bookMarks: [Bookmark]? = nil) {
     self.name = name
     self.color = color
     self.bookMarks = bookMarks
