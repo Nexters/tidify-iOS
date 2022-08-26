@@ -35,5 +35,9 @@ public struct PresentationAssembly: Assemblable {
     container.register(type: TabBarCoordinator.self) { _ in
       DefaultTabBarCoordinator(navigationController: navigationController)
     }
+
+    container.register(type: HomeCoordinator.self) { _ in
+      DefaultHomeCoordinator(navigationController: navigationController)
+    }
   }
 }

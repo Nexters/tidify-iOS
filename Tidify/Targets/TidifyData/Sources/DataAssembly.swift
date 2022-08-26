@@ -17,5 +17,7 @@ public struct DataAssembly: Assemblable {
   // MARK: - Methods
   public func assemble(container: DIContainer) {
     container.register(type: SignInRepository.self) { _ in DefaultSignInRepository() }
+
+    container.register(type: HomeRepository.self) { _ in DefaultHomeRepository() }
   }
 }
