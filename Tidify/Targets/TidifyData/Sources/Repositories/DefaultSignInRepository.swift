@@ -40,19 +40,25 @@ public struct DefaultSignInRepository: SignInRepository {
 
 private extension DefaultSignInRepository {
   func tryKakaoLogin() -> Observable<Void> {
-    if UserApi.isKakaoTalkLoginAvailable() {
-      // 카카오톡이 설치되어 있는 경우
-      return UserApi.shared.rx.loginWithKakaoTalk()
-        .flatMapLatest { oAuthToken -> Observable<Void> in
-          return requestAuthentication(type: .kakao, oAuthToken: oAuthToken)
-        }
-    } else {
-      // 카카오톡 미설치 경우
-      return UserApi.shared.rx.loginWithKakaoAccount()
-        .flatMapLatest { oAuthToken -> Observable<Void> in
-          return requestAuthentication(type: .kakao, oAuthToken: oAuthToken)
-        }
-    }
+    return UserApi.shared.rx.loginWithKakaoAccount()
+      .flatMapLatest { oAuthToken -> Observable<Void> in
+        return requestAuthentication(type: .kakao, oAuthToken: oAuthToken)
+      }
+
+    // TODO: 동작 이상으로 추후 수정
+//    if UserApi.isKakaoTalkLoginAvailable() {
+//      // 카카오톡이 설치되어 있는 경우
+//      return UserApi.shared.rx.loginWithKakaoTalk()
+//        .flatMapLatest { oAuthToken -> Observable<Void> in
+//          return requestAuthentication(type: .kakao, oAuthToken: oAuthToken)
+//        }
+//    } else {
+//      // 카카오톡 미설치 경우
+//      return UserApi.shared.rx.loginWithKakaoAccount()
+//        .flatMapLatest { oAuthToken -> Observable<Void> in
+//          return requestAuthentication(type: .kakao, oAuthToken: oAuthToken)
+//        }
+//    }
   }
 
   func requestAuthentication(type: SocialLoginType, oAuthToken: OAuthToken) -> Observable<Void> {
@@ -68,6 +74,8 @@ private extension DefaultSignInRepository {
     .do(onNext: { userSession in
       AppProperties.authorization = userSession.authorization
       Beaver.info(userSession)
+    }, onError: { error in
+      print("❌ [Ian] \(#file) - \(#line): \(#function) - Fail: \(error)")
     })
     .mapToVoid()
   }

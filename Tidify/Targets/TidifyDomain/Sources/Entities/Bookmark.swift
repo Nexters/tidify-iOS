@@ -11,15 +11,15 @@ import Foundation
 public struct Bookmark {
 
   // MARK: - Properties
-  let id: Int
-  let createdAt: String
-  let updatedAt: String
-  let memberID: Int
-  let urlString: String?
-  let title: String
-  let tag: String
+  private let id: Int
+  private let createdAt: String
+  private let updatedAt: String
+  private let memberID: Int
+  public let urlString: String?
+  public let title: String
+  public let tag: String
 
-  var url: URL {
+  public var url: URL {
     return .init(string: urlString ?? "")!
   }
 
