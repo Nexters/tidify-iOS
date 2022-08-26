@@ -19,5 +19,7 @@ public struct DataAssembly: Assemblable {
     container.register(type: SignInRepository.self) { _ in DefaultSignInRepository() }
     
     container.register(type: FolderRepository.self) { _ in DefaultFolderRepository() }
+
+    container.register(type: HomeRepository.self) { _ in DefaultHomeRepository() }
   }
 }

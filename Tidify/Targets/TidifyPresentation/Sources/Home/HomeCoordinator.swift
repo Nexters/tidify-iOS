@@ -6,9 +6,14 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
+import TidifyDomain
+
 import UIKit
 
-protocol HomeCoordinator: Coordinator {}
+protocol HomeCoordinator: Coordinator {
+  func pushWebView(bookmark: Bookmark)
+}
 
 final class DefaultHomeCoordinator: HomeCoordinator {
   weak var parentCoordinator: Coordinator?
@@ -22,15 +27,30 @@ final class DefaultHomeCoordinator: HomeCoordinator {
 
   // MARK: - Methods
   func start() {
-    let homeViewController: HomeViewController = .init(nibName: nil, bundle: nil)
-    homeViewController.coordinator = self
-    navigationController.pushViewController(homeViewController, animated: true)
+    let viewController: HomeViewController = getViewController()
+    navigationController.pushViewController(viewController, animated: true)
   }
   
   func startPush() -> UIViewController {
-    let homeViewController: HomeViewController = .init(nibName: nil, bundle: nil)
-    homeViewController.coordinator = self
-    
-    return homeViewController
+    return getViewController()
+  }
+
+  func pushWebView(bookmark: Bookmark) {
+    // TODO: Implementation
+  }
+}
+
+// MARK: - Private
+private extension HomeCoordinator {
+  func getViewController() -> HomeViewController {
+    guard let usecase: HomeUseCase = DIContainer.shared.resolve(type: HomeUseCase.self) else {
+      fatalError()
+    }
+
+    let reactor: HomeReactor = .init(coordinator: self, useCase: usecase)
+    let viewController: HomeViewController = .init(nibName: nil, bundle: nil)
+    viewController.reactor = reactor
+
+    return viewController
   }
 }

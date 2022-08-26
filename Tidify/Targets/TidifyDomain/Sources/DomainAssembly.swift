@@ -9,10 +9,10 @@
 import TidifyCore
 
 public struct DomainAssembly: Assemblable {
-
+  
   // MARK: - Initializer
   public init() {}
-
+  
   // MARK: - Methods
   public func assemble(container: DIContainer) {
     container.register(type: SignInUseCase.self) { container in
@@ -21,6 +21,10 @@ public struct DomainAssembly: Assemblable {
     
     container.register(type: FolderUseCase.self) { container in
       return DefaultFolderUseCase(repository: container.resolve(type: FolderRepository.self)!)
+    }
+    
+    container.register(type: HomeUseCase.self) { container in
+      return DefaultHomeUseCase(repository: container.resolve(type: HomeRepository.self)!)
     }
   }
 }

@@ -6,10 +6,8 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import TidifyDomain
-
-struct UserSessionDTO: Decodable {
-  let authorization: String
+public struct UserSessionDTO: Decodable {
+  public let authorization: String
 
   enum CodingKeys: String, CodingKey {
     case authorization = "Authorization"

@@ -4,6 +4,7 @@ import TidifyDomain
 import TidifyPresentation
 import UIKit
 
+import KakaoSDKAuth
 import KakaoSDKCommon
 import SwiftyBeaver
 
@@ -34,6 +35,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     mainCoordinator?.start()
 
     return true
+  }
+
+  func application(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+  ) -> Bool {
+    if AuthApi.isKakaoTalkLoginUrl(url) {
+      return AuthController.handleOpenUrl(url: url, options: options)
+    }
+    return false
   }
 }
 
