@@ -7,6 +7,7 @@
 //
 
 public struct Folder {
+  //TODO: 서버 연동 후 수정 예정
   public private(set) var name: String
   public private(set) var color: String
   public private(set) var bookMarks: [Bookmark]?

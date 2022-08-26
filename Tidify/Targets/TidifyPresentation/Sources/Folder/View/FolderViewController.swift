@@ -108,11 +108,8 @@ private extension FolderViewController {
       .disposed(by: disposeBag)
     
     reactor.state
-      .map { $0.folders }
-      .asDriver(onErrorJustReturn: [])
-      .drive(onNext: { [weak self] in
-        self?.folderTableView.isHidden = $0.isEmpty
-      })
+      .map { $0.folders.isEmpty }
+      .bind(to: folderTableView.rx.isHidden)
       .disposed(by: disposeBag)
   }
 }

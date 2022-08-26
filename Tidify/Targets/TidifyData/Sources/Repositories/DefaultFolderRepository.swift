@@ -15,8 +15,7 @@ public struct DefaultFolderRepository: FolderRepository {
   
   //MARK: - 추후 실서버 연동 후 변경 예정
   public func createFolder(name: String, color: String) -> Single<Void> {
-    let folder = Folder(name: name, color: color)
-    return Single.just(folder).map { _ in }
+    return Single.just(())
   }
   
   public func updateFolder(name: String, color: String) {}
