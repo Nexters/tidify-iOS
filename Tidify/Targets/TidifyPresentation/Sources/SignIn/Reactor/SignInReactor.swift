@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
 import TidifyDomain
 
 import ReactorKit
@@ -29,6 +30,7 @@ final class SignInReactor: Reactor {
 
   enum Action {
     case trySignIn(type: SocialLoginType)
+    case appleSignIn(token: String)
   }
 
   struct State {
@@ -40,6 +42,8 @@ final class SignInReactor: Reactor {
     case .trySignIn(let type):
       return usecase.trySignIn(type: type)
         .map { .trySignIn(type: type) }
+    case .appleSignIn(let token):
+      return .just(.appleSignIn(token: token))
     }
   }
 
@@ -50,6 +54,10 @@ final class SignInReactor: Reactor {
     case .trySignIn(let type):
       newState.successSignIn = true
       coordinator.didSuccessSignIn(type: type)
+    case .appleSignIn(let token):
+      AppProperties.authorization = token
+      newState.successSignIn = true
+      coordinator.didSuccessSignIn(type: .apple)
     }
 
     return newState
