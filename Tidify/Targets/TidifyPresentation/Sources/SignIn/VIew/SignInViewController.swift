@@ -7,6 +7,7 @@
 //
 
 import AuthenticationServices
+import TidifyCore
 import UIKit
 
 import RxCocoa
@@ -66,6 +67,13 @@ final class SignInViewController: UIViewController, View {
       $0.cornerRadius = 14
     }
 
+  private let appleSignInSubject: PublishSubject<String> = .init()
+  private var signInWithAppleBinder: Binder<Void> {
+    return .init(self, binding: { vc, _ in
+      vc.signInWithApple()
+    })
+  }
+  
   var disposeBag: DisposeBag = .init()
 
   override func viewDidLoad() {
@@ -80,8 +88,49 @@ final class SignInViewController: UIViewController, View {
   }
 }
 
+extension SignInViewController: ASAuthorizationControllerDelegate {
+  func authorizationController(
+    controller: ASAuthorizationController,
+    didCompleteWithAuthorization authorization: ASAuthorization
+  ) {
+    // Apple ID 연동 성공시
+    switch authorization.credential {
+    case let appleIDCredential as ASAuthorizationAppleIDCredential:
+      let token: String = String(data: appleIDCredential.identityToken!, encoding: .utf8)!
+      appleSignInSubject.onNext(token)
+
+    default: break
+    }
+  }
+
+  func authorizationController(
+    controller: ASAuthorizationController,
+    didCompleteWithError error: Error
+  ) {
+    // Apple ID 연동 실패시
+    Beaver.error("Fail Apple Authentication")
+  }
+}
+
+extension SignInViewController: ASAuthorizationControllerPresentationContextProviding {
+  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    return self.view.window!
+  }
+}
+
 // MARK: - Private
 private extension SignInViewController {
+  func signInWithApple() {
+    let appleIDProvider: ASAuthorizationAppleIDProvider = .init()
+    let request: ASAuthorizationAppleIDRequest = appleIDProvider.createRequest()
+    request.requestedScopes = [.fullName, .email]
+
+    let authorizationController: ASAuthorizationController = .init(authorizationRequests: [request])
+    authorizationController.delegate = self
+    authorizationController.presentationContextProvider = self
+    authorizationController.performRequests()
+  }
+
   func setupUI() {
     view.backgroundColor = .white
 
@@ -134,7 +183,11 @@ private extension SignInViewController {
       .disposed(by: disposeBag)
 
     appleSignInButton.rx.controlEvent(.touchUpInside)
-      .map { Action.trySignIn(type: .apple) }
+      .bind(to: signInWithAppleBinder)
+      .disposed(by: disposeBag)
+
+    appleSignInSubject
+      .map { Action.appleSignIn(token: $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
   }
@@ -142,6 +195,7 @@ private extension SignInViewController {
   func bindState(reactor: SignInReactor) {
     reactor.state
       .map { $0.successSignIn }
+      .distinctUntilChanged()
       .subscribe()
       .disposed(by: disposeBag)
   }

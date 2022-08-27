@@ -105,8 +105,7 @@ let project: Project = .init(
         .external(name: "Then"),
         .external(name: "RxCocoa"),
         .external(name: "ReactorKit"),
-        .external(name: "Kingfisher"),
-        .external(name: "Rswift")
+        .external(name: "Kingfisher")
       ]),
      makeTidifyFrameworkTargets(
       name: Layer.data.layerName,
