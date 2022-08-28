@@ -72,7 +72,6 @@ private extension HomeViewController {
     typealias Action = HomeReactor.Action
 
     rx.viewWillAppear
-      .startWith(())
       .map { Action.viewWillAppear(id: 0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
