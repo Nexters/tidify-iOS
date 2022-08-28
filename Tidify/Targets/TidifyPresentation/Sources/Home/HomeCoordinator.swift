@@ -53,6 +53,14 @@ final class DefaultHomeCoordinator: HomeCoordinator {
         coordinator.pushSettingScene()
       })
       .disposed(by: disposeBag)
+
+    createBookmarkButton.rx.tap
+      .withUnretained(self)
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { coordinator, _ in
+        coordinator.pushBookmarkCreationScene()
+      })
+      .disposed(by: disposeBag)
   }
 
   // MARK: - Methods
@@ -70,15 +78,22 @@ final class DefaultHomeCoordinator: HomeCoordinator {
   }
 
   func pushSettingScene() {
-    guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self) else {
-      return
-    }
+    guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self)
+            as? DefaultSettingCoordinator else { return }
+    settingCoordinator.parentCoordinator = self
+    addChild(settingCoordinator)
 
     settingCoordinator.start()
   }
 
   func pushBookmarkCreationScene() {
-    // TODO: Implementation
+    guard let bookmarkCreationCoordinator = DIContainer.shared.resolve(
+      type: BookmarkCreationCoordinator.self) as? DefaultBookmarkCreationCoordinator else { return }
+
+    bookmarkCreationCoordinator.parentCoordinator = self
+    addChild(bookmarkCreationCoordinator)
+
+    bookmarkCreationCoordinator.start()
   }
 }
 
