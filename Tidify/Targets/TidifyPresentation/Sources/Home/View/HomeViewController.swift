@@ -14,15 +14,27 @@ import ReactorKit
 import SnapKit
 import Then
 
-
 final class HomeViewController: UIViewController, View {
 
   // MARK: - Properties
+  private let navigationBar: TidifyNavigationBar!
+  private let containerView: UIView = .init()
   private lazy var guideView: UIView = .init()
   private lazy var guideLabel: UILabel = .init()
   private lazy var tableView: UITableView = .init()
 
   var disposeBag: DisposeBag = .init()
+
+  // MARK: - Constructor
+  init(_ navigationBar: TidifyNavigationBar) {
+    self.navigationBar = navigationBar
+
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -39,9 +51,18 @@ final class HomeViewController: UIViewController, View {
 // MARK: - Private
 private extension HomeViewController {
   func setupUI() {
-    view.addSubview(guideView)
+    view.addSubview(navigationBar)
+    view.addSubview(containerView)
+    containerView.addSubview(guideView)
     guideView.addSubview(guideLabel)
-    view.addSubview(tableView)
+    containerView.addSubview(tableView)
+
+    view.backgroundColor = .init(235, 235, 240)
+
+    containerView.do {
+      $0.cornerRadius([.topLeft, .topRight], radius: 16)
+      $0.backgroundColor = .white
+    }
 
     guideView.do {
       $0.backgroundColor = .white
@@ -59,12 +80,23 @@ private extension HomeViewController {
       $0.rx.setDelegate(self).disposed(by: disposeBag)
     }
 
+    navigationBar.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.height.equalTo(Self.viewHeight * 0.182)
+    }
+
+    containerView.snp.makeConstraints {
+      $0.top.equalTo(navigationBar.snp.bottom).offset(16)
+      $0.leading.trailing.bottom.equalToSuperview()
+    }
+
     tableView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.leading.trailing.equalToSuperview().inset(20)
+      $0.bottom.equalToSuperview()
     }
 
     guideView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.edges.equalTo(tableView)
     }
   }
 

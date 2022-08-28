@@ -20,9 +20,26 @@ final class DefaultHomeCoordinator: HomeCoordinator {
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
 
+  private let navigationBar: TidifyNavigationBar!
+
+  private let profileButton: UIButton = .init().then {
+    $0.setImage(.init(named: "profileIcon"), for: .normal)
+  }
+
+  private let createBookmarkButton: UIButton = .init().then {
+    $0.setImage(.init(named: "createBookMarkIcon"), for: .normal)
+    $0.frame = .init(x: 0, y: 0, width: 78, height: 40)
+  }
+
   // MARK: - Initialize
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
+
+    self.navigationBar = .init(
+      .home,
+      leftButton: profileButton,
+      rightButton: createBookmarkButton
+    )
   }
 
   // MARK: - Methods
@@ -41,14 +58,14 @@ final class DefaultHomeCoordinator: HomeCoordinator {
 }
 
 // MARK: - Private
-private extension HomeCoordinator {
+private extension DefaultHomeCoordinator {
   func getViewController() -> HomeViewController {
     guard let usecase: HomeUseCase = DIContainer.shared.resolve(type: HomeUseCase.self) else {
       fatalError()
     }
 
     let reactor: HomeReactor = .init(coordinator: self, useCase: usecase)
-    let viewController: HomeViewController = .init(nibName: nil, bundle: nil)
+    let viewController: HomeViewController = .init(navigationBar)
     viewController.reactor = reactor
 
     return viewController
