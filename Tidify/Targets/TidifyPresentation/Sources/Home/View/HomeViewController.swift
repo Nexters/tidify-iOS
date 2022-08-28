@@ -54,8 +54,8 @@ private extension HomeViewController {
     view.addSubview(navigationBar)
     view.addSubview(containerView)
     containerView.addSubview(guideView)
-    guideView.addSubview(guideLabel)
     containerView.addSubview(tableView)
+    guideView.addSubview(guideLabel)
 
     view.backgroundColor = .init(235, 235, 240)
 
@@ -71,6 +71,7 @@ private extension HomeViewController {
     guideLabel.do {
       $0.text = "링크를 모아서 북마크로 만들어봐요!"
       $0.textColor = .t_indigo02()
+      $0.font = .systemFont(ofSize: 16, weight: .bold)
     }
 
     tableView.do {
@@ -98,6 +99,12 @@ private extension HomeViewController {
     guideView.snp.makeConstraints {
       $0.edges.equalTo(tableView)
     }
+
+    guideLabel.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(32)
+      $0.height.equalTo(20)
+      $0.centerX.equalToSuperview()
+    }
   }
 
   func bindAction(reactor: HomeReactor) {
@@ -118,6 +125,11 @@ private extension HomeViewController {
         cellType: BookmarkCell.self)) { idx, model, cell in
         cell.configure(bookmark: model)
       }
+      .disposed(by: disposeBag)
+
+    reactor.state
+      .map { $0.bookmarks.isEmpty }
+      .bind(to: tableView.rx.isHidden)
       .disposed(by: disposeBag)
   }
 }

@@ -13,6 +13,8 @@ import UIKit
 
 protocol HomeCoordinator: Coordinator {
   func pushWebView(bookmark: Bookmark)
+  func pushProfileScene()
+  func pushBookmarkCreationScene()
 }
 
 final class DefaultHomeCoordinator: HomeCoordinator {
@@ -31,7 +33,7 @@ final class DefaultHomeCoordinator: HomeCoordinator {
     $0.frame = .init(x: 0, y: 0, width: 78, height: 40)
   }
 
-  // MARK: - Initialize
+  // MARK: - Constructor
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
 
@@ -53,6 +55,14 @@ final class DefaultHomeCoordinator: HomeCoordinator {
   }
 
   func pushWebView(bookmark: Bookmark) {
+    // TODO: Implementation
+  }
+
+  func pushProfileScene() {
+    // TODO: Implementation
+  }
+
+  func pushBookmarkCreationScene() {
     // TODO: Implementation
   }
 }

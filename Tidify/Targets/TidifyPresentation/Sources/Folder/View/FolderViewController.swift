@@ -80,7 +80,8 @@ private extension FolderViewController {
     }
     
     emptyLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(72)
+      $0.top.equalToSuperview().offset(32)
+      $0.height.equalTo(20)
       $0.centerX.equalToSuperview()
     }
   }
