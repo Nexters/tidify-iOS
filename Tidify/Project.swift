@@ -48,7 +48,11 @@ func makeTidifyFrameworkTargets(
     infoPlist: .default,
     sources: ["Targets/\(name)/Tests/**"],
     resources: [],
-    dependencies: [.target(name: name)]
+    dependencies: [
+      .target(name: name),
+      .external(name: "RxTest"),
+      .external(name: "RxNimble")
+    ]
   )
 
   return [sources, tests]
@@ -129,7 +133,7 @@ let project: Project = .init(
       dependencies: [
         .external(name: "RxSwift"),
         .external(name: "RxRelay"),
-        .external(name: "SwiftyBeaver"),
+        .external(name: "SwiftyBeaver")
       ])
   ].flatMap { $0 }
 )
