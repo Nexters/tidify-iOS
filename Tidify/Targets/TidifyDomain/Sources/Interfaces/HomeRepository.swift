@@ -10,5 +10,5 @@ import RxSwift
 
 public protocol HomeRepository {
   func fetchBookmarks(id: Int) -> Single<[Bookmark]>
-  func createBookmark(url: String, title: String?, ogImageURL: String?, tags: String?) -> Single<Void>
+  func createBookmark(url: String, title: String?, ogImageURL: String?, tags: String?) -> Single<Bookmark>
 }
