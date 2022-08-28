@@ -20,25 +20,24 @@ final class HomeReactorTests: XCTestCase {
   // MARK: - Properties
   private var scheduler: TestScheduler!
   private var disposeBag: DisposeBag!
-  private var coordinator: MockHomeCoordinator!
   private var useCase: MockHomeUseCase!
   private var reactor: HomeReactor!
 
-  override func setUp() {
-    super.setUp()
+  override func setUpWithError() throws {
+    try super.setUpWithError()
 
     scheduler = .init(initialClock: 0)
     disposeBag = .init()
-    coordinator = .init()
     useCase = .init()
-    reactor = .init(coordinator: coordinator, useCase: useCase)
+    reactor = .init(useCase: useCase)
   }
 
-  override func tearDown() {
-    super.tearDown()
+  override func tearDownWithError() throws {
+    try super.tearDownWithError()
 
     scheduler = nil
     disposeBag = nil
+    useCase = nil
     reactor = nil
   }
 
@@ -50,6 +49,7 @@ final class HomeReactorTests: XCTestCase {
       ])
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+
     expect(self.reactor.state.map { $0.bookmarks.isEmpty })
       .events(scheduler: scheduler, disposeBag: disposeBag)
       .to(equal([

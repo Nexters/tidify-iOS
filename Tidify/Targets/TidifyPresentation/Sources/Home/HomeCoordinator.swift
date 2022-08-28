@@ -47,7 +47,8 @@ private extension HomeCoordinator {
       fatalError()
     }
 
-    let reactor: HomeReactor = .init(coordinator: self, useCase: usecase)
+    let reactor: HomeReactor = .init(useCase: usecase)
+    reactor.coordinator = self
     let viewController: HomeViewController = .init(nibName: nil, bundle: nil)
     viewController.reactor = reactor
 
