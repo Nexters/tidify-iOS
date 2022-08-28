@@ -7,6 +7,7 @@
 //
 
 import TidifyCore
+import TidifyDomain
 import UIKit
 
 import RxCocoa
@@ -57,7 +58,7 @@ private extension HomeViewController {
     containerView.addSubview(tableView)
     guideView.addSubview(guideLabel)
 
-    view.backgroundColor = .init(235, 235, 240)
+    view.backgroundColor = .t_background()
 
     containerView.do {
       $0.cornerRadius([.topLeft, .topRight], radius: 16)
@@ -113,6 +114,11 @@ private extension HomeViewController {
     rx.viewWillAppear
       .startWith(())
       .map { Action.viewWillAppear(id: 0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+
+    tableView.rx.modelSelected(Bookmark.self)
+      .map { Action.didSelect($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
   }

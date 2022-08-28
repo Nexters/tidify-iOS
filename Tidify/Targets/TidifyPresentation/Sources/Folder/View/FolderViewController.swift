@@ -57,7 +57,7 @@ private extension FolderViewController {
   typealias Action = FolderReactor.Action
   
   func setupUI() {
-    view.backgroundColor = .init(235, 235, 240)
+    view.backgroundColor = .t_background()
     
     view.addSubview(navigationBar)
     view.addSubview(containerView)

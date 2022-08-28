@@ -53,6 +53,7 @@ private extension BookmarkCell {
 
     cornerRadius(radius: 8)
     layer.borderWidth = 1
+    layer.borderColor = UIColor.t_background().cgColor
 
     bookmarkNameLabel.do {
       $0.font = .t_B(16)
@@ -60,6 +61,8 @@ private extension BookmarkCell {
     }
 
     bookmarkImageView.do {
+      $0.image = .init(named: "icon_symbol")
+      $0.contentMode = .scaleAspectFit
       contentView.addSubview($0)
     }
 
