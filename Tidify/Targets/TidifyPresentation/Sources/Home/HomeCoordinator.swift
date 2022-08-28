@@ -8,12 +8,13 @@
 
 import TidifyCore
 import TidifyDomain
-
 import UIKit
+
+import RxSwift
 
 protocol HomeCoordinator: Coordinator {
   func pushWebView(bookmark: Bookmark)
-  func pushProfileScene()
+  func pushSettingScene()
   func pushBookmarkCreationScene()
 }
 
@@ -24,7 +25,7 @@ final class DefaultHomeCoordinator: HomeCoordinator {
 
   private let navigationBar: TidifyNavigationBar!
 
-  private let profileButton: UIButton = .init().then {
+  private let settingButton: UIButton = .init().then {
     $0.setImage(.init(named: "profileIcon"), for: .normal)
   }
 
@@ -33,15 +34,25 @@ final class DefaultHomeCoordinator: HomeCoordinator {
     $0.frame = .init(x: 0, y: 0, width: 78, height: 40)
   }
 
+  private let disposeBag: DisposeBag = .init()
+
   // MARK: - Constructor
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
 
     self.navigationBar = .init(
       .home,
-      leftButton: profileButton,
+      leftButton: settingButton,
       rightButton: createBookmarkButton
     )
+
+    settingButton.rx.tap
+      .withUnretained(self)
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { coordinator, _ in
+        coordinator.pushSettingScene()
+      })
+      .disposed(by: disposeBag)
   }
 
   // MARK: - Methods
@@ -58,8 +69,12 @@ final class DefaultHomeCoordinator: HomeCoordinator {
     // TODO: Implementation
   }
 
-  func pushProfileScene() {
-    // TODO: Implementation
+  func pushSettingScene() {
+    guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self) else {
+      return
+    }
+
+    settingCoordinator.start()
   }
 
   func pushBookmarkCreationScene() {
