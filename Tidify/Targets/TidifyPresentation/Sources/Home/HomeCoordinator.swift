@@ -27,11 +27,21 @@ final class DefaultHomeCoordinator: HomeCoordinator {
 
   private let settingButton: UIButton = .init().then {
     $0.setImage(.init(named: "profileIcon"), for: .normal)
+    $0.frame = .init(
+      x: 0,
+      y: 0,
+      width: UIViewController.viewHeight * 0.043, height: UIViewController.viewHeight * 0.049
+    )
   }
 
   private let createBookmarkButton: UIButton = .init().then {
     $0.setImage(.init(named: "createBookMarkIcon"), for: .normal)
-    $0.frame = .init(x: 0, y: 0, width: 78, height: 40)
+    $0.frame = .init(
+      x: 0,
+      y: 0,
+      width: UIViewController.viewWidth * 0.506,
+      height: UIViewController.viewHeight * 0.049
+    )
   }
 
   private let disposeBag: DisposeBag = .init()
@@ -106,7 +116,7 @@ private extension DefaultHomeCoordinator {
 
     let reactor: HomeReactor = .init(useCase: usecase)
     reactor.coordinator = self
-    let viewController: HomeViewController = .init(nibName: nil, bundle: nil)
+    let viewController: HomeViewController = .init(navigationBar)
     viewController.reactor = reactor
 
     return viewController
