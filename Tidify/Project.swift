@@ -86,6 +86,7 @@ func makeTidifyAppTarget(
                  infoPlist: .extendingDefault(with: infoPlist),
                  sources: ["Targets/Tidify/Sources/**"],
                  resources: ["Targets/Tidify/Resources/**"],
+                 entitlements: "./Tidify.entitlements",
                  dependencies: dependencies,
                  settings: .settings(base: .init().automaticCodeSigning(devTeam: "SS72MW26Dn")))
 }
