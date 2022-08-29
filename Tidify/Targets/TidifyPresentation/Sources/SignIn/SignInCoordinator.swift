@@ -8,7 +8,6 @@
 
 import TidifyCore
 import TidifyDomain
-
 import UIKit
 
 protocol SignInCoordinator: Coordinator {

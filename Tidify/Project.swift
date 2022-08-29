@@ -36,6 +36,7 @@ func makeTidifyFrameworkTargets(
     infoPlist: .default,
     sources: ["Targets/\(name)/Sources/**"],
     resources: [],
+    entitlements: "./Tidify.entitlements",
     dependencies: dependencies
   )
 

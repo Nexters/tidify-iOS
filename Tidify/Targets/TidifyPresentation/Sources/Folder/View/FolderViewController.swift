@@ -57,7 +57,7 @@ private extension FolderViewController {
   typealias Action = FolderReactor.Action
   
   func setupUI() {
-    view.backgroundColor = .init(235, 235, 240)
+    view.backgroundColor = .t_background()
     
     view.addSubview(navigationBar)
     view.addSubview(containerView)
@@ -80,7 +80,8 @@ private extension FolderViewController {
     }
     
     emptyLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(72)
+      $0.top.equalToSuperview().offset(32)
+      $0.height.equalTo(20)
       $0.centerX.equalToSuperview()
     }
   }

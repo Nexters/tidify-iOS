@@ -18,6 +18,10 @@ import Then
 final class SignInViewController: UIViewController, View {
 
   // MARK: - Properties
+  private let indicatorview: UIActivityIndicatorView = .init().then {
+    $0.color = .t_indigo00()
+  }
+
   private let logoImageView: UIImageView = .init().then {
     $0.image = .init(named: "icon_symbolColor")!
     $0.contentMode = .scaleAspectFill
@@ -88,6 +92,18 @@ final class SignInViewController: UIViewController, View {
   }
 }
 
+private extension SignInViewController {
+  var indicatorBinder: Binder<Bool> {
+    return .init(self, binding: { vc, isLoading in
+      if isLoading {
+        vc.indicatorview.startAnimating()
+      } else {
+        vc.indicatorview.isHidden = true
+      }
+    })
+  }
+}
+
 extension SignInViewController: ASAuthorizationControllerDelegate {
   func authorizationController(
     controller: ASAuthorizationController,
@@ -134,6 +150,7 @@ private extension SignInViewController {
   func setupUI() {
     view.backgroundColor = .white
 
+    view.addSubview(indicatorview)
     view.addSubview(logoImageView)
     view.addSubview(titleLabel)
     view.addSubview(subTitleLabel)
@@ -141,6 +158,10 @@ private extension SignInViewController {
     loginMethodStackView.addArrangedSubview(googleSignInButton)
     loginMethodStackView.addArrangedSubview(kakaoSignInButton)
     loginMethodStackView.addArrangedSubview(appleSignInButton)
+
+    indicatorview.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
 
     logoImageView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(180)
@@ -194,9 +215,10 @@ private extension SignInViewController {
 
   func bindState(reactor: SignInReactor) {
     reactor.state
-      .map { $0.successSignIn }
+      .map { $0.isLoading }
       .distinctUntilChanged()
-      .subscribe()
+      .subscribe(on: MainScheduler.instance)
+      .bind(to: indicatorBinder)
       .disposed(by: disposeBag)
   }
 }

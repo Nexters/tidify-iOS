@@ -33,30 +33,47 @@ final class SignInReactor: Reactor {
     case appleSignIn(token: String)
   }
 
-  struct State {
-    var successSignIn: Bool = false
+  enum Mutation {
+    case setLoading(Bool)
+    case successSignIn(type: SocialLoginType)
+    case appleSignIn(token: String)
   }
 
-  func mutate(action: Action) -> Observable<Action> {
+  struct State {
+    var isLoading: Bool = false
+  }
+
+  func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .trySignIn(let type):
-      return usecase.trySignIn(type: type)
-        .map { .trySignIn(type: type) }
+      return .concat([
+        .just(.setLoading(true)),
+        usecase.trySignIn(type: type).map { .successSignIn(type: type) },
+        .just(.setLoading(false))
+      ])
+
     case .appleSignIn(let token):
-      return .just(.appleSignIn(token: token))
+      return .concat([
+        .just(.setLoading(true)),
+        .just(.appleSignIn(token: token)),
+      ])
     }
   }
 
-  func reduce(state: State, mutation: Action) -> State {
+  func reduce(state: State, mutation: Mutation) -> State {
     var newState: State = state
 
     switch mutation {
-    case .trySignIn(let type):
-      newState.successSignIn = true
+    case .setLoading(let isLoading):
+      newState.isLoading = isLoading
+
+    case .successSignIn(let type):
+      newState.isLoading = false
       coordinator.didSuccessSignIn(type: type)
+
     case .appleSignIn(let token):
+      newState.isLoading = false
       AppProperties.authorization = token
-      newState.successSignIn = true
       coordinator.didSuccessSignIn(type: .apple)
     }
 
