@@ -6,27 +6,34 @@
 
 Nexters 19th **테스토스테론** 팀 **tidify-iOS** 저장소입니다.
 
-
-## 프로젝트 설명
-
-<br>
-
 ## 개발 기간
 - 리팩토링: 2022.07.12 ~
 
 <br>
 
-## Library
+## Skill Stack
 
-- Moya
+### Architecture
+- CleanArchitecture + ReactorKit + Coordinator
+- Tuist(Modulization)
+
+### Networking
+- RxMoya
+
+### Reactive
 - RxSwift
 - RxCocoa
-- RxKakaoSDK
-- ReactorKit
+
+### UI Layout
 - SnapKit
-- SwiftLint
-- SwiftyBeaver
 - Then
+
+### Etc
+- RxKakaoSDK
+- SwiftyBeaver
+- SwiftLint
+
+
 
 <br>
 
