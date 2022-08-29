@@ -33,10 +33,11 @@ public struct DefaultHomeRepository: HomeRepository {
     title: String?,
     ogImageURL: String?,
     tags: String?
-  ) -> Single<Void> {
+  ) -> Single<Bookmark> {
     return servicce.rx.request(
       .createBookmark(url: url, title: title, ogImageURL: ogImageURL, tags: tags)
     )
-    .map { _ in }
+    .map(BookmarkDTO.self)
+    .map { $0.toDomain() }
   }
 }
