@@ -15,12 +15,11 @@ final class HomeReactor: Reactor {
   // MARK: - Properties
   var initialState: State = .init(bookmarks: [])
 
-  private let coordinator: HomeCoordinator
+  weak var coordinator: HomeCoordinator?
   private let useCase: HomeUseCase
 
   // MARK: - Initializer
-  init(coordinator: HomeCoordinator, useCase: HomeUseCase) {
-    self.coordinator = coordinator
+  init(useCase: HomeUseCase) {
     self.useCase = useCase
   }
 
@@ -57,7 +56,7 @@ final class HomeReactor: Reactor {
     case .setBookmarks(let bookmarks):
       newState.bookmarks = bookmarks
     case .pushWebView(let bookmark):
-      coordinator.pushWebView(bookmark: bookmark)
+      coordinator?.pushWebView(bookmark: bookmark)
     }
 
     return newState
