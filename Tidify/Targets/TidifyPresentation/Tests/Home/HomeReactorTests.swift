@@ -21,6 +21,7 @@ final class HomeReactorTests: XCTestCase {
   // MARK: - Properties
   private var scheduler: TestScheduler!
   private var disposeBag: DisposeBag!
+  private var coordinator: MockHomeCoordinator!
   private var repository: HomeRepository!
   private var useCase: HomeUseCase!
   private var reactor: HomeReactor!
@@ -30,9 +31,10 @@ final class HomeReactorTests: XCTestCase {
 
     scheduler = .init(initialClock: 0)
     disposeBag = .init()
+    coordinator = MockHomeCoordinator()
     repository = MockHomeRepository()
     useCase = DefaultHomeUseCase(repository: repository)
-    reactor = .init(useCase: useCase)
+    reactor = .init(coordinator: coordinator, useCase: useCase)
   }
 
   override func tearDownWithError() throws {
@@ -40,6 +42,7 @@ final class HomeReactorTests: XCTestCase {
 
     scheduler = nil
     disposeBag = nil
+    coordinator = nil
     useCase = nil
     reactor = nil
   }
@@ -59,6 +62,22 @@ final class HomeReactorTests: XCTestCase {
         .next(0, true),
         .next(5, false),
         .next(10, false)
+      ]))
+  }
+
+  func test_whenDidSelectCell_thenPushWebViewIsTrue() {
+    scheduler
+      .createHotObservable([
+        .next(5, HomeReactor.Action.didSelect(.stub()))
+      ])
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+
+    expect(self.reactor.state.map { $0.didPushWebView })
+      .events(scheduler: scheduler, disposeBag: disposeBag)
+      .to(equal([
+        .next(0, false),
+        .next(5, true)
       ]))
   }
 }
