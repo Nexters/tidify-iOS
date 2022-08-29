@@ -10,7 +10,8 @@ let dependencies = Dependencies(
       .remote(url: "https://github.com/Moya/Moya.git", requirement: .upToNextMinor(from: "15.0.0")),
       .remote(url: "https://github.com/ReactorKit/ReactorKit.git", requirement: .upToNextMinor(from: "3.2.0")),
       .remote(url: "https://github.com/SwiftyBeaver/SwiftyBeaver.git", requirement: .upToNextMinor(from: "1.9.0")),
-      .remote(url: "https://github.com/devxoul/Then", requirement: .upToNextMinor(from: "2.7.0"))
+      .remote(url: "https://github.com/devxoul/Then", requirement: .upToNextMinor(from: "2.7.0")),
+      .remote(url: "https://github.com/RxSwiftCommunity/RxNimble.git", requirement: .upToNextMajor(from: "5.0.0"))
     ]
   ),
   platforms: [.iOS]

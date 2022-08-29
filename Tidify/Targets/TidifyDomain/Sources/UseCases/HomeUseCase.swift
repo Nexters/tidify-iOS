@@ -12,31 +12,32 @@ public protocol HomeUseCase {
   var repository: HomeRepository { get }
 
   func fetchBookmark(id: Int) -> Observable<[Bookmark]>
-  func createBookmark(url: String, title: String?, ogImageURL: String?, tags: String?) -> Single<Void>
+  func createBookmark(url: String, title: String?, ogImageURL: String?, tags: String?) -> Observable<Bookmark>
 }
 
-public final class DefaultHomeUseCase: HomeUseCase {
+final class DefaultHomeUseCase: HomeUseCase {
 
   // MARK: - Properties
-  public var repository: HomeRepository
+  let repository: HomeRepository
 
   // MARK: - Initialize
-  public init(repository: HomeRepository) {
+  init(repository: HomeRepository) {
     self.repository = repository
   }
 
   // MARK: - Methods
-  public func fetchBookmark(id: Int) -> Observable<[Bookmark]> {
+  func fetchBookmark(id: Int) -> Observable<[Bookmark]> {
     return repository.fetchBookmarks(id: id)
       .asObservable()
   }
 
-  public func createBookmark(
+  func createBookmark(
     url: String,
     title: String?,
     ogImageURL: String?,
     tags: String?
-  ) -> Single<Void> {
+  ) -> Observable<Bookmark> {
     return repository.createBookmark(url: url, title: title, ogImageURL: ogImageURL, tags: tags)
+      .asObservable()
   }
 }

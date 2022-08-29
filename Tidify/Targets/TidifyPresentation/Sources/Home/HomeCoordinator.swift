@@ -104,8 +104,9 @@ private extension DefaultHomeCoordinator {
       fatalError()
     }
 
-    let reactor: HomeReactor = .init(coordinator: self, useCase: usecase)
-    let viewController: HomeViewController = .init(navigationBar)
+    let reactor: HomeReactor = .init(useCase: usecase)
+    reactor.coordinator = self
+    let viewController: HomeViewController = .init(nibName: nil, bundle: nil)
     viewController.reactor = reactor
 
     return viewController
