@@ -13,6 +13,7 @@ import RxNimble
 import RxSwift
 import RxTest
 
+@testable import TidifyDomain
 @testable import TidifyPresentation
 
 final class HomeReactorTests: XCTestCase {
@@ -20,7 +21,8 @@ final class HomeReactorTests: XCTestCase {
   // MARK: - Properties
   private var scheduler: TestScheduler!
   private var disposeBag: DisposeBag!
-  private var useCase: MockHomeUseCase!
+  private var repository: HomeRepository!
+  private var useCase: HomeUseCase!
   private var reactor: HomeReactor!
 
   override func setUpWithError() throws {
@@ -28,7 +30,8 @@ final class HomeReactorTests: XCTestCase {
 
     scheduler = .init(initialClock: 0)
     disposeBag = .init()
-    useCase = .init()
+    repository = MockHomeRepository()
+    useCase = DefaultHomeUseCase(repository: repository)
     reactor = .init(useCase: useCase)
   }
 

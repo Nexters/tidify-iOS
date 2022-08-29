@@ -19,6 +19,7 @@ final class HomeUseCaseTests: XCTestCase {
   // MARK: - Properteis
   private var scheduler: TestScheduler!
   private var disposeBag: DisposeBag!
+  private var homeRepository: HomeRepository!
   private var homeUseCase: HomeUseCase!
 
   override func setUp() {
@@ -26,7 +27,8 @@ final class HomeUseCaseTests: XCTestCase {
 
     self.scheduler = .init(initialClock: 0)
     self.disposeBag = .init()
-    self.homeUseCase = MockHomeUseCase()
+    self.homeRepository = MockHomeRepository()
+    self.homeUseCase = DefaultHomeUseCase(repository: homeRepository)
   }
 
   override func tearDown() {
@@ -34,6 +36,7 @@ final class HomeUseCaseTests: XCTestCase {
 
     self.scheduler = nil
     self.disposeBag = nil
+    self.homeRepository = nil
     self.homeUseCase = nil
   }
 
