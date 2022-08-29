@@ -13,13 +13,14 @@ import ReactorKit
 final class HomeReactor: Reactor {
 
   // MARK: - Properties
-  var initialState: State = .init(bookmarks: [])
+  var initialState: State = .init(bookmarks: [], didPushWebView: false)
 
-  weak var coordinator: HomeCoordinator?
+  private let coordinator: HomeCoordinator
   private let useCase: HomeUseCase
 
   // MARK: - Initializer
-  init(useCase: HomeUseCase) {
+  init(coordinator: HomeCoordinator, useCase: HomeUseCase) {
+    self.coordinator = coordinator
     self.useCase = useCase
   }
 
@@ -36,6 +37,7 @@ final class HomeReactor: Reactor {
 
   struct State {
     var bookmarks: [Bookmark]
+    var didPushWebView: Bool
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
@@ -56,7 +58,8 @@ final class HomeReactor: Reactor {
     case .setBookmarks(let bookmarks):
       newState.bookmarks = bookmarks
     case .pushWebView(let bookmark):
-      coordinator?.pushWebView(bookmark: bookmark)
+      newState.didPushWebView = true
+      coordinator.pushWebView(bookmark: bookmark)
     }
 
     return newState
