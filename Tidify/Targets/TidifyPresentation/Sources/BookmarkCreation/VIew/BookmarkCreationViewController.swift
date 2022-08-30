@@ -20,7 +20,6 @@ final class BookmarkCreationViewController: UIViewController, View {
   private var folderGuideLabel: UILabel = .init()
   private var folderTextField: UITextField = .init()
   private var registerButton: UIButton = .init()
-  private var invalidFormatURLGuideLabel: UILabel = .init()
 
   var disposeBag: DisposeBag = .init()
 
@@ -60,7 +59,6 @@ private extension BookmarkCreationViewController {
     view.addSubview(folderGuideLabel)
     view.addSubview(folderTextField)
     view.addSubview(registerButton)
-    view.addSubview(invalidFormatURLGuideLabel)
 
     urlGuideLabel = setGuideLabel(urlGuideLabel, title: "주소입력")
     urlTextField = setTextField(urlTextField, placeholder: "URL 주소를 넣어주세요")
@@ -82,13 +80,6 @@ private extension BookmarkCreationViewController {
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.lightGray.cgColor
       $0.cornerRadius(radius: 16)
-    }
-
-    invalidFormatURLGuideLabel.do {
-      $0.font = .t_SB(14)
-      $0.textColor = .systemRed
-      $0.text = "링크를 확인해주세요!"
-      $0.isHidden = true
     }
 
     urlGuideLabel.snp.makeConstraints {
@@ -135,11 +126,6 @@ private extension BookmarkCreationViewController {
       $0.trailing.equalToSuperview().offset(-sidePadding)
       $0.bottom.equalToSuperview().offset(-40)
       $0.height.equalTo(Self.viewHeight * 0.068)
-    }
-
-    invalidFormatURLGuideLabel.snp.makeConstraints {
-      $0.centerY.equalTo(urlGuideLabel)
-      $0.trailing.equalToSuperview().inset(sidePadding)
     }
   }
 
