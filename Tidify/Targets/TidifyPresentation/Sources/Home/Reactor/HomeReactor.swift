@@ -16,10 +16,10 @@ final class HomeReactor: Reactor {
   var initialState: State = .init(bookmarks: [], didPushWebView: false)
 
   private let coordinator: HomeCoordinator
-  private let useCase: HomeUseCase
+  private let useCase: BookmarkUseCase
 
   // MARK: - Initializer
-  init(coordinator: HomeCoordinator, useCase: HomeUseCase) {
+  init(coordinator: HomeCoordinator, useCase: BookmarkUseCase) {
     self.coordinator = coordinator
     self.useCase = useCase
   }
@@ -43,7 +43,7 @@ final class HomeReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear(let id):
-      return useCase.fetchBookmark(id: id)
+      return useCase.fetchBookmarks(id: id)
         .map { .setBookmarks($0) }
 
     case .didSelect(let bookmark):

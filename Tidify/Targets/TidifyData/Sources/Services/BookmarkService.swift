@@ -13,7 +13,7 @@ import TidifyCore
 
 enum BookmarkService {
   case fetchBookmarkList(id: Int)
-  case createBookmark(url: String, title: String?, ogImageURL: String?, tags: String?)
+  case createBookmark(url: String, title: String?, folder: String?)
 }
 
 extension BookmarkService: TargetType {
@@ -67,12 +67,18 @@ extension BookmarkService: TargetType {
 
   private var parameters: [String: Any]? {
     switch self {
-    case let .createBookmark(url, title, ogImageURL, tags):
+//    case let .createBookmark(url, title, ogImageURL, tags):
+//      return [
+//        "url": url,
+//        "title": title ?? "",
+//        "og_img_url": ogImageURL ?? "",
+//        "tags": tags ?? ""
+//      ]
+    case let .createBookmark(url, title, folder):
       return [
         "url": url,
         "title": title ?? "",
-        "og_img_url": ogImageURL ?? "",
-        "tags": tags ?? ""
+        "folder": folder ?? ""
       ]
 
     case .fetchBookmarkList:

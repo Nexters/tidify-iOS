@@ -23,8 +23,8 @@ public struct DomainAssembly: Assemblable {
       return DefaultFolderUseCase(repository: container.resolve(type: FolderRepository.self)!)
     }
     
-    container.register(type: HomeUseCase.self) { container in
-      return DefaultHomeUseCase(repository: container.resolve(type: HomeRepository.self)!)
+    container.register(type: BookmarkUseCase.self) { container in
+      return DefaultBookmarkUseCase(repository: container.resolve(type: BookmarkRepository.self)!)
     }
   }
 }

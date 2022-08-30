@@ -110,7 +110,7 @@ final class DefaultHomeCoordinator: HomeCoordinator {
 // MARK: - Private
 private extension DefaultHomeCoordinator {
   func getViewController() -> HomeViewController {
-    guard let usecase: HomeUseCase = DIContainer.shared.resolve(type: HomeUseCase.self) else {
+    guard let usecase: BookmarkUseCase = DIContainer.shared.resolve(type: BookmarkUseCase.self) else {
       fatalError()
     }
 

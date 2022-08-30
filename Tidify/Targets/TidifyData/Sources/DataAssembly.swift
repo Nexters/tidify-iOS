@@ -20,6 +20,6 @@ public struct DataAssembly: Assemblable {
     
     container.register(type: FolderRepository.self) { _ in DefaultFolderRepository() }
 
-    container.register(type: HomeRepository.self) { _ in DefaultHomeRepository() }
+    container.register(type: BookmarkRepository.self) { _ in DefaultBookmarkRepository() }
   }
 }
