@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import TidifyCore
+import TidifyDomain
 
 import Moya
-import TidifyCore
 
 enum BookmarkService {
   case fetchBookmarkList

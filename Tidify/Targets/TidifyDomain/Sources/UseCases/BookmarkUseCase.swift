@@ -12,10 +12,16 @@ public protocol BookmarkUseCase {
   var repository: BookmarkRepository { get }
 
   /// id에 대응되는 북마크 리스트를 반환합니다.
-  func fetchBookmarks(id: Int) -> Observable<[Bookmark]>
+  func fetchBookmarkList() -> Observable<[Bookmark]>
 
   /// 북마크를 생성합니다.
-  func createBookmark(url: String, title: String?, folder: String) -> Observable<Bookmark>
+  func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Bookmark>
+
+  /// 북마크를 삭제합니다.
+  func deleteBookmark(bookmarkID: Int) -> Observable<Void>
+
+  /// 북마크 정보를 갱신합니다.
+  func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Observable<Void>
 }
 
 final class DefaultBookmarkUseCase: BookmarkUseCase {
@@ -29,13 +35,23 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
   }
 
   // MARK: - Methods
-  func fetchBookmarks(id: Int) -> Observable<[Bookmark]> {
-    return repository.fetchBookmarks(id: id)
+  func fetchBookmarkList() -> Observable<[Bookmark]> {
+    repository.fetchBookmarkList()
       .asObservable()
   }
 
-  func createBookmark(url: String, title: String?, folder: String) -> Observable<Bookmark> {
-    return repository.createBookmark(url: url, title: title, folder: folder)
+  func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Bookmark> {
+    repository.createBookmark(requestDTO: requestDTO)
+      .asObservable()
+  }
+
+  func deleteBookmark(bookmarkID: Int) -> Observable<Void> {
+    repository.deleteBookmark(bookmarkID: bookmarkID)
+      .asObservable()
+  }
+
+  func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Observable<Void> {
+    repository.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO)
       .asObservable()
   }
 }

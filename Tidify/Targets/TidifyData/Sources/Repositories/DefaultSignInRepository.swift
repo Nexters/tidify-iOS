@@ -70,10 +70,10 @@ private extension DefaultSignInRepository {
       )
     )
     .asObservable()
-    .map(UserSessionDTO.self)
-    .do(onNext: { userSession in
-      AppProperties.authorization = userSession.authorization
-      Beaver.info(userSession)
+    .map(UserTokenDTO.self)
+    .do(onNext: { token in
+      AppProperties.accessToken = token.accessToken
+      Beaver.info(token)
     }, onError: { error in
       print("❌ [Ian] \(#file) - \(#line): \(#function) - Fail: \(error)")
     })

@@ -39,6 +39,16 @@ public struct Bookmark {
   }
 }
 
+public extension Bookmark {
+  func toRequestDTO() -> BookmarkRequestDTO {
+    return .init(
+      folderID: folderID,
+      url: urlString ?? "",
+      title: title
+    )
+  }
+}
+
 public struct BookmarkList {
 
   // MARK: - Properties

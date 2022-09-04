@@ -25,7 +25,7 @@ final class HomeReactor: Reactor {
   }
 
   enum Action {
-    case viewWillAppear(id: Int)
+    case viewWillAppear
     case didSelect(_ bookmark: Bookmark)
   }
 
@@ -42,8 +42,8 @@ final class HomeReactor: Reactor {
 
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewWillAppear(let id):
-      return useCase.fetchBookmarks(id: id)
+    case .viewWillAppear:
+      return useCase.fetchBookmarkList()
         .map { .setBookmarks($0) }
 
     case .didSelect(let bookmark):

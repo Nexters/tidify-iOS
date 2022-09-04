@@ -22,15 +22,28 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   }
 
   // MARK: - Methods
-  public func fetchBookmarks(id: Int) -> Single<[Bookmark]> {
-    return servicce.rx.request(.fetchBookmarkList(id: id))
+  public func fetchBookmarkList() -> Single<[Bookmark]> {
+    return servicce.rx.request(.fetchBookmarkList)
       .map(BookmarkListDTO.self)
-      .map { $0.bookmarks.map { $0.toDomain() } }
+      .map { $0.toDomain() }
   }
 
-  public func createBookmark(url: String, title: String?, folder: String) -> Single<Bookmark> {
-    return servicce.rx.request(.createBookmark(url: url, title: title, folder: folder))
+  public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Bookmark> {
+    return servicce.rx.request(.createBookmark(requestDTO))
       .map(BookmarkDTO.self)
-      .map { $0.toDomain() }
+      .map { $0.toDomaion() }
+  }
+
+  public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
+    return servicce.rx.request(.deleteBookmark(bookmarkID: bookmarkID))
+      .map { _ in }
+  }
+
+  public func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
+    return servicce.rx.request(.updateBookmark(
+      bookmarkID: bookmarkID,
+      requestDTO: requestDTO)
+    )
+    .map { _ in }
   }
 }
