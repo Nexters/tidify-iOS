@@ -1,6 +1,6 @@
 //
 //  APIResponse.swift
-//  TidifyDomain
+//  TidifyData
 //
 //  Created by Ian on 2022/09/04.
 //  Copyright © 2022 Tidify. All rights reserved.
