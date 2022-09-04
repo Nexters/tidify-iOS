@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import TidifyCore
 import TidifyDomain
 
 import Moya
@@ -65,8 +64,8 @@ extension BookmarkService: TargetType {
   }
 
   var headers: [String : String]? {
-    if let authorization = AppProperties.accessToken {
-      return ["tidify-auth": authorization]
+    if let token = AppProperties.userToken {
+      return ["access-token": token.accessToken]
     }
 
     return nil

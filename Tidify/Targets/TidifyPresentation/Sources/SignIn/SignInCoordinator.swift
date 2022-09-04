@@ -11,7 +11,7 @@ import TidifyDomain
 import UIKit
 
 protocol SignInCoordinator: Coordinator {
-  func didSuccessSignIn(type: SocialLoginType)
+  func didSuccessSignIn()
 }
 
 final class DefaultSignInCoordinator: SignInCoordinator {
@@ -31,7 +31,7 @@ final class DefaultSignInCoordinator: SignInCoordinator {
     navigationController.viewControllers = [getViewController()]
   }
 
-  func didSuccessSignIn(type: SocialLoginType) {
+  func didSuccessSignIn() {
     guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self)
             as? DefaultTabBarCoordinator else { return }
     tabBarCoordinator.start()

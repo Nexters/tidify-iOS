@@ -13,7 +13,7 @@ import RxSwift
 public protocol SignInUseCase {
   var signInRepository: SignInRepository { get set }
 
-  func trySignIn(type: SocialLoginType) -> Observable<Void>
+  func trySignIn(type: SocialLoginType) -> Observable<UserToken>
 }
 
 public final class DefaultSignInUseCase: SignInUseCase {
@@ -23,11 +23,12 @@ public final class DefaultSignInUseCase: SignInUseCase {
 
   // MARK: - Initializer
   public init(repository: SignInRepository) {
-    self.signInRepository = repository
+    signInRepository = repository
   }
 
   // MARK: - Methods
-  public func trySignIn(type: SocialLoginType) -> Observable<Void> {
-    self.signInRepository.trySocialLogin(type: type)
+  public func trySignIn(type: SocialLoginType) -> Observable<UserToken> {
+    signInRepository.trySocialLogin(type: type)
+      .asObservable()
   }
 }

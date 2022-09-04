@@ -8,12 +8,21 @@
 
 import RxSwift
 
-public enum SocialLoginType: String {
+public enum SocialLoginType {
   case kakao
-  case apple
+  case apple(token: String)
   case google
+
+  var type: String {
+    switch self {
+    case .kakao: return "kakao"
+    case .apple: return "apple"
+    case .google: return "google"
+    }
+  }
 }
 
 public protocol SignInRepository {
-  func trySocialLogin(type: SocialLoginType) -> Observable<Void>
+  /// 소셜로그인 타입에 따른 회원가입을 시도합니다.
+  func trySocialLogin(type: SocialLoginType) -> Single<UserToken>
 }
