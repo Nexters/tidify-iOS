@@ -7,6 +7,8 @@
 //
 
 public struct APIResponse: Decodable {
+
+  // MARK: - Properties
   let code: String
   let message: String
 
