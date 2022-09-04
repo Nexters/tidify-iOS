@@ -9,6 +9,8 @@
 import TidifyDomain
 
 struct UserTokenDTO: Decodable {
+
+  // MARK: - Properties
   let accessToken: String
   let refreshToken: String
   let response: APIResponse
