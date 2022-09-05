@@ -16,16 +16,16 @@ final class HomeReactor: Reactor {
   var initialState: State = .init(bookmarks: [], didPushWebView: false)
 
   private let coordinator: HomeCoordinator
-  private let useCase: HomeUseCase
+  private let useCase: BookmarkUseCase
 
   // MARK: - Initializer
-  init(coordinator: HomeCoordinator, useCase: HomeUseCase) {
+  init(coordinator: HomeCoordinator, useCase: BookmarkUseCase) {
     self.coordinator = coordinator
     self.useCase = useCase
   }
 
   enum Action {
-    case viewWillAppear(id: Int)
+    case viewWillAppear
     case didSelect(_ bookmark: Bookmark)
   }
 
@@ -42,8 +42,8 @@ final class HomeReactor: Reactor {
 
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewWillAppear(let id):
-      return useCase.fetchBookmark(id: id)
+    case .viewWillAppear:
+      return useCase.fetchBookmarkList()
         .map { .setBookmarks($0) }
 
     case .didSelect(let bookmark):

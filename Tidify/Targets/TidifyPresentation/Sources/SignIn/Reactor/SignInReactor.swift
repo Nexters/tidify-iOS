@@ -73,7 +73,7 @@ final class SignInReactor: Reactor {
 
     case .appleSignIn(let token):
       newState.isLoading = false
-      AppProperties.authorization = token
+      AppProperties.accessToken = token
       coordinator.didSuccessSignIn(type: .apple)
     }
 

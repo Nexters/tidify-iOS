@@ -1,5 +1,5 @@
 //
-//  HomeUseCaseTests.swift
+//  BookmarkUseCaseTests.swift
 //  TidifyDomainTests
 //
 //  Created by Ian on 2022/08/27.
@@ -14,21 +14,21 @@ import RxSwift
 import RxTest
 @testable import TidifyDomain
 
-final class HomeUseCaseTests: XCTestCase {
+final class BookmarkUseCaseTests: XCTestCase {
 
   // MARK: - Properteis
   private var scheduler: TestScheduler!
   private var disposeBag: DisposeBag!
-  private var homeRepository: HomeRepository!
-  private var homeUseCase: HomeUseCase!
+  private var repository: BookmarkRepository!
+  private var useCase: BookmarkUseCase!
 
   override func setUp() {
     super.setUp()
 
     self.scheduler = .init(initialClock: 0)
     self.disposeBag = .init()
-    self.homeRepository = MockHomeRepository()
-    self.homeUseCase = DefaultHomeUseCase(repository: homeRepository)
+    self.repository = MockBookmarkRepository()
+    self.useCase = DefaultBookmarkUseCase(repository: repository)
   }
 
   override func tearDown() {
@@ -36,12 +36,12 @@ final class HomeUseCaseTests: XCTestCase {
 
     self.scheduler = nil
     self.disposeBag = nil
-    self.homeRepository = nil
-    self.homeUseCase = nil
+    self.repository = nil
+    self.useCase = nil
   }
 
   func test_whenFetchBookmark_thenIsNotEmpty() {
-    homeUseCase.fetchBookmark(id: 0)
+    useCase.fetchBookmarks(id: 0)
       .subscribe(onNext: { bookmarks in
         XCTAssert(!bookmarks.isEmpty)
       }, onError: { error in
@@ -51,11 +51,10 @@ final class HomeUseCaseTests: XCTestCase {
   }
 
   func test_whenCreateBookmark_thenReturnCreatedObject() {
-    homeUseCase.createBookmark(
+    useCase.createBookmark(
       url: "www.google.com",
-      title: "Create",
-      ogImageURL: nil,
-      tags: "Test tags"
+      title: "Google",
+      folder: "NONE"
     )
     .subscribe(onNext: { bookmark in
       XCTAssert(true)

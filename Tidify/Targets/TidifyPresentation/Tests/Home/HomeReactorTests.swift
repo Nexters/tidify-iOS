@@ -22,8 +22,8 @@ final class HomeReactorTests: XCTestCase {
   private var scheduler: TestScheduler!
   private var disposeBag: DisposeBag!
   private var coordinator: MockHomeCoordinator!
-  private var repository: HomeRepository!
-  private var useCase: HomeUseCase!
+  private var repository: BookmarkRepository!
+  private var useCase: BookmarkUseCase!
   private var reactor: HomeReactor!
 
   override func setUpWithError() throws {
@@ -32,8 +32,8 @@ final class HomeReactorTests: XCTestCase {
     scheduler = .init(initialClock: 0)
     disposeBag = .init()
     coordinator = MockHomeCoordinator()
-    repository = MockHomeRepository()
-    useCase = DefaultHomeUseCase(repository: repository)
+    repository = MockBookmarkRepository()
+    useCase = DefaultBookmarkUseCase(repository: repository)
     reactor = .init(coordinator: coordinator, useCase: useCase)
   }
 

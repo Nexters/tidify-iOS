@@ -14,10 +14,9 @@ public struct Bookmark {
   private let id: Int
   private let createdAt: String
   private let updatedAt: String
-  private let memberID: Int
+  private let folderID: Int
   public let urlString: String?
   public let title: String
-  public let tag: String
 
   public var url: URL {
     return .init(string: urlString ?? "")!
@@ -27,17 +26,40 @@ public struct Bookmark {
     id: Int,
     createdAt: String,
     updatedAt: String,
-    memberID: Int,
+    folderID: Int,
     urlString: String?,
-    title: String,
-    tag: String
+    title: String
   ) {
     self.id = id
     self.createdAt = createdAt
     self.updatedAt = updatedAt
-    self.memberID = memberID
+    self.folderID = folderID
     self.urlString = urlString
     self.title = title
-    self.tag = tag
+  }
+}
+
+public extension Bookmark {
+  func toRequestDTO() -> BookmarkRequestDTO {
+    return .init(
+      folderID: folderID,
+      url: urlString ?? "",
+      title: title
+    )
+  }
+}
+
+public struct BookmarkList {
+
+  // MARK: - Properties
+  private let bookmarks: [Bookmark]
+  private let count: Int
+
+  public init(
+    bookmarks: [Bookmark],
+    count: Int
+  ) {
+    self.bookmarks = bookmarks
+    self.count = count
   }
 }
