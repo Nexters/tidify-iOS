@@ -125,11 +125,17 @@ private extension HomeViewController {
   func bindState(reactor: HomeReactor) {
     reactor.state
       .map { $0.bookmarks }
+      .distinctUntilChanged()
       .bind(to: tableView.rx.items(
         cellIdentifier: "\(BookmarkCell.self)",
         cellType: BookmarkCell.self)) { idx, model, cell in
         cell.configure(bookmark: model)
       }
+      .disposed(by: disposeBag)
+
+    reactor.state
+      .map { $0.didPushWebView }
+      .subscribe()
       .disposed(by: disposeBag)
 
     reactor.state
