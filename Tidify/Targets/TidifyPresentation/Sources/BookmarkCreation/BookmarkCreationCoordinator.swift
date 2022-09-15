@@ -6,9 +6,14 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
+import TidifyDomain
 import UIKit
 
-protocol BookmarkCreationCoordinator: Coordinator { }
+protocol BookmarkCreationCoordinator: Coordinator {
+  func presentFolderSelectionScene()
+  func close()
+}
 
 final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
 
@@ -27,12 +32,23 @@ final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
     let viewController: BookmarkCreationViewController = getViewController()
     navigationController.pushViewController(viewController, animated: true)
   }
+
+  // TODO: Implementation
+  func presentFolderSelectionScene() {
+  }
+
+  func close() {
+    navigationController.popViewController(animated: true)
+  }
 }
 
 // MARK: - Private
 private extension DefaultBookmarkCreationCoordinator {
   func getViewController() -> BookmarkCreationViewController {
-    let reactor: BookmarkCreationReactor = .init()
+    guard let usecase: BookmarkUseCase = DIContainer.shared.resolve(type: BookmarkUseCase.self) else {
+      fatalError()
+    }
+    let reactor: BookmarkCreationReactor = .init(coordinator: self, useCase: usecase)
     let viewController: BookmarkCreationViewController = .init(nibName: nil, bundle: nil)
     viewController.reactor = reactor
 

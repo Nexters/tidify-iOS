@@ -47,5 +47,9 @@ public struct PresentationAssembly: Assemblable {
     container.register(type: BookmarkCreationCoordinator.self) { _ in
       DefaultBookmarkCreationCoordinator(navigationController: navigationController)
     }
+
+    container.register(type: DetailWebCoordinator.self) { _ in
+      DefaultDetailWebCoordinator(navigationController: navigationController)
+    }
   }
 }

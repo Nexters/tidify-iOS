@@ -7,13 +7,14 @@
 //
 
 import Foundation
-import TidifyCore
 import TidifyDomain
 
 import Moya
 
 enum AuthService {
-  case auth(socialLoginType: SocialLoginType, accessToken: String, refreshToken: String)
+  case kakao
+  case google
+  case apple(token: String)
 }
 
 extension AuthService: TargetType {
@@ -22,17 +23,23 @@ extension AuthService: TargetType {
   }
 
   var path: String {
-    let baseRoutePath = "/api/v1/oauth"
+    let baseRoutePath = "/auth"
 
     switch self {
-    case .auth:
-      return baseRoutePath
+    case .kakao:
+      return baseRoutePath + "/kakao"
+    case .google:
+      return baseRoutePath + "/google"
+    case .apple:
+      return baseRoutePath + "/apple"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .auth:
+    case .kakao, .google:
+      return .get
+    case .apple:
       return .post
     }
   }
@@ -61,10 +68,13 @@ extension AuthService: TargetType {
 
   private var parameters: [String: Any]? {
     switch self {
-    case let .auth(socialLoginType, accessToken, refreshToken):
-      return ["sns_type": socialLoginType.rawValue,
-              "access_token": accessToken,
-              "refresh_token": refreshToken]
+    case .kakao, .google:
+      return nil
+
+    case .apple(let token):
+      return [
+        "id_token": token
+      ]
     }
   }
 }

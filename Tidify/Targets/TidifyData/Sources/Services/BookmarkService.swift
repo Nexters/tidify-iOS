@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import TidifyCore
 import TidifyDomain
 
 import Moya
 
 enum BookmarkService {
-  case fetchBookmarkList
+  case fetchBookmarkList(start: Int = 0, count: Int = 10, folderID: Int = 0)
   case createBookmark(_ requestDTO: BookmarkRequestDTO)
   case deleteBookmark(bookmarkID: Int)
   case updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO)
@@ -65,8 +64,8 @@ extension BookmarkService: TargetType {
   }
 
   var headers: [String : String]? {
-    if let authorization = AppProperties.accessToken {
-      return ["tidify-auth": authorization]
+    if let token = AppProperties.userToken {
+      return ["access-token": token.accessToken]
     }
 
     return nil
@@ -74,8 +73,12 @@ extension BookmarkService: TargetType {
 
   private var parameters: [String: Any]? {
     switch self {
-    case .fetchBookmarkList:
-      return nil
+    case let .fetchBookmarkList(start, count, folderID):
+      return [
+        "start": start,
+        "count": count,
+        "folder": folderID
+      ]
 
     case .createBookmark(let requestDTO):
       return [

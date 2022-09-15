@@ -14,5 +14,5 @@ public struct AppProperties {
 
   // MARK: - Properties
   public static let baseURL: String = "http://118.67.130.242:8888"
-  public static var accessToken: String?
+  public static var userToken: UserToken?
 }

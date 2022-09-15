@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyDomain
 import UIKit
 
 import ReactorKit
@@ -16,10 +17,10 @@ final class BookmarkCreationViewController: UIViewController, View {
   private var urlGuideLabel: UILabel = .init()
   private var urlTextField: UITextField = .init()
   private var bookmarkGuideLabel: UILabel = .init()
-  private var bookmarkTextField: UITextField = .init()
+  private var titleTextField: UITextField = .init()
   private var folderGuideLabel: UILabel = .init()
   private var folderTextField: UITextField = .init()
-  private var registerButton: UIButton = .init()
+  private var createBookmarkButton: UIButton = .init()
 
   var disposeBag: DisposeBag = .init()
 
@@ -32,17 +33,44 @@ final class BookmarkCreationViewController: UIViewController, View {
   func bind(reactor: BookmarkCreationReactor) {
     bindAction(reactor: reactor)
     bindState(reactor: reactor)
+    bindExtra()
   }
 }
 
 // MARK: - Private
 private extension BookmarkCreationViewController {
-  func bindAction(reactor: BookmarkCreationReactor) {
+  typealias Action = BookmarkCreationReactor.Action
 
+  func bindAction(reactor: BookmarkCreationReactor) {
+    createBookmarkButton.rx.tap
+      .withUnretained(self)
+      .map { owner, _ -> Action in
+        let requestDTO: BookmarkRequestDTO = .init(
+          url: owner.urlTextField.text ?? "",
+          title: owner.titleTextField.text ?? ""
+        )
+
+        return .didTapCreateButton(requestDTO)
+      }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 
   func bindState(reactor: BookmarkCreationReactor) {
+    reactor.state
+      .map { $0.didRequestCreateBookmark }
+      .subscribe()
+      .disposed(by: disposeBag)
+  }
 
+  func bindExtra() {
+    view.addTap().rx.event
+      .filter { $0.state == .recognized }
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(with: self, onNext: { owner, _ in
+        owner.view.endEditing(true)
+      })
+      .disposed(by: disposeBag)
   }
 
   func setupUI() {
@@ -55,16 +83,16 @@ private extension BookmarkCreationViewController {
     view.addSubview(urlGuideLabel)
     view.addSubview(urlTextField)
     view.addSubview(bookmarkGuideLabel)
-    view.addSubview(bookmarkTextField)
+    view.addSubview(titleTextField)
     view.addSubview(folderGuideLabel)
     view.addSubview(folderTextField)
-    view.addSubview(registerButton)
+    view.addSubview(createBookmarkButton)
 
     urlGuideLabel = setGuideLabel(urlGuideLabel, title: "주소입력")
     urlTextField = setTextField(urlTextField, placeholder: "URL 주소를 넣어주세요")
 
     bookmarkGuideLabel = setGuideLabel(bookmarkGuideLabel, title: "북마크 이름")
-    bookmarkTextField = setTextField(bookmarkTextField, placeholder: "입력하지 않으면 자동으로 저장돼요")
+    titleTextField = setTextField(titleTextField, placeholder: "입력하지 않으면 자동으로 저장돼요")
 
     folderGuideLabel = setGuideLabel(folderGuideLabel, title: "저장할 폴더")
     folderTextField = setTextField(folderTextField, placeholder: "폴더 선택")
@@ -73,7 +101,7 @@ private extension BookmarkCreationViewController {
       $0.rightViewMode = .always
     }
 
-    registerButton.do {
+    createBookmarkButton.do {
       $0.setTitle("저장", for: .normal)
       $0.titleLabel?.font = .t_SB(14)
       $0.setTitleColor(.systemGray2, for: .normal)
@@ -101,7 +129,7 @@ private extension BookmarkCreationViewController {
       $0.trailing.lessThanOrEqualToSuperview()
     }
 
-    bookmarkTextField.snp.makeConstraints {
+    titleTextField.snp.makeConstraints {
       $0.top.equalTo(bookmarkGuideLabel.snp.bottom).offset(16)
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.equalToSuperview().offset(-sidePadding)
@@ -109,7 +137,7 @@ private extension BookmarkCreationViewController {
     }
 
     folderGuideLabel.snp.makeConstraints {
-      $0.top.equalTo(bookmarkTextField.snp.bottom).offset(40)
+      $0.top.equalTo(titleTextField.snp.bottom).offset(40)
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.lessThanOrEqualToSuperview()
     }
@@ -121,7 +149,7 @@ private extension BookmarkCreationViewController {
       $0.height.equalTo(Self.viewHeight * 0.067)
     }
 
-    registerButton.snp.makeConstraints {
+    createBookmarkButton.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.equalToSuperview().offset(-sidePadding)
       $0.bottom.equalToSuperview().offset(-40)
