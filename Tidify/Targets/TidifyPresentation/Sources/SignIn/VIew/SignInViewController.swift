@@ -7,7 +7,7 @@
 //
 
 import AuthenticationServices
-import TidifyCore
+import TidifyDomain
 import UIKit
 
 import RxCocoa
@@ -207,7 +207,7 @@ private extension SignInViewController {
       .disposed(by: disposeBag)
 
     appleSignInSubject
-      .map { Action.appleSignIn(token: $0) }
+      .map { Action.trySignIn(type: .apple(token: $0)) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
   }

@@ -84,7 +84,14 @@ final class DefaultHomeCoordinator: HomeCoordinator {
   }
 
   func pushWebView(bookmark: Bookmark) {
-    // TODO: Implementation
+    guard let detailWebViewCoordinator = DIContainer.shared.resolve(type: DetailWebCoordinator.self)
+            as? DefaultDetailWebCoordinator else { return }
+
+    detailWebViewCoordinator.parentCoordinator = self
+    detailWebViewCoordinator.bookmark = bookmark
+    addChild(detailWebViewCoordinator)
+
+    detailWebViewCoordinator.start()
   }
 
   func pushSettingScene() {

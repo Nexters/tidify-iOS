@@ -35,6 +35,7 @@ public final class DIContainer: DIContainable {
     let service = services["\(type)"]?(self) as? Service
 
     if service == nil {
+      print("❌ \(#file) - \(#line): \(#function) - Fail: \(type) resolve Error")
       print(services)
     }
 

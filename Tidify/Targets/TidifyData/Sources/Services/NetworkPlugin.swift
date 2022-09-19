@@ -6,7 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import TidifyCore
+import TidifyDomain
 
 import RxMoya
 import Moya

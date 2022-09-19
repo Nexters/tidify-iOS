@@ -6,7 +6,6 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import TidifyCore
 import TidifyDomain
 
 import ReactorKit
@@ -30,17 +29,16 @@ final class SignInReactor: Reactor {
 
   enum Action {
     case trySignIn(type: SocialLoginType)
-    case appleSignIn(token: String)
   }
 
   enum Mutation {
     case setLoading(Bool)
-    case successSignIn(type: SocialLoginType)
-    case appleSignIn(token: String)
+    case setUserToken(UserToken)
   }
 
   struct State {
     var isLoading: Bool = false
+    var userToken: UserToken? = nil
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
@@ -48,14 +46,8 @@ final class SignInReactor: Reactor {
     case .trySignIn(let type):
       return .concat([
         .just(.setLoading(true)),
-        usecase.trySignIn(type: type).map { .successSignIn(type: type) },
+        usecase.trySignIn(type: type).map { .setUserToken($0) },
         .just(.setLoading(false))
-      ])
-
-    case .appleSignIn(let token):
-      return .concat([
-        .just(.setLoading(true)),
-        .just(.appleSignIn(token: token)),
       ])
     }
   }
@@ -67,14 +59,10 @@ final class SignInReactor: Reactor {
     case .setLoading(let isLoading):
       newState.isLoading = isLoading
 
-    case .successSignIn(let type):
-      newState.isLoading = false
-      coordinator.didSuccessSignIn(type: type)
-
-    case .appleSignIn(let token):
-      newState.isLoading = false
-      AppProperties.accessToken = token
-      coordinator.didSuccessSignIn(type: .apple)
+    case .setUserToken(let userToken):
+      newState.userToken = userToken
+      AppProperties.userToken = userToken
+      coordinator.didSuccessSignIn()
     }
 
     return newState

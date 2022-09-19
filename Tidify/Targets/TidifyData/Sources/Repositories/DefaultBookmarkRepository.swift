@@ -23,7 +23,7 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
 
   // MARK: - Methods
   public func fetchBookmarkList() -> Single<[Bookmark]> {
-    return servicce.rx.request(.fetchBookmarkList)
+    return servicce.rx.request(.fetchBookmarkList())
       .map(BookmarkListDTO.self)
       .map { $0.toDomain() }
   }
