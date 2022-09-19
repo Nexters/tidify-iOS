@@ -124,7 +124,6 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
     didCompleteWithError error: Error
   ) {
     // Apple ID 연동 실패시
-    Beaver.error("Fail Apple Authentication")
   }
 }
 

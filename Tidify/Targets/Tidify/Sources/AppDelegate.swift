@@ -6,7 +6,6 @@ import UIKit
 
 import KakaoSDKAuth
 import KakaoSDKCommon
-import SwiftyBeaver
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -51,8 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 private extension AppDelegate {
   func setupLibrary() {
-    // Setup SwiftyBeaver
-    SwiftyBeaver.addDestination(ConsoleDestination())
 
     // KakaoSDK
     guard let appKey: String = Bundle.main.object(forInfoDictionaryKey: "KAKAO_API_KEY") as? String

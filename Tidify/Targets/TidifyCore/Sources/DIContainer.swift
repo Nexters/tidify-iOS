@@ -35,7 +35,6 @@ public final class DIContainer: DIContainable {
     let service = services["\(type)"]?(self) as? Service
 
     if service == nil {
-      Beaver.error("\(type) resolve Error")
       print(services)
     }
 

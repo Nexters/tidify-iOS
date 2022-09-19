@@ -26,20 +26,20 @@ public struct NetworkPlugin: PluginType {
     [Moya-Logger] headers: \(headers)
     \n
     """
-    Beaver.debug(message)
+    print(message)
     #endif
   }
 
   public func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
     #if DEBUG
-    Beaver.debug("[Moya-Logger] - \(target.baseURL)\(target.path)")
+    print("[Moya-Logger] - \(target.baseURL)\(target.path)")
 
     switch result {
     case .success(let response):
       guard let json = try? response.mapJSON() as? [String: Any] else { return }
-      Beaver.debug("[Moya-Logger] Success: \(json)")
+      print("[Moya-Logger] Success: \(json)")
     case .failure(let error):
-      Beaver.warning("[Moya-Logger] Fail: \(String(describing: error.errorDescription))")
+      print("[Moya-Logger] Fail: \(String(describing: error.errorDescription))")
     }
     #endif
   }

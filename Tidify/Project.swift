@@ -37,7 +37,9 @@ func makeTidifyFrameworkTargets(
       sources: ["Targets/\(name)/Sources/**"],
       resources: [],
       entitlements: "./Tidify.entitlements",
-      dependencies: dependencies
+      dependencies: dependencies,
+      settings: .settings(base: .init()
+        .swiftCompilationMode(.wholemodule))
     )
 
     let tests = Target(
@@ -90,7 +92,6 @@ func makeTidifyAppTarget(
       entitlements: "./Tidify.entitlements",
       dependencies: dependencies,
       settings: .settings(base: .init()
-        .bitcodeEnabled(true)
         .swiftCompilationMode(.wholemodule)
         .automaticCodeSigning(devTeam: "857J3M5L6B")
       )

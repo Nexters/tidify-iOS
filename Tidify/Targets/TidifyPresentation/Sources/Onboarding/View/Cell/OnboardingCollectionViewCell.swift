@@ -19,6 +19,7 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
 
   // MARK: - Properties
   private weak var imageView: UIImageView!
+  private let textView: UITextView = .init()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -39,6 +40,8 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
 
   func configure(_ onboarding: Onboarding) {
     imageView.image = onboarding.image
+
+    textView.delegate = self
   }
 }
 
@@ -57,4 +60,8 @@ private extension OnboardingCollectionViewCell {
       $0.bottom.equalToSuperview()
     }
   }
+}
+
+extension OnboardingCollectionViewCell: UITextViewDelegate {
+
 }

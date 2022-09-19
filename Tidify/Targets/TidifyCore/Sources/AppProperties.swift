@@ -6,10 +6,6 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import SwiftyBeaver
-
-public typealias Beaver = SwiftyBeaver
-
 public struct AppProperties {
 
   // MARK: - Properties

@@ -73,7 +73,6 @@ private extension DefaultSignInRepository {
     .map(UserTokenDTO.self)
     .do(onNext: { token in
       AppProperties.accessToken = token.accessToken
-      Beaver.info(token)
     }, onError: { error in
       print("❌ [Ian] \(#file) - \(#line): \(#function) - Fail: \(error)")
     })
