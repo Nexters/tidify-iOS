@@ -122,7 +122,10 @@ private extension DefaultHomeCoordinator {
     }
 
     let reactor: HomeReactor = .init(coordinator: self, useCase: usecase)
-    let viewController: HomeViewController = .init(navigationBar)
+    let viewController: HomeViewController = .init(
+      with: navigationBar,
+      alertPresenter: AlertPresenter()
+    )
     viewController.reactor = reactor
 
     return viewController
