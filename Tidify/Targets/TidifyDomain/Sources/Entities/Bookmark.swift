@@ -11,7 +11,7 @@ import Foundation
 public struct Bookmark: Equatable {
 
   // MARK: - Properties
-  private let id: Int
+  public let id: Int
   private let createdAt: String
   private let updatedAt: String
   private let folderID: Int

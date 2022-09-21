@@ -120,6 +120,14 @@ private extension HomeViewController {
       .map { Action.didSelect($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+
+    tableView.rx.itemDeleted
+      .withLatestFrom(reactor.state.map { $0.bookmarks } ) { ($0, $1) }
+      .map { index, bookmarks in
+        Action.didDelete(bookmarks[index.row])
+      }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 
   func bindState(reactor: HomeReactor) {
