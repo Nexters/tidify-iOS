@@ -8,6 +8,11 @@
 
 import RxSwift
 
+public enum BookmarkError: Error {
+  case cannotFindMachedBookmark
+  case failCreateBookmark
+}
+
 public protocol BookmarkUseCase {
   var repository: BookmarkRepository { get }
 
