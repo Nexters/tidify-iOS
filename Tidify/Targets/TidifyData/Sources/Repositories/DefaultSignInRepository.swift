@@ -75,21 +75,22 @@ private extension DefaultSignInRepository {
 //    }
   }
 
-  func requestAuthentication(type: SocialLoginType, oAuthToken: OAuthToken) -> Observable<Void> {
-    return authService.rx.request(
-      .auth(
-        socialLoginType: type,
-        accessToken: oAuthToken.accessToken,
-        refreshToken: oAuthToken.refreshToken
-      )
-    )
-    .asObservable()
-    .map(UserTokenDTO.self)
-    .do(onNext: { token in
-      AppProperties.accessToken = token.accessToken
-    }, onError: { error in
-      print("❌ [Ian] \(#file) - \(#line): \(#function) - Fail: \(error)")
-    })
-    .mapToVoid()
-  }
+  // TODO: Implementation
+//  func requestAuthentication(type: SocialLoginType, oAuthToken: OAuthToken) -> Observable<Void> {
+//    return authService.rx.request(
+//      .auth(
+//        socialLoginType: type,
+//        accessToken: oAuthToken.accessToken,
+//        refreshToken: oAuthToken.refreshToken
+//      )
+//    )
+//    .asObservable()
+//    .map(UserTokenDTO.self)
+//    .do(onNext: { token in
+//      AppProperties.userToken = token.toDomain()
+//    }, onError: { error in
+//      print("❌ [Ian] \(#file) - \(#line): \(#function) - Fail: \(error)")
+//    })
+//    .mapToVoid()
+//  }
 }

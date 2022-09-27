@@ -24,11 +24,15 @@ final class HomeViewController: UIViewController, View {
   private lazy var guideLabel: UILabel = .init()
   private lazy var tableView: UITableView = .init()
 
+  private let alertPresenter: AlertPresenter
+  private let deleteBookmarkSubject: PublishSubject<Int> = .init()
+
   var disposeBag: DisposeBag = .init()
 
   // MARK: - Constructor
-  init(_ navigationBar: TidifyNavigationBar) {
+  init(with navigationBar: TidifyNavigationBar, alertPresenter: AlertPresenter) {
     self.navigationBar = navigationBar
+    self.alertPresenter = alertPresenter
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -120,6 +124,22 @@ private extension HomeViewController {
       .map { Action.didSelect($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+
+    tableView.rx.itemDeleted
+      .withUnretained(self)
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { owner, indexPath in
+        owner.presentDeleteBookmarkAlert(deleteTargetRow: indexPath.row)
+      })
+      .disposed(by: disposeBag)
+
+    deleteBookmarkSubject
+      .withLatestFrom(reactor.state.map { $0.bookmarks }) { ($0, $1) }
+      .map { index, bookmarks in
+        Action.didDelete(bookmarks[index])
+      }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 
   func bindState(reactor: HomeReactor) {
@@ -129,9 +149,9 @@ private extension HomeViewController {
       .bind(to: tableView.rx.items(
         cellIdentifier: "\(BookmarkCell.self)",
         cellType: BookmarkCell.self)) { idx, model, cell in
-        cell.configure(bookmark: model)
-      }
-      .disposed(by: disposeBag)
+          cell.configure(bookmark: model)
+        }
+        .disposed(by: disposeBag)
 
     reactor.state
       .map { $0.didPushWebView }
@@ -142,6 +162,21 @@ private extension HomeViewController {
       .map { $0.bookmarks.isEmpty }
       .bind(to: tableView.rx.isHidden)
       .disposed(by: disposeBag)
+  }
+}
+
+// MARK: - Private Extension
+private extension HomeViewController {
+  func presentDeleteBookmarkAlert(deleteTargetRow: Int) {
+    let rightButtonAction: ButtonAction = { [weak self] in
+      self?.deleteBookmarkSubject.onNext(deleteTargetRow)
+    }
+
+    alertPresenter.present(
+      on: self,
+      alertType: .deleteBookmark,
+      rightButtonAction: rightButtonAction
+    )
   }
 }
 

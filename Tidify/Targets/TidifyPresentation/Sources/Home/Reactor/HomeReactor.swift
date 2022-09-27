@@ -27,6 +27,7 @@ final class HomeReactor: Reactor {
   enum Action {
     case viewWillAppear
     case didSelect(_ bookmark: Bookmark)
+    case didDelete(_ bookmark: Bookmark)
   }
 
 
@@ -48,6 +49,12 @@ final class HomeReactor: Reactor {
 
     case .didSelect(let bookmark):
       return .just(.pushWebView(bookmark))
+
+    case .didDelete(let bookmark):
+      return useCase.deleteBookmark(bookmarkID: bookmark.id)
+        .withLatestFrom(state.map { $0.bookmarks}.asObservable())
+        .map { $0.filter { $0.id != bookmark.id } }
+        .map { .setBookmarks($0) }
     }
   }
 
@@ -57,6 +64,7 @@ final class HomeReactor: Reactor {
     switch mutation {
     case .setBookmarks(let bookmarks):
       newState.bookmarks = bookmarks
+
     case .pushWebView(let bookmark):
       newState.didPushWebView = true
       coordinator.pushWebView(bookmark: bookmark)

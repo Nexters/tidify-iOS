@@ -41,10 +41,10 @@ final class BookmarkUseCaseTests: XCTestCase {
   }
 
   func test_whenFetchBookmark_thenIsNotEmpty() {
-    useCase.fetchBookmarks(id: 0)
+    useCase.fetchBookmarkList()
       .subscribe(onNext: { bookmarks in
         XCTAssert(!bookmarks.isEmpty)
-      }, onError: { error in
+      }, onError: { _ in
         XCTAssert(false)
       })
       .disposed(by: disposeBag)
@@ -52,13 +52,43 @@ final class BookmarkUseCaseTests: XCTestCase {
 
   func test_whenCreateBookmark_thenReturnCreatedObject() {
     useCase.createBookmark(
-      url: "www.google.com",
-      title: "Google",
-      folder: "NONE"
+      requestDTO: .init(
+        url: "www.google.com",
+        title: "Google"
+      )
     )
     .subscribe(onNext: { bookmark in
+      if bookmark.title == "Google" {
+        XCTAssert(true)
+      } else {
+        XCTAssert(false)
+      }
+    }, onError: { _ in
+      XCTAssert(false)
+    })
+    .disposed(by: disposeBag)
+  }
+
+  func test_whenDeleteBookmark_thenReturnVoid() {
+    useCase.deleteBookmark(bookmarkID: 0)
+      .subscribe(onNext: {
+        XCTAssert(true)
+      }, onError: { _ in
+        XCTAssert(false)
+      })
+      .disposed(by: disposeBag)
+  }
+
+  func test_whenUpdateBookmark_thenReturnVoid() {
+    useCase.updateBookmark(
+      bookmarkID: 0,
+      requestDTO: .init(
+        url: "www.google.com", title: "Google"
+      )
+    )
+    .subscribe(onNext: {
       XCTAssert(true)
-    }, onError: { error in
+    }, onError: { _ in
       XCTAssert(false)
     })
     .disposed(by: disposeBag)

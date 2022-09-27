@@ -50,8 +50,8 @@ final class HomeReactorTests: XCTestCase {
   func test_whenViewWillAppear_thenStateBookmarkIsNotEmpty() {
     scheduler
       .createHotObservable([
-        .next(5, HomeReactor.Action.viewWillAppear(id: 0)),
-        .next(10, HomeReactor.Action.viewWillAppear(id: 0))
+        .next(5, HomeReactor.Action.viewWillAppear),
+        .next(10, HomeReactor.Action.viewWillAppear)
       ])
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
