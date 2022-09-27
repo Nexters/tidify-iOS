@@ -10,6 +10,7 @@ import TidifyDomain
 import UIKit
 
 import Kingfisher
+import OpenGraph
 
 final class BookmarkCell: UITableViewCell {
 
@@ -44,8 +45,27 @@ final class BookmarkCell: UITableViewCell {
 
 private extension BookmarkCell {
   func updateUI(bookmark: Bookmark) {
-    bookmarkNameLabel.text = bookmark.title
-    bookmarkImageView.kf.setImage(with: bookmark.url)
+    var bookmarkName: String = bookmark.title
+
+    OpenGraph.fetch(url: bookmark.url) { [weak self] result in
+      switch result {
+      case .success(let openGraph):
+        if let imageURL = URL(string: openGraph[.image] ?? "") {
+          DispatchQueue.main.async {
+            self?.bookmarkImageView.kf.setImage(with: imageURL)
+          }
+        }
+
+        if bookmark.title.isEmpty {
+          bookmarkName = openGraph[.title] ?? ""
+        }
+
+      case .failure(let error):
+        print("❌ \(#file) - \(#line): \(#function) - Fail: \(error.localizedDescription)")
+      }
+    }
+
+    bookmarkNameLabel.text = bookmarkName
   }
 
   func setupUI() {
@@ -63,6 +83,7 @@ private extension BookmarkCell {
     bookmarkImageView.do {
       $0.image = .init(named: "icon_symbol")
       $0.contentMode = .scaleAspectFit
+      $0.cornerRadius(radius: 4)
       contentView.addSubview($0)
     }
 
