@@ -118,7 +118,8 @@ let project: Project = .init(
         .external(name: "Then"),
         .external(name: "RxCocoa"),
         .external(name: "ReactorKit"),
-        .external(name: "Kingfisher")
+        .external(name: "Kingfisher"),
+        .external(name: "OpenGraph")
       ]),
     makeTidifyFrameworkTargets(
       name: Layer.data.layerName,
