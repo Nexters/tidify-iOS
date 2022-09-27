@@ -49,7 +49,7 @@ final class AlertPresenter: UIViewController {
       switch self {
       case .removeImageCache, .removeAllCache:
         return "괜찮아요"
-      case .logout,. signOut, .deleteBookmark, .deleteFolder:
+      case .logout, .signOut, .deleteBookmark, .deleteFolder:
         return "다음에요"
       }
     }
