@@ -23,13 +23,13 @@ final class DefaultSearchCoordinator: SearchCoordinator {
   // MARK: - Methods
   func start() {
     let searchViewController: SearchViewController = .init(nibName: nil, bundle: nil)
-    searchViewController.coordinator = self
     navigationController.pushViewController(searchViewController, animated: true)
   }
   
   func startPush() -> UIViewController {
+    let searchReactor: SearchReactor = .init(coordinator: self)
     let searchViewController: SearchViewController = .init(nibName: nil, bundle: nil)
-    searchViewController.coordinator = self
+    searchViewController.reactor = searchReactor
     
     return searchViewController
   }
