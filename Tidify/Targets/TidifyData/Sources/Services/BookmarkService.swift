@@ -12,7 +12,7 @@ import TidifyDomain
 import Moya
 
 enum BookmarkService {
-  case fetchBookmarkList(start: Int = 0, count: Int = 10, folderID: Int = 0)
+  case fetchBookmarkList(start: Int = 0, count: Int = 10, folderID: Int = 0, keyword: String? = nil)
   case createBookmark(_ requestDTO: BookmarkRequestDTO)
   case deleteBookmark(bookmarkID: Int)
   case updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO)
@@ -73,11 +73,19 @@ extension BookmarkService: TargetType {
 
   private var parameters: [String: Any]? {
     switch self {
-    case let .fetchBookmarkList(start, count, folderID):
+    case let .fetchBookmarkList(start, count, folderID, keyword):
+      if let keyword = keyword {
+        return [
+          "start": start,
+          "count": count,
+          "folder": folderID,
+          "keyword": keyword
+        ]
+      }
       return [
         "start": start,
         "count": count,
-        "folder": folderID
+        "folder": folderID,
       ]
 
     case .createBookmark(let requestDTO):
