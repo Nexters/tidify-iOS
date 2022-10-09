@@ -17,8 +17,11 @@ final class SearchViewController: UIViewController, View {
 
   // MARK: - Properties
   private let searchTextField: UITextField = .init()
+  private let eraseQueryButton: UIButton = .init()
   private let headerView: SearchHeaderView = .init()
   private lazy var tableView: UITableView = .init(frame: .zero, style: .grouped)
+
+  private let searchSubject: PublishSubject<String> = .init()
 
   var disposeBag: DisposeBag = .init()
 
@@ -31,6 +34,7 @@ final class SearchViewController: UIViewController, View {
   func bind(reactor: SearchReactor) {
     bindAction(reactor: reactor)
     bindState(reactor: reactor)
+    bindExtra()
   }
 }
 
@@ -62,10 +66,17 @@ private extension SearchViewController {
       $0.addSubview(searchImageView)
     }
 
+    eraseQueryButton.do {
+      let eraseQueryimage: UIImage = .init(named: "icon_searchField_erase")!
+      $0.setImage(eraseQueryimage, for: .normal)
+    }
+
     searchTextField.do {
       $0.placeholder = "어떤 것을 찾으시나요?"
       $0.leftView = textFieldLeftView
+      $0.rightView = eraseQueryButton
       $0.leftViewMode = .always
+      $0.rightViewMode = .always
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.lightGray.cgColor
       $0.cornerRadius(radius: 20)
@@ -100,25 +111,71 @@ private extension SearchViewController {
   func bindAction(reactor: SearchReactor) {
     typealias Action = SearchReactor.Action
 
+    rx.viewWillAppear
+      .map { Action.viewWillAppear }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+
     headerView.eraseAllButtonTapObservable
       .map { Action.requestEraseAllHistory }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
-    searchTextField.rx.text
-      .orEmpty
-      .map { Action.typingQuery($0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
+    Observable.merge(
+      searchSubject.asObservable(),
+      searchTextField.rx.controlEvent(.editingDidEndOnExit)
+        .withUnretained(self)
+        .map { owner, _ -> String in
+          owner.searchTextField.text ?? ""
+        }
+    )
+    .map { Action.searchQuery($0) }
+    .bind(to: reactor.action)
+    .disposed(by: disposeBag)
   }
 
   func bindState(reactor: SearchReactor) {
-    reactor.state
+    let changedViewModeDriver = reactor.state
       .map { $0.viewMode }
       .distinctUntilChanged()
       .asDriver(onErrorDriveWith: .empty())
-      .drive(with: self, onNext: { owner, _ in
-        owner.tableView.reloadData()
+      .map { _ in }
+
+    let changedSearchHistoryDriver = reactor.state
+      .map { $0.searchHistory }
+      .distinctUntilChanged()
+      .asDriver(onErrorDriveWith: .empty())
+      .map { _ in }
+
+    let changedSearchResultDriver = reactor.state
+      .map { $0.searchResult }
+      .distinctUntilChanged()
+      .asDriver(onErrorDriveWith: .empty())
+      .map { _ in }
+
+    Driver.merge(
+      changedViewModeDriver,
+      changedSearchHistoryDriver,
+      changedSearchResultDriver
+    )
+    .drive(with: self, onNext: { owner, _ in
+      owner.tableView.reloadData()
+    })
+    .disposed(by: disposeBag)
+  }
+
+  func bindExtra() {
+    searchTextField.rx.text
+      .orEmpty
+      .map { $0.isEmpty }
+      .bind(to: eraseQueryButton.rx.isHidden)
+      .disposed(by: disposeBag)
+
+    eraseQueryButton.rx.tap
+      .subscribe(on: MainScheduler.instance)
+      .subscribe(with: self, onNext: { owner, _ in
+        owner.searchTextField.text = nil
+        owner.searchSubject.onNext("")
       })
       .disposed(by: disposeBag)
   }
@@ -194,5 +251,12 @@ extension SearchViewController: UITableViewDelegate {
     case .search:
       return .zero
     }
+  }
+
+  func tableView(
+    _ tableView: UITableView,
+    heightForRowAt indexPath: IndexPath
+  ) -> CGFloat {
+    return 56
   }
 }

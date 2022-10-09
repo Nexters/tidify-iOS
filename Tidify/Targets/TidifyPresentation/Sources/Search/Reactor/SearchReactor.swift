@@ -14,6 +14,7 @@ final class SearchReactor {
 
   // MARK: - Properties
   private let coordiantor: SearchCoordinator
+  private let useCase: SearchUseCase
 
   enum ViewMode {
     case history
@@ -21,8 +22,9 @@ final class SearchReactor {
   }
 
   // MARK: - Constructor
-  init(coordinator: SearchCoordinator) {
+  init(coordinator: SearchCoordinator, useCase: SearchUseCase) {
     self.coordiantor = coordinator
+    self.useCase = useCase
   }
 
   var initialState: State = .init(viewMode: .history, searchHistory: [], searchResult: [])
@@ -31,13 +33,14 @@ final class SearchReactor {
 // MARK: - Reactor
 extension SearchReactor: Reactor {
   enum Action {
-    case typingQuery(_ query: String)
+    case viewWillAppear
+    case searchQuery(_ query: String)
     case requestEraseAllHistory
   }
 
   enum Mutation {
-    case setSearchHistory
-    case setSearchResult
+    case setSearchHistory(_ searchHistory: [String])
+    case setSearchResult(_ bookmarks: [Bookmark])
   }
 
   struct State {
@@ -47,11 +50,33 @@ extension SearchReactor: Reactor {
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
-    return .just(.setSearchHistory)
+    switch action {
+    case .viewWillAppear:
+      return useCase.fetchSearchHistory()
+        .map { .setSearchHistory($0) }
+
+    case .requestEraseAllHistory:
+      return useCase.eraseAllSearchHistory()
+        .map { .setSearchHistory([]) }
+
+    case .searchQuery(let query):
+      return useCase.fetchSearchResult(query: query)
+        .map { .setSearchResult($0)}
+    }
   }
 
   func reduce(state: State, mutation: Mutation) -> State {
     var newState: State = state
+
+    switch mutation {
+    case .setSearchResult(let bookmarks):
+      newState.viewMode = .search
+      newState.searchResult = bookmarks
+
+    case .setSearchHistory(let searchHistory):
+      newState.viewMode = .history
+      newState.searchHistory = searchHistory
+    }
 
     return newState
   }
