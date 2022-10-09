@@ -51,5 +51,9 @@ public struct PresentationAssembly: Assemblable {
     container.register(type: DetailWebCoordinator.self) { _ in
       DefaultDetailWebCoordinator(navigationController: navigationController)
     }
+
+    container.register(type: SearchCoordinator.self) { _ in
+      DefaultSearchCoordinator(navigationController: navigationController)
+    }
   }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
+import TidifyDomain
 import UIKit
 
 protocol SearchCoordinator: Coordinator {}
@@ -22,15 +24,25 @@ final class DefaultSearchCoordinator: SearchCoordinator {
 
   // MARK: - Methods
   func start() {
-    let searchViewController: SearchViewController = .init(nibName: nil, bundle: nil)
-    searchViewController.coordinator = self
-    navigationController.pushViewController(searchViewController, animated: true)
+    let viewController: SearchViewController = getViewController()
+    navigationController.pushViewController(viewController, animated: true)
   }
   
   func startPush() -> UIViewController {
-    let searchViewController: SearchViewController = .init(nibName: nil, bundle: nil)
-    searchViewController.coordinator = self
-    
-    return searchViewController
+    return getViewController()
+  }
+}
+
+private extension DefaultSearchCoordinator {
+  func getViewController() -> SearchViewController {
+    guard let useCase: SearchUseCase = DIContainer.shared.resolve(type: SearchUseCase.self) else {
+      fatalError()
+    }
+
+    let reactor: SearchReactor = .init(coordinator: self, useCase: useCase)
+    let viewController: SearchViewController = .init(nibName: nil, bundle: nil)
+    viewController.reactor = reactor
+
+    return viewController
   }
 }
