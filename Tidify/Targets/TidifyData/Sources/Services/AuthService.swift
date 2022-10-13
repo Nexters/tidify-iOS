@@ -12,8 +12,6 @@ import TidifyDomain
 import Moya
 
 enum AuthService {
-  case kakao
-  case google
   case apple(token: String)
 }
 
@@ -24,24 +22,11 @@ extension AuthService: TargetType {
 
   var path: String {
     let baseRoutePath = "/auth"
-
-    switch self {
-    case .kakao:
-      return baseRoutePath + "/kakao"
-    case .google:
-      return baseRoutePath + "/google"
-    case .apple:
-      return baseRoutePath + "/apple"
-    }
+    return baseRoutePath + "/apple"
   }
 
   var method: Moya.Method {
-    switch self {
-    case .kakao, .google:
-      return .get
-    case .apple:
-      return .post
-    }
+    return .post
   }
 
   var sampleData: Data {
@@ -68,9 +53,6 @@ extension AuthService: TargetType {
 
   private var parameters: [String: Any]? {
     switch self {
-    case .kakao, .google:
-      return nil
-
     case .apple(let token):
       return [
         "id_token": token
