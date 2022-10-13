@@ -207,7 +207,7 @@ private extension SignInViewController {
       .disposed(by: disposeBag)
 
     appleSignInSubject
-      .map { Action.trySignIn(type: .apple(token: $0)) }
+      .map { Action.tryAppleSignIn(userToken: $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
   }
