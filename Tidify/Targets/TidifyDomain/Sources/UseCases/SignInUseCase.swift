@@ -13,7 +13,8 @@ import RxSwift
 public protocol SignInUseCase {
   var signInRepository: SignInRepository { get set }
 
-  func trySignIn(type: SocialLoginType) -> Observable<UserToken>
+  func tryAppleSignIn(token: String) -> Observable<UserToken>
+  func tryWebViewSignIn(type: SocialLoginType) -> Observable<String>
 }
 
 public final class DefaultSignInUseCase: SignInUseCase {
@@ -27,8 +28,15 @@ public final class DefaultSignInUseCase: SignInUseCase {
   }
 
   // MARK: - Methods
-  public func trySignIn(type: SocialLoginType) -> Observable<UserToken> {
-    signInRepository.trySocialLogin(type: type)
-      .asObservable()
+  public func tryAppleSignIn(token: String) -> Observable<UserToken> {
+    signInRepository.tryAppleLogin(token: token).asObservable()
+  }
+  
+  public func tryWebViewSignIn(type: SocialLoginType) -> Observable<String> {
+    switch type {
+    case .kakao: return Observable.of(AppProperties.baseURL + "/auth/kakao")
+    case .google: return Observable.of(AppProperties.baseURL + "/auth/google")
+    default: return .empty()
+    }
   }
 }
