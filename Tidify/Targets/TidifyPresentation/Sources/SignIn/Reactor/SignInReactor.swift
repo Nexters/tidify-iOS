@@ -28,12 +28,14 @@ final class SignInReactor: Reactor {
   }
 
   enum Action {
+    case tryAppleSignIn(userToken: String)
     case trySignIn(type: SocialLoginType)
   }
 
   enum Mutation {
     case setLoading(Bool)
     case setUserToken(UserToken)
+    case openWebView(String)
   }
 
   struct State {
@@ -43,10 +45,16 @@ final class SignInReactor: Reactor {
 
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
+    case .tryAppleSignIn(let userToken):
+      return .concat([
+        .just(.setLoading(true)),
+        usecase.tryAppleSignIn(token: userToken).map { .setUserToken($0) },
+        .just(.setLoading(false))
+      ])
     case .trySignIn(let type):
       return .concat([
         .just(.setLoading(true)),
-        usecase.trySignIn(type: type).map { .setUserToken($0) },
+        usecase.tryWebViewSignIn(type: type).map { .openWebView($0) },
         .just(.setLoading(false))
       ])
     }
@@ -63,6 +71,9 @@ final class SignInReactor: Reactor {
       newState.userToken = userToken
       AppProperties.userToken = userToken
       coordinator.didSuccessSignIn()
+      
+    case .openWebView(let urlString):
+      coordinator.pushAuthView(urlString: urlString)
     }
 
     return newState
