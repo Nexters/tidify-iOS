@@ -47,22 +47,22 @@ final class SignInViewController: UIViewController, View {
 
   // TODO: Implementation
   private let googleSignInButton: UIButton = .init().then {
-    $0.setTitle("Google 로그인", for: .normal)
+    $0.setTitle("  Google 로그인", for: .normal)
     $0.setTitleColor(.gray, for: .normal)
-    $0.titleLabel?.font = .t_B(16)
-    $0.cornerRadius(radius: 14)
+    $0.setImage(.init(named: "icon_google")!, for: .normal)
+    $0.titleLabel?.font = .t_EB(16)
+    $0.cornerRadius(radius: 16)
     $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+    $0.layer.borderColor = UIColor.t_borderColor().cgColor
   }
 
   private let kakaoSignInButton: UIButton = .init().then {
-    $0.setTitle("카카오 로그인", for: .normal)
+    $0.setTitle("  카카오 로그인", for: .normal)
     $0.setTitleColor(.black, for: .normal)
     $0.setImage(.init(named: "login_kakao_symbol")!, for: .normal)
-    $0.imageEdgeInsets = .init(top: 0, left: -15, bottom: 0, right: 0)
-    $0.titleLabel?.font = .t_B(16)
-    $0.backgroundColor = .init(255, 197, 0)
-    $0.cornerRadius(radius: 14)
+    $0.titleLabel?.font = .t_EB(16)
+    $0.backgroundColor = .init(hex: "FEE500")
+    $0.cornerRadius(radius: 16)
   }
 
   private let appleSignInButton: ASAuthorizationAppleIDButton = .init(
