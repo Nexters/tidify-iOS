@@ -46,9 +46,8 @@ private extension AuthViewController {
 
     webView.do {
       $0.allowsBackForwardNavigationGestures = true
-      $0.uiDelegate = self
-      $0.navigationDelegate = self
       $0.backgroundColor = .black
+      $0.customUserAgent = AppProperties.userAgent
     }
 
     webView.snp.makeConstraints {
@@ -57,10 +56,43 @@ private extension AuthViewController {
   }
   
   func setupView() {
+    cleanCache()
+    
     let urlRequest: URLRequest = .init(url: url)
+    webView.configuration.websiteDataStore.httpCookieStore.add(self)
     webView.load(urlRequest)
   }
 }
 
-extension AuthViewController: WKUIDelegate {}
-extension AuthViewController: WKNavigationDelegate {}
+extension AuthViewController: WKHTTPCookieStoreObserver {
+  func cookiesDidChange(in cookieStore: WKHTTPCookieStore) {
+    cookieStore.getAllCookies({ [weak self] cookies in
+      let tokenCookies = cookies.filter { $0.name == "access-token" || $0.name == "refresh-token" }
+      guard !tokenCookies.isEmpty else { return }
+      
+      tokenCookies.forEach {
+        print("cookie: \($0)")
+      }
+      guard let self = self else { return }
+      self.webView.configuration.websiteDataStore.httpCookieStore.remove(self)
+      self.coordinator?.popAuthView()
+    })
+  }
+}
+
+private extension AuthViewController {
+  func cleanCache() {
+    HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+    WKWebsiteDataStore.default().fetchDataRecords(
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
+    ) { records in
+      records.forEach { record in
+        WKWebsiteDataStore.default().removeData(
+          ofTypes: record.dataTypes,
+          for: [record],
+          completionHandler: {}
+        )
+      }
+    }
+  }
+}

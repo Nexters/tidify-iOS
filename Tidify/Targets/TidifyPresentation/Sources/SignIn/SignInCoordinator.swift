@@ -13,6 +13,7 @@ import UIKit
 protocol SignInCoordinator: Coordinator {
   func didSuccessSignIn()
   func pushAuthView(urlString: String)
+  func popAuthView()
 }
 
 final class DefaultSignInCoordinator: SignInCoordinator {
@@ -44,6 +45,11 @@ final class DefaultSignInCoordinator: SignInCoordinator {
       AuthViewController(url: url, coordinator: self),
       animated: true
     )
+  }
+  
+  func popAuthView() {
+    navigationController.popViewController(animated: true)
+    didSuccessSignIn()
   }
 }
 
