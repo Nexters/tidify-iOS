@@ -70,9 +70,19 @@ extension AuthViewController: WKHTTPCookieStoreObserver {
       let tokenCookies = cookies.filter { $0.name == "access-token" || $0.name == "refresh-token" }
       guard !tokenCookies.isEmpty else { return }
       
+      var accessToken: String = .init()
+      var refreshToken: String = .init()
+      
       tokenCookies.forEach {
-        print("cookie: \($0)")
+        switch $0.name {
+        case "access-token": accessToken = $0.value
+        case "refresh-token": refreshToken = $0.value
+        default: return
+        }
       }
+      
+      let userToken: UserToken = .init(accessToken: accessToken, refreshToken: refreshToken)
+      AppProperties.userToken = userToken
       guard let self = self else { return }
       self.webView.configuration.websiteDataStore.httpCookieStore.remove(self)
       self.coordinator?.popAuthView()
