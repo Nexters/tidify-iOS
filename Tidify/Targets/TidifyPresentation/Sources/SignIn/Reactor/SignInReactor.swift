@@ -29,7 +29,7 @@ final class SignInReactor: Reactor {
 
   enum Action {
     case tryAppleSignIn(userToken: String)
-    case trySignIn(type: SocialLoginType)
+    case tryWebViewSignIn(type: SocialLoginType)
   }
 
   enum Mutation {
@@ -51,7 +51,7 @@ final class SignInReactor: Reactor {
         usecase.tryAppleSignIn(token: userToken).map { .setUserToken($0) },
         .just(.setLoading(false))
       ])
-    case .trySignIn(let type):
+    case .tryWebViewSignIn(let type):
       return .concat([
         .just(.setLoading(true)),
         usecase.tryWebViewSignIn(type: type).map { .openWebView($0) },

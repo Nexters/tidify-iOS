@@ -41,7 +41,6 @@ final class AuthViewController: UIViewController {
 private extension AuthViewController {
   func setupUI() {
     view.backgroundColor = .white
-
     view.addSubview(webView)
 
     webView.do {
@@ -61,6 +60,22 @@ private extension AuthViewController {
     let urlRequest: URLRequest = .init(url: url)
     webView.configuration.websiteDataStore.httpCookieStore.add(self)
     webView.load(urlRequest)
+  }
+  
+  func cleanCache() {
+    HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+    
+    WKWebsiteDataStore.default().fetchDataRecords(
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
+    ) { records in
+      records.forEach { record in
+        WKWebsiteDataStore.default().removeData(
+          ofTypes: record.dataTypes,
+          for: [record],
+          completionHandler: {}
+        )
+      }
+    }
   }
 }
 
@@ -83,26 +98,10 @@ extension AuthViewController: WKHTTPCookieStoreObserver {
       
       let userToken: UserToken = .init(accessToken: accessToken, refreshToken: refreshToken)
       AppProperties.userToken = userToken
+      
       guard let self = self else { return }
       self.webView.configuration.websiteDataStore.httpCookieStore.remove(self)
       self.coordinator?.popAuthView()
     })
-  }
-}
-
-private extension AuthViewController {
-  func cleanCache() {
-    HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-    WKWebsiteDataStore.default().fetchDataRecords(
-      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
-    ) { records in
-      records.forEach { record in
-        WKWebsiteDataStore.default().removeData(
-          ofTypes: record.dataTypes,
-          for: [record],
-          completionHandler: {}
-        )
-      }
-    }
   }
 }

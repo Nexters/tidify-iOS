@@ -23,6 +23,5 @@ public enum SocialLoginType {
 }
 
 public protocol SignInRepository {
-  /// 소셜로그인 타입에 따른 회원가입을 시도합니다.
   func tryAppleLogin(token: String) -> Single<UserToken>
 }

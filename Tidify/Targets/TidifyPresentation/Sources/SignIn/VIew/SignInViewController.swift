@@ -193,12 +193,12 @@ private extension SignInViewController {
   func bindAction(reactor: SignInReactor) {
     typealias Action = SignInReactor.Action
     googleSignInButton.rx.tap
-      .map { Action.trySignIn(type: .google) }
+      .map { Action.tryWebViewSignIn(type: .google) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
     kakaoSignInButton.rx.tap
-      .map { Action.trySignIn(type: .kakao) }
+      .map { Action.tryWebViewSignIn(type: .kakao) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
