@@ -7,14 +7,24 @@
 //
 
 public struct Folder {
-  //TODO: 서버 연동 후 수정 예정
-  public private(set) var name: String
-  public private(set) var color: String
-  public private(set) var bookMarks: [Bookmark]?
+  public let id: Int
+  public var title: String
+  public var color: String
   
-  public init(name: String, color: String, bookMarks: [Bookmark]? = nil) {
-    self.name = name
+  public init(id: Int, title: String, color: String) {
+    self.id = id
+    self.title = title
     self.color = color
-    self.bookMarks = bookMarks
+  }
+}
+
+public extension Folder {
+  func toRequestDTO() -> FolderRequestDTO {
+    return .init(title: title, color: color)
+  }
+
+  mutating func updateFolder(with requestDTO: FolderRequestDTO) {
+    self.title = requestDTO.title
+    self.color = requestDTO.color
   }
 }
