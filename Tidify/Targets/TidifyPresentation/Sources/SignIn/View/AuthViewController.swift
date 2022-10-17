@@ -16,7 +16,7 @@ final class AuthViewController: UIViewController {
   // MARK: - Properties
   private let webView: WKWebView = .init()
   private let url: URL
-  private weak var coordinator: SignInCoordinator?
+  private let coordinator: SignInCoordinator?
 
   // MARK: - Constructor
   init(url: URL, coordinator: SignInCoordinator) {

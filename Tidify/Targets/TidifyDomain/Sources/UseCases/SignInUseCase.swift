@@ -34,8 +34,8 @@ public final class DefaultSignInUseCase: SignInUseCase {
   
   public func tryWebViewSignIn(type: SocialLoginType) -> Observable<String> {
     switch type {
-    case .kakao: return Observable.of(AppProperties.baseURL + "/auth/kakao")
-    case .google: return Observable.of(AppProperties.baseURL + "/auth/google")
+    case .kakao: return Observable.just(AppProperties.baseURL + "/auth/kakao")
+    case .google: return Observable.just(AppProperties.baseURL + "/auth/google")
     default: return .empty()
     }
   }
