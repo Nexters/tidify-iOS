@@ -13,7 +13,7 @@ import Moya
 
 enum FolderService {
   case createFolder(_ requestDTO: FolderRequestDTO)
-  case fetchFolders(start: Int = 0, count: Int = 10, keyword: String? = nil)
+  case fetchFolders(start: Int = 0, count: Int = 100, keyword: String? = nil)
   case deleteFolder(id: Int)
   case updateFolder(id: Int, requestDTO: FolderRequestDTO)
 }
@@ -41,31 +41,24 @@ extension FolderService: TargetType {
   }
 
   var task: Task {
+    var param: [String: Any] = [:]
+    
     switch self {
     case .createFolder(let requestDTO):
-      let param: [String: String] = [
-        "folder_title": requestDTO.title,
-        "folder_color": requestDTO.color
-      ]
-      return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
-      
-    case .fetchFolders:
-      return .requestPlain
+      param = ["folder_title": requestDTO.title, "folder_color": requestDTO.color]
+
+    case .fetchFolders(let start, let count, let keyword):
+      param = ["start": start, "count": count]
+      if let keyword = keyword { param["keyword"] = keyword }
       
     case .updateFolder(let id, let requestDTO):
-      let param: [String: Any] = [
-        "folder_id": id,
-        "folder_title": requestDTO.title,
-        "folder_color": requestDTO.color
-      ]
-      return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
+      param = ["folder_id": id, "folder_title": requestDTO.title, "folder_color": requestDTO.color]
       
     case .deleteFolder(let id):
-      let param: [String: Int] = [
-        "folder_id": id
-      ]
-      return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
+      param = ["folder_id": id]
     }
+    
+    return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
   }
 
   var headers: [String : String]? {
