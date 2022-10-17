@@ -8,35 +8,42 @@
 
 import TidifyDomain
 
+import Moya
 import RxSwift
 
 public struct DefaultFolderRepository: FolderRepository {
-  public init() {}
   
-  //MARK: - 추후 실서버 연동 후 변경 예정
-  public func createFolder(name: String, color: String) -> Single<Void> {
-    return Single.just(())
+  // MARK: - Properties
+  private let folderService: MoyaProvider<FolderService>
+
+  // MARK: - Initializer
+  public init() {
+    self.folderService = .init(plugins: [NetworkPlugin()])
   }
   
-  public func updateFolder(name: String, color: String) {}
-  
-  public func deleteFolder(folderID: Int) {}
+  // MARK: - Methods
+  public func createFolder(requestDTO: FolderRequestDTO) -> Single<Folder> {
+    return folderService.rx.request(.createFolder(requestDTO))
+      .map(FolderDTO.self)
+      .map { $0.toDomaion() }
+  }
   
   public func fetchFolders() -> Single<[Folder]?> {
-    let folders = [
-      Folder(name: "테스트폴더0", color: "#ff9500"),
-      Folder(name: "테스트폴더1", color: "#ff2d54"),
-      Folder(name: "테스트폴더2", color: "#ff9500"),
-      Folder(name: "테스트폴더3", color: "#ff2d54"),
-      Folder(name: "테스트폴더4", color: "#ff9500"),
-      Folder(name: "테스트폴더5", color: "#ff2d54"),
-      Folder(name: "테스트폴더6", color: "#ff9500"),
-      Folder(name: "테스트폴더7", color: "#ff2d54"),
-      Folder(name: "테스트폴더8", color: "#ff9500"),
-      Folder(name: "테스트폴더9", color: "#ff2d54"),
-      Folder(name: "테스트폴더10", color: "#ff9500")
-    ]
-    
-    return Single.just(folders)
+    return folderService.rx.request(.fetchFolders())
+      .map(FolderListDTO.self)
+      .map { $0.toDomain() }
+  }
+  
+  public func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void> {
+    return folderService.rx.request(.updateFolder(
+      id: id,
+      requestDTO: requestDTO)
+    )
+    .map { _ in }
+  }
+  
+  public func deleteFolder(id: Int) -> Single<Void> {
+    return folderService.rx.request(.deleteFolder(id: id))
+      .map { _ in }
   }
 }
