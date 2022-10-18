@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import TidifyCore
 
 public struct AppProperties {
