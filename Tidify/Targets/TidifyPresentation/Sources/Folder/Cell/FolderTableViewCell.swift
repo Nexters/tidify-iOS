@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyDomain
 import UIKit
 
 final class FolderTableViewCell: UITableViewCell {
@@ -34,10 +35,10 @@ final class FolderTableViewCell: UITableViewCell {
     setupPadding()
   }
   
-  func setupUI(folderName: String, folderColor: String) {
-    nameLabel.text = folderName
-    nameLabel.textColor = UIColor(hex: folderColor)
-    colorView.backgroundColor = UIColor(hex: folderColor)
+  func configure(folder: Folder) {
+    nameLabel.text = folder.title
+    nameLabel.textColor = UIColor(hex: folder.color)
+    colorView.backgroundColor = UIColor(hex: folder.color)
   }
 }
 

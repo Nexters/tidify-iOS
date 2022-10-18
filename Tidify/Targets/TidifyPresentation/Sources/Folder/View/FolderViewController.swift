@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyDomain
 import UIKit
 
 import ReactorKit
@@ -87,26 +88,21 @@ private extension FolderViewController {
   }
   
   func bindAction(reactor: FolderReactor) {
-    self.rx.viewDidLoad
-      .map { Action.fetchFolders }
-      .bind(to: reactor.action)
+    rx.viewWillAppear
+      .map { Action.viewWillAppear }
+      .bind(to: reactor.action )
       .disposed(by: disposeBag)
   }
   
   func bindState(reactor: FolderReactor) {
     reactor.state
       .map { $0.folders }
-      .bind(to: folderTableView.rx.items) { tableView, row, item in
-        guard let cell = tableView.dequeueReusableCell(
-          withIdentifier: "FolderTableViewCell",
-          for: IndexPath(row: row, section: 0)
-        ) as? FolderTableViewCell
-        else { return UITableViewCell() }
-
-        cell.setupUI(folderName: item.name, folderColor: item.color)
-        return cell
-      }
-      .disposed(by: disposeBag)
+      .bind(to: folderTableView.rx.items(
+        cellIdentifier: "\(FolderTableViewCell.self)",
+        cellType: FolderTableViewCell.self)) { _, folder, cell in
+          cell.configure(folder: folder)
+        }
+        .disposed(by: disposeBag)
     
     reactor.state
       .map { $0.folders.isEmpty }

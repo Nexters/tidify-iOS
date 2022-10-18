@@ -47,6 +47,10 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     navigationController.pushViewController(getViewController(), animated: true)
   }
   
+  func startPush() -> UIViewController {
+    return getViewController()
+  }
+  
   func pushDetailScene() {}
   func pushEditScene() {}
   func pushCreateScene() {}
