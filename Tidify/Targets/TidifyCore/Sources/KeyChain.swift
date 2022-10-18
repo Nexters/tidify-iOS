@@ -9,7 +9,7 @@
 import Foundation
 import Security
 
-public final class KeyChain {
+public enum KeyChain {
   public static func save(key: String, data: Data) {
     let query: NSDictionary = .init(dictionary: [
       kSecClass: kSecClassGenericPassword,
