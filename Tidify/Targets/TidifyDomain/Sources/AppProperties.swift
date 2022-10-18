@@ -17,7 +17,7 @@ public struct AppProperties {
     guard let infoDictionary = Bundle.main.infoDictionary,
           let baseURL = infoDictionary["BASE_URL"] as? String
     else { return .init() }
-    return baseURL
+    return "http://\(baseURL)"
   }
   
   public static var accessToken: String {
