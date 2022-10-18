@@ -9,21 +9,28 @@
 import Foundation
 import Security
 
+public enum AppData: String {
+  case baseURL = "BASE_URL"
+  case accessToken = "accessToken"
+  case refreshToken = "refreshToken"
+  case userAgent = "USER_AGENT"
+}
+
 public enum KeyChain {
-  public static func save(key: String, data: Data) {
+  public static func save(key: AppData, data: Data) {
     let query: NSDictionary = .init(dictionary: [
       kSecClass: kSecClassGenericPassword,
-      kSecAttrAccount: key,
+      kSecAttrAccount: key.rawValue,
       kSecValueData: data
     ])
     SecItemDelete(query)
     SecItemAdd(query, nil)
   }
   
-  public static func load(key: String) -> Data? {
+  public static func load(key: AppData) -> Data? {
     let query: NSDictionary = .init(dictionary: [
       kSecClass: kSecClassGenericPassword,
-      kSecAttrAccount: key,
+      kSecAttrAccount: key.rawValue,
       kSecReturnData: true,
       kSecMatchLimit: kSecMatchLimitOne
     ])
@@ -39,10 +46,10 @@ public enum KeyChain {
     return data
   }
   
-  public static func delete(key: String) {
+  public static func delete(key: AppData) {
     let query: NSDictionary = .init(dictionary: [
       kSecClass: kSecClassGenericPassword,
-      kSecAttrAccount: key
+      kSecAttrAccount: key.rawValue
     ])
     SecItemDelete(query)
   }

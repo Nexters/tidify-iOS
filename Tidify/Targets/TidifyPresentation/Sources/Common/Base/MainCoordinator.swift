@@ -29,7 +29,7 @@ public final class DefaultMainCoordinator: MainCoordinator {
 
   // MARK: - Methods
   public func start() {
-    if KeyChain.load(key: "accessToken") != nil {
+    if KeyChain.load(key: .accessToken) != nil {
       startTabBar()
       return
     }

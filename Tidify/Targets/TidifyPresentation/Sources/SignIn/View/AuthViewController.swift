@@ -101,8 +101,8 @@ extension AuthViewController: WKHTTPCookieStoreObserver {
             let refreshToken = refreshToken.data(using: .utf8)
       else { return }
       
-      KeyChain.save(key: "accessToken", data: accessToken)
-      KeyChain.save(key: "refreshToken", data: refreshToken)
+      KeyChain.save(key: .accessToken, data: accessToken)
+      KeyChain.save(key: .refreshToken, data: refreshToken)
       
       guard let self = self else { return }
       self.webView.configuration.websiteDataStore.httpCookieStore.remove(self)

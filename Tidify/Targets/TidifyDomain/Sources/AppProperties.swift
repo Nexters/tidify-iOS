@@ -14,24 +14,24 @@ public struct AppProperties {
   // MARK: - Properties
   public static var baseURL: String {
     guard let infoDictionary = Bundle.main.infoDictionary,
-          let baseURL = infoDictionary["BASE_URL"] as? String
+          let baseURL = infoDictionary[AppData.baseURL.rawValue] as? String
     else { return .init() }
     return "http://\(baseURL)"
   }
   
   public static var accessToken: String {
-    guard let accessTokenData = KeyChain.load(key: "accessToken") else { return .init() }
+    guard let accessTokenData = KeyChain.load(key: .accessToken) else { return .init() }
     return String(decoding: accessTokenData, as: UTF8.self)
   }
   
   public static var refreshToken: String {
-    guard let refreshTokenData = KeyChain.load(key: "refreshToken") else { return .init() }
+    guard let refreshTokenData = KeyChain.load(key: .refreshToken) else { return .init() }
     return String(decoding: refreshTokenData, as: UTF8.self)
   }
   
   public static var userAgent: String {
     guard let infoDictionary = Bundle.main.infoDictionary,
-          let userAgent = infoDictionary["USER_AGENT"] as? String
+          let userAgent = infoDictionary[AppData.userAgent.rawValue] as? String
     else { return .init() }
     return userAgent
   }

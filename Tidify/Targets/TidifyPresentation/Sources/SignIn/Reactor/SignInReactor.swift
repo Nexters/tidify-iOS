@@ -71,10 +71,10 @@ final class SignInReactor: Reactor {
     case .setUserToken(let userToken):
       newState.userToken = userToken
       if let accessTokenData = userToken.accessToken.data(using: .utf8) {
-        KeyChain.save(key: "accessToken", data: accessTokenData)
+        KeyChain.save(key: .accessToken, data: accessTokenData)
       }
       if let refreshTokenData = userToken.refreshToken.data(using: .utf8) {
-        KeyChain.save(key: "refreshToken", data: refreshTokenData)
+        KeyChain.save(key: .refreshToken, data: refreshTokenData)
       }
       coordinator.didSuccessSignIn()
       
