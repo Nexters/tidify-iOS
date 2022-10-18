@@ -11,7 +11,7 @@ import TidifyDomain
 import ReactorKit
 
 final class FolderReactor: Reactor {
-  var initialState: State = .init()
+  var initialState: State = .init(folders: [])
 
   private let coordinator: FolderCoordinator
   private let usecase: FolderUseCase
@@ -22,11 +22,16 @@ final class FolderReactor: Reactor {
   }
 
   enum Action {
-    case fetchFolders
+    case viewWillAppear
+    case didSelect(_ folder: Folder)
+    case tryEdit(_ folder: Folder)
+    case tryDelete(_ folder: Folder)
   }
   
   enum Mutation {
     case setupFolders([Folder]?)
+    case pushDetailView(_ folder: Folder)
+    case pushEditView(_ folder: Folder)
   }
 
   struct State {
@@ -35,8 +40,20 @@ final class FolderReactor: Reactor {
 
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .fetchFolders:
+    case .viewWillAppear:
       return usecase.fetchFolders()
+        .map { .setupFolders($0) }
+      
+    case .didSelect(let folder):
+      return .just(.pushDetailView(folder))
+      
+    case .tryEdit(let folder):
+      return .just(.pushEditView(folder))
+      
+    case .tryDelete(let folder):
+      return usecase.deleteFolder(id: folder.id)
+        .withLatestFrom(state.map { $0.folders }.asObservable())
+        .map { $0.filter { $0.id != folder.id } }
         .map { .setupFolders($0) }
     }
   }
@@ -45,9 +62,13 @@ final class FolderReactor: Reactor {
     var newState: State = state
 
     switch mutation {
-    case let .setupFolders(folders):
+    case .setupFolders(let folders):
       guard let folders = folders else { break }
       newState.folders = folders
+    case .pushDetailView(let folder):
+      coordinator.pushDetailScene()
+    case .pushEditView(let folder):
+      coordinator.pushEditScene()
     }
 
     return newState

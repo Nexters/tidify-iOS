@@ -11,7 +11,11 @@ import UIKit
 import TidifyCore
 import TidifyDomain
 
-protocol FolderCoordinator: Coordinator {}
+protocol FolderCoordinator: Coordinator {
+  func pushDetailScene()
+  func pushEditScene()
+  func pushCreateScene()
+}
 
 final class DefaultFolderCoordinator: FolderCoordinator {
   weak var parentCoordinator: Coordinator?
@@ -43,9 +47,9 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     navigationController.pushViewController(getViewController(), animated: true)
   }
   
-  func startPush() -> UIViewController {
-    return getViewController()
-  }
+  func pushDetailScene() {}
+  func pushEditScene() {}
+  func pushCreateScene() {}
 }
 
 // MARK: - Private
