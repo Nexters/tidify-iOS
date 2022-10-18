@@ -29,7 +29,7 @@ final class FolderReactor: Reactor {
   }
   
   enum Mutation {
-    case setupFolders([Folder]?)
+    case setupFolders([Folder])
     case pushDetailView(_ folder: Folder)
     case pushEditView(_ folder: Folder)
   }
@@ -63,7 +63,6 @@ final class FolderReactor: Reactor {
 
     switch mutation {
     case .setupFolders(let folders):
-      guard let folders = folders else { break }
       newState.folders = folders
     case .pushDetailView(let folder):
       coordinator.pushDetailScene()

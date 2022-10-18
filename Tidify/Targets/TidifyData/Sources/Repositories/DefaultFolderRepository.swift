@@ -28,7 +28,7 @@ public struct DefaultFolderRepository: FolderRepository {
       .map { $0.toDomaion() }
   }
   
-  public func fetchFolders() -> Single<[Folder]?> {
+  public func fetchFolders() -> Single<[Folder]> {
     return folderService.rx.request(.fetchFolders())
       .map(FolderListDTO.self)
       .map { $0.toDomain() }

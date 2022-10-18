@@ -12,7 +12,7 @@ public protocol FolderRepository {
   
   //MARK: - CRUD
   func createFolder(requestDTO: FolderRequestDTO) -> Single<Folder>
-  func fetchFolders() -> Single<[Folder]?>
+  func fetchFolders() -> Single<[Folder]>
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void>
   func deleteFolder(id: Int) -> Single<Void>
 }
