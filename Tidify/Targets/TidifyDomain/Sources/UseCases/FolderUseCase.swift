@@ -9,23 +9,38 @@
 import RxSwift
 
 public protocol FolderUseCase {
-  var folderRepository: FolderRepository { get set }
+  var repository: FolderRepository { get }
 
+  func createFolder(requestDTO: FolderRequestDTO) -> Observable<Folder>
   func fetchFolders() -> Observable<[Folder]?>
+  func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void>
+  func deleteFolder(id: Int) -> Observable<Void>
 }
 
-public final class DefaultFolderUseCase: FolderUseCase {
+final class DefaultFolderUseCase: FolderUseCase {
 
   // MARK: - Properties
-  public var folderRepository: FolderRepository
+  let repository: FolderRepository
 
   // MARK: - Initializer
-  public init(repository: FolderRepository) {
-    self.folderRepository = repository
+  init(repository: FolderRepository) {
+    self.repository = repository
   }
 
   // MARK: - Methods
-  public func fetchFolders() -> Observable<[Folder]?> {
-    return folderRepository.fetchFolders().asObservable()
+  func createFolder(requestDTO: FolderRequestDTO) -> Observable<Folder> {
+    repository.createFolder(requestDTO: requestDTO).asObservable()
+  }
+  
+  func fetchFolders() -> Observable<[Folder]?> {
+    repository.fetchFolders().asObservable()
+  }
+  
+  func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void> {
+    repository.updateFolder(id: id, requestDTO: requestDTO).asObservable()
+  }
+  
+  func deleteFolder(id: Int) -> Observable<Void> {
+    repository.deleteFolder(id: id).asObservable()
   }
 }
