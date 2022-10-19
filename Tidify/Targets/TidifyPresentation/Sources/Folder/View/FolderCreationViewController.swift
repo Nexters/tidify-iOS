@@ -30,6 +30,21 @@ final class FolderCreationViewController: UIViewController {
 
     setupUI()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    registerKeyboardNotification()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    removeKeyboardNotification()
+  }
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    super.touchesBegan(touches, with: event)
+    view.endEditing(true)
+  }
 }
 
 // MARK: - Private
@@ -134,5 +149,44 @@ private extension FolderCreationViewController {
       owner.createFolderButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
       owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.lightGray.cgColor
     }
+  }
+  
+  func registerKeyboardNotification() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardWillShow(notification:)),
+      name: UIResponder.keyboardWillShowNotification,
+      object: nil
+    )
+    
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardWillHide(_:)),
+      name: UIResponder.keyboardWillHideNotification,
+      object: nil
+    )
+  }
+  
+  func removeKeyboardNotification() {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
+  @objc
+  func keyboardWillShow(notification: Notification) {
+    guard let userInfo = notification.userInfo,
+          let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+    else { return }
+    let keyboardHeight = keyboardFrame.cgRectValue.height
+    let safeAreaBottomHeight = view.safeAreaInsets.bottom
+    
+    createFolderButton.transform = CGAffineTransform(
+      translationX: 0,
+      y: safeAreaBottomHeight - keyboardHeight
+    )
+  }
+  
+  @objc
+  func keyboardWillHide(_ sender: Notification) {
+    createFolderButton.transform = .identity
   }
 }
