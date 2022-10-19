@@ -29,9 +29,12 @@ public final class DefaultMainCoordinator: MainCoordinator {
 
   // MARK: - Methods
   public func start() {
-    if !didOnboard {
-      startOnboarding()
+    if KeyChain.load(key: .accessToken) != nil {
+      startTabBar()
+      return
     }
+
+    didOnboard ? startSignIn() : startOnboarding()
   }
 }
 

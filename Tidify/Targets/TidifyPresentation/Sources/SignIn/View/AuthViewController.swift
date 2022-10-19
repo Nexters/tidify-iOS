@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
 import TidifyDomain
 
 import UIKit
@@ -96,8 +97,12 @@ extension AuthViewController: WKHTTPCookieStoreObserver {
         }
       }
       
-      let userToken: UserToken = .init(accessToken: accessToken, refreshToken: refreshToken)
-      AppProperties.userToken = userToken
+      guard let accessToken = accessToken.data(using: .utf8),
+            let refreshToken = refreshToken.data(using: .utf8)
+      else { return }
+      
+      KeyChain.save(key: .accessToken, data: accessToken)
+      KeyChain.save(key: .refreshToken, data: refreshToken)
       
       guard let self = self else { return }
       self.webView.configuration.websiteDataStore.httpCookieStore.remove(self)

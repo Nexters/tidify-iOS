@@ -6,10 +6,33 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import Foundation
+import TidifyCore
+
 public struct AppProperties {
 
   // MARK: - Properties
-  public static let baseURL: String = "http://118.67.130.242:8888"
-  public static var userToken: UserToken?
-  public static let userAgent: String = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
+  public static var baseURL: String {
+    guard let infoDictionary = Bundle.main.infoDictionary,
+          let baseURL = infoDictionary[AppData.baseURL.rawValue] as? String
+    else { return .init() }
+    return "http://\(baseURL)"
+  }
+  
+  public static var accessToken: String {
+    guard let accessTokenData = KeyChain.load(key: .accessToken) else { return .init() }
+    return String(decoding: accessTokenData, as: UTF8.self)
+  }
+  
+  public static var refreshToken: String {
+    guard let refreshTokenData = KeyChain.load(key: .refreshToken) else { return .init() }
+    return String(decoding: refreshTokenData, as: UTF8.self)
+  }
+  
+  public static var userAgent: String {
+    guard let infoDictionary = Bundle.main.infoDictionary,
+          let userAgent = infoDictionary[AppData.userAgent.rawValue] as? String
+    else { return .init() }
+    return userAgent
+  }
 }

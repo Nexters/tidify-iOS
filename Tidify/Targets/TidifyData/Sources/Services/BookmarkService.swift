@@ -64,11 +64,7 @@ extension BookmarkService: TargetType {
   }
 
   var headers: [String : String]? {
-    if let token = AppProperties.userToken {
-      return ["access-token": token.accessToken]
-    }
-
-    return nil
+    ["access-token": AppProperties.accessToken]
   }
 
   private var parameters: [String: Any]? {
