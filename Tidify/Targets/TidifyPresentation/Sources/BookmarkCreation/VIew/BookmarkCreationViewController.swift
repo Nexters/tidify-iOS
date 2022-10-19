@@ -10,6 +10,7 @@ import TidifyDomain
 import UIKit
 
 import ReactorKit
+import SnapKit
 
 final class BookmarkCreationViewController: UIViewController, View {
 
@@ -19,8 +20,11 @@ final class BookmarkCreationViewController: UIViewController, View {
   private var bookmarkGuideLabel: UILabel = .init()
   private var titleTextField: UITextField = .init()
   private var folderGuideLabel: UILabel = .init()
-  private var folderTextField: UITextField = .init()
   private var createBookmarkButton: UIButton = .init()
+  private var folderTextField: TidifyRightButtonTextField = .init(
+    placeholder: "폴더 선택",
+    rightButtonImage: .init(named: "icon_arrowDown_gray")
+  )
 
   var disposeBag: DisposeBag = .init()
 
@@ -64,12 +68,27 @@ private extension BookmarkCreationViewController {
   }
 
   func bindExtra() {
+    folderTextField.rightButtonTap
+      .subscribe(onNext: {
+        // TODO: 폴더 작업 완료되면 이어서 진행.
+      })
+      .disposed(by: disposeBag)
+
     view.addTap().rx.event
       .filter { $0.state == .recognized }
       .asDriver(onErrorDriveWith: .empty())
       .drive(with: self, onNext: { owner, _ in
         owner.view.endEditing(true)
       })
+      .disposed(by: disposeBag)
+
+    Observable.combineLatest(
+      urlTextField.rx.text.orEmpty
+      .map { $0.isEmpty }
+      .asObservable(),
+      folderTextField.isTextEmptyObsevable) { !($0) && !($1) }
+      .asDriver(onErrorDriveWith: .just(false))
+      .drive(isEnableCreateBookmarkButtonBinder)
       .disposed(by: disposeBag)
   }
 
@@ -95,18 +114,14 @@ private extension BookmarkCreationViewController {
     titleTextField = setTextField(titleTextField, placeholder: "입력하지 않으면 자동으로 저장돼요")
 
     folderGuideLabel = setGuideLabel(folderGuideLabel, title: "저장할 폴더")
-    folderTextField = setTextField(folderTextField, placeholder: "폴더 선택")
-    folderTextField.do {
-      $0.rightView = UIImageView(image: .init(named: "icon_arrowDown_gray"))
-      $0.rightViewMode = .always
-    }
 
     createBookmarkButton.do {
       $0.setTitle("저장", for: .normal)
-      $0.titleLabel?.font = .t_SB(14)
+      $0.titleLabel?.font = .t_SB(19)
       $0.setTitleColor(.systemGray2, for: .normal)
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.lightGray.cgColor
+      $0.isEnabled = false
       $0.cornerRadius(radius: 16)
     }
 
@@ -186,5 +201,15 @@ private extension BookmarkCreationViewController {
     }
 
     return textField
+  }
+}
+
+private extension BookmarkCreationViewController {
+  var isEnableCreateBookmarkButtonBinder: Binder<Bool> {
+    return .init(self) { owner, isEnable in
+      owner.createBookmarkButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
+      owner.createBookmarkButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
+      owner.createBookmarkButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.lightGray.cgColor
+    }
   }
 }
