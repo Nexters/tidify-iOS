@@ -78,8 +78,8 @@ func makeTidifyAppTarget(
       "NSPhotoLibraryAddUsageDescription": "사진첩 접근 권한 요청",
       "UIApplicationSupportsIndirectInputEvents": true,
       "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
-      "BASE_URL": "http://118.67.130.242:8888",
-      "USER_AGENT": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
+      "BASE_URL": "${BASE_URL}",
+      "USER_AGENT": "${USER_AGENT}"
     ]
 
     return .init(
@@ -100,9 +100,17 @@ func makeTidifyAppTarget(
     )
   }
 
+func makeConfiguration() -> Settings {
+  Settings.settings(configurations: [
+    .debug(name: "Debug", xcconfig: .relativeToRoot("Targets/Tidify/Sources/Debug.xcconfig")),
+    .release(name: "Release", xcconfig: .relativeToRoot("Targets/Tidify/Sources/Release.xcconfig"))
+  ])
+}
+
 let project: Project = .init(
   name: "Tidify",
   organizationName: "Tidify",
+  settings: makeConfiguration(),
   targets: [
     [makeTidifyAppTarget(
       platform: .iOS,
