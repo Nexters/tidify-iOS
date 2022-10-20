@@ -3,7 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-*.xcconfig
 
 # Icon must end with two
 Icon

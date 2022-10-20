@@ -102,8 +102,8 @@ func makeTidifyAppTarget(
 
 func makeConfiguration() -> Settings {
   Settings.settings(configurations: [
-    .debug(name: "Debug", xcconfig: .relativeToRoot("Targets/Tidify/Sources/Debug.xcconfig")),
-    .release(name: "Release", xcconfig: .relativeToRoot("Targets/Tidify/Sources/Release.xcconfig"))
+    .debug(name: "Debug", xcconfig: .relativeToRoot("Targets/Tidify/Config/Debug.xcconfig")),
+    .release(name: "Release", xcconfig: .relativeToRoot("Targets/Tidify/Config/Release.xcconfig"))
   ])
 }
 
