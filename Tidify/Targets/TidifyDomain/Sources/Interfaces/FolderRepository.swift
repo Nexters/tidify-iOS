@@ -10,9 +10,9 @@ import RxSwift
 
 public protocol FolderRepository {
   
-  //MARK: - 추후 실서버 연동 후 변경 예정
-  func createFolder(name: String, color: String) -> Single<Void>
-  func updateFolder(name: String, color: String)
-  func deleteFolder(folderID: Int)
-  func fetchFolders() -> Single<[Folder]?>
+  //MARK: - CRUD
+  func createFolder(requestDTO: FolderRequestDTO) -> Single<Folder>
+  func fetchFolders() -> Single<[Folder]>
+  func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void>
+  func deleteFolder(id: Int) -> Single<Void>
 }
