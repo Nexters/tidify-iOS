@@ -51,8 +51,8 @@ final class FolderCreationViewController: UIViewController {
   }
 }
 
-// MARK: - Private
 private extension FolderCreationViewController {
+  // MARK: - UI
   func setupUI() {
     let sidePadding: CGFloat = 20
 
@@ -114,15 +114,6 @@ private extension FolderCreationViewController {
       $0.height.equalTo(Self.viewHeight * 0.068)
     }
   }
-  
-  func bind() {
-    tapGesture.rx.event
-      .asDriver()
-      .drive(onNext: { [weak self] _ in
-        self?.showBottomSheet()
-      })
-      .disposed(by: disposeBag)
-  }
 
   func setGuideLabel(_ label: UILabel, title: String) -> UILabel {
     label.do {
@@ -154,9 +145,8 @@ private extension FolderCreationViewController {
 
     return textField
   }
-}
-
-private extension FolderCreationViewController {
+  
+  //MARK: - Binding
   var isEnableCreateFolderButtonBinder: Binder<Bool> {
     return .init(self) { owner, isEnable in
       owner.createFolderButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
@@ -165,6 +155,29 @@ private extension FolderCreationViewController {
     }
   }
   
+  var isEnableFolderNameObservable: Observable<Bool> {
+    titleTextField.rx.text.orEmpty.map { !$0.isEmpty }
+  }
+  
+  var isEnableFolderColorObservable: Observable<Bool> {
+    selectedColorIndexRelay.map { $0 != -1 }
+  }
+  
+  func bind() {
+    tapGesture.rx.event
+      .asDriver()
+      .drive(onNext: { [weak self] _ in
+        self?.showBottomSheet()
+      })
+      .disposed(by: disposeBag)
+    
+    Observable.combineLatest(isEnableFolderNameObservable, isEnableFolderColorObservable)
+      .map { $0 && $1 }
+      .bind(to: isEnableCreateFolderButtonBinder)
+      .disposed(by: disposeBag)
+  }
+  
+  //MARK: - BottomSheet
   func showBottomSheet() {
     let dataSource: [UIColor] = .init([
       .t_tidiBlue01(),
@@ -176,17 +189,26 @@ private extension FolderCreationViewController {
       .systemRed,
       .black
     ])
-    
     let bottomSheet: BottomSheetViewController = .init(
       .folder,
       dataSource: dataSource,
       selectedEventObserver: selectedColorIndexRelay
     )
     bottomSheet.modalPresentationStyle = .overCurrentContext
-    
     present(bottomSheet, animated: true)
+    
+    selectedColorIndexRelay
+      .withUnretained(self)
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { owner, index in
+        guard index != -1 else { return }
+        owner.colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
+        owner.colorTextField.setColor(color: dataSource[index])
+      })
+      .disposed(by: disposeBag)
   }
   
+  //MARK: - Keyboard
   func registerKeyboardNotification() {
     NotificationCenter.default.addObserver(
       self,

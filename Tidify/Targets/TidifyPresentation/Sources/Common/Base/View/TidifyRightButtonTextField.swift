@@ -52,6 +52,10 @@ extension TidifyRightButtonTextField {
   func setText(text: String) {
     textField.text = text
   }
+  
+  func setColor(color: UIColor) {
+    textField.textColor = color
+  }
 }
 
 // MARK: - Private
@@ -73,7 +77,7 @@ private extension TidifyRightButtonTextField {
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.init(hex: "3C3C43").withAlphaComponent(0.08).cgColor
       $0.cornerRadius(radius: 16)
-      $0.font = .t_R(16)
+      $0.font = .t_SB(16)
       $0.textColor = .black
       $0.isUserInteractionEnabled = false
     }
