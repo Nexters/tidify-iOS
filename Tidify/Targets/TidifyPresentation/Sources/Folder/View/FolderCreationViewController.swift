@@ -192,7 +192,7 @@ private extension FolderCreationViewController {
     let bottomSheet: BottomSheetViewController = .init(
       .folder,
       dataSource: dataSource,
-      selectedEventObserver: selectedColorIndexRelay
+      selectedIndexRelay: selectedColorIndexRelay
     )
     bottomSheet.modalPresentationStyle = .overCurrentContext
     present(bottomSheet, animated: true)

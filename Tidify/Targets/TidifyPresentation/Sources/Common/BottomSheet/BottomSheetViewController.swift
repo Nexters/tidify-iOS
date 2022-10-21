@@ -28,7 +28,7 @@ final class BottomSheetViewController: UIViewController {
   
   private let bottomSheetType: BottomSheetType
   private let dataSource: [Any]
-  private let selectedEventObserver: BehaviorRelay<Int>
+  private let selectedIndexRelay: BehaviorRelay<Int>
   
   private var containerViewDidTap: Driver<Void> {
     guard let containerViewGestures = containerView.gestureRecognizers,
@@ -47,10 +47,10 @@ final class BottomSheetViewController: UIViewController {
   init(
     _ bottomSheetType: BottomSheetType,
     dataSource: [Any],
-    selectedEventObserver: BehaviorRelay<Int>
+    selectedIndexRelay: BehaviorRelay<Int>
   ) {
     self.bottomSheetType = bottomSheetType
-    self.selectedEventObserver = selectedEventObserver
+    self.selectedIndexRelay = selectedIndexRelay
     
     switch bottomSheetType {
     case .bookmark:
@@ -85,7 +85,7 @@ final class BottomSheetViewController: UIViewController {
 private extension BottomSheetViewController {
   var cellDisplayBinder: Binder<WillDisplayCellEvent> {
     .init(self) { owner, event in
-      guard owner.selectedEventObserver.value == event.indexPath.row else { return }
+      guard owner.selectedIndexRelay.value == event.indexPath.row else { return }
       event.cell.setSelected(true, animated: false)
     }
   }
@@ -93,7 +93,7 @@ private extension BottomSheetViewController {
   var cellSelectedBinder: Binder<IndexPath> {
     .init(self) { owner, indexPath in
       var deselectCell: UITableViewCell = .init()
-      let deselectIndexPath: IndexPath = .init(row: owner.selectedEventObserver.value, section: 0)
+      let deselectIndexPath: IndexPath = .init(row: owner.selectedIndexRelay.value, section: 0)
       
       switch owner.bottomSheetType {
       case .bookmark:
@@ -105,7 +105,7 @@ private extension BottomSheetViewController {
       }
       deselectCell.setSelected(false, animated: true)
       
-      owner.selectedEventObserver.accept(indexPath.row)
+      owner.selectedIndexRelay.accept(indexPath.row)
       owner.hideBottomSheet()
     }
   }
