@@ -10,6 +10,7 @@ import TidifyDomain
 import UIKit
 
 import ReactorKit
+import RxRelay
 import SnapKit
 
 final class FolderCreationViewController: UIViewController {
@@ -23,12 +24,15 @@ final class FolderCreationViewController: UIViewController {
     rightButtonImage: .init(named: "icon_arrowDown_gray")
   )
   private var createFolderButton: UIButton = .init()
-  var disposeBag: DisposeBag = .init()
+  private let selectedColorIndexRelay: BehaviorRelay<Int> = .init(value: -1)
+  private let tapGesture: UITapGestureRecognizer = .init()
+  private let disposeBag: DisposeBag = .init()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupUI()
+    bind()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +65,7 @@ private extension FolderCreationViewController {
     view.addSubview(colorLabel)
     view.addSubview(colorTextField)
     view.addSubview(createFolderButton)
+    colorTextField.addGestureRecognizer(tapGesture)
 
     titleLabel = setGuideLabel(titleLabel, title: "폴더 이름")
     titleTextField = setTextField(titleTextField, placeholder: "어떤 북마크를 모을까요?")
@@ -109,6 +114,15 @@ private extension FolderCreationViewController {
       $0.height.equalTo(Self.viewHeight * 0.068)
     }
   }
+  
+  func bind() {
+    tapGesture.rx.event
+      .asDriver()
+      .drive(onNext: { [weak self] _ in
+        self?.showBottomSheet()
+      })
+      .disposed(by: disposeBag)
+  }
 
   func setGuideLabel(_ label: UILabel, title: String) -> UILabel {
     label.do {
@@ -149,6 +163,28 @@ private extension FolderCreationViewController {
       owner.createFolderButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
       owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.lightGray.cgColor
     }
+  }
+  
+  func showBottomSheet() {
+    let dataSource: [UIColor] = .init([
+      .t_tidiBlue01(),
+      .t_tidiBlue00(),
+      .t_indigo00(),
+      .systemGreen,
+      .systemYellow,
+      .systemOrange,
+      .systemRed,
+      .black
+    ])
+    
+    let bottomSheet: BottomSheetViewController = .init(
+      .folder,
+      dataSource: dataSource,
+      selectedEventObserver: selectedColorIndexRelay
+    )
+    bottomSheet.modalPresentationStyle = .overCurrentContext
+    
+    present(bottomSheet, animated: true)
   }
   
   func registerKeyboardNotification() {
