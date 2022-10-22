@@ -13,7 +13,7 @@ public struct BookmarkRequestDTO: Encodable {
   public let url: String
   public let title: String
 
-  public init (folderID: Int = 0, url: String, title: String) {
+  public init (folderID: Int, url: String, title: String) {
     self.folderID = folderID
     self.url = url
     self.title = title
