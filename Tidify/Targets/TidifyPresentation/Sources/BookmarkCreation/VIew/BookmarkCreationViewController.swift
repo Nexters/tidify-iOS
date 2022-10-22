@@ -11,6 +11,7 @@ import UIKit
 
 import ReactorKit
 import SnapKit
+import RxRelay
 
 final class BookmarkCreationViewController: UIViewController, View {
 
@@ -27,6 +28,7 @@ final class BookmarkCreationViewController: UIViewController, View {
   )
 
   var disposeBag: DisposeBag = .init()
+  private let selectedFolderIndexRelay: BehaviorRelay<Int> = .init(value: 0)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -49,7 +51,11 @@ private extension BookmarkCreationViewController {
     createBookmarkButton.rx.tap
       .withUnretained(self)
       .map { owner, _ -> Action in
+//        let folderID: Int = reactor.currentState.folders[owner.selectedFolderIndexRelay.value].id
+        let folderID: Int = 0
+
         let requestDTO: BookmarkRequestDTO = .init(
+          folderID: folderID,
           url: owner.urlTextField.text ?? "",
           title: owner.titleTextField.text ?? ""
         )
@@ -58,27 +64,34 @@ private extension BookmarkCreationViewController {
       }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+
+    rx.viewWillAppear
+      .map { Action.viewWillAppear }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 
   func bindState(reactor: BookmarkCreationReactor) {
     reactor.state
-      .map { $0.didRequestCreateBookmark }
+      .map { $0.folders }
       .subscribe()
       .disposed(by: disposeBag)
   }
 
   func bindExtra() {
-    folderTextField.rightButtonTap
-      .subscribe(onNext: {
-        // TODO: 폴더 작업 완료되면 이어서 진행.
-      })
-      .disposed(by: disposeBag)
-
     view.addTap().rx.event
       .filter { $0.state == .recognized }
       .asDriver(onErrorDriveWith: .empty())
       .drive(with: self, onNext: { owner, _ in
         owner.view.endEditing(true)
+      })
+      .disposed(by: disposeBag)
+
+    folderTextField.addTap().rx.event
+      .filter { $0.state == .recognized }
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(with: self, onNext: { owner, _ in
+        owner.showBottomSheet()
       })
       .disposed(by: disposeBag)
 
@@ -201,6 +214,19 @@ private extension BookmarkCreationViewController {
     }
 
     return textField
+  }
+
+  func showBottomSheet() {
+    guard let folders = reactor?.currentState.folders else { return }
+
+    let bottomSheet: BottomSheetViewController = .init(
+      .bookmark,
+      dataSource: folders,
+      selectedIndexRelay: selectedFolderIndexRelay
+    )
+
+    bottomSheet.modalPresentationStyle = .overCurrentContext
+    present(bottomSheet, animated: true)
   }
 }
 

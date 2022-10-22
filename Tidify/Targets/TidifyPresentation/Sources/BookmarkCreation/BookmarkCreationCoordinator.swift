@@ -11,7 +11,6 @@ import TidifyDomain
 import UIKit
 
 protocol BookmarkCreationCoordinator: Coordinator {
-  func presentFolderSelectionScene()
   func close()
 }
 
@@ -33,10 +32,6 @@ final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
     navigationController.pushViewController(viewController, animated: true)
   }
 
-  // TODO: Implementation
-  func presentFolderSelectionScene() {
-  }
-
   func close() {
     navigationController.popViewController(animated: true)
   }
@@ -45,11 +40,10 @@ final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
 // MARK: - Private
 private extension DefaultBookmarkCreationCoordinator {
   func getViewController() -> BookmarkCreationViewController {
-    guard let usecase: BookmarkUseCase = DIContainer.shared.resolve(type: BookmarkUseCase.self) else {
-      fatalError()
-    }
+    guard let useCase: BookmarkCreationUseCase = DIContainer.shared.resolve(
+      type: BookmarkCreationUseCase.self) else { fatalError() }
     navigationController.navigationBar.topItem?.title = ""
-    let reactor: BookmarkCreationReactor = .init(coordinator: self, useCase: usecase)
+    let reactor: BookmarkCreationReactor = .init(coordinator: self, useCase: useCase)
     let viewController: BookmarkCreationViewController = .init(nibName: nil, bundle: nil)
     viewController.reactor = reactor
 
