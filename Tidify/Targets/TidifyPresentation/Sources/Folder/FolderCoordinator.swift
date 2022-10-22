@@ -6,15 +6,17 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import UIKit
-
 import TidifyCore
 import TidifyDomain
+import UIKit
+
+import RxSwift
 
 protocol FolderCoordinator: Coordinator {
   func pushDetailScene()
   func pushEditScene()
-  func pushCreateScene()
+  func pushCreationScene()
+  func popCreationScene()
 }
 
 final class DefaultFolderCoordinator: FolderCoordinator {
@@ -31,6 +33,8 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   private let navigationBar: TidifyNavigationBar?
+  
+  private let disposeBag: DisposeBag = .init()
 
   // MARK: - Initialize
   init(navigationController: UINavigationController) {
@@ -40,6 +44,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
       leftButton: profileButton,
       rightButton: createButton
     )
+    setupNavigationBar()
   }
 
   // MARK: - Methods
@@ -53,7 +58,17 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   
   func pushDetailScene() {}
   func pushEditScene() {}
-  func pushCreateScene() {}
+  
+  func pushCreationScene() {
+    navigationController.pushViewController(
+      FolderCreationViewController(),
+      animated: true
+    )
+  }
+  
+  func popCreationScene() {
+    navigationController.popViewController(animated: true)
+  }
 }
 
 // MARK: - Private
@@ -68,5 +83,17 @@ private extension DefaultFolderCoordinator {
     viewController.reactor = reactor
 
     return viewController
+  }
+  
+  func setupNavigationBar() {
+    createButton.rx.tap
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { [weak self] in
+        self?.navigationController.pushViewController(
+          FolderCreationViewController(),
+          animated: true
+        )
+      })
+      .disposed(by: disposeBag)
   }
 }
