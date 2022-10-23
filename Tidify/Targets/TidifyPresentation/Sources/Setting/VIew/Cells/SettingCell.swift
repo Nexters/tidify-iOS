@@ -25,10 +25,19 @@ final class SettingCell: UITableViewCell {
 
   // MARK: - Methods
   func configure(title: String) {
+    if title == "앱 버전" {
+      DispatchQueue.main.async { [weak self] in
+        self?.titleLabel.font = .systemFont(ofSize: 12)
+        self?.titleLabel.textColor = .lightGray
+        self?.titleLabel.text = title + " " + (self?.fetchAppVersionInfo() ?? "")
+      }
+    }
+
     titleLabel.text = title
   }
 }
 
+// MARK: - Private
 private extension SettingCell {
   func setupUI() {
     selectionStyle = .none
@@ -44,5 +53,14 @@ private extension SettingCell {
       $0.leading.equalToSuperview().offset(20)
       $0.centerY.equalToSuperview()
     }
+  }
+
+  func fetchAppVersionInfo() -> String {
+    guard let dictionary = Bundle.main.infoDictionary,
+          let version = dictionary["CFBundleShortVersionString"] as? String,
+          let build = dictionary["CFBundleVersion"] as? String else { return "" }
+
+    let versionAndBuildString: String = "\(version).\(build)"
+    return versionAndBuildString
   }
 }
