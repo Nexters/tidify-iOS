@@ -109,7 +109,7 @@ final class AlertPresenter: UIViewController {
       .asDriver(onErrorDriveWith: .empty())
       .drive(onNext: { owner, _ in
         owner.leftButtonAction?()
-        owner.dismiss(animated: true)
+        owner.dismiss()
       })
       .disposed(by: disposeBag)
 
@@ -118,7 +118,7 @@ final class AlertPresenter: UIViewController {
       .asDriver(onErrorDriveWith: .empty())
       .drive(onNext: { owner, _ in
         owner.rightButtonAction?()
-        owner.dismiss(animated: true)
+        owner.dismiss()
       })
       .disposed(by: disposeBag)
   }
@@ -133,7 +133,12 @@ final class AlertPresenter: UIViewController {
     self.leftButtonAction = leftButtonAction
     self.rightButtonAction = rightButtonAction
 
-    viewController.present(self, animated: true)
+    viewController.present(self, animated: false) {
+      UIView.animate(withDuration: 0.5, animations: {
+        self.containerView.alpha = 1
+        self.view.alpha = 1
+      })
+    }
   }
 }
 
@@ -148,6 +153,9 @@ private extension AlertPresenter {
     buttonStackView.addArrangedSubview(rightButton)
 
     view.backgroundColor = .black.withAlphaComponent(0.4)
+
+    view.alpha = 0
+    containerView.alpha = 0
 
     containerView.do {
       $0.backgroundColor = .white
@@ -205,5 +213,16 @@ private extension AlertPresenter {
       $0.height.equalTo(56)
       $0.bottom.equalToSuperview()
     }
+  }
+
+  func dismiss() {
+    UIView.animate(withDuration: 0.5, animations: {
+      self.containerView.alpha = 0
+      self.view.alpha = 0
+    }, completion: { flag in
+      if flag {
+        self.dismiss(animated: false)
+      }
+    })
   }
 }
