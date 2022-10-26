@@ -19,7 +19,7 @@ final class AuthViewController: UIViewController {
   private let url: URL
   private let coordinator: SignInCoordinator?
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init(url: URL, coordinator: SignInCoordinator) {
     self.url = url
     self.coordinator = coordinator

@@ -46,7 +46,7 @@ final class DefaultHomeCoordinator: HomeCoordinator {
 
   private let disposeBag: DisposeBag = .init()
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
 

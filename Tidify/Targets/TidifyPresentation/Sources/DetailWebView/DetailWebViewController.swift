@@ -17,7 +17,7 @@ final class DetailWebViewController: UIViewController {
 
   private let bookmark: Bookmark
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init(bookmark: Bookmark) {
     self.bookmark = bookmark
 
