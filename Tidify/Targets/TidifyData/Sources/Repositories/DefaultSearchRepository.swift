@@ -18,7 +18,7 @@ public struct DefaultSearchRepository: SearchRepository {
   static let searchHistory: String = "SearchHistory"
   private let bookmarkService: MoyaProvider<BookmarkService>
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   public init() {
     self.bookmarkService = .init(plugins: [NetworkPlugin()])
   }

@@ -29,7 +29,7 @@ final class HomeViewController: UIViewController, View {
 
   var disposeBag: DisposeBag = .init()
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init(with navigationBar: TidifyNavigationBar, alertPresenter: AlertPresenter) {
     self.navigationBar = navigationBar
     self.alertPresenter = alertPresenter

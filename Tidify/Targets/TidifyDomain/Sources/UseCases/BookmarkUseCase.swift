@@ -34,7 +34,7 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
   // MARK: - Properties
   let repository: BookmarkRepository
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init(repository: BookmarkRepository) {
     self.repository = repository
   }

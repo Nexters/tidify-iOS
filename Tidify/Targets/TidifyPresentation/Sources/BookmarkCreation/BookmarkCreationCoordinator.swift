@@ -22,7 +22,7 @@ final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
   }

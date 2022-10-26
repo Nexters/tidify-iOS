@@ -88,7 +88,7 @@ final class AlertPresenter: UIViewController {
     }
   }
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init() {
     super.init(nibName: nil, bundle: nil)
 

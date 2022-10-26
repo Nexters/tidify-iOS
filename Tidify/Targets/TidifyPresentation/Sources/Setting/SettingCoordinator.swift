@@ -19,7 +19,7 @@ final class DefaultSettingCoordinator: SettingCoordinator {
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
   }
@@ -39,7 +39,8 @@ private extension DefaultSettingCoordinator {
   func getViewController() -> SettingViewController {
     navigationController.navigationBar.topItem?.title = ""
     let reactor: SettingReactor = .init(coordinator: self)
-    let viewController: SettingViewController = .init(nibName: nil, bundle: nil)
+    let alertPresenter: AlertPresenter = .init()
+    let viewController: SettingViewController = .init(alertPresenter: alertPresenter)
     viewController.reactor = reactor
 
     return viewController

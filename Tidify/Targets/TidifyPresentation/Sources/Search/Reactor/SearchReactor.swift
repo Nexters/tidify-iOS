@@ -21,7 +21,7 @@ final class SearchReactor {
     case search
   }
 
-  // MARK: - Constructor
+  // MARK: - Initializer
   init(coordinator: SearchCoordinator, useCase: SearchUseCase) {
     self.coordiantor = coordinator
     self.useCase = useCase
