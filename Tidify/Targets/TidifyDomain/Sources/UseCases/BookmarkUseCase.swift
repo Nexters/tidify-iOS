@@ -11,6 +11,8 @@ import RxSwift
 public enum BookmarkError: Error {
   case cannotFindMachedBookmark
   case failCreateBookmark
+  case failDeleteBookmark
+  case failUpdateBookmark
 }
 
 public protocol BookmarkUseCase {

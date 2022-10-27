@@ -30,30 +30,50 @@ final class MockBookmarkRepository: BookmarkRepository {
     )
     bookmarks.append(bookmark)
 
-    if bookmarks.contains(bookmark) {
-      return .just(bookmark)
-    } else {
-      return .error(BookmarkError.failCreateBookmark)
+    return .create { [weak self] observer in
+      if self?.bookmarks.contains(bookmark) ?? false {
+        observer(.success(bookmark))
+      } else {
+        observer(.failure(BookmarkError.failCreateBookmark))
+      }
+
+      return Disposables.create()
     }
   }
 
   func deleteBookmark(bookmarkID: Int) -> Single<Void> {
-    if let bookmark = bookmarks.first(where: { $0.id == bookmarkID}) {
+    if let bookmark = bookmarks.first(where: { $0.id == bookmarkID }) {
       bookmarks.removeAll(where: { $0.id == bookmark.id })
+    }
 
-      return .just(())
-    } else {
-      return .error(BookmarkError.cannotFindMachedBookmark)
+    return .create { [weak self] observer in
+      if self?.bookmarks.contains(where: { $0.id == bookmarkID}) ?? true {
+        observer(.failure(BookmarkError.failDeleteBookmark))
+      } else {
+        observer(.success(()))
+      }
+
+      return Disposables.create()
     }
   }
 
   func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    if var updateTargetBookmark = bookmarks.first(where: { $0.id == bookmarkID}) {
-      updateTargetBookmark.updateBookmark(with: requestDTO)
 
-      return .just(())
-    } else {
-      return .error(BookmarkError.cannotFindMachedBookmark)
+    return .create { [weak self] observer in
+      if var updateTargetBookmark = self?.bookmarks.first(where: { $0.id == bookmarkID}) {
+        updateTargetBookmark.updateBookmark(with: requestDTO)
+      }
+
+      let updatedBookmark = self?.bookmarks.first(where: {$0.id == bookmarkID})
+
+      if updatedBookmark?.title == requestDTO.title,
+         updatedBookmark?.urlString == requestDTO.url {
+        observer(.success(()))
+      } else {
+        observer(.failure(BookmarkError.failUpdateBookmark))
+      }
+
+      return Disposables.create()
     }
   }
 }

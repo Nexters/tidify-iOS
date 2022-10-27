@@ -26,7 +26,12 @@ public struct DefaultSearchRepository: SearchRepository {
   // MARK: - Methods
   public func fetchSearchHistory() -> Single<[String]> {
     let searchHistory = UserDefaults.standard.array(forKey: Self.searchHistory) as? [String] ?? []
-    return .just(searchHistory.reversed())
+
+    return .create { observer -> Disposable in
+      observer(.success(searchHistory))
+
+      return Disposables.create()
+    }
   }
 
   public func fetchSearchResult(query: String) -> Single<[Bookmark]> {
@@ -41,7 +46,18 @@ public struct DefaultSearchRepository: SearchRepository {
 
   public func eraseAllSearchHistory() -> Single<Void> {
     UserDefaults.standard.set([], forKey: Self.searchHistory)
-    return .just(())
+
+    let searchHistory = UserDefaults.standard.array(forKey: Self.searchHistory) as? [String] ?? []
+
+    return .create { observer -> Disposable in
+      if searchHistory.isEmpty {
+        observer(.success(()))
+      } else {
+        observer(.failure(SearchError.failEraseAllSearchHistory))
+      }
+
+      return Disposables.create()
+    }
   }
 }
 
