@@ -8,6 +8,10 @@
 
 import RxSwift
 
+public enum SearchError: Error {
+  case failEraseAllSearchHistory
+}
+
 public protocol SearchRepository {
 
   /// 로컬에 저장되어 있는 검색내역을 반환합니다.
