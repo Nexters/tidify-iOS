@@ -10,6 +10,10 @@ import TidifyCore
 
 import RxSwift
 
+public enum SearchError: Error {
+  case failEraseAllSearchHistory
+}
+
 public protocol SearchUseCase {
   var searchRepository: SearchRepository { get }
 
