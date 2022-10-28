@@ -1,8 +1,8 @@
 //
-//  MockHomeRepository.swift
-//  TidifyDomainTests
+//  MockBookmarkRepository.swift
+//  Tidify
 //
-//  Created by Ian on 2022/08/27.
+//  Created by Ian on 2022/10/28.
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
@@ -77,4 +77,3 @@ final class MockBookmarkRepository: BookmarkRepository {
     }
   }
 }
-

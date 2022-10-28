@@ -1,14 +1,14 @@
 //
 //  Mocks.swift
-//  TidifyDomainTests
+//  Tidify
 //
-//  Created by Ian on 2022/08/27.
+//  Created by Ian on 2022/10/28.
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-@testable import TidifyDomain
-
 import Foundation
+
+@testable import TidifyDomain
 
 public extension Bookmark {
   static func stub() -> Bookmark {
