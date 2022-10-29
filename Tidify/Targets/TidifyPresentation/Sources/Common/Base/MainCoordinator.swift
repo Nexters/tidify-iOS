@@ -9,9 +9,7 @@
 import TidifyCore
 import UIKit
 
-public protocol MainCoordinator: Coordinator {
-  func start()
-}
+public protocol MainCoordinator: Coordinator { }
 
 public final class DefaultMainCoordinator: MainCoordinator {
 
