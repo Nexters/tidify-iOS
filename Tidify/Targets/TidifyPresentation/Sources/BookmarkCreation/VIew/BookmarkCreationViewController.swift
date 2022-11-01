@@ -51,8 +51,7 @@ private extension BookmarkCreationViewController {
     createBookmarkButton.rx.tap
       .withUnretained(self)
       .map { owner, _ -> Action in
-//        let folderID: Int = reactor.currentState.folders[owner.selectedFolderIndexRelay.value].id
-        let folderID: Int = 0
+        let folderID: Int = reactor.currentState.folders[owner.selectedFolderIndexRelay.value].id
 
         let requestDTO: BookmarkRequestDTO = .init(
           folderID: folderID,
@@ -79,6 +78,18 @@ private extension BookmarkCreationViewController {
   }
 
   func bindExtra() {
+    let isEmptyUrlTextObservable = urlTextField.rx.text.orEmpty
+      .map { $0.isEmpty }
+      .asObservable()
+
+    Observable.combineLatest(
+      isEmptyUrlTextObservable,
+      folderTextField.isEmptyTextObsevable
+    ) { !($0) && !($1) }
+      .asDriver(onErrorDriveWith: .just(false))
+      .drive(isEnableCreateBookmarkButtonBinder)
+      .disposed(by: disposeBag)
+
     view.addTap().rx.event
       .filter { $0.state == .recognized }
       .asDriver(onErrorDriveWith: .empty())
@@ -93,15 +104,6 @@ private extension BookmarkCreationViewController {
       .drive(with: self, onNext: { owner, _ in
         owner.showBottomSheet()
       })
-      .disposed(by: disposeBag)
-
-    Observable.combineLatest(
-      urlTextField.rx.text.orEmpty
-      .map { $0.isEmpty }
-      .asObservable(),
-      folderTextField.isTextEmptyObsevable) { !($0) && !($1) }
-      .asDriver(onErrorDriveWith: .just(false))
-      .drive(isEnableCreateBookmarkButtonBinder)
       .disposed(by: disposeBag)
   }
 
