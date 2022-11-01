@@ -42,7 +42,7 @@ extension TidifyRightButtonTextField {
       .asObservable()
   }
 
-  var isTextEmptyObsevable: Observable<Bool> {
+  var isEmptyTextObsevable: Observable<Bool> {
     textField.rx.text
       .orEmpty
       .map { $0.isEmpty }

@@ -20,7 +20,7 @@ enum FolderService {
 
 extension FolderService: TargetType {
   var baseURL: URL {
-    return .init(string: AppProperties.accessToken)!
+    return .init(string: AppProperties.baseURL)!
   }
   
   var path: String {

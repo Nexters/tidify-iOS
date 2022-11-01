@@ -51,6 +51,7 @@ final class FolderCreationViewController: UIViewController {
   }
 }
 
+// MARK: - private
 private extension FolderCreationViewController {
   // MARK: - UI
   func setupUI() {
