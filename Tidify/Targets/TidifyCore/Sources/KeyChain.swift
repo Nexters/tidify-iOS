@@ -51,4 +51,10 @@ public enum KeyChain {
     ])
     SecItemDelete(query)
   }
+
+  public static func deleteAll() {
+    AppData.allCases.forEach { key in
+      delete(key: key)
+    }
+  }
 }
