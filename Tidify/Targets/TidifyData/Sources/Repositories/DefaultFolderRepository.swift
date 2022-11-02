@@ -31,7 +31,7 @@ public struct DefaultFolderRepository: FolderRepository {
   public func fetchFolders() -> Single<[Folder]> {
     return folderService.rx.request(.fetchFolders())
       .map(FolderListDTO.self)
-      .map { $0.toDomain() }
+      .map { $0.toDomain().reversed() }
   }
   
   public func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void> {
