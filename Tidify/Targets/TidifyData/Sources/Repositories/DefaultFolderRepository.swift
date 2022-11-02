@@ -22,10 +22,8 @@ public struct DefaultFolderRepository: FolderRepository {
   }
   
   // MARK: - Methods
-  public func createFolder(requestDTO: FolderRequestDTO) -> Single<Folder> {
-    return folderService.rx.request(.createFolder(requestDTO))
-      .map(FolderDTO.self)
-      .map { $0.toDomaion() }
+  public func createFolder(requestDTO: FolderRequestDTO) -> Single<Void> {
+    return folderService.rx.request(.createFolder(requestDTO)).map { _ in }
   }
   
   public func fetchFolders() -> Single<[Folder]> {
