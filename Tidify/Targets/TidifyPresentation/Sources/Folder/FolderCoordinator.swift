@@ -60,8 +60,14 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   func pushEditScene() {}
   
   func pushCreationScene() {
+    guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self)
+    else { fatalError() }
+    let reactor: FolderCreationReactor = .init(coordinator: self, usecase: usecase)
+    let viewController: FolderCreationViewController = .init()
+    viewController.reactor = reactor
+    
     navigationController.pushViewController(
-      FolderCreationViewController(),
+      viewController,
       animated: true
     )
   }
