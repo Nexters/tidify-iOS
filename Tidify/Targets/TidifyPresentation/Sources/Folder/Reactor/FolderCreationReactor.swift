@@ -26,26 +26,23 @@ final class FolderCreationReactor: Reactor {
   }
   
   enum Mutation {
-    case startCreate(Bool)
+    case startCreation(Bool)
   }
 
-  struct State {
-    var isCreated = false
-  }
+  struct State {}
 
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .createFolderButtonDidTap(let folder):
-      return usecase.createFolder(requestDTO: folder).map { .startCreate(true) }
+      return usecase.createFolder(requestDTO: folder).map { .startCreation(true) }
     }
   }
 
   func reduce(state: State, mutation: Mutation) -> State {
-    var newState: State = state
+    let newState: State = state
 
     switch mutation {
-    case .startCreate(let isCreated):
-      newState.isCreated = isCreated
+    case .startCreation(_):
       coordinator.popCreationScene()
     }
 
