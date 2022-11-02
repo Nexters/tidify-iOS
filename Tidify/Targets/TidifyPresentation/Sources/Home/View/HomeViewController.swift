@@ -45,6 +45,7 @@ final class HomeViewController: UIViewController, View {
     super.viewDidLoad()
 
     setupUI()
+    setupCookie()
   }
 
   func bind(reactor: HomeReactor) {
@@ -110,6 +111,17 @@ private extension HomeViewController {
       $0.height.equalTo(20)
       $0.centerX.equalToSuperview()
     }
+  }
+  
+  func setupCookie() {
+    guard let cookie: HTTPCookie = .init(properties: [
+      .name: "access-token",
+      .value: AppProperties.accessToken,
+      .domain: AppProperties.domainURL,
+      .path: "/"
+    ]) else { return }
+    
+    HTTPCookieStorage.shared.setCookie(cookie)
   }
 
   func bindAction(reactor: HomeReactor) {
