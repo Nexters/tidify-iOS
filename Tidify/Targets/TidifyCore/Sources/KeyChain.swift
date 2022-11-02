@@ -9,11 +9,9 @@
 import Foundation
 import Security
 
-public enum AppData: String {
-  case baseURL = "BASE_URL"
+public enum AppData: String, CaseIterable {
   case accessToken = "accessToken"
   case refreshToken = "refreshToken"
-  case userAgent = "USER_AGENT"
 }
 
 public enum KeyChain {
@@ -52,5 +50,11 @@ public enum KeyChain {
       kSecAttrAccount: key.rawValue
     ])
     SecItemDelete(query)
+  }
+
+  public static func deleteAll() {
+    AppData.allCases.forEach { key in
+      delete(key: key)
+    }
   }
 }

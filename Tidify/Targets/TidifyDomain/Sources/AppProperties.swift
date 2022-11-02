@@ -14,7 +14,7 @@ public struct AppProperties {
   // MARK: - Properties
   public static var baseURL: String {
     guard let infoDictionary = Bundle.main.infoDictionary,
-          let baseURL = infoDictionary[AppData.baseURL.rawValue] as? String
+          let baseURL = infoDictionary["BASE_URL"] as? String
     else { return .init() }
     return "http://\(baseURL)"
   }
@@ -31,7 +31,7 @@ public struct AppProperties {
   
   public static var userAgent: String {
     guard let infoDictionary = Bundle.main.infoDictionary,
-          let userAgent = infoDictionary[AppData.userAgent.rawValue] as? String
+          let userAgent = infoDictionary["USER_AGENT"] as? String
     else { return .init() }
     return userAgent
   }

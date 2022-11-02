@@ -35,7 +35,6 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
     )
     signInCoordinator.parentCoordinator = self
     addChild(signInCoordinator)
-    UserDefaults.standard.set(true, forKey: "didOnboard")
     signInCoordinator.start()
   }
 }

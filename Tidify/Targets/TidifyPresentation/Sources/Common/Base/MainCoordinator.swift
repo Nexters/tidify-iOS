@@ -17,7 +17,8 @@ public final class DefaultMainCoordinator: MainCoordinator {
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
   private let container: DIContainer = .shared
-  private let didOnboard: Bool = UserDefaults.standard.bool(forKey: "didOnboard")
+
+  private let isFirstLaunch: Bool = UserDefaultsStorage.isFirstLaunch
 
   // MARK: - Initialize
   public init(navigationController: UINavigationController) {
@@ -27,12 +28,17 @@ public final class DefaultMainCoordinator: MainCoordinator {
 
   // MARK: - Methods
   public func start() {
+    if isFirstLaunch {
+      UserDefaultsStorage.isFirstLaunch = false
+      KeyChain.deleteAll()
+    }
+
     if KeyChain.load(key: .accessToken) != nil {
       startTabBar()
       return
     }
 
-    didOnboard ? startSignIn() : startOnboarding()
+    isFirstLaunch ? startOnboarding() : startSignIn()
   }
 }
 
