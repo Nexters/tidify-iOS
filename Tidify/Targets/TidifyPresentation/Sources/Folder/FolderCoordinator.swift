@@ -95,10 +95,7 @@ private extension DefaultFolderCoordinator {
     createButton.rx.tap
       .asDriver(onErrorDriveWith: .empty())
       .drive(onNext: { [weak self] in
-        self?.navigationController.pushViewController(
-          FolderCreationViewController(),
-          animated: true
-        )
+        self?.pushCreationScene()
       })
       .disposed(by: disposeBag)
   }

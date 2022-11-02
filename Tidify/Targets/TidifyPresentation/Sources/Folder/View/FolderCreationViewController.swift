@@ -13,7 +13,7 @@ import ReactorKit
 import RxRelay
 import SnapKit
 
-final class FolderCreationViewController: UIViewController {
+final class FolderCreationViewController: UIViewController, View {
 
   // MARK: - Properties
   private var titleLabel: UILabel = .init()
@@ -26,13 +26,12 @@ final class FolderCreationViewController: UIViewController {
   private var createFolderButton: UIButton = .init()
   private let selectedColorIndexRelay: BehaviorRelay<Int> = .init(value: -1)
   private let tapGesture: UITapGestureRecognizer = .init()
-  private let disposeBag: DisposeBag = .init()
+  var disposeBag: DisposeBag = .init()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupUI()
-    bind()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -48,6 +47,10 @@ final class FolderCreationViewController: UIViewController {
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     super.touchesBegan(touches, with: event)
     view.endEditing(true)
+  }
+  
+  func bind(reactor: FolderCreationReactor) {
+    bindAction(reactor: reactor)
   }
 }
 
@@ -153,6 +156,7 @@ private extension FolderCreationViewController {
       owner.createFolderButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
       owner.createFolderButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
       owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.lightGray.cgColor
+      owner.createFolderButton.isEnabled = isEnable
     }
   }
   
@@ -164,7 +168,26 @@ private extension FolderCreationViewController {
     selectedColorIndexRelay.map { $0 != -1 }
   }
   
-  func bind() {
+  var folderTitleObservable: Observable<String> {
+    titleTextField.rx.text.orEmpty.asObservable()
+  }
+  
+  var folderColorObservable: Observable<String> {
+    Observable.just(colorTextField.getColor())
+  }
+  
+  func bindAction(reactor: FolderCreationReactor) {
+    typealias Action = FolderCreationReactor.Action
+
+    createFolderButton.rx.tap
+      .withUnretained(self)
+      .flatMap { owner, _ in
+        Observable.combineLatest(owner.folderTitleObservable, owner.folderColorObservable)
+      }
+      .map { Action.createFolderButtonDidTap(FolderRequestDTO(title: $0, color: $1))}
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
     tapGesture.rx.event
       .asDriver()
       .drive(onNext: { [weak self] _ in

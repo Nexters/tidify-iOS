@@ -56,6 +56,12 @@ extension TidifyRightButtonTextField {
   func setColor(color: UIColor) {
     textField.textColor = color
   }
+  
+  func getColor() -> String {
+    guard let textColor = textField.textColor else { return .init() }
+    
+    return textColor.toHexString()
+  }
 }
 
 // MARK: - Private
