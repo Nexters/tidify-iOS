@@ -19,6 +19,13 @@ public struct AppProperties {
     return "http://\(baseURL)"
   }
   
+  public static var domainURL: String {
+    guard let domainURL = baseURL.components(separatedBy: "//").last?.split(separator: ":")
+      .map({ String($0) }).first
+    else { return .init() }
+    return domainURL
+  }
+  
   public static var accessToken: String {
     guard let accessTokenData = KeyChain.load(key: .accessToken) else { return .init() }
     return String(decoding: accessTokenData, as: UTF8.self)
