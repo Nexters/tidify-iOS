@@ -56,7 +56,7 @@ private extension BookmarkCreationViewController {
         let requestDTO: BookmarkRequestDTO = .init(
           folderID: folderID,
           url: owner.urlTextField.text ?? "",
-          title: owner.titleTextField.text ?? ""
+          title: owner.titleTextField.text ?? (owner.urlTextField.text ?? "")
         )
 
         return .didTapCreateButton(requestDTO)
