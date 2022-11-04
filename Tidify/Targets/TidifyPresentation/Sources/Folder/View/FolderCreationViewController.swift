@@ -173,7 +173,7 @@ private extension FolderCreationViewController {
   }
   
   var folderColorObservable: Observable<String> {
-    Observable.just(colorTextField.getColor())
+    Observable.just(colorTextField.getColorHexString())
   }
   
   func bindAction(reactor: FolderCreationReactor) {
