@@ -57,7 +57,7 @@ extension TidifyRightButtonTextField {
     textField.textColor = color
   }
   
-  func getColor() -> String {
+  func getColorHexString() -> String {
     guard let textColor = textField.textColor else { return .init() }
     
     return textColor.toHexString()
