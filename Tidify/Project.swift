@@ -69,6 +69,7 @@ func makeTidifyAppTarget(
     let infoPlist: [String: InfoPlist.Value] = [
       "CFBundleShortVersionString": "1.0",
       "CFBundleVersion": "1",
+      "CFBundleDisplayName": "$(PRODUCT_NAME)",
       "UILaunchStoryboardName": "LaunchScreen",
       "UIUserInterfaceStyle": "Light",
       "CFBundleURLTypes": ["CFBundleTypeRole": "Editor", "CFBundleURLSchemes": ["kakaoc7088851270493d80c903f77ecbad7e5"]],
@@ -100,6 +101,36 @@ func makeTidifyAppTarget(
     )
   }
 
+func makeShareExtensionTarget(
+  platform: Platform,
+  dependencies: [TargetDependency]) -> Target {
+    let infoPlist: [String: InfoPlist.Value] = [
+      "CFBundleDisplayName": "$(PRODUCT_NAME)",
+      "NSExtension": [
+        "NSExtensionAttributes": [
+          "NSExtensionActivationRule": "TRUEPREDICATE"
+        ],
+        "NSExtensionMainStoryboard": "MainInterface",
+        "NSExtensionPointIdentifier": "com.apple.share-services"
+      ]
+    ]
+
+    return .init(
+      name: "TidifyShareExtension",
+      platform: platform,
+      product: .appExtension,
+      bundleId: "com.ian.Tidify.share",
+      deploymentTarget: deploymentTarget,
+      infoPlist: .extendingDefault(with: infoPlist),
+      sources: ["TidifyShareExtension/Sources/**"],
+      resources: ["TidifyShareExtension/Resources/**"],
+      entitlements: "TidifyShareExtension/TidifyShareExtension.entitlements",
+      settings: .settings(base: .init()
+        .automaticCodeSigning(devTeam: "857J3M5L6B")
+      )
+    )
+  }
+
 func makeConfiguration() -> Settings {
   Settings.settings(configurations: [
     .debug(name: "Debug", xcconfig: .relativeToRoot("Targets/Tidify/Config/Debug.xcconfig")),
@@ -116,8 +147,11 @@ let project: Project = .init(
       platform: .iOS,
       dependencies: [
         .target(name: Layer.presentation.layerName),
-        .target(name: Layer.data.layerName)
-      ])],
+        .target(name: Layer.data.layerName),
+        .target(name: "TidifyShareExtension")
+      ]),
+     makeShareExtensionTarget(platform: .iOS, dependencies: [])
+    ],
 
     makeTidifyFrameworkTargets(
       name: Layer.presentation.layerName,
