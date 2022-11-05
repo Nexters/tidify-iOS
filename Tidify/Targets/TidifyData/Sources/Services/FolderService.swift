@@ -66,5 +66,7 @@ extension FolderService: TargetType {
     return .requestPlain
   }
 
-  var headers: [String : String]? { return nil }
+  var headers: [String : String]? {
+    ["access-token": AppProperties.accessToken]
+  }
 }
