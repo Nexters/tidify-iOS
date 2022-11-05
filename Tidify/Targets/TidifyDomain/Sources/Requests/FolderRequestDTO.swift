@@ -14,4 +14,9 @@ public struct FolderRequestDTO: Encodable {
     self.title = title
     self.color = color
   }
+  
+  enum CodingKeys: String, CodingKey {
+    case title = "folder_title"
+    case color = "folder_color"
+  }
 }
