@@ -43,7 +43,7 @@ public extension MoyaProvider {
   }
   
   private func updateToken(completion: @escaping () -> Void) {
-    let updateService = MoyaProvider<AuthService>(plugins: [NetworkPlugin()])
+    let updateService: MoyaProvider<AuthService> = .init(plugins: [NetworkPlugin()])
     
     updateService.request(.updateToken) { result in
       switch result {
