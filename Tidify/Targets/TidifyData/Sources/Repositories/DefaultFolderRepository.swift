@@ -23,17 +23,17 @@ public struct DefaultFolderRepository: FolderRepository {
   
   // MARK: - Methods
   public func createFolder(requestDTO: FolderRequestDTO) -> Single<Void> {
-    return folderService.rx.request(.createFolder(requestDTO)).map { _ in }
+    return folderService.request(.createFolder(requestDTO)).map { _ in }
   }
   
   public func fetchFolders() -> Single<[Folder]> {
-    return folderService.rx.request(.fetchFolders())
+    return folderService.request(.fetchFolders())
       .map(FolderListDTO.self)
       .map { $0.toDomain().reversed() }
   }
   
   public func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void> {
-    return folderService.rx.request(.updateFolder(
+    return folderService.request(.updateFolder(
       id: id,
       requestDTO: requestDTO)
     )
@@ -41,7 +41,7 @@ public struct DefaultFolderRepository: FolderRepository {
   }
   
   public func deleteFolder(id: Int) -> Single<Void> {
-    return folderService.rx.request(.deleteFolder(id: id))
+    return folderService.request(.deleteFolder(id: id))
       .map { _ in }
   }
 }
