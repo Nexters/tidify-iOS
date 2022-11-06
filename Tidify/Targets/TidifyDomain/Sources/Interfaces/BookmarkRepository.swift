@@ -14,7 +14,7 @@ public protocol BookmarkRepository {
   func fetchBookmarkList() -> Single<[Bookmark]>
 
   /// @POST: 북마크를 생성합니다.
-  func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Bookmark>
+  func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void>
 
   /// @DELETE: 북마크를 삭제합니다.
   func deleteBookmark(bookmarkID: Int) -> Single<Void>

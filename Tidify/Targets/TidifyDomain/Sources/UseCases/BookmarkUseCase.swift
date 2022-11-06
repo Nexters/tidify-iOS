@@ -22,7 +22,7 @@ public protocol BookmarkUseCase {
   func fetchBookmarkList() -> Observable<[Bookmark]>
 
   /// 북마크를 생성합니다.
-  func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Bookmark>
+  func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void>
 
   /// 북마크를 삭제합니다.
   func deleteBookmark(bookmarkID: Int) -> Observable<Void>
@@ -47,7 +47,7 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
       .asObservable()
   }
 
-  func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Bookmark> {
+  func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void> {
     repository.createBookmark(requestDTO: requestDTO)
       .asObservable()
   }
