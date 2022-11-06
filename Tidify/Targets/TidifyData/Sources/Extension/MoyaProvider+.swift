@@ -20,7 +20,7 @@ enum RequestError: Error {
 
 public extension MoyaProvider {
   func request(_ target: Target) -> Single<Response> {
-    let requestResponse = Single<Response>.create { [weak self] single in
+    Single<Response>.create { [weak self] single in
       let cancellableToken = self?.request(target, callbackQueue: nil, progress: nil) { result in
         switch result {
         case let .success(response):
@@ -39,8 +39,7 @@ public extension MoyaProvider {
         cancellableToken?.cancel()
       }
     }
-    
-    return requestResponse.retry(2)
+    .retry(2)
   }
   
   private func updateToken(completion: @escaping () -> Void) {
