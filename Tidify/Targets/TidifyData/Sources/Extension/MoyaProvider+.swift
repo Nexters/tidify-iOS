@@ -56,13 +56,14 @@ public extension MoyaProvider {
           KeyChain.save(key: .accessToken, data: accessTokenData)
           completion()
         } else {
-          //TODO: refresh-token 만료되었을 때 재로그인 유도, 추후 테스트 필요!
           KeyChain.deleteAll()
           guard let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                 let firstWindow = firstScene.windows.first
           else { return }
           
           let navigationController: UINavigationController = .init(nibName: nil, bundle: nil)
+          PresentationAssembly(navigationController: navigationController)
+            .assemble(container: DIContainer.shared)
           firstWindow.rootViewController = navigationController
           
           let mainCoordinator: DefaultMainCoordinator = .init(
