@@ -28,7 +28,7 @@ final class BookmarkCreationViewController: UIViewController, View {
   )
 
   var disposeBag: DisposeBag = .init()
-  private let selectedFolderIndexRelay: BehaviorRelay<Int> = .init(value: 0)
+  private let selectedFolderIndexRelay: BehaviorRelay<Int> = .init(value: -1)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -53,10 +53,15 @@ private extension BookmarkCreationViewController {
       .map { owner, _ -> Action in
         let folderID: Int = reactor.currentState.folders[owner.selectedFolderIndexRelay.value].id
 
+        var title: String = owner.titleTextField.text ?? ""
+        if title.isEmpty {
+          title = owner.urlTextField.text ?? ""
+        }
+
         let requestDTO: BookmarkRequestDTO = .init(
           folderID: folderID,
           url: owner.urlTextField.text ?? "",
-          title: owner.titleTextField.text ?? (owner.urlTextField.text ?? "")
+          title: title
         )
 
         return .didTapCreateButton(requestDTO)
@@ -78,17 +83,19 @@ private extension BookmarkCreationViewController {
   }
 
   func bindExtra() {
-    let isEmptyUrlTextObservable = urlTextField.rx.text.orEmpty
+    let isEmptyURLTextObservable = urlTextField.rx.text.orEmpty
       .map { $0.isEmpty }
       .asObservable()
 
-    Observable.combineLatest(
-      isEmptyUrlTextObservable,
-      folderTextField.isEmptyTextObsevable
-    ) { !($0) && !($1) }
-      .asDriver(onErrorDriveWith: .just(false))
+    isEmptyURLTextObservable
+      .map { [weak self] isEmptyURL -> Bool in
+        let isEmptyFolder: Bool = self?.folderTextField.textField.text?.isEmpty ?? true
+        return !isEmptyURL && !isEmptyFolder
+      }
+      .asDriver(onErrorDriveWith: .empty())
       .drive(isEnableCreateBookmarkButtonBinder)
       .disposed(by: disposeBag)
+
 
     view.addTap().rx.event
       .filter { $0.state == .recognized }
@@ -104,6 +111,11 @@ private extension BookmarkCreationViewController {
       .drive(with: self, onNext: { owner, _ in
         owner.showBottomSheet()
       })
+      .disposed(by: disposeBag)
+
+    selectedFolderIndexRelay
+      .skip(1)
+      .bind(to: didSelectFolderBinder)
       .disposed(by: disposeBag)
   }
 
@@ -223,7 +235,7 @@ private extension BookmarkCreationViewController {
 
     let bottomSheet: BottomSheetViewController = .init(
       .bookmark,
-      dataSource: folders,
+      dataSource: folders.map { $0.title },
       selectedIndexRelay: selectedFolderIndexRelay
     )
 
@@ -235,9 +247,22 @@ private extension BookmarkCreationViewController {
 private extension BookmarkCreationViewController {
   var isEnableCreateBookmarkButtonBinder: Binder<Bool> {
     return .init(self) { owner, isEnable in
+      owner.createBookmarkButton.isEnabled = isEnable
       owner.createBookmarkButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
       owner.createBookmarkButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
       owner.createBookmarkButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.lightGray.cgColor
+    }
+  }
+
+  var didSelectFolderBinder: Binder<Int> {
+    return .init(self) { owner, selectedIndex in
+      guard selectedIndex != -1,
+            let selectedFolder: Folder = owner.reactor?.currentState.folders[selectedIndex] else {
+        return
+      }
+
+      owner.folderTextField.setText(text: selectedFolder.title)
+      owner.folderTextField.setColor(color: .init(hex: selectedFolder.color))
     }
   }
 }

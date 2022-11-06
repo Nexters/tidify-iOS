@@ -33,7 +33,7 @@ final class BookmarkCreationReactor: Reactor {
   }
 
   enum Mutation {
-    case requestCreateBookmark(_ bookmark: Bookmark)
+    case requestCreateBookmark
     case setFolders(folders: [Folder])
   }
 
@@ -49,7 +49,7 @@ final class BookmarkCreationReactor: Reactor {
 
     case .didTapCreateButton(let requestDTO):
       return useCase.createBookmark(requestDTO: requestDTO)
-        .map { .requestCreateBookmark($0) }
+        .map { .requestCreateBookmark }
     }
   }
 
@@ -59,6 +59,7 @@ final class BookmarkCreationReactor: Reactor {
     switch mutation {
     case .requestCreateBookmark:
       coordinator.close()
+
     case .setFolders(let folders):
       newState.folders = folders
     }

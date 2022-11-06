@@ -9,15 +9,17 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 
 final class TidifyRightButtonTextField: UIView {
 
   // MARK: - Properties
   private let rightButton: UIButton = .init()
-  private let textField: UITextField = .init()
+  let textField: UITextField = .init()
   private let rightButtonImage: UIImage?
 
   private let placeholder: String
+  private let disposeBag: DisposeBag = .init()
 
   init(
     placeholder: String,
@@ -39,13 +41,6 @@ final class TidifyRightButtonTextField: UIView {
 extension TidifyRightButtonTextField {
   var rightButtonTap: Observable<Void> {
     rightButton.rx.tap
-      .asObservable()
-  }
-
-  var isEmptyTextObsevable: Observable<Bool> {
-    textField.rx.text
-      .orEmpty
-      .map { $0.isEmpty }
       .asObservable()
   }
 
