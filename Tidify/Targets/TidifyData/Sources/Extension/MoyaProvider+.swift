@@ -48,10 +48,10 @@ public extension MoyaProvider {
     updateService.request(.updateToken) { result in
       switch result {
       case .success(let response):
-        let responseData = try? response.map(UserTokenDTO.self)
+        guard let responseData = try? response.map(UserTokenDTO.self) else { return }
         
-        if responseData?.response.code == "N200" {
-          guard let accessTokenData = responseData?.accessToken.data(using: .utf8) else { return }
+        if responseData.response.code == "N200" {
+          guard let accessTokenData = responseData.accessToken.data(using: .utf8) else { return }
           KeyChain.save(key: .accessToken, data: accessTokenData)
           completion()
         } else {
