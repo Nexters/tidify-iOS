@@ -89,7 +89,6 @@ private extension BookmarkCreationViewController {
 
     isEmptyURLTextObservable
       .map { [weak self] isEmptyURL -> Bool in
-//        let isEmptyFolder: Bool = self?.folderTextField.textField.text?.isEmpty ?? true
         let isEmptyFolder: Bool = self?.folderTextField.isEmptyTextField() ?? true
         return !isEmptyURL && !isEmptyFolder
       }
