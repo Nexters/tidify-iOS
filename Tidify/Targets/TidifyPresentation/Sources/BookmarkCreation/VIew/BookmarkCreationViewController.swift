@@ -89,7 +89,8 @@ private extension BookmarkCreationViewController {
 
     isEmptyURLTextObservable
       .map { [weak self] isEmptyURL -> Bool in
-        let isEmptyFolder: Bool = self?.folderTextField.textField.text?.isEmpty ?? true
+//        let isEmptyFolder: Bool = self?.folderTextField.textField.text?.isEmpty ?? true
+        let isEmptyFolder: Bool = self?.folderTextField.isEmptyTextField() ?? true
         return !isEmptyURL && !isEmptyFolder
       }
       .asDriver(onErrorDriveWith: .empty())
@@ -114,7 +115,6 @@ private extension BookmarkCreationViewController {
       .disposed(by: disposeBag)
 
     selectedFolderIndexRelay
-      .skip(1)
       .bind(to: didSelectFolderBinder)
       .disposed(by: disposeBag)
   }

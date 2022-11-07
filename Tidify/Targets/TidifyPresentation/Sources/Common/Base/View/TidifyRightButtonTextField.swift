@@ -9,17 +9,15 @@
 import UIKit
 
 import RxSwift
-import RxRelay
 
 final class TidifyRightButtonTextField: UIView {
 
   // MARK: - Properties
   private let rightButton: UIButton = .init()
-  let textField: UITextField = .init()
+  private let textField: UITextField = .init()
   private let rightButtonImage: UIImage?
 
   private let placeholder: String
-  private let disposeBag: DisposeBag = .init()
 
   init(
     placeholder: String,
@@ -35,6 +33,10 @@ final class TidifyRightButtonTextField: UIView {
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  func isEmptyTextField() -> Bool {
+    textField.text?.isEmpty ?? true
   }
 }
 
