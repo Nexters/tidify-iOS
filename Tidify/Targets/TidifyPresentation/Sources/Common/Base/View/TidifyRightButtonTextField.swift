@@ -34,18 +34,15 @@ final class TidifyRightButtonTextField: UIView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  func isEmptyTextField() -> Bool {
+    textField.text?.isEmpty ?? true
+  }
 }
 
 extension TidifyRightButtonTextField {
   var rightButtonTap: Observable<Void> {
     rightButton.rx.tap
-      .asObservable()
-  }
-
-  var isEmptyTextObsevable: Observable<Bool> {
-    textField.rx.text
-      .orEmpty
-      .map { $0.isEmpty }
       .asObservable()
   }
 
