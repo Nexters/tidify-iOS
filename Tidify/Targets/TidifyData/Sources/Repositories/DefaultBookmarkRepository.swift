@@ -14,32 +14,32 @@ import RxSwift
 public struct DefaultBookmarkRepository: BookmarkRepository {
 
   // MARK: - Properties
-  private let bookmarkServicce: MoyaProvider<BookmarkService>
+  private let bookmarkService: MoyaProvider<BookmarkService>
 
   // MARK: - Initializer
   public init() {
-    self.bookmarkServicce = .init(plugins: [NetworkPlugin()])
+    self.bookmarkService = .init(plugins: [NetworkPlugin()])
   }
 
   // MARK: - Methods
   public func fetchBookmarkList() -> Single<[Bookmark]> {
-    return bookmarkServicce.rx.request(.fetchBookmarkList())
+    return bookmarkService.request(.fetchBookmarkList())
       .map(BookmarkListDTO.self)
       .map { $0.toDomain() }
   }
 
   public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkServicce.rx.request(.createBookmark(requestDTO))
+    return bookmarkService.rx.request(.createBookmark(requestDTO))
       .map { _ in }
   }
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
-    return bookmarkServicce.rx.request(.deleteBookmark(bookmarkID: bookmarkID))
+    return bookmarkService.request(.deleteBookmark(bookmarkID: bookmarkID))
       .map { _ in }
   }
 
   public func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkServicce.rx.request(.updateBookmark(
+    return bookmarkService.request(.updateBookmark(
       bookmarkID: bookmarkID,
       requestDTO: requestDTO)
     )
