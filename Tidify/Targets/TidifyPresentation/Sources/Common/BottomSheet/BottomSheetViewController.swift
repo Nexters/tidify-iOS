@@ -73,13 +73,12 @@ final class BottomSheetViewController: UIViewController {
     setupTableView()
     bind()
   }
-  
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    
+
     showBottomSheet()
   }
-  
 }
 
 private extension BottomSheetViewController {
@@ -212,7 +211,7 @@ private extension BottomSheetViewController {
   }
   
   func showBottomSheet() {
-    UIView.animate(withDuration: 0.5, animations: {
+    UIView.animate(withDuration: 0.3, animations: {
       self.containerView.backgroundColor = .black.withAlphaComponent(0.4)
       self.sheetView.transform = CGAffineTransform(
         translationX: 0,
@@ -223,7 +222,7 @@ private extension BottomSheetViewController {
   }
   
   func hideBottomSheet() {
-    UIView.animate(withDuration: 0.5, animations: {
+    UIView.animate(withDuration: 0.3, animations: {
       self.containerView.backgroundColor = .black.withAlphaComponent(0)
       self.sheetView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height)
       self.view.layoutIfNeeded()

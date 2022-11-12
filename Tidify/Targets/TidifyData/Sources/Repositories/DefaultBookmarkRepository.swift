@@ -28,10 +28,9 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
       .map { $0.toDomain() }
   }
 
-  public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Bookmark> {
-    return bookmarkService.request(.createBookmark(requestDTO))
-      .map(BookmarkDTO.self)
-      .map { $0.toDomaion() }
+  public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
+    return bookmarkService.rx.request(.createBookmark(requestDTO))
+      .map { _ in }
   }
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
