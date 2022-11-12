@@ -24,7 +24,7 @@ extension AuthService: TargetType {
   var path: String {
     switch self {
     case .apple: return "/auth/apple"
-    case .updateToken: return "/updateToken"
+    case .updateToken: return "/signin"
     }
   }
 
