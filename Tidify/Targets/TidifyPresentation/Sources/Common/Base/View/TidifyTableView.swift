@@ -42,6 +42,9 @@ final class TidifyTableView: UITableView {
     })
   }
   
+  private var editAction: (() -> Void)?
+  private var deleteAction: (() -> Void)?
+  
   private let disposeBag: DisposeBag = .init()
   
   override init(frame: CGRect, style: UITableView.Style) {
@@ -52,6 +55,14 @@ final class TidifyTableView: UITableView {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  func setupEditAction(_ editAction: @escaping () -> Void) {
+    self.editAction = editAction
+  }
+  
+  func setupDeleteAction(_ deleteAction: @escaping () -> Void) {
+    self.deleteAction = deleteAction
   }
 }
 
@@ -83,7 +94,9 @@ extension TidifyTableView: UITableViewDelegate {
     let editAction: UIContextualAction = .init(
       style: .normal,
       title: "편집",
-      handler: { action, view, completion in
+      handler: { _, _, completion in
+        guard let action = self.editAction else { return }
+        action()
         completion(true)
       }).then {
         $0.backgroundColor = .white
@@ -92,7 +105,9 @@ extension TidifyTableView: UITableViewDelegate {
     let deleteAction: UIContextualAction = .init(
       style: .destructive,
       title: "삭제",
-      handler: { action, view, completion in
+      handler: { _, _, completion in
+        guard let action = self.deleteAction else { return }
+        action()
         completion(true)
       }).then {
         $0.backgroundColor = .red
