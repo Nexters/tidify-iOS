@@ -26,7 +26,7 @@ final class BottomSheetViewController: UIViewController {
   private let tableView: UITableView = .init()
   private let tapGesture: UITapGestureRecognizer = .init()
   
-  private let TabType: TabType
+  private let tabType: TabType
   private let dataSource: [Any]
   private let selectedIndexRelay: BehaviorRelay<Int>
   
@@ -45,14 +45,14 @@ final class BottomSheetViewController: UIViewController {
   private let disposeBag = DisposeBag()
   
   init(
-    _ TabType: TabType,
+    _ tabType: TabType,
     dataSource: [Any],
     selectedIndexRelay: BehaviorRelay<Int>
   ) {
-    self.TabType = TabType
+    self.tabType = tabType
     self.selectedIndexRelay = selectedIndexRelay
     
-    switch TabType {
+    switch tabType {
     case .bookmark:
       self.dataSource = dataSource as? [String] ?? []
     case .folder:
@@ -94,7 +94,7 @@ private extension BottomSheetViewController {
       var deselectCell: UITableViewCell = .init()
       let deselectIndexPath: IndexPath = .init(row: owner.selectedIndexRelay.value, section: 0)
       
-      switch owner.TabType {
+      switch owner.tabType {
       case .bookmark:
         deselectCell = owner.tableView.cellForRow(at: deselectIndexPath)
         as? BottomSheetBookmarkTableViewCell ?? UITableViewCell()
@@ -125,7 +125,7 @@ private extension BottomSheetViewController {
     }
     
     titleLabel.do {
-      $0.text = TabType == .folder ? "라벨 달기" : "폴더 선택"
+      $0.text = tabType == .folder ? "라벨 달기" : "폴더 선택"
       $0.font = .t_EB(28)
       $0.textColor = .black
       sheetView.addSubview($0)
@@ -182,7 +182,7 @@ private extension BottomSheetViewController {
   func setupTableView() {
     let observableData = Observable.just(dataSource)
     
-    switch TabType {
+    switch tabType {
     case .bookmark:
       observableData.bind(to: tableView.rx.items(
         cellIdentifier: "BottomSheetBookmarkTableViewCell",
