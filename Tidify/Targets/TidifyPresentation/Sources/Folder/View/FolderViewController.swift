@@ -25,7 +25,7 @@ final class FolderViewController: UIViewController, View {
     $0.font = .t_EB(16)
   }
   
-  private lazy var folderTableView: TidifyTableView = .init()
+  private lazy var folderTableView: TidifyTableView = .init(tabType: .folder)
   
   var disposeBag: DisposeBag = .init()
   

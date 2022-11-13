@@ -13,6 +13,8 @@ import RxSwift
 final class TidifyTableView: UITableView {
   private let swipedCellIndexPathSubject: PublishSubject<IndexPath> = .init()
   
+  private let tabType: TabType
+  
   private var cellSwipeBinder: Binder<IndexPath> {
     .init(self, binding: { owner, indexPath in
       guard let cell = owner.cellForRow(at: indexPath) else { return }
@@ -47,8 +49,9 @@ final class TidifyTableView: UITableView {
   
   private let disposeBag: DisposeBag = .init()
   
-  override init(frame: CGRect, style: UITableView.Style) {
-    super.init(frame: frame, style: style)
+  init(tabType: TabType) {
+    self.tabType = tabType
+    super.init(frame: .zero, style: .plain)
     setupUI()
     setupBind()
   }
@@ -68,7 +71,7 @@ final class TidifyTableView: UITableView {
 
 private extension TidifyTableView {
   func setupUI() {
-    t_registerCellClass(cellType: FolderTableViewCell.self)
+    t_registerCellClass(cellType: tabType == .folder ? FolderTableViewCell.self : BookmarkCell.self)
     separatorStyle = .none
     rowHeight = (UIScreen.main.bounds.height * 0.0689) + 24
     showsVerticalScrollIndicator = false
