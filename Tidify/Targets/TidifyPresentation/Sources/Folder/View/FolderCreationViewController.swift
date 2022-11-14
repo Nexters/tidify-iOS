@@ -13,6 +13,11 @@ import ReactorKit
 import RxRelay
 import SnapKit
 
+enum CreationType {
+  case create
+  case edit
+}
+
 final class FolderCreationViewController: UIViewController, View {
 
   // MARK: - Properties
