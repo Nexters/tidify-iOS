@@ -31,8 +31,18 @@ final class FolderCreationViewController: UIViewController, View {
   private var createFolderButton: UIButton = .init()
   private let selectedColorIndexRelay: BehaviorRelay<Int> = .init(value: -1)
   private let tapGesture: UITapGestureRecognizer = .init()
+  private var creationType: CreationType
   var disposeBag: DisposeBag = .init()
-
+  
+  init(creationType: CreationType) {
+    self.creationType = creationType
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -57,6 +67,12 @@ final class FolderCreationViewController: UIViewController, View {
   func bind(reactor: FolderCreationReactor) {
     bindAction(reactor: reactor)
   }
+  
+  func setupEditing(folder: Folder) {
+    titleTextField.text = folder.title
+    colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
+    colorTextField.setColor(color: UIColor(hex: folder.color))
+  }
 }
 
 // MARK: - private
@@ -65,7 +81,7 @@ private extension FolderCreationViewController {
   func setupUI() {
     let sidePadding: CGFloat = 20
 
-    title = "폴더 생성"
+    title = creationType == .create ? "폴더 생성" : "폴더 편집"
     view.backgroundColor = .white
     navigationController?.navigationBar.topItem?.title = ""
 

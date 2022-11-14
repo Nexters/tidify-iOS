@@ -63,7 +63,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self)
     else { fatalError() }
     let reactor: FolderCreationReactor = .init(coordinator: self, usecase: usecase)
-    let viewController: FolderCreationViewController = .init()
+    let viewController: FolderCreationViewController = .init(creationType: .create)
     viewController.reactor = reactor
     
     navigationController.pushViewController(
