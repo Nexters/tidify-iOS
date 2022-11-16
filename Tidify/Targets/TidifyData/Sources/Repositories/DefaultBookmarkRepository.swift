@@ -14,11 +14,11 @@ import RxSwift
 public struct DefaultBookmarkRepository: BookmarkRepository {
 
   // MARK: - Properties
-  private let bookmarkServicce: MoyaProvider<BookmarkService>
+  private let bookmarkService: MoyaProvider<BookmarkService>
 
   // MARK: - Initializer
   public init() {
-    self.bookmarkServicce = .init(plugins: [NetworkPlugin()])
+    self.bookmarkService = .init(plugins: [NetworkPlugin()])
   }
 
   // MARK: - Methods
@@ -42,7 +42,7 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   }
 
   public func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkServicce.rx.request(.updateBookmark(
+    return bookmarkService.request(.updateBookmark(
       bookmarkID: bookmarkID,
       requestDTO: requestDTO)
     )

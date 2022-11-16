@@ -41,24 +41,29 @@ extension FolderService: TargetType {
   }
 
   var task: Task {
-    var param: [String: Any] = [:]
-    
     switch self {
     case .createFolder(let requestDTO):
-      param = ["folder_title": requestDTO.title, "folder_color": requestDTO.color]
-
+      return .requestJSONEncodable(requestDTO)
+      
     case .fetchFolders(let start, let count, let keyword):
-      param = ["start": start, "count": count]
+      var param: [String: Any] = ["start": start, "count": count]
       if let keyword = keyword { param["keyword"] = keyword }
+      return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
       
     case .updateFolder(let id, let requestDTO):
-      param = ["folder_id": id, "folder_title": requestDTO.title, "folder_color": requestDTO.color]
+      guard let param: Encodable = [
+        "folder_id": id,
+        "folder_title": requestDTO.title,
+        "folder_color": requestDTO.color
+      ] as? [String: String] else { break }
+      return .requestJSONEncodable(param)
       
     case .deleteFolder(let id):
-      param = ["folder_id": id]
+      guard let param: Encodable = ["folder_id": id] as? [String: String] else { break }
+      return .requestJSONEncodable(param)
     }
     
-    return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
+    return .requestPlain
   }
 
   var headers: [String : String]? {

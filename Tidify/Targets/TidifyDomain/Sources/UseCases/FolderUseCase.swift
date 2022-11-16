@@ -11,7 +11,7 @@ import RxSwift
 public protocol FolderUseCase {
   var repository: FolderRepository { get }
 
-  func createFolder(requestDTO: FolderRequestDTO) -> Observable<Folder>
+  func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void>
   func fetchFolders() -> Observable<[Folder]>
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void>
   func deleteFolder(id: Int) -> Observable<Void>
@@ -28,7 +28,7 @@ final class DefaultFolderUseCase: FolderUseCase {
   }
 
   // MARK: - Methods
-  func createFolder(requestDTO: FolderRequestDTO) -> Observable<Folder> {
+  func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void> {
     repository.createFolder(requestDTO: requestDTO).asObservable()
   }
   

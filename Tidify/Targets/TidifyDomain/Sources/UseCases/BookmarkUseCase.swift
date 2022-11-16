@@ -48,7 +48,7 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
   }
 
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void> {
-    return repository.createBookmark(requestDTO: requestDTO)
+    repository.createBookmark(requestDTO: requestDTO)
       .asObservable()
   }
 

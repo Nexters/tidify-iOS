@@ -22,7 +22,7 @@ public struct DefaultSignInRepository: SignInRepository {
 
   // MARK: - Methods
   public func tryAppleLogin(token: String) -> Single<UserToken> {
-    return authService.rx.request(.apple(token: token))
+    return authService.request(.apple(token: token))
       .map(UserTokenDTO.self)
       .map { $0.toDomain() }
   }
