@@ -61,6 +61,9 @@ private extension BookmarkCell {
         }
 
       case .failure(let error):
+        DispatchQueue.main.async {
+          self?.bookmarkImageView.image = .init(named: "icon_symbol")
+        }
         print("❌ \(#file) - \(#line): \(#function) - Fail: \(error.localizedDescription)")
       }
     }
