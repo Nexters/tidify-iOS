@@ -28,7 +28,7 @@ public extension Reactive where Base: UIViewController {
       .mapToVoid()
   }
 
-  var vieDidAppear: Observable<Void> {
+  var viewDidAppear: Observable<Void> {
     self.methodInvoked(#selector(UIViewController.viewDidAppear(_:)))
       .mapToVoid()
   }
