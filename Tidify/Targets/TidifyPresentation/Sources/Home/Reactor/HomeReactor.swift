@@ -28,8 +28,8 @@ final class HomeReactor: Reactor {
     case viewWillAppear
     case didSelect(_ bookmark: Bookmark)
     case didDelete(_ bookmark: Bookmark)
+    case didFetchSharedBookmark(url: String, title: String)
   }
-
 
   enum Mutation {
     case setBookmarks(_ bookmarks: [Bookmark])
@@ -54,6 +54,17 @@ final class HomeReactor: Reactor {
       return useCase.deleteBookmark(bookmarkID: bookmark.id)
         .withLatestFrom(state.map { $0.bookmarks}.asObservable())
         .map { $0.filter { $0.id != bookmark.id } }
+        .map { .setBookmarks($0) }
+
+    case let .didFetchSharedBookmark(url, title):
+      return useCase.createBookmark(requestDTO: .init(folderID: 0, url: url, title: title))
+        .flatMapLatest { [weak self] _ -> Observable<[Bookmark]> in
+          guard let usecase = self?.useCase else {
+            return .just([])
+          }
+
+          return usecase.fetchBookmarkList()
+        }
         .map { .setBookmarks($0) }
     }
   }
