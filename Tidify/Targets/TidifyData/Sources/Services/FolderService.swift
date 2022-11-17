@@ -59,11 +59,9 @@ extension FolderService: TargetType {
       return .requestParameters(parameters: param, encoding: JSONEncoding.default)
       
     case .deleteFolder(let id):
-      guard let param: Encodable = ["folder_id": id] as? [String: String] else { break }
-      return .requestJSONEncodable(param)
+      let param: [String: Any] = ["folder_id": id]
+      return .requestParameters(parameters: param, encoding: JSONEncoding.default)
     }
-    
-    return .requestPlain
   }
 
   var headers: [String : String]? {
