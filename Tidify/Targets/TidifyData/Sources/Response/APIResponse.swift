@@ -16,4 +16,11 @@ public struct APIResponse: Decodable {
     case code = "result_code"
     case message = "result_message"
   }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+
+    code = try container.decode(String.self, forKey: .code)
+    message = try container.decode(String.self, forKey: .message)
+  }
 }

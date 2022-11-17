@@ -24,17 +24,20 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   // MARK: - Methods
   public func fetchBookmarkList() -> Single<[Bookmark]> {
     return bookmarkService.request(.fetchBookmarkList())
+      .filterSuccessfulStatusCodes()
       .map(BookmarkListDTO.self)
       .map { $0.toDomain() }
   }
 
   public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkService.rx.request(.createBookmark(requestDTO))
+    return bookmarkService.request(.createBookmark(requestDTO))
+      .filterSuccessfulStatusCodes()
       .map { _ in }
   }
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
     return bookmarkService.request(.deleteBookmark(bookmarkID: bookmarkID))
+      .filterSuccessfulStatusCodes()
       .map { _ in }
   }
 
@@ -43,6 +46,7 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
       bookmarkID: bookmarkID,
       requestDTO: requestDTO)
     )
+    .filterSuccessfulStatusCodes()
     .map { _ in }
   }
 }
