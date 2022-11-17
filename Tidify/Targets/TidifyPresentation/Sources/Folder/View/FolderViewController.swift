@@ -88,7 +88,8 @@ private extension FolderViewController {
       .bind(to: reactor.action )
       .disposed(by: disposeBag)
     
-    folderTableView.setupEditAction { indexPath in
+    folderTableView.setupEditAction { [weak self] indexPath in
+      guard let self = self else { return }
       indexPath.map { $0.row }
         .flatMap { row in
           reactor.state.take(1).map { $0.folders[row] }
@@ -98,7 +99,8 @@ private extension FolderViewController {
         .disposed(by: self.disposeBag)
     }
     
-    folderTableView.setupDeleteAction { indexPath in
+    folderTableView.setupDeleteAction { [weak self] indexPath in
+      guard let self = self else { return }
       indexPath.map { $0.row }
         .flatMap { row in
           reactor.state.take(1).map { $0.folders[row] }
