@@ -67,7 +67,7 @@ final class FolderReactor: Reactor {
     case .pushDetailView(let folder):
       coordinator.pushDetailScene()
     case .pushEditView(let folder):
-      coordinator.pushEditScene()
+      coordinator.pushEditScene(folder: folder)
     }
 
     return newState

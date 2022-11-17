@@ -32,10 +32,13 @@ final class FolderCreationViewController: UIViewController, View {
   private let selectedColorIndexRelay: BehaviorRelay<Int> = .init(value: -1)
   private let tapGesture: UITapGestureRecognizer = .init()
   private var creationType: CreationType
+  private let originFolder: Folder?
+  private var colorDataSource: [UIColor] = .init()
   var disposeBag: DisposeBag = .init()
   
-  init(creationType: CreationType) {
+  init(creationType: CreationType, originFolder: Folder? = nil) {
     self.creationType = creationType
+    self.originFolder = originFolder
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -47,11 +50,13 @@ final class FolderCreationViewController: UIViewController, View {
     super.viewDidLoad()
 
     setupUI()
+    setupEditing()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     registerKeyboardNotification()
+    bindCreateFolderButton()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -67,17 +72,24 @@ final class FolderCreationViewController: UIViewController, View {
   func bind(reactor: FolderCreationReactor) {
     bindAction(reactor: reactor)
   }
-  
-  func setupEditing(folder: Folder) {
-    titleTextField.text = folder.title
-    colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
-    colorTextField.setColor(color: UIColor(hex: folder.color))
-  }
 }
 
 // MARK: - private
 private extension FolderCreationViewController {
-  // MARK: - UI
+  func setupEditing() {
+    guard let originFolder = originFolder else { return }
+    
+    titleTextField.rx.text.onNext(originFolder.title)
+    colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
+    colorTextField.setColor(color: UIColor(hex: originFolder.color))
+    
+    for (index, color) in colorDataSource.enumerated() {
+      if color.toHexString() == originFolder.color {
+        selectedColorIndexRelay.accept(index)
+      }
+    }
+  }
+  
   func setupUI() {
     let sidePadding: CGFloat = 20
 
@@ -105,6 +117,17 @@ private extension FolderCreationViewController {
       $0.isEnabled = false
       $0.cornerRadius(radius: 16)
     }
+    
+    colorDataSource = [
+      .t_tidiBlue01(),
+      .t_tidiBlue00(),
+      .t_indigo00(),
+      .systemGreen,
+      .systemYellow,
+      .systemOrange,
+      .systemRed,
+      .black
+    ]
 
     titleLabel.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
@@ -215,7 +238,9 @@ private extension FolderCreationViewController {
         self?.showBottomSheet()
       })
       .disposed(by: disposeBag)
-    
+  }
+  
+  func bindCreateFolderButton() {
     Observable.combineLatest(isEnableFolderNameObservable, isEnableFolderColorObservable)
       .map { $0 && $1 }
       .bind(to: isEnableCreateFolderButtonBinder)
@@ -224,19 +249,9 @@ private extension FolderCreationViewController {
   
   //MARK: - BottomSheet
   func showBottomSheet() {
-    let dataSource: [UIColor] = .init([
-      .t_tidiBlue01(),
-      .t_tidiBlue00(),
-      .t_indigo00(),
-      .systemGreen,
-      .systemYellow,
-      .systemOrange,
-      .systemRed,
-      .black
-    ])
     let bottomSheet: BottomSheetViewController = .init(
       .folder,
-      dataSource: dataSource,
+      dataSource: colorDataSource,
       selectedIndexRelay: selectedColorIndexRelay
     )
     bottomSheet.modalPresentationStyle = .overCurrentContext
@@ -248,7 +263,7 @@ private extension FolderCreationViewController {
       .drive(onNext: { owner, index in
         guard index != -1 else { return }
         owner.colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
-        owner.colorTextField.setColor(color: dataSource[index])
+        owner.colorTextField.setColor(color: owner.colorDataSource[index])
       })
       .disposed(by: disposeBag)
   }

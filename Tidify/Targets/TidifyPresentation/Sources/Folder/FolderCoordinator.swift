@@ -14,7 +14,7 @@ import RxSwift
 
 protocol FolderCoordinator: Coordinator {
   func pushDetailScene()
-  func pushEditScene()
+  func pushEditScene(folder: Folder)
   func pushCreationScene()
   func popCreationScene()
 }
@@ -57,7 +57,18 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushDetailScene() {}
-  func pushEditScene() {}
+  
+  func pushEditScene(folder: Folder) {
+    guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self)
+    else { fatalError() }
+    let reactor: FolderCreationReactor = .init(coordinator: self, usecase: usecase)
+    let viewController: FolderCreationViewController = .init(creationType: .edit, originFolder: folder)
+    viewController.reactor = reactor
+    navigationController.pushViewController(
+      viewController,
+      animated: true
+    )
+  }
   
   func pushCreationScene() {
     guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self)

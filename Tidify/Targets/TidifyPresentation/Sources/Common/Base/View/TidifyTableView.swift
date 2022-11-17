@@ -44,7 +44,7 @@ final class TidifyTableView: UITableView {
     })
   }
   
-  private var editAction: ((Observable<Void>) -> Void)?
+  private var editAction: ((Observable<IndexPath>) -> Void)?
   private var deleteAction: ((Observable<Void>) -> Void)?
   
   private let disposeBag: DisposeBag = .init()
@@ -60,7 +60,7 @@ final class TidifyTableView: UITableView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func setupEditAction(_ editAction: @escaping (Observable<Void>) -> Void) {
+  func setupEditAction(_ editAction: @escaping (Observable<IndexPath>) -> Void) {
     self.editAction = editAction
   }
   
@@ -99,7 +99,7 @@ extension TidifyTableView: UITableViewDelegate {
       title: "편집",
       handler: { _, _, completion in
         guard let action = self.editAction else { return }
-        action(.empty())
+        action(Observable.just(indexPath))
         completion(true)
       }).then {
         $0.backgroundColor = .white
