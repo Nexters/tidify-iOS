@@ -45,7 +45,7 @@ final class TidifyTableView: UITableView {
   }
   
   private var editAction: ((Observable<IndexPath>) -> Void)?
-  private var deleteAction: ((Observable<Void>) -> Void)?
+  private var deleteAction: ((Observable<IndexPath>) -> Void)?
   
   private let disposeBag: DisposeBag = .init()
   
@@ -64,7 +64,7 @@ final class TidifyTableView: UITableView {
     self.editAction = editAction
   }
   
-  func setupDeleteAction(_ deleteAction: @escaping (Observable<Void>) -> Void) {
+  func setupDeleteAction(_ deleteAction: @escaping (Observable<IndexPath>) -> Void) {
     self.deleteAction = deleteAction
   }
 }
@@ -110,7 +110,7 @@ extension TidifyTableView: UITableViewDelegate {
       title: "삭제",
       handler: { _, _, completion in
         guard let action = self.deleteAction else { return }
-        action(.empty())
+        action(Observable.just(indexPath))
         completion(true)
       }).then {
         $0.backgroundColor = .red
