@@ -25,12 +25,7 @@ final class FolderViewController: UIViewController, View {
     $0.font = .t_EB(16)
   }
   
-  private lazy var folderTableView: UITableView = .init().then {
-    $0.t_registerCellClass(cellType: FolderTableViewCell.self)
-    $0.separatorStyle = .none
-    $0.rowHeight = (Self.viewHeight * 0.0689) + 24
-    $0.showsVerticalScrollIndicator = false
-  }
+  private lazy var folderTableView: TidifyTableView = .init(tabType: .folder)
   
   var disposeBag: DisposeBag = .init()
   
