@@ -34,6 +34,8 @@ final class FolderCreationViewController: UIViewController, View {
   private var creationType: CreationType
   private let originFolder: Folder?
   private var colorDataSource: [UIColor] = .init()
+  private var titleErrorLabel: UILabel = .init()
+  private var colorErrorLabel: UILabel = .init()
   var disposeBag: DisposeBag = .init()
   
   init(creationType: CreationType, originFolder: Folder? = nil) {
@@ -102,11 +104,27 @@ private extension FolderCreationViewController {
     view.addSubview(colorLabel)
     view.addSubview(colorTextField)
     view.addSubview(createFolderButton)
+    view.addSubview(titleErrorLabel)
+    view.addSubview(colorErrorLabel)
     colorTextField.addGestureRecognizer(tapGesture)
 
     titleLabel = setGuideLabel(titleLabel, title: "폴더 이름")
     titleTextField = setTextField(titleTextField, placeholder: "어떤 북마크를 모을까요?")
     colorLabel = setGuideLabel(colorLabel, title: "라벨")
+    
+    titleErrorLabel.do {
+      $0.text = "폴더 이름이 필요해요!"
+      $0.textColor = .systemRed
+      $0.font = .t_SB(14)
+      $0.isHidden = true
+    }
+    
+    colorErrorLabel.do {
+      $0.text = "라벨을 달아주세요!"
+      $0.textColor = .systemRed
+      $0.font = .t_SB(14)
+      $0.isHidden = true
+    }
 
     createFolderButton.do {
       $0.setTitle("저장", for: .normal)
@@ -134,6 +152,11 @@ private extension FolderCreationViewController {
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.lessThanOrEqualToSuperview()
     }
+    
+    titleErrorLabel.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(20)
+      $0.centerY.equalTo(titleLabel)
+    }
 
     titleTextField.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(16)
@@ -146,6 +169,11 @@ private extension FolderCreationViewController {
       $0.top.equalTo(titleTextField.snp.bottom).offset(40)
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.lessThanOrEqualToSuperview()
+    }
+    
+    colorErrorLabel.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(20)
+      $0.centerY.equalTo(colorLabel)
     }
 
     colorTextField.snp.makeConstraints {
@@ -251,6 +279,14 @@ private extension FolderCreationViewController {
     Observable.combineLatest(isEnableFolderNameObservable, isEnableFolderColorObservable)
       .map { $0 && $1 }
       .bind(to: isEnableCreateFolderButtonBinder)
+      .disposed(by: disposeBag)
+    
+    isEnableFolderNameObservable
+      .bind(to: titleErrorLabel.rx.isHidden)
+      .disposed(by: disposeBag)
+    
+    isEnableFolderColorObservable
+      .bind(to: colorErrorLabel.rx.isHidden)
       .disposed(by: disposeBag)
   }
   
