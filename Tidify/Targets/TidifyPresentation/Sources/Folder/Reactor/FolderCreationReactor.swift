@@ -23,6 +23,7 @@ final class FolderCreationReactor: Reactor {
 
   enum Action {
     case createFolderButtonDidTap(_ folder: FolderRequestDTO)
+    case updateFolderButtonDidTap(id: Int, folder: FolderRequestDTO)
   }
   
   enum Mutation {
@@ -35,6 +36,8 @@ final class FolderCreationReactor: Reactor {
     switch action {
     case .createFolderButtonDidTap(let folder):
       return usecase.createFolder(requestDTO: folder).map { .startCreation }
+    case .updateFolderButtonDidTap(let id, let folder):
+      return usecase.updateFolder(id: id, requestDTO: folder).map { .startCreation }
     }
   }
 

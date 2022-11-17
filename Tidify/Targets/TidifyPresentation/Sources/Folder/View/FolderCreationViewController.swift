@@ -228,7 +228,14 @@ private extension FolderCreationViewController {
       .flatMap { owner, _ in
         Observable.combineLatest(owner.folderTitleObservable, owner.folderColorObservable)
       }
-      .map { Action.createFolderButtonDidTap(FolderRequestDTO(title: $0, color: $1))}
+      .map { [weak self] in
+        let requestDTO = FolderRequestDTO(title: $0, color: $1)
+        if self?.creationType == .edit {
+          guard let originFolder = self?.originFolder else { fatalError() }
+          return Action.updateFolderButtonDidTap(id: originFolder.id, folder: requestDTO)
+        }
+        return Action.createFolderButtonDidTap(requestDTO)
+      }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     

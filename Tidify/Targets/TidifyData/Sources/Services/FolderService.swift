@@ -51,12 +51,12 @@ extension FolderService: TargetType {
       return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
       
     case .updateFolder(let id, let requestDTO):
-      guard let param: Encodable = [
+      let param: [String: Any] = [
         "folder_id": id,
         "folder_title": requestDTO.title,
         "folder_color": requestDTO.color
-      ] as? [String: String] else { break }
-      return .requestJSONEncodable(param)
+      ]
+      return .requestParameters(parameters: param, encoding: JSONEncoding.default)
       
     case .deleteFolder(let id):
       guard let param: Encodable = ["folder_id": id] as? [String: String] else { break }
