@@ -90,7 +90,7 @@ private extension FolderViewController {
 
     folderTableView.editAction
       .flatMap { row in
-        reactor.state.take(1).map { $0.folders[row] }
+        Observable.just(reactor.currentState.folders[row])
       }
       .map { Action.tryEdit($0) }
       .bind(to: reactor.action)
@@ -98,7 +98,7 @@ private extension FolderViewController {
     
     folderTableView.deleteAction
       .flatMap { row in
-        reactor.state.take(1).map { $0.folders[row] }
+        Observable.just(reactor.currentState.folders[row])
       }
       .map { Action.tryDelete($0) }
       .bind(to: reactor.action)
