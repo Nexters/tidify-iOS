@@ -13,7 +13,7 @@ import Moya
 
 enum FolderService {
   case createFolder(_ requestDTO: FolderRequestDTO)
-  case fetchFolders(start: Int = 0, count: Int = 100, keyword: String? = nil)
+  case fetchFolders(start: Int = 0, count: Int, keyword: String? = nil)
   case deleteFolder(id: Int)
   case updateFolder(id: Int, requestDTO: FolderRequestDTO)
 }

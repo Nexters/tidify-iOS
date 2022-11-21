@@ -109,6 +109,21 @@ private extension FolderViewController {
         .bind(to: reactor.action)
         .disposed(by: self.disposeBag)
     }
+    
+    folderTableView.rx.didScroll
+      .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
+      .withUnretained(self)
+      .filter { owner, _ in
+        let contentOffsetY = owner.folderTableView.contentOffset.y
+        let contentSizeHeight = owner.folderTableView.contentSize.height
+        let tableViewHeight = owner.folderTableView.frame.height
+        let paginationY = contentOffsetY + tableViewHeight
+        
+        return paginationY > contentSizeHeight - 30
+      }
+      .map { _ in Action.didScroll }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
   
   func bindState(reactor: FolderReactor) {

@@ -26,10 +26,10 @@ public struct DefaultFolderRepository: FolderRepository {
     return folderService.request(.createFolder(requestDTO)).map { _ in }
   }
   
-  public func fetchFolders() -> Single<[Folder]> {
-    return folderService.request(.fetchFolders())
+  public func fetchFolders(start: Int, count: Int) -> Single<[Folder]> {
+    return folderService.request(.fetchFolders(start: start, count: count))
       .map(FolderListDTO.self)
-      .map { $0.toDomain().reversed() }
+      .map { $0.toDomain() }
   }
   
   public func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void> {
