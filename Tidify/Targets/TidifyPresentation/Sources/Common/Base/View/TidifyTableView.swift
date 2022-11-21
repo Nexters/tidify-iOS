@@ -89,8 +89,8 @@ extension TidifyTableView: UITableViewDelegate {
     let editAction: UIContextualAction = .init(
       style: .normal,
       title: "편집",
-      handler: { _, _, completion in
-        self.editAction.onNext(indexPath.row)
+      handler: { [weak self] _, _, completion in
+        self?.editAction.onNext(indexPath.row)
         completion(true)
       }).then {
         $0.backgroundColor = .white
@@ -99,8 +99,8 @@ extension TidifyTableView: UITableViewDelegate {
     let deleteAction: UIContextualAction = .init(
       style: .destructive,
       title: "삭제",
-      handler: { _, _, completion in
-        self.deleteAction.onNext(indexPath.row)
+      handler: { [weak self] _, _, completion in
+        self?.deleteAction.onNext(indexPath.row)
         completion(true)
       }).then {
         $0.backgroundColor = .red
