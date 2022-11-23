@@ -44,8 +44,8 @@ final class TidifyTableView: UITableView {
     })
   }
   
-  private var editAction: ((Observable<Void>) -> Void)?
-  private var deleteAction: ((Observable<Void>) -> Void)?
+  private (set) var editAction: PublishSubject<Int> = .init()
+  private (set) var deleteAction: PublishSubject<Int> = .init()
   
   private let disposeBag: DisposeBag = .init()
   
@@ -58,14 +58,6 @@ final class TidifyTableView: UITableView {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-  
-  func setupEditAction(_ editAction: @escaping (Observable<Void>) -> Void) {
-    self.editAction = editAction
-  }
-  
-  func setupDeleteAction(_ deleteAction: @escaping (Observable<Void>) -> Void) {
-    self.deleteAction = deleteAction
   }
 }
 
@@ -97,9 +89,8 @@ extension TidifyTableView: UITableViewDelegate {
     let editAction: UIContextualAction = .init(
       style: .normal,
       title: "편집",
-      handler: { _, _, completion in
-        guard let action = self.editAction else { return }
-        action(.empty())
+      handler: { [weak self] _, _, completion in
+        self?.editAction.onNext(indexPath.row)
         completion(true)
       }).then {
         $0.backgroundColor = .white
@@ -108,9 +99,8 @@ extension TidifyTableView: UITableViewDelegate {
     let deleteAction: UIContextualAction = .init(
       style: .destructive,
       title: "삭제",
-      handler: { _, _, completion in
-        guard let action = self.deleteAction else { return }
-        action(.empty())
+      handler: { [weak self] _, _, completion in
+        self?.deleteAction.onNext(indexPath.row)
         completion(true)
       }).then {
         $0.backgroundColor = .red

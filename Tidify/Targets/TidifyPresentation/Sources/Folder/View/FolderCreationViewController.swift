@@ -13,6 +13,11 @@ import ReactorKit
 import RxRelay
 import SnapKit
 
+enum CreationType {
+  case create
+  case edit
+}
+
 final class FolderCreationViewController: UIViewController, View {
 
   // MARK: - Properties
@@ -26,17 +31,32 @@ final class FolderCreationViewController: UIViewController, View {
   private var createFolderButton: UIButton = .init()
   private let selectedColorIndexRelay: BehaviorRelay<Int> = .init(value: -1)
   private let tapGesture: UITapGestureRecognizer = .init()
+  private let creationType: CreationType
+  private let originFolder: Folder?
+  private var colorDataSource: [UIColor] = .init()
   var disposeBag: DisposeBag = .init()
-
+  
+  init(creationType: CreationType, originFolder: Folder? = nil) {
+    self.creationType = creationType
+    self.originFolder = originFolder
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupUI()
+    setupEditing()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     registerKeyboardNotification()
+    bindCreateFolderButton()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -56,11 +76,24 @@ final class FolderCreationViewController: UIViewController, View {
 
 // MARK: - private
 private extension FolderCreationViewController {
-  // MARK: - UI
+  func setupEditing() {
+    guard let originFolder = originFolder else { return }
+    
+    titleTextField.rx.text.onNext(originFolder.title)
+    colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
+    colorTextField.setColor(color: UIColor(hex: originFolder.color))
+    
+    for (index, color) in colorDataSource.enumerated() {
+      if color.toHexString() == originFolder.color {
+        selectedColorIndexRelay.accept(index)
+      }
+    }
+  }
+  
   func setupUI() {
     let sidePadding: CGFloat = 20
 
-    title = "폴더 생성"
+    title = creationType == .create ? "폴더 생성" : "폴더 편집"
     view.backgroundColor = .white
     navigationController?.navigationBar.topItem?.title = ""
 
@@ -84,6 +117,17 @@ private extension FolderCreationViewController {
       $0.isEnabled = false
       $0.cornerRadius(radius: 16)
     }
+    
+    colorDataSource = [
+      .t_tidiBlue01(),
+      .t_tidiBlue00(),
+      .t_indigo00(),
+      .systemGreen,
+      .systemYellow,
+      .systemOrange,
+      .systemRed,
+      .black
+    ]
 
     titleLabel.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
@@ -184,7 +228,14 @@ private extension FolderCreationViewController {
       .flatMap { owner, _ in
         Observable.combineLatest(owner.folderTitleObservable, owner.folderColorObservable)
       }
-      .map { Action.createFolderButtonDidTap(FolderRequestDTO(title: $0, color: $1))}
+      .map { [weak self] in
+        let requestDTO = FolderRequestDTO(title: $0, color: $1)
+        if self?.creationType == .edit {
+          guard let originFolder = self?.originFolder else { fatalError() }
+          return Action.didTapUpdateFolderButton(id: originFolder.id, folder: requestDTO)
+        }
+        return Action.didTapCreateFolderButton(requestDTO)
+      }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -194,7 +245,9 @@ private extension FolderCreationViewController {
         self?.showBottomSheet()
       })
       .disposed(by: disposeBag)
-    
+  }
+  
+  func bindCreateFolderButton() {
     Observable.combineLatest(isEnableFolderNameObservable, isEnableFolderColorObservable)
       .map { $0 && $1 }
       .bind(to: isEnableCreateFolderButtonBinder)
@@ -203,19 +256,9 @@ private extension FolderCreationViewController {
   
   //MARK: - BottomSheet
   func showBottomSheet() {
-    let dataSource: [UIColor] = .init([
-      .t_tidiBlue01(),
-      .t_tidiBlue00(),
-      .t_indigo00(),
-      .systemGreen,
-      .systemYellow,
-      .systemOrange,
-      .systemRed,
-      .black
-    ])
     let bottomSheet: BottomSheetViewController = .init(
       .folder,
-      dataSource: dataSource,
+      dataSource: colorDataSource,
       selectedIndexRelay: selectedColorIndexRelay
     )
     bottomSheet.modalPresentationStyle = .overCurrentContext
@@ -227,7 +270,7 @@ private extension FolderCreationViewController {
       .drive(onNext: { owner, index in
         guard index != -1 else { return }
         owner.colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
-        owner.colorTextField.setColor(color: dataSource[index])
+        owner.colorTextField.setColor(color: owner.colorDataSource[index])
       })
       .disposed(by: disposeBag)
   }

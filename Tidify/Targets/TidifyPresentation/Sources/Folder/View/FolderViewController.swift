@@ -87,6 +87,22 @@ private extension FolderViewController {
       .map { Action.viewWillAppear }
       .bind(to: reactor.action )
       .disposed(by: disposeBag)
+
+    folderTableView.editAction
+      .flatMap { row in
+        Observable.just(reactor.currentState.folders[row])
+      }
+      .map { Action.tryEdit($0) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    folderTableView.deleteAction
+      .flatMap { row in
+        Observable.just(reactor.currentState.folders[row])
+      }
+      .map { Action.tryDelete($0) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
   }
   
   func bindState(reactor: FolderReactor) {
