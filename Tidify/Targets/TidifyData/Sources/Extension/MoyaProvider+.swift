@@ -48,47 +48,47 @@ public extension MoyaProvider {
     updateService.request(.updateToken) { result in
       switch result {
       case .success(let response):
-        guard let responseData = try? response.map(UserTokenDTO.self) else { return }
-        
-        if responseData.response.code == "N200" {
-          guard let accessTokenData = responseData.accessToken.data(using: .utf8) else { return }
+        if let responseData = try? response.map(UserTokenDTO.self),
+           responseData.response.code == "N200",
+           let accessTokenData = responseData.accessToken.data(using: .utf8) {
           KeyChain.save(key: .accessToken, data: accessTokenData)
           completion()
-        } else {
-          KeyChain.deleteAll()
-          guard let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                let firstWindow = firstScene.windows.first,
-                let rootViewController = firstWindow.rootViewController as? UINavigationController
-          else { return }
-          
-          let alertController: UIAlertController = .init(
-            title: "세션이 만료되었습니다",
-            message: "다시 로그인 후 시도해 주세요",
-            preferredStyle: .alert
-          )
-          
-          let action: UIAlertAction = .init(
-            title: "확인",
-            style: .default,
-            handler: { _ in
-              let navigationController: UINavigationController = .init(nibName: nil, bundle: nil)
-              PresentationAssembly(navigationController: navigationController)
-                .assemble(container: DIContainer.shared)
-              firstWindow.rootViewController = navigationController
-              
-              let mainCoordinator: DefaultMainCoordinator = .init(
-                navigationController: navigationController
-              )
-              mainCoordinator.start()
-            }
-          )
-          alertController.addAction(action)
-          
-          rootViewController.topViewController?.present(
-            alertController,
-            animated: true
-          )
+          return
         }
+        
+        KeyChain.deleteAll()
+        guard let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let firstWindow = firstScene.windows.first,
+              let rootViewController = firstWindow.rootViewController as? UINavigationController
+        else { return }
+        
+        let alertController: UIAlertController = .init(
+          title: "세션이 만료되었습니다",
+          message: "다시 로그인 후 시도해 주세요",
+          preferredStyle: .alert
+        )
+        
+        let action: UIAlertAction = .init(
+          title: "확인",
+          style: .default,
+          handler: { _ in
+            let navigationController: UINavigationController = .init(nibName: nil, bundle: nil)
+            PresentationAssembly(navigationController: navigationController)
+              .assemble(container: DIContainer.shared)
+            firstWindow.rootViewController = navigationController
+            
+            let mainCoordinator: DefaultMainCoordinator = .init(
+              navigationController: navigationController
+            )
+            mainCoordinator.start()
+          }
+        )
+        alertController.addAction(action)
+        
+        rootViewController.topViewController?.present(
+          alertController,
+          animated: true
+        )
       case let .failure(error):
         print("❌ \(#file) - \(#line): \(#function) - Fail: \(error.localizedDescription)")
       }
