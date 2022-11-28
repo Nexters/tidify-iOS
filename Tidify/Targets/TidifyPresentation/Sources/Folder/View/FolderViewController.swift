@@ -83,6 +83,8 @@ private extension FolderViewController {
   }
   
   func bindAction(reactor: FolderReactor) {
+    let deletedFolderRow: PublishSubject<Int?> = .init()
+    
     rx.viewWillAppear
       .map { Action.viewWillAppear }
       .bind(to: reactor.action )
@@ -97,10 +99,21 @@ private extension FolderViewController {
       .disposed(by: self.disposeBag)
     
     folderTableView.deleteAction
-      .flatMap { row in
-        Observable.just(reactor.currentState.folders[row])
+      .flatMap { row -> PublishSubject<Int?> in
+        let alertPresenter: AlertPresenter = .init()
+        alertPresenter.present(
+          on: self,
+          alertType: .deleteFolder,
+          leftButtonAction: { deletedFolderRow.onNext(nil) },
+          rightButtonAction: { deletedFolderRow.onNext(row) }
+        )
+        return deletedFolderRow
       }
-      .map { Action.tryDelete($0) }
+      .flatMap { row -> Observable<Folder> in
+        guard let row = row else { return Observable.empty() }
+        return Observable.just(reactor.currentState.folders[row])
+      }
+      .map { Action.tryDelete($0)}
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
   }
