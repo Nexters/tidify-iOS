@@ -113,7 +113,7 @@ private extension FolderViewController {
         guard let row = row else { return Observable.empty() }
         return Observable.just(reactor.currentState.folders[row])
       }
-      .map { Action.tryDelete($0)}
+      .map { Action.tryDelete($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
   }
