@@ -50,19 +50,16 @@ final class BookmarkUseCaseTests: XCTestCase {
       .disposed(by: disposeBag)
   }
 
-  func test_whenCreateBookmark_thenReturnCreatedObject() {
+  func test_whenCreateBookmark_thenReturnVoid() {
     useCase.createBookmark(
       requestDTO: .init(
+        folderID: 0,
         url: "www.google.com",
         title: "Google"
       )
     )
-    .subscribe(onNext: { bookmark in
-      if bookmark.title == "Google" {
-        XCTAssert(true)
-      } else {
-        XCTAssert(false)
-      }
+    .subscribe(onNext: {
+      XCTAssert(true)
     }, onError: { _ in
       XCTAssert(false)
     })
@@ -83,7 +80,9 @@ final class BookmarkUseCaseTests: XCTestCase {
     useCase.updateBookmark(
       bookmarkID: 0,
       requestDTO: .init(
-        url: "www.google.com", title: "Google"
+        folderID: 0,
+        url: "www.google.com",
+        title: "Google"
       )
     )
     .subscribe(onNext: {
