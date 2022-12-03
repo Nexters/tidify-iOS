@@ -13,7 +13,7 @@ public struct BookmarkListDTO: Decodable {
   // MARK: - Properties
   public let bookmarks: [BookmarkDTO]
   public let count: Int
-  private let response: APIResponse
+  public let response: APIResponse
 
   enum CodingKeys: String, CodingKey {
     case bookmarks = "list"

@@ -26,6 +26,8 @@ final class MockSearchRepository: SearchRepository {
     return .create { [weak self] observer in
       if self?.searchHistory.isEmpty ?? false {
         observer(.success(()))
+      } else {
+        observer(.failure(SearchError.failEraseAllSearchHistory))
       }
 
       return Disposables.create()
