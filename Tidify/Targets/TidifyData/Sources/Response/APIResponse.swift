@@ -7,10 +7,19 @@
 //
 
 public struct APIResponse: Decodable {
+  enum ResponseCode: String {
+    case success = "N200"
+    case failAuthToken = "E300"
+    case expiredToken = "E301"
+  }
 
   // MARK: - Properties
   let code: String
   let message: String
+
+  var isSuccess: Bool {
+    code == ResponseCode.success.rawValue
+  }
 
   enum CodingKeys: String, CodingKey {
     case code = "result_code"
