@@ -11,7 +11,7 @@ import RxSwift
 public protocol BookmarkRepository {
 
   /// @GET: id에 대응되는 북마크 리스트를 반환합니다.
-  func fetchBookmarkList() -> Single<[Bookmark]>
+  func fetchBookmarkList(folderID: Int) -> Single<[Bookmark]>
 
   /// @POST: 북마크를 생성합니다.
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void>
