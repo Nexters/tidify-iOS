@@ -52,7 +52,7 @@ public extension MoyaProvider {
       switch result {
       case .success(let response):
         if let responseData = try? response.map(UserTokenDTO.self),
-           responseData.response.code == "N200",
+           responseData.response.isSuccess,
            let accessTokenData = responseData.accessToken.data(using: .utf8) {
           KeyChain.save(key: .accessToken, data: accessTokenData)
           completion()
