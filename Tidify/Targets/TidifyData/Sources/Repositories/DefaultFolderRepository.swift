@@ -29,7 +29,17 @@ public struct DefaultFolderRepository: FolderRepository {
   public func fetchFolders() -> Single<[Folder]> {
     return folderService.request(.fetchFolders())
       .map(FolderListDTO.self)
-      .map { $0.toDomain().reversed() }
+      .flatMap { folderListDTO in
+        return .create { observer in
+          if folderListDTO.apiResponse.isSuccess {
+            observer(.success(folderListDTO.toDomain().reversed()))
+          } else {
+            observer(.failure(FolderError.failFetchFolders))
+          }
+
+          return Disposables.create()
+        }
+      }
   }
   
   public func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void> {
@@ -37,11 +47,33 @@ public struct DefaultFolderRepository: FolderRepository {
       id: id,
       requestDTO: requestDTO)
     )
-    .map { _ in }
+    .map(APIResponse.self)
+    .flatMap { response in
+      return .create { observer in
+        if response.isSuccess {
+          observer(.success(()))
+        } else {
+          observer(.failure(FolderError.failFetchUpdateFolder))
+        }
+
+        return Disposables.create()
+      }
+    }
   }
   
   public func deleteFolder(id: Int) -> Single<Void> {
     return folderService.request(.deleteFolder(id: id))
-      .map { _ in }
+      .map(APIResponse.self)
+      .flatMap { response in
+        return .create { observer in
+          if response.isSuccess {
+            observer(.success(()))
+          } else {
+            observer(.failure(FolderError.failFetchDeleteFolder))
+          }
+
+          return Disposables.create()
+        }
+      }
   }
 }

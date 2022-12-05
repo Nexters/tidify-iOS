@@ -8,6 +8,13 @@
 
 import RxSwift
 
+public enum FolderError: Error {
+  case failFetchFolders
+  case failFetchCreateFolder
+  case failFetchUpdateFolder
+  case failFetchDeleteFolder
+}
+
 public protocol FolderUseCase {
   var repository: FolderRepository { get }
 

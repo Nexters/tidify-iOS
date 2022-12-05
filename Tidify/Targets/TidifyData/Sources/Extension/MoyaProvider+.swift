@@ -25,7 +25,10 @@ public extension MoyaProvider {
         switch result {
         case let .success(response):
           guard let responseData = try? response.map(DefaultResponse.self) else { return }
-          guard responseData.apiResponse.code != "N200" else { single(.success(response)); break }
+          guard responseData.apiResponse.isSuccess == false else {
+            single(.success(response));
+            break
+          }
           
           self?.updateToken {
             single(.failure(RequestError.error))

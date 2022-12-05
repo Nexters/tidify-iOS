@@ -41,7 +41,17 @@ public struct DefaultSearchRepository: SearchRepository {
 
     return bookmarkService.request(.fetchBookmarkList(keyword: query))
       .map(BookmarkListDTO.self)
-      .map { $0.toDomain() }
+      .flatMap { bookmarkListDTO in
+        return .create { observer in
+          if bookmarkListDTO.response.isSuccess {
+            observer(.success(bookmarkListDTO.toDomain()))
+          } else {
+            observer(.failure(BookmarkError.failFetchBookmarks))
+          }
+          
+          return Disposables.create()
+        }
+      }
   }
 
   public func eraseAllSearchHistory() -> Single<Void> {

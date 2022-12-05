@@ -12,14 +12,13 @@ import TidifyDomain
 import RxSwift
 
 final class MockBookmarkRepository: BookmarkRepository {
-
   private(set) var bookmarks: [Bookmark] = [.stub(), .stub(), .stub()]
 
   func fetchBookmarkList() -> Single<[Bookmark]> {
     return .just(bookmarks)
   }
 
-  func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Bookmark> {
+  func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
     let bookmark: Bookmark = .init(
       id: 0,
       createdAt: Date().toString(),
@@ -32,7 +31,7 @@ final class MockBookmarkRepository: BookmarkRepository {
 
     return .create { [weak self] observer in
       if self?.bookmarks.contains(bookmark) ?? false {
-        observer(.success(bookmark))
+        observer(.success(()))
       } else {
         observer(.failure(BookmarkError.failCreateBookmark))
       }
@@ -58,19 +57,16 @@ final class MockBookmarkRepository: BookmarkRepository {
   }
 
   func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
-
     return .create { [weak self] observer in
       if var updateTargetBookmark = self?.bookmarks.first(where: { $0.id == bookmarkID}) {
         updateTargetBookmark.updateBookmark(with: requestDTO)
-      }
 
-      let updatedBookmark = self?.bookmarks.first(where: {$0.id == bookmarkID})
-
-      if updatedBookmark?.title == requestDTO.title,
-         updatedBookmark?.urlString == requestDTO.url {
-        observer(.success(()))
-      } else {
-        observer(.failure(BookmarkError.failUpdateBookmark))
+        if updateTargetBookmark.title == requestDTO.title,
+           updateTargetBookmark.urlString == requestDTO.url {
+          observer(.success(()))
+        } else {
+          observer(.failure(BookmarkError.failUpdateBookmark))
+        }
       }
 
       return Disposables.create()
