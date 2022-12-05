@@ -10,6 +10,7 @@ import RxSwift
 
 public enum BookmarkError: Error {
   case cannotFindMachedBookmark
+  case failFetchBookmarks
   case failCreateBookmark
   case failDeleteBookmark
   case failUpdateBookmark
