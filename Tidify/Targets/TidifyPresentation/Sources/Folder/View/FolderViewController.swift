@@ -124,6 +124,11 @@ private extension FolderViewController {
       .map { _ in Action.didScroll }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+    
+    folderTableView.rx.modelSelected(Folder.self)
+      .map { Action.didSelect($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
   
   func bindState(reactor: FolderReactor) {

@@ -73,7 +73,7 @@ final class FolderReactor: Reactor {
       newState.folders = folders
       newState.page = 10
     case .pushDetailView(let folder):
-      coordinator.pushDetailScene()
+      coordinator.pushDetailScene(folder: folder)
     case .pushEditView(let folder):
       coordinator.pushEditScene(folder: folder)
     case .appendFolders(let folders):
