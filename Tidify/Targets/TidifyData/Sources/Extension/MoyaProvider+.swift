@@ -51,23 +51,31 @@ public extension MoyaProvider {
     updateService.request(.updateToken) { [weak self] result in
       switch result {
       case .success(let response):
-        if let responseData = try? response.map(UserTokenDTO.self),
-           responseData.response.isSuccess,
-           let accessTokenData = responseData.accessToken.data(using: .utf8) {
-          KeyChain.save(key: .accessToken, data: accessTokenData)
-          completion()
-          return
-        }
+        guard self?.isSuccessRefreshAccessToken(response, completion) == false else { return }
         
         KeyChain.deleteAll()
-        self?.presentSessionAlert()
+        self?.presentExpiredSessionAlert()
       case let .failure(error):
         print("❌ \(#file) - \(#line): \(#function) - Fail: \(error.localizedDescription)")
       }
     }
   }
   
-  private func presentSessionAlert() {
+  private func isSuccessRefreshAccessToken(
+    _ response: Response,
+    _ completion: @escaping () -> Void
+  ) -> Bool {
+    if let responseData = try? response.map(UserTokenDTO.self),
+       responseData.response.isSuccess,
+       let accessTokenData = responseData.accessToken.data(using: .utf8) {
+      KeyChain.save(key: .accessToken, data: accessTokenData)
+      completion()
+      return true
+    }
+    return false
+  }
+  
+  private func presentExpiredSessionAlert() {
     guard let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
           let firstWindow = firstScene.windows.first,
           let rootViewController = firstWindow.rootViewController as? UINavigationController
