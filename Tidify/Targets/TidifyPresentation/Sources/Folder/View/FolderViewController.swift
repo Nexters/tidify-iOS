@@ -96,6 +96,13 @@ private extension FolderViewController {
     return deletedFolderRow
   }
   
+  func isEnableTableViewPaging() -> Bool {
+    let contentSizeHeight = folderTableView.contentSize.height
+    let paginationY = folderTableView.contentOffset.y + folderTableView.frame.height
+    
+    return paginationY > contentSizeHeight - 30
+  }
+  
   func bindAction(reactor: FolderReactor) {
     rx.viewWillAppear
       .map { Action.viewWillAppear }
@@ -118,16 +125,8 @@ private extension FolderViewController {
       .disposed(by: self.disposeBag)
     
     folderTableView.rx.didScroll
-      .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
       .withUnretained(self)
-      .filter { owner, _ in
-        let contentOffsetY = owner.folderTableView.contentOffset.y
-        let contentSizeHeight = owner.folderTableView.contentSize.height
-        let tableViewHeight = owner.folderTableView.frame.height
-        let paginationY = contentOffsetY + tableViewHeight
-        
-        return paginationY > contentSizeHeight - 30
-      }
+      .filter { owner, _ in owner.isEnableTableViewPaging() }
       .map { _ in Action.didScroll }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
