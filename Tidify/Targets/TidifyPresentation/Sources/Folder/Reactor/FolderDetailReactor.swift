@@ -31,7 +31,6 @@ final class FolderDetailReactor: Reactor {
     case didSelect(_ bookmark: Bookmark)
   }
 
-
   enum Mutation {
     case setBookmarks(_ bookmarks: [Bookmark])
     case pushWebView(_ bookmark: Bookmark)
