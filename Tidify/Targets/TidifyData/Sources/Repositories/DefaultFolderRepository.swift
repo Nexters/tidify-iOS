@@ -32,7 +32,7 @@ public struct DefaultFolderRepository: FolderRepository {
       .flatMap { folderListDTO in
         return .create { observer in
           if folderListDTO.apiResponse.isSuccess {
-            observer(.success(folderListDTO.toDomain().reversed()))
+            observer(.success(folderListDTO.toDomain()))
           } else {
             observer(.failure(FolderError.failFetchFolders))
           }
