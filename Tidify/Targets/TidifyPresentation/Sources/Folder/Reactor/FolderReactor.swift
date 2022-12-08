@@ -72,6 +72,7 @@ final class FolderReactor: Reactor {
 
     switch mutation {
     case .setupFolders(let folders):
+      newState.isEnablePaging = true
       newState.folders = folders
       newState.page = 10
     case .pushDetailView(let folder):
