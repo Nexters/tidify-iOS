@@ -120,6 +120,13 @@ private extension HomeViewController {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
+    Observable.merge(rx.viewDidAppear, UIApplication.rx.willEnterForeground.asObservable())
+      .map(fetchSharedBookmark)
+      .filter { !$0.url.isEmpty && !$0.title.isEmpty }
+      .map { Action.didFetchSharedBookmark(url: $0.url, title: $0.url) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+
     tableView.rx.modelSelected(Bookmark.self)
       .map { Action.didSelect($0) }
       .bind(to: reactor.action)
@@ -177,6 +184,23 @@ private extension HomeViewController {
       alertType: .deleteBookmark,
       rightButtonAction: rightButtonAction
     )
+  }
+
+  func fetchSharedBookmark() -> (url: String, title: String) {
+    var sharedData: (url: String, title: String) = ("", "")
+
+    guard let userDefault: UserDefaults = .init(suiteName: "group.com.ian.Tidify.share") else {
+      return sharedData
+    }
+
+    if let url = userDefault.string(forKey: "SharedURL"),
+       let text = userDefault.string(forKey: "SharedText") {
+      sharedData = (url, text)
+      userDefault.removeObject(forKey: "SharedURL")
+      userDefault.removeObject(forKey: "SharedText")
+    }
+
+    return sharedData
   }
 }
 

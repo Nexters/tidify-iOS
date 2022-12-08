@@ -31,7 +31,7 @@ final class FolderCreationViewController: UIViewController, View {
   private var createFolderButton: UIButton = .init()
   private let selectedColorIndexRelay: BehaviorRelay<Int> = .init(value: -1)
   private let tapGesture: UITapGestureRecognizer = .init()
-  private var creationType: CreationType
+  private let creationType: CreationType
   private let originFolder: Folder?
   private var colorDataSource: [UIColor] = .init()
   private var titleErrorLabel: UILabel = .init()
@@ -260,9 +260,9 @@ private extension FolderCreationViewController {
         let requestDTO = FolderRequestDTO(title: $0, color: $1)
         if self?.creationType == .edit {
           guard let originFolder = self?.originFolder else { fatalError() }
-          return Action.updateFolderButtonDidTap(id: originFolder.id, folder: requestDTO)
+          return Action.didTapUpdateFolderButton(id: originFolder.id, folder: requestDTO)
         }
-        return Action.createFolderButtonDidTap(requestDTO)
+        return Action.didTapCreateFolderButton(requestDTO)
       }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)

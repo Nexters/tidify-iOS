@@ -82,33 +82,40 @@ private extension FolderViewController {
     }
   }
   
+  func presentDeletionAlert(_ row: Int) -> PublishSubject<Int> {
+    let deletedFolderRow: PublishSubject<Int> = .init()
+    
+    let alertPresenter: AlertPresenter = .init()
+    alertPresenter.present(
+      on: self,
+      alertType: .deleteFolder,
+      leftButtonAction: {},
+      rightButtonAction: { deletedFolderRow.onNext(row) }
+    )
+    
+    return deletedFolderRow
+  }
+  
   func bindAction(reactor: FolderReactor) {
     rx.viewWillAppear
       .map { Action.viewWillAppear }
       .bind(to: reactor.action )
       .disposed(by: disposeBag)
+
+    folderTableView.editAction
+      .flatMap { row in
+        Observable.just(reactor.currentState.folders[row])
+      }
+      .map { Action.tryEdit($0) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
     
-    folderTableView.setupEditAction { [weak self] indexPath in
-      guard let self = self else { return }
-      indexPath.map { $0.row }
-        .flatMap { row in
-          reactor.state.take(1).map { $0.folders[row] }
-        }
-        .map { Action.tryEdit($0) }
-        .bind(to: reactor.action)
-        .disposed(by: self.disposeBag)
-    }
-    
-    folderTableView.setupDeleteAction { [weak self] indexPath in
-      guard let self = self else { return }
-      indexPath.map { $0.row }
-        .flatMap { row in
-          reactor.state.take(1).map { $0.folders[row] }
-        }
-        .map { Action.tryDelete($0)}
-        .bind(to: reactor.action)
-        .disposed(by: self.disposeBag)
-    }
+    folderTableView.deleteAction
+      .withUnretained(self)
+      .flatMap { owner, row -> PublishSubject<Int> in owner.presentDeletionAlert(row) }
+      .map { Action.tryDelete(reactor.currentState.folders[$0]) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
     
     folderTableView.rx.didScroll
       .debounce(.milliseconds(50), scheduler: MainScheduler.instance)

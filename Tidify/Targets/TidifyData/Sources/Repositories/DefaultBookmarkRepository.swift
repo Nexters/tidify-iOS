@@ -22,27 +22,72 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   }
 
   // MARK: - Methods
+
   public func fetchBookmarkList(folderID: Int) -> Single<[Bookmark]> {
     return bookmarkService.request(.fetchBookmarkList(folderID: folderID))
+      .filterSuccessfulStatusCodes()
       .map(BookmarkListDTO.self)
-      .map { $0.toDomain() }
+      .flatMap { listDTO in
+        return .create { observer in
+          if listDTO.response.isSuccess {
+            observer(.success(listDTO.toDomain()))
+          } else {
+            observer(.failure(BookmarkError.failFetchBookmarks))
+          }
+
+          return Disposables.create()
+        }
+      }
   }
 
   public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkService.rx.request(.createBookmark(requestDTO))
-      .map { _ in }
+    return bookmarkService.request(.createBookmark(requestDTO))
+      .filterSuccessfulStatusCodes()
+      .map(APIResponse.self)
+      .flatMap { response in
+        return .create { observer in
+          if response.isSuccess {
+            observer(.success(()))
+          } else {
+            observer(.failure(BookmarkError.failCreateBookmark))
+          }
+
+          return Disposables.create()
+        }
+      }
   }
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
     return bookmarkService.request(.deleteBookmark(bookmarkID: bookmarkID))
-      .map { _ in }
+      .filterSuccessfulStatusCodes()
+      .map(APIResponse.self)
+      .flatMap { response in
+        return .create { observer in
+          if response.isSuccess {
+            observer(.success(()))
+          } else {
+            observer(.failure(BookmarkError.failDeleteBookmark))
+          }
+
+          return Disposables.create()
+        }
+      }
   }
 
   public func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkService.request(.updateBookmark(
-      bookmarkID: bookmarkID,
-      requestDTO: requestDTO)
-    )
-    .map { _ in }
+    return bookmarkService.request(.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO))
+      .filterSuccessfulStatusCodes()
+      .map(APIResponse.self)
+      .flatMap { response in
+        return .create { observer in
+          if response.isSuccess {
+            observer(.success(()))
+          } else {
+            observer(.failure(BookmarkError.failUpdateBookmark))
+          }
+
+          return Disposables.create()
+        }
+      }
   }
 }
