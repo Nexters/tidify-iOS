@@ -63,7 +63,7 @@ final class HomeReactor: Reactor {
             return .just([])
           }
 
-          return usecase.fetchBookmarkList()
+          return usecase.fetchBookmarkList(folderID: 0)
         }
         .map { .setBookmarks($0) }
     }
