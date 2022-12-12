@@ -11,8 +11,9 @@ import TidifyDomain
 import ReactorKit
 
 final class FolderReactor: Reactor {
-  var initialState: State = .init(folders: [], isEnablePaging: true)
+  var initialState: State = .init(folders: [])
   private var startingFetchNumber: Int = 0
+  private var isEnablePaging: Bool = true
   private let coordinator: FolderCoordinator
   private let usecase: FolderUseCase
 
@@ -38,7 +39,6 @@ final class FolderReactor: Reactor {
 
   struct State {
     var folders: [Folder]
-    var isEnablePaging: Bool
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
@@ -60,7 +60,7 @@ final class FolderReactor: Reactor {
         .map { .setupFolders($0) }
       
     case .didScroll:
-      if !currentState.isEnablePaging { return .empty() }
+      if !isEnablePaging { return .empty() }
       return usecase.fetchFolders(start: startingFetchNumber, count: 10)
         .map { .appendFolders($0) }
     }
@@ -71,7 +71,7 @@ final class FolderReactor: Reactor {
 
     switch mutation {
     case .setupFolders(let folders):
-      newState.isEnablePaging = true
+      isEnablePaging = true
       newState.folders = folders
       startingFetchNumber = 10
     case .pushDetailView(let folder):
@@ -79,7 +79,7 @@ final class FolderReactor: Reactor {
     case .pushEditView(let folder):
       coordinator.pushEditScene(folder: folder)
     case .appendFolders(let folders):
-      if folders.isEmpty { newState.isEnablePaging = false }
+      if folders.isEmpty { isEnablePaging = false }
       guard newState.folders.last?.id != folders.last?.id else { break }
       
       newState.folders += folders
