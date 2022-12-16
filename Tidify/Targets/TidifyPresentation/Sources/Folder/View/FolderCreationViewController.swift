@@ -34,8 +34,8 @@ final class FolderCreationViewController: UIViewController, View {
   private let creationType: CreationType
   private let originFolder: Folder?
   private var colorDataSource: [UIColor] = .init()
-  private var titleErrorLabel: UILabel = .init()
-  private var colorErrorLabel: UILabel = .init()
+  private let titleErrorLabel: UILabel = .init()
+  private let colorErrorLabel: UILabel = .init()
   var disposeBag: DisposeBag = .init()
   
   init(creationType: CreationType, originFolder: Folder? = nil) {
