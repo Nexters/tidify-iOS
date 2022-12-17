@@ -22,8 +22,9 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   }
 
   // MARK: - Methods
-  public func fetchBookmarkList() -> Single<[Bookmark]> {
-    return bookmarkService.request(.fetchBookmarkList())
+
+  public func fetchBookmarkList(folderID: Int) -> Single<[Bookmark]> {
+    return bookmarkService.request(.fetchBookmarkList(folderID: folderID))
       .filterSuccessfulStatusCodes()
       .map(BookmarkListDTO.self)
       .flatMap { listDTO in

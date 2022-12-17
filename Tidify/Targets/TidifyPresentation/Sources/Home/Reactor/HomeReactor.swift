@@ -44,7 +44,7 @@ final class HomeReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:
-      return useCase.fetchBookmarkList()
+      return useCase.fetchBookmarkList(folderID: 0)
         .map { .setBookmarks($0) }
 
     case .didSelect(let bookmark):
@@ -63,7 +63,7 @@ final class HomeReactor: Reactor {
             return .just([])
           }
 
-          return usecase.fetchBookmarkList()
+          return usecase.fetchBookmarkList(folderID: 0)
         }
         .map { .setBookmarks($0) }
     }

@@ -40,7 +40,7 @@ final class DefaultBookmarkCreationUseCase: BookmarkCreationUseCase {
   }
 
   func fetchFolders() -> Observable<[Folder]> {
-    folderRepository.fetchFolders()
+    folderRepository.fetchFolders(start: 0, count: .max)
       .asObservable()
   }
 }

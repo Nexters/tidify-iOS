@@ -12,7 +12,8 @@ import ReactorKit
 
 final class FolderReactor: Reactor {
   var initialState: State = .init(folders: [])
-
+  private var startingFetchNumber: Int = 0
+  private var isEnablePaging: Bool = true
   private let coordinator: FolderCoordinator
   private let usecase: FolderUseCase
 
@@ -26,22 +27,24 @@ final class FolderReactor: Reactor {
     case didSelect(_ folder: Folder)
     case tryEdit(_ folder: Folder)
     case tryDelete(_ folder: Folder)
+    case didScroll
   }
   
   enum Mutation {
     case setupFolders([Folder])
     case pushDetailView(_ folder: Folder)
     case pushEditView(_ folder: Folder)
+    case appendFolders([Folder])
   }
 
   struct State {
-    var folders: [Folder] = []
+    var folders: [Folder]
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:
-      return usecase.fetchFolders()
+      return usecase.fetchFolders(start: 0, count: 10)
         .map { .setupFolders($0) }
       
     case .didSelect(let folder):
@@ -55,6 +58,11 @@ final class FolderReactor: Reactor {
         .withLatestFrom(state.map { $0.folders }.asObservable())
         .map { $0.filter { $0.id != folder.id } }
         .map { .setupFolders($0) }
+      
+    case .didScroll:
+      if !isEnablePaging { return .empty() }
+      return usecase.fetchFolders(start: startingFetchNumber, count: 10)
+        .map { .appendFolders($0) }
     }
   }
 
@@ -63,11 +71,19 @@ final class FolderReactor: Reactor {
 
     switch mutation {
     case .setupFolders(let folders):
+      isEnablePaging = true
       newState.folders = folders
+      startingFetchNumber = 10
     case .pushDetailView(let folder):
-      coordinator.pushDetailScene()
+      coordinator.pushDetailScene(folder: folder)
     case .pushEditView(let folder):
       coordinator.pushEditScene(folder: folder)
+    case .appendFolders(let folders):
+      if folders.isEmpty { isEnablePaging = false }
+      guard newState.folders.last?.id != folders.last?.id else { break }
+      
+      newState.folders += folders
+      startingFetchNumber += 10
     }
 
     return newState

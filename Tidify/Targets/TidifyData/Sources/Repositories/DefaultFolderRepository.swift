@@ -26,13 +26,13 @@ public struct DefaultFolderRepository: FolderRepository {
     return folderService.request(.createFolder(requestDTO)).map { _ in }
   }
   
-  public func fetchFolders() -> Single<[Folder]> {
-    return folderService.request(.fetchFolders())
+  public func fetchFolders(start: Int, count: Int) -> Single<[Folder]> {
+    return folderService.request(.fetchFolders(start: start, count: count))
       .map(FolderListDTO.self)
       .flatMap { folderListDTO in
         return .create { observer in
           if folderListDTO.apiResponse.isSuccess {
-            observer(.success(folderListDTO.toDomain().reversed()))
+            observer(.success(folderListDTO.toDomain()))
           } else {
             observer(.failure(FolderError.failFetchFolders))
           }

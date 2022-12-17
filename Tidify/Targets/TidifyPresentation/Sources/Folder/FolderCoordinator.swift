@@ -13,10 +13,11 @@ import UIKit
 import RxSwift
 
 protocol FolderCoordinator: Coordinator {
-  func pushDetailScene()
+  func pushDetailScene(folder: Folder)
   func pushEditScene(folder: Folder)
   func pushCreationScene()
   func popCreationScene()
+  func pushWebView(bookmark: Bookmark)
 }
 
 final class DefaultFolderCoordinator: FolderCoordinator {
@@ -56,7 +57,21 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     return getViewController()
   }
   
-  func pushDetailScene() {}
+  func pushDetailScene(folder: Folder) {
+    guard let usecase: BookmarkUseCase = DIContainer.shared.resolve(type: BookmarkUseCase.self)
+    else { fatalError() }
+    let reactor: FolderDetailReactor = .init(coordinator: self, useCase: usecase, folderID: folder.id)
+    let viewController: FolderDetailViewController = .init(
+      folder: folder,
+      navigationBar: getDetailNavigationBar(folder: folder)
+    )
+    viewController.reactor = reactor
+    
+    navigationController.pushViewController(
+      viewController,
+      animated: true
+    )
+  }
   
   func pushEditScene(folder: Folder) {
     guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self)
@@ -86,6 +101,17 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   func popCreationScene() {
     navigationController.popViewController(animated: true)
   }
+  
+  func pushWebView(bookmark: Bookmark) {
+    guard let detailWebViewCoordinator = DIContainer.shared.resolve(type: DetailWebCoordinator.self)
+            as? DefaultDetailWebCoordinator else { return }
+
+    detailWebViewCoordinator.parentCoordinator = self
+    detailWebViewCoordinator.bookmark = bookmark
+    addChild(detailWebViewCoordinator)
+
+    detailWebViewCoordinator.start()
+  }
 }
 
 // MARK: - Private
@@ -100,6 +126,35 @@ private extension DefaultFolderCoordinator {
     viewController.reactor = reactor
 
     return viewController
+  }
+  
+  func getDetailNavigationBar(folder: Folder) -> TidifyNavigationBar {
+    let backButton: UIButton = .init().then {
+      $0.setImage(UIImage(named: "backIcon"), for: .normal)
+      $0.setTitle("  \(folder.title)", for: .normal)
+      $0.titleLabel?.font = .t_EB(20)
+    }
+    
+    backButton.rx.tap
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { [weak self] in
+        self?.navigationController.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
+
+    //TODO: rightButton Action
+    let rightButton: UIButton = .init().then {
+      $0.setImage(UIImage(named: "shareIcon"), for: .normal)
+    }
+    
+    let navigationBar: TidifyNavigationBar = .init(
+      .folderDetail,
+      title: folder.title,
+      leftButton: backButton,
+      rightButton: rightButton
+    )
+    
+    return navigationBar
   }
   
   func setupNavigationBar() {

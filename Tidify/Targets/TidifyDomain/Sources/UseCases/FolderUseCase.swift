@@ -19,7 +19,7 @@ public protocol FolderUseCase {
   var repository: FolderRepository { get }
 
   func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void>
-  func fetchFolders() -> Observable<[Folder]>
+  func fetchFolders(start: Int, count: Int) -> Observable<[Folder]>
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void>
   func deleteFolder(id: Int) -> Observable<Void>
 }
@@ -39,8 +39,8 @@ final class DefaultFolderUseCase: FolderUseCase {
     repository.createFolder(requestDTO: requestDTO).asObservable()
   }
   
-  func fetchFolders() -> Observable<[Folder]> {
-    repository.fetchFolders().asObservable()
+  func fetchFolders(start: Int, count: Int) -> Observable<[Folder]> {
+    repository.fetchFolders(start: start, count: count).asObservable()
   }
   
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void> {
