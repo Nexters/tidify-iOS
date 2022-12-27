@@ -24,7 +24,7 @@ final class SettingCell: UITableViewCell {
   }
 
   // MARK: - Methods
-  func configure(title: String, isLastCell: Bool) {
+  func configure(title: String, isLastIndex: Bool) {
     if title == "앱 버전" {
       DispatchQueue.main.async { [weak self] in
         self?.titleLabel.font = .systemFont(ofSize: 12)
@@ -38,7 +38,7 @@ final class SettingCell: UITableViewCell {
     titleLabel.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(20)
       $0.top.equalToSuperview().offset(20)
-      $0.bottom.equalToSuperview().inset(isLastCell ? 36 : 20)
+      $0.bottom.equalToSuperview().inset(isLastIndex ? 36 : 20)
     }
   }
 }

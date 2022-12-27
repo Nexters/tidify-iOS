@@ -137,10 +137,10 @@ extension SettingViewController: UITableViewDataSource {
       indexPath: indexPath
     )
     
-    let isLastCell = section.numberOfRows - 1 == indexPath.row
-    if isLastCell { cell.cornerRadius([.bottomLeft, .bottomRight], radius: 16) }
+    let isLastIndex = section.numberOfRows - 1 == indexPath.row
+    if isLastIndex { cell.cornerRadius([.bottomLeft, .bottomRight], radius: 16) }
     
-    cell.configure(title: section.rowTitles[indexPath.row], isLastCell: isLastCell)
+    cell.configure(title: section.rowTitles[indexPath.row], isLastIndex: isLastIndex)
     
     guard indexPath.row == 1 else { return cell }
     
