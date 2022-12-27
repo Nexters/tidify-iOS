@@ -77,10 +77,8 @@ private extension SettingViewController {
       $0.dataSource = self
       $0.separatorColor = .clear
       $0.t_registerCellClass(cellType: SettingCell.self)
-      $0.estimatedRowHeight = 75
-      $0.rowHeight = UITableView.automaticDimension
       $0.tableHeaderView = headerView
-      $0.bounces = false
+      $0.isScrollEnabled = false
     }
 
     tableView.snp.makeConstraints {
@@ -138,21 +136,18 @@ extension SettingViewController: UITableViewDataSource {
       cellType: SettingCell.self,
       indexPath: indexPath
     )
-
-    if section.numberOfRows - 1 == indexPath.row {
-      cell.cornerRadius([.bottomLeft, .bottomRight], radius: 16)
-    }
-
-    let rowTitle: String = section.rowTitles[indexPath.row]
-    cell.configure(title: rowTitle)
     
-    if indexPath.row == 1 {
-      let bottomBorder = CALayer()
-      bottomBorder.frame = CGRect(x: 16, y: 0, width: Self.viewWidth - 16, height: 1)
-      bottomBorder.backgroundColor = UIColor.systemGray6.cgColor
-      cell.contentView.layer.addSublayer(bottomBorder)
-    }
-
+    let isLastCell = section.numberOfRows - 1 == indexPath.row
+    if isLastCell { cell.cornerRadius([.bottomLeft, .bottomRight], radius: 16) }
+    
+    cell.configure(title: section.rowTitles[indexPath.row], isLastCell: isLastCell)
+    
+    guard indexPath.row == 1 else { return cell }
+    
+    let bottomBorder = CALayer()
+    bottomBorder.frame = CGRect(x: 16, y: 0, width: Self.viewWidth - 16, height: 1)
+    bottomBorder.backgroundColor = UIColor.systemGray6.cgColor
+    cell.contentView.layer.addSublayer(bottomBorder)
     return cell
   }
 
