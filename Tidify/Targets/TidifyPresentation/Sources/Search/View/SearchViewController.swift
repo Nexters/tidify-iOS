@@ -21,9 +21,6 @@ final class SearchViewController: UIViewController, View {
   private let eraseQueryButton: UIButton = .init()
   private let headerView: SearchHeaderView = .init()
   private lazy var tableView: UITableView = .init(frame: .zero, style: .grouped)
-
-  private let searchSubject: PublishSubject<String> = .init()
-
   var disposeBag: DisposeBag = .init()
 
   override func viewDidLoad() {
@@ -119,8 +116,8 @@ private extension SearchViewController {
   func bindAction(reactor: SearchReactor) {
     typealias Action = SearchReactor.Action
 
-    rx.viewWillAppear
-      .map { Action.viewWillAppear }
+    Observable.merge(rx.viewWillAppear, eraseQueryButton.rx.tap.asObservable())
+      .map { _ in Action.viewWillAppear }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
@@ -129,17 +126,14 @@ private extension SearchViewController {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
-    Observable.merge(
-      searchSubject.asObservable(),
-      searchTextField.rx.controlEvent(.editingDidEndOnExit)
-        .withUnretained(self)
-        .map { owner, _ -> String in
-          owner.searchTextField.text ?? ""
-        }
-    )
-    .map { Action.searchQuery($0) }
-    .bind(to: reactor.action)
-    .disposed(by: disposeBag)
+    searchTextField.rx.controlEvent(.editingDidEndOnExit)
+      .withUnretained(self)
+      .map { owner, _ -> String in
+        owner.searchTextField.text ?? ""
+      }
+      .map { Action.searchQuery($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 
   func bindState(reactor: SearchReactor) {
@@ -180,10 +174,10 @@ private extension SearchViewController {
       .disposed(by: disposeBag)
 
     eraseQueryButton.rx.tap
-      .subscribe(on: MainScheduler.instance)
-      .subscribe(with: self, onNext: { owner, _ in
+      .withUnretained(self)
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { owner, _ in
         owner.searchTextField.text = nil
-        owner.searchSubject.onNext("")
       })
       .disposed(by: disposeBag)
   }
