@@ -38,7 +38,7 @@ final class AlertPresenter: UIViewController {
       switch self {
       case .deleteBookmark: return "이 글은 더 이상 볼 수 없을텐데\n정말 삭제하시겠어요?"
       case .deleteFolder: return "정리해놓은 폴더가 사라질텐데\n정말 괜찮으신가요?"
-      case .removeImageCache: return "북마크가 많아졌을 떄\n깔끔하게 정리해드릴게요!"
+      case .removeImageCache: return "북마크가 많아졌을 때\n깔끔하게 정리해드릴게요!"
       case .removeAllCache: return "디바이스에 저장공간이 부족할 때\n깔끔하게 도와드릴게요!"
       case .logout: return "지금까지 모아놓은 북마크는\n계정에 저장해 놓을게요!"
       case .signOut: return "사라진 북마크는 되돌릴 수 없어요.\n그래도 괜찮으신가요?"
