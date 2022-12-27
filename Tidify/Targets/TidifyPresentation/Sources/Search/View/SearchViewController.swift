@@ -164,6 +164,19 @@ private extension SearchViewController {
       owner.tableView.reloadData()
     })
     .disposed(by: disposeBag)
+    
+    reactor.state
+      .map { $0.viewMode }
+      .distinctUntilChanged()
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(with: self, onNext: { owner, viewModel in
+        guard owner.tableView.superview != nil else { return }
+        
+        owner.tableView.snp.updateConstraints {
+          $0.leading.trailing.equalToSuperview().inset(viewModel == .history ? 0 : 20)
+        }
+      })
+      .disposed(by: disposeBag)
   }
 
   func bindExtra() {
