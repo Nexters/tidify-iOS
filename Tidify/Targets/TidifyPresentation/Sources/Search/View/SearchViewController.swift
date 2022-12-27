@@ -17,6 +17,7 @@ final class SearchViewController: UIViewController, View {
 
   // MARK: - Properties
   private let searchTextField: UITextField = .init()
+  private let searchImageView: UIImageView = .init()
   private let eraseQueryButton: UIButton = .init()
   private let headerView: SearchHeaderView = .init()
   private lazy var tableView: UITableView = .init(frame: .zero, style: .grouped)
@@ -30,6 +31,16 @@ final class SearchViewController: UIViewController, View {
 
     setupUI()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    setupNavigationBarHidden(true)
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    setupNavigationBarHidden(false)
+  }
 
   func bind(reactor: SearchReactor) {
     bindAction(reactor: reactor)
@@ -40,46 +51,34 @@ final class SearchViewController: UIViewController, View {
 
 // MARK: - Private
 private extension SearchViewController {
+  func setupNavigationBarHidden(_ status: Bool) {
+    navigationController?.navigationBar.isHidden = status
+  }
+  
   func setupUI() {
-    view.addSubview(searchTextField)
-    view.addSubview(tableView)
-
     view.backgroundColor = .white
-
-    let searchImageView: UIImageView = .init().then {
-      $0.image = .init(named: "icon_search")
-      $0.frame = .init(
-        x: 15,
-        y: 0,
-        width: $0.image?.size.width ?? 0,
-        height: $0.image?.size.height ?? 0
-      )
-    }
-
-    let textFieldLeftView: UIView = .init().then {
-      $0.frame = .init(
-        x: 0,
-        y: 0,
-        width: searchImageView.frame.width + 30,
-        height: searchImageView.frame.height
-      )
-      $0.addSubview(searchImageView)
-    }
-
-    eraseQueryButton.do {
-      let eraseQueryimage: UIImage = .init(named: "icon_searchField_erase")!
-      $0.setImage(eraseQueryimage, for: .normal)
-    }
-
+    
+    view.addSubview(searchTextField)
+    view.addSubview(searchImageView)
+    view.addSubview(eraseQueryButton)
+    view.addSubview(tableView)
+    
     searchTextField.do {
       $0.placeholder = "어떤 것을 찾으시나요?"
-      $0.leftView = textFieldLeftView
-      $0.rightView = eraseQueryButton
+      $0.leftView = UIView.init(frame: CGRect(x: 0, y: 0, width: 56, height: 1))
       $0.leftViewMode = .always
-      $0.rightViewMode = .always
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.lightGray.cgColor
       $0.cornerRadius(radius: 20)
+    }
+    
+    searchImageView.do {
+      $0.image = .init(named: "icon_search")
+    }
+
+    eraseQueryButton.do {
+      guard let eraseQueryimage: UIImage = .init(named: "icon_searchField_erase") else { return }
+      $0.setImage(eraseQueryimage, for: .normal)
     }
 
     tableView.do {
@@ -89,22 +88,31 @@ private extension SearchViewController {
       $0.t_registerCellClass(cellType: BookmarkCell.self)
       $0.delegate = self
       $0.dataSource = self
+      $0.bounces = false
       if #available(iOS 15, *) {
         $0.sectionHeaderTopPadding = .zero
       }
     }
 
     searchTextField.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(38)
-      $0.leading.equalToSuperview().offset(20)
-      $0.trailing.equalToSuperview().offset(-20)
-      $0.height.equalToSuperview().multipliedBy(0.07)
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(38)
+      $0.leading.trailing.equalToSuperview().inset(20)
+      $0.height.equalToSuperview().multipliedBy(0.068)
+    }
+    
+    searchImageView.snp.makeConstraints {
+      $0.top.leading.bottom.equalTo(searchTextField).inset(16)
+    }
+    
+    eraseQueryButton.snp.makeConstraints {
+      $0.top.bottom.equalTo(searchTextField).inset(16)
+      $0.trailing.equalTo(searchTextField).inset(24)
     }
 
     tableView.snp.makeConstraints {
-      $0.top.equalTo(searchTextField.snp.bottom).offset(30)
+      $0.top.equalTo(searchTextField.snp.bottom).offset(24)
       $0.leading.trailing.equalToSuperview()
-      $0.bottom.equalToSuperview()
+      $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
     }
   }
 
@@ -236,20 +244,6 @@ extension SearchViewController: UITableViewDelegate {
       return headerView
     case .search:
       return nil
-    }
-  }
-
-  func tableView(
-    _ tableView: UITableView,
-    heightForHeaderInSection section: Int
-  ) -> CGFloat {
-    let viewMode = reactor?.currentState.viewMode ?? .search
-
-    switch viewMode {
-    case .history:
-      return view.frame.height * 0.02
-    case .search:
-      return .zero
     }
   }
 
