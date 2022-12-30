@@ -21,6 +21,8 @@ final class SearchViewController: UIViewController, View {
   private let eraseQueryButton: UIButton = .init()
   private let headerView: SearchHeaderView = .init()
   private lazy var tableView: UITableView = .init(frame: .zero, style: .grouped)
+  private var willSearch: Bool = .init()
+  private let tapGestureRecognizer: UITapGestureRecognizer = .init()
   var disposeBag: DisposeBag = .init()
 
   override func viewDidLoad() {
@@ -79,6 +81,10 @@ private extension SearchViewController {
       $0.setImage(eraseQueryimage, for: .normal)
     }
 
+    tapGestureRecognizer.do {
+      $0.cancelsTouchesInView = false
+    }
+
     tableView.do {
       $0.separatorStyle = .none
       $0.backgroundColor = .white
@@ -87,6 +93,7 @@ private extension SearchViewController {
       $0.delegate = self
       $0.dataSource = self
       $0.bounces = false
+      $0.addGestureRecognizer(tapGestureRecognizer)
       if #available(iOS 15, *) {
         $0.sectionHeaderTopPadding = .zero
       }
@@ -128,10 +135,12 @@ private extension SearchViewController {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
-    searchTextField.rx.controlEvent(.editingDidEndOnExit)
+    searchTextField.rx.controlEvent(.editingDidEnd)
       .withUnretained(self)
+      .filter { owner, _ in owner.willSearch }
       .map { owner, _ -> String in
-        owner.searchTextField.text ?? ""
+        owner.willSearch = false
+        return owner.searchTextField.text ?? ""
       }
       .map { Action.searchQuery($0) }
       .bind(to: reactor.action)
@@ -197,6 +206,21 @@ private extension SearchViewController {
         owner.searchTextField.text = nil
       })
       .disposed(by: disposeBag)
+
+    searchTextField.rx.controlEvent(.editingDidEndOnExit)
+      .bind(with: self, onNext: { owner, _ in
+        owner.willSearch = true
+      })
+      .disposed(by: disposeBag)
+
+    Driver.merge(
+      view.addTap().rx.event.asDriver(),
+      tapGestureRecognizer.rx.event.asDriver()
+    )
+    .drive(with: self, onNext: { owner, _ in
+      owner.view.endEditing(true)
+    })
+    .disposed(by: disposeBag)
   }
   
   func clearTextField() {
@@ -262,5 +286,23 @@ extension SearchViewController: UITableViewDelegate {
   ) -> CGFloat {
     let rowHeight = Self.viewWidth * 0.149
     return reactor?.currentState.viewMode == .history ? rowHeight : rowHeight + 20
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let currentState = reactor?.currentState else { return }
+    
+    switch currentState.viewMode {
+    case .history:
+      willSearch = true
+      searchTextField.becomeFirstResponder()
+      searchTextField.text = currentState.searchHistory[indexPath.row]
+      searchTextField.endEditing(true)
+    case .search:
+      return
+    }
+  }
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    view.endEditing(true)
   }
 }
