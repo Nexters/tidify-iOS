@@ -94,11 +94,12 @@ private extension SearchViewController {
     searchTextField.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(38)
       $0.leading.trailing.equalToSuperview().inset(20)
-      $0.height.equalToSuperview().multipliedBy(0.068)
+      $0.height.equalTo(Self.viewWidth * 0.149)
     }
     
     searchImageView.snp.makeConstraints {
       $0.top.leading.bottom.equalTo(searchTextField).inset(16)
+      $0.height.equalTo(searchImageView.snp.width)
     }
     
     eraseQueryButton.snp.makeConstraints {
