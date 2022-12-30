@@ -13,6 +13,7 @@ import UIKit
 import RxSwift
 
 protocol FolderCoordinator: Coordinator {
+  func pushSettingScene()
   func pushDetailScene(folder: Folder)
   func pushEditScene(folder: Folder)
   func pushCreationScene()
@@ -25,7 +26,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
   
-  private let profileButton: UIButton = .init().then {
+  private let settingButton: UIButton = .init().then {
     $0.setImage(UIImage(named: "profileIcon"), for: .normal)
   }
   
@@ -42,7 +43,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     self.navigationController = navigationController
     self.navigationBar = TidifyNavigationBar(
       .folder,
-      leftButton: profileButton,
+      leftButton: settingButton,
       rightButton: createButton
     )
     setupNavigationBar()
@@ -55,6 +56,15 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   
   func startPush() -> UIViewController {
     return getViewController()
+  }
+  
+  func pushSettingScene() {
+    guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self)
+            as? DefaultSettingCoordinator else { return }
+    settingCoordinator.parentCoordinator = self
+    addChild(settingCoordinator)
+
+    settingCoordinator.start()
   }
   
   func pushDetailScene(folder: Folder) {
@@ -158,6 +168,13 @@ private extension DefaultFolderCoordinator {
   }
   
   func setupNavigationBar() {
+    settingButton.rx.tap
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { [weak self] in
+        self?.pushSettingScene()
+      })
+      .disposed(by: disposeBag)
+    
     createButton.rx.tap
       .asDriver(onErrorDriveWith: .empty())
       .drive(onNext: { [weak self] in

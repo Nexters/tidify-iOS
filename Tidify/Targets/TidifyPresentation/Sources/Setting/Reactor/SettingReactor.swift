@@ -32,9 +32,9 @@ final class SettingReactor: Reactor {
     var rowTitles: [String] {
       switch self {
       case .accountManaging:
-        return ["소셜 로그인"]
+        return ["로그아웃", "회원탈퇴"]
       case .dataManaging:
-        return ["이미지 캐시 정리", "모든 캐시 정리", "로그아웃", "앱 버전"]
+        return ["이미지 캐시 정리", "모든 캐시 정리", "앱 버전"]
       }
     }
   }

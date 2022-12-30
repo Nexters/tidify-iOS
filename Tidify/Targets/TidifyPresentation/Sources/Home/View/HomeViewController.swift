@@ -22,7 +22,7 @@ final class HomeViewController: UIViewController, View {
   private let containerView: UIView = .init()
   private lazy var guideView: UIView = .init()
   private lazy var guideLabel: UILabel = .init()
-  private lazy var tableView: UITableView = .init()
+  private lazy var tableView: TidifyTableView = .init(tabType: .bookmark)
 
   private let alertPresenter: AlertPresenter
   private let deleteBookmarkSubject: PublishSubject<Int> = .init()
@@ -79,13 +79,6 @@ private extension HomeViewController {
       $0.font = .systemFont(ofSize: 16, weight: .bold)
     }
 
-    tableView.do {
-      $0.backgroundColor = .white
-      $0.t_registerCellClass(cellType: BookmarkCell.self)
-      $0.rowHeight = UIScreen.main.bounds.height * 0.07
-      $0.rx.setDelegate(self).disposed(by: disposeBag)
-    }
-
     navigationBar.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
       $0.height.equalTo(Self.viewHeight * 0.182)
@@ -98,7 +91,7 @@ private extension HomeViewController {
 
     tableView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview().inset(20)
-      $0.bottom.equalToSuperview()
+      $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
     }
 
     guideView.snp.makeConstraints {
@@ -203,6 +196,3 @@ private extension HomeViewController {
     return sharedData
   }
 }
-
-// MARK: - UITableViewDelegate
-extension HomeViewController: UITableViewDelegate {}
