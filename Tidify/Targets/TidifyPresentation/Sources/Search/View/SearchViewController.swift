@@ -290,15 +290,17 @@ extension SearchViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let currentState = reactor?.currentState else { return }
+    let row = indexPath.row
     
     switch currentState.viewMode {
     case .history:
       willSearch = true
       searchTextField.becomeFirstResponder()
-      searchTextField.text = currentState.searchHistory[indexPath.row]
+      searchTextField.text = currentState.searchHistory[row]
       searchTextField.endEditing(true)
     case .search:
-      return
+      let action = SearchReactor.Action.didSelectBookmark(currentState.searchResult[row])
+      reactor?.action.onNext(action)
     }
   }
 

@@ -10,7 +10,9 @@ import TidifyCore
 import TidifyDomain
 import UIKit
 
-protocol SearchCoordinator: Coordinator {}
+protocol SearchCoordinator: Coordinator {
+  func pushWebView(bookmark: Bookmark)
+}
 
 final class DefaultSearchCoordinator: SearchCoordinator {
   weak var parentCoordinator: Coordinator?
@@ -30,6 +32,17 @@ final class DefaultSearchCoordinator: SearchCoordinator {
   
   func startPush() -> UIViewController {
     return getViewController()
+  }
+  
+  func pushWebView(bookmark: Bookmark) {
+    guard let detailWebViewCoordinator = DIContainer.shared.resolve(type: DetailWebCoordinator.self)
+            as? DefaultDetailWebCoordinator else { return }
+
+    detailWebViewCoordinator.parentCoordinator = self
+    detailWebViewCoordinator.bookmark = bookmark
+    addChild(detailWebViewCoordinator)
+
+    detailWebViewCoordinator.start()
   }
 }
 

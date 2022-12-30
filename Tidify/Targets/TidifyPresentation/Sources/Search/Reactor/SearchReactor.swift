@@ -13,7 +13,7 @@ import ReactorKit
 final class SearchReactor {
 
   // MARK: - Properties
-  private let coordiantor: SearchCoordinator
+  private let coordinator: SearchCoordinator
   private let useCase: SearchUseCase
 
   enum ViewMode {
@@ -23,7 +23,7 @@ final class SearchReactor {
 
   // MARK: - Initializer
   init(coordinator: SearchCoordinator, useCase: SearchUseCase) {
-    self.coordiantor = coordinator
+    self.coordinator = coordinator
     self.useCase = useCase
   }
 
@@ -36,11 +36,13 @@ extension SearchReactor: Reactor {
     case viewWillAppear
     case searchQuery(_ query: String)
     case requestEraseAllHistory
+    case didSelectBookmark(_ bookmark: Bookmark)
   }
 
   enum Mutation {
     case setSearchHistory(_ searchHistory: [String])
     case setSearchResult(_ bookmarks: [Bookmark])
+    case pushWebView(_ bookmark: Bookmark)
   }
 
   struct State {
@@ -62,6 +64,9 @@ extension SearchReactor: Reactor {
     case .searchQuery(let query):
       return useCase.fetchSearchResult(query: query)
         .map { .setSearchResult($0)}
+
+    case .didSelectBookmark(let bookmark):
+      return .just(.pushWebView(bookmark))
     }
   }
 
@@ -76,6 +81,9 @@ extension SearchReactor: Reactor {
     case .setSearchHistory(let searchHistory):
       newState.viewMode = .history
       newState.searchHistory = searchHistory
+
+    case .pushWebView(let bookmark):
+      coordinator.pushWebView(bookmark: bookmark)
     }
 
     return newState
