@@ -245,14 +245,8 @@ extension SearchViewController: UITableViewDelegate {
     _ tableView: UITableView,
     viewForHeaderInSection section: Int
   ) -> UIView? {
-    let viewMode = reactor?.currentState.viewMode ?? .search
-
-    switch viewMode {
-    case .history:
-      return headerView
-    case .search:
-      return nil
-    }
+    guard reactor?.currentState.viewMode == .history else { return nil }
+    return headerView
   }
 
   func tableView(
