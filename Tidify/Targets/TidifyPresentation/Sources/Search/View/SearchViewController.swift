@@ -37,6 +37,7 @@ final class SearchViewController: UIViewController, View {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     setupNavigationBarHidden(false)
+    clearTextField()
   }
 
   func bind(reactor: SearchReactor) {
@@ -196,6 +197,10 @@ private extension SearchViewController {
         owner.searchTextField.text = nil
       })
       .disposed(by: disposeBag)
+  }
+  
+  func clearTextField() {
+    searchTextField.text = nil
   }
 }
 
