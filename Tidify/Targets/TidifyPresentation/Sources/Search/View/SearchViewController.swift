@@ -253,6 +253,7 @@ extension SearchViewController: UITableViewDelegate {
     _ tableView: UITableView,
     heightForRowAt indexPath: IndexPath
   ) -> CGFloat {
-    return 56
+    let rowHeight = Self.viewWidth * 0.149
+    return reactor?.currentState.viewMode == .history ? rowHeight : rowHeight + 20
   }
 }
