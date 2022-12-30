@@ -170,11 +170,13 @@ private extension SearchViewController {
       .map { $0.viewMode }
       .distinctUntilChanged()
       .asDriver(onErrorDriveWith: .empty())
-      .drive(with: self, onNext: { owner, viewModel in
+      .drive(with: self, onNext: { owner, viewMode in
         guard owner.tableView.superview != nil else { return }
+        let isHistoryMode = viewMode == .history
         
         owner.tableView.snp.updateConstraints {
-          $0.leading.trailing.equalToSuperview().inset(viewModel == .history ? 0 : 20)
+          $0.top.equalTo(owner.searchTextField.snp.bottom).offset(isHistoryMode ? 24 : 56)
+          $0.leading.trailing.equalToSuperview().inset(isHistoryMode ? 0 : 20)
         }
       })
       .disposed(by: disposeBag)
