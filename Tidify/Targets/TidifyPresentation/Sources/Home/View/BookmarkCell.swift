@@ -36,6 +36,11 @@ final class BookmarkCell: UITableViewCell {
     thumbnailImageView.image = nil
     bookmarkImageView.image = nil
   }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    setupPadding()
+  }
 
   // MARK: - Methods
   func configure(bookmark: Bookmark) {
@@ -72,11 +77,12 @@ private extension BookmarkCell {
   }
 
   func setupUI() {
+    backgroundColor = .white
     selectionStyle = .none
 
-    cornerRadius(radius: 8)
-    layer.borderWidth = 1
-    layer.borderColor = UIColor.t_background().cgColor
+    contentView.cornerRadius(radius: 8)
+    contentView.layer.borderWidth = 1
+    contentView.layer.borderColor = UIColor.t_background().cgColor
 
     bookmarkNameLabel.do {
       $0.font = .t_B(16)
@@ -107,5 +113,16 @@ private extension BookmarkCell {
       $0.trailing.lessThanOrEqualToSuperview().offset(-10)
       $0.centerY.equalTo(bookmarkImageView)
     }
+  }
+  
+  func setupPadding() {
+    contentView.frame = contentView.frame.inset(
+      by: UIEdgeInsets(
+        top: 0,
+        left: 0,
+        bottom: 20,
+        right: 0
+      )
+    )
   }
 }

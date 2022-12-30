@@ -106,7 +106,7 @@ final class TidifyNavigationBar: UIView {
       rightButton.snp.makeConstraints {
         $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
         $0.trailing.equalToSuperview().inset(navigationBarStyle.sidePadding)
-        $0.height.equalTo(viewHeight * 0.049)
+        $0.height.equalTo(leftButton)
         $0.width.equalTo(viewWidth * (navigationBarStyle == .home ? 0.208 : 0.106))
       }
     }
