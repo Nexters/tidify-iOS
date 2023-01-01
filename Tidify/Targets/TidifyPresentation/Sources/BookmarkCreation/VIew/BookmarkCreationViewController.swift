@@ -18,6 +18,7 @@ final class BookmarkCreationViewController: UIViewController, View {
   // MARK: - Properties
   private var urlGuideLabel: UILabel = .init()
   private var urlTextField: UITextField = .init()
+  private let urlErrorLabel: UILabel = .init()
   private var bookmarkGuideLabel: UILabel = .init()
   private var titleTextField: UITextField = .init()
   private var folderGuideLabel: UILabel = .init()
@@ -83,19 +84,10 @@ private extension BookmarkCreationViewController {
   }
 
   func bindExtra() {
-    let isEmptyURLTextObservable = urlTextField.rx.text.orEmpty
-      .map { $0.isEmpty }
-      .asObservable()
-
-    isEmptyURLTextObservable
-      .map { [weak self] isEmptyURL -> Bool in
-        let isEmptyFolder: Bool = self?.folderTextField.isEmptyTextField() ?? true
-        return !isEmptyURL && !isEmptyFolder
-      }
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(isEnableCreateBookmarkButtonBinder)
+    urlTextField.rx.text.orEmpty
+      .map(isEnableUrlTextField)
+      .bind(to: isEnableCreateBookmarkButtonBinder)
       .disposed(by: disposeBag)
-
 
     view.addTap().rx.event
       .filter { $0.state == .recognized }
@@ -126,6 +118,7 @@ private extension BookmarkCreationViewController {
     navigationController?.navigationBar.topItem?.title = ""
 
     view.addSubview(urlGuideLabel)
+    view.addSubview(urlErrorLabel)
     view.addSubview(urlTextField)
     view.addSubview(bookmarkGuideLabel)
     view.addSubview(titleTextField)
@@ -141,6 +134,11 @@ private extension BookmarkCreationViewController {
 
     folderGuideLabel = setGuideLabel(folderGuideLabel, title: "저장할 폴더")
 
+    urlErrorLabel.do {
+      $0.textColor = .systemRed
+      $0.font = .t_SB(14)
+    }
+
     createBookmarkButton.do {
       $0.setTitle("저장", for: .normal)
       $0.titleLabel?.font = .t_SB(19)
@@ -155,6 +153,11 @@ private extension BookmarkCreationViewController {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.lessThanOrEqualToSuperview()
+    }
+
+    urlErrorLabel.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(20)
+      $0.centerY.equalTo(urlGuideLabel)
     }
 
     urlTextField.snp.makeConstraints {
@@ -240,6 +243,29 @@ private extension BookmarkCreationViewController {
 
     bottomSheet.modalPresentationStyle = .overCurrentContext
     present(bottomSheet, animated: true)
+  }
+
+  func isEnableUrlTextField(_ text: String) -> Bool {
+    if text.isEmpty {
+      urlErrorLabel.text = "링크가 없어요!"
+      urlErrorLabel.isHidden = false
+      return false
+    }
+    
+    if !isValidURL(url: text) {
+      urlErrorLabel.text = "링크를 확인해주세요!"
+      urlErrorLabel.isHidden = false
+      return false
+    }
+    
+    urlErrorLabel.isHidden = true
+    return true
+  }
+
+  func isValidURL(url urlString: String) -> Bool {
+    guard let url = NSURL(string: urlString) else { return false }
+    
+    return UIApplication.shared.canOpenURL(url as URL) && urlString.count >= 10
   }
 }
 

@@ -43,10 +43,10 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
     return bookmarkService.request(.createBookmark(requestDTO))
       .filterSuccessfulStatusCodes()
-      .map(APIResponse.self)
+      .map(DefaultResponse.self)
       .flatMap { response in
         return .create { observer in
-          if response.isSuccess {
+          if response.apiResponse.isSuccess {
             observer(.success(()))
           } else {
             observer(.failure(BookmarkError.failCreateBookmark))
@@ -60,10 +60,10 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
     return bookmarkService.request(.deleteBookmark(bookmarkID: bookmarkID))
       .filterSuccessfulStatusCodes()
-      .map(APIResponse.self)
+      .map(DefaultResponse.self)
       .flatMap { response in
         return .create { observer in
-          if response.isSuccess {
+          if response.apiResponse.isSuccess {
             observer(.success(()))
           } else {
             observer(.failure(BookmarkError.failDeleteBookmark))
@@ -77,10 +77,10 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   public func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
     return bookmarkService.request(.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO))
       .filterSuccessfulStatusCodes()
-      .map(APIResponse.self)
+      .map(DefaultResponse.self)
       .flatMap { response in
         return .create { observer in
-          if response.isSuccess {
+          if response.apiResponse.isSuccess {
             observer(.success(()))
           } else {
             observer(.failure(BookmarkError.failUpdateBookmark))
