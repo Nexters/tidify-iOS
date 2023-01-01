@@ -14,7 +14,7 @@ public struct Bookmark: Equatable {
   public let id: Int
   private let createdAt: String
   private let updatedAt: String
-  private var folderID: Int
+  private var folderID: Int?
   public var urlString: String?
   public var title: String
 

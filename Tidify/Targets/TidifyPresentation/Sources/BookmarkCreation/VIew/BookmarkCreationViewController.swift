@@ -50,23 +50,7 @@ private extension BookmarkCreationViewController {
 
   func bindAction(reactor: BookmarkCreationReactor) {
     createBookmarkButton.rx.tap
-      .withUnretained(self)
-      .map { owner, _ -> Action in
-        let folderID: Int = reactor.currentState.folders[owner.selectedFolderIndexRelay.value].id
-
-        var title: String = owner.titleTextField.text ?? ""
-        if title.isEmpty {
-          title = owner.urlTextField.text ?? ""
-        }
-
-        let requestDTO: BookmarkRequestDTO = .init(
-          folderID: folderID,
-          url: owner.urlTextField.text ?? "",
-          title: title
-        )
-
-        return .didTapCreateButton(requestDTO)
-      }
+      .map(setRequestDTO)
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
@@ -233,7 +217,9 @@ private extension BookmarkCreationViewController {
   }
 
   func showBottomSheet() {
-    guard let folders = reactor?.currentState.folders else { return }
+    guard let folders = reactor?.currentState.folders,
+          !folders.isEmpty
+    else { return }
 
     let bottomSheet: BottomSheetViewController = .init(
       .bookmark,
@@ -266,6 +252,25 @@ private extension BookmarkCreationViewController {
     guard let url = NSURL(string: urlString) else { return false }
     
     return UIApplication.shared.canOpenURL(url as URL) && urlString.count >= 10
+  }
+  
+  func setRequestDTO() -> Action {
+    var folderID: Int? = nil
+
+    if selectedFolderIndexRelay.value != -1 {
+      folderID = reactor?.currentState.folders[selectedFolderIndexRelay.value].id
+    }
+
+    guard let urlString = urlTextField.text else { fatalError() }
+    let title: String = titleTextField.text ?? urlString
+
+    let requestDTO: BookmarkRequestDTO = .init(
+      folderID: folderID,
+      url: urlTextField.text ?? "",
+      title: title
+    )
+
+    return .didTapCreateButton(requestDTO)
   }
 }
 

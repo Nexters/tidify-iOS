@@ -85,11 +85,14 @@ extension BookmarkService: TargetType {
       ]
 
     case .createBookmark(let requestDTO):
-      return [
-        "folder_id": requestDTO.folderID,
+      var param: [String: Any] = [
         "bookmark_url": requestDTO.url,
         "bookmark_title": requestDTO.title
       ]
+      if let folderID = requestDTO.folderID {
+        param["folder_id"] = folderID
+      }
+      return param
 
     case .deleteBookmark(let bookmarkID):
       return [
@@ -97,12 +100,15 @@ extension BookmarkService: TargetType {
       ]
 
     case let .updateBookmark(bookmarkID, requestDTO):
-      return [
+      var param: [String: Any] = [
         "bookmark_id": bookmarkID,
-        "folder_id": requestDTO.folderID,
         "bookmark_url": requestDTO.url,
         "bookmark_title": requestDTO.title
       ]
+      if let folderID = requestDTO.folderID {
+        param["folder_id"] = folderID
+      }
+      return param
     }
   }
 }
