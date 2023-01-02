@@ -10,9 +10,9 @@ import RxSwift
 
 public enum FolderError: Error {
   case failFetchFolders
-  case failFetchCreateFolder
-  case failFetchUpdateFolder
-  case failFetchDeleteFolder
+  case failCreateFolder
+  case failUpdateFolder
+  case failDeleteFolder
 }
 
 public protocol FolderUseCase {

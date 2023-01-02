@@ -23,7 +23,20 @@ public struct DefaultFolderRepository: FolderRepository {
   
   // MARK: - Methods
   public func createFolder(requestDTO: FolderRequestDTO) -> Single<Void> {
-    return folderService.request(.createFolder(requestDTO)).map { _ in }
+    return folderService.request(.createFolder(requestDTO))
+      .filterSuccessfulStatusCodes()
+      .map(DefaultResponse.self)
+      .flatMap { response in
+        return .create { observer in
+          if response.apiResponse.isSuccess {
+            observer(.success(()))
+          } else {
+            observer(.failure(FolderError.failCreateFolder))
+          }
+
+          return Disposables.create()
+        }
+      }
   }
   
   public func fetchFolders(start: Int, count: Int) -> Single<[Folder]> {
@@ -47,13 +60,13 @@ public struct DefaultFolderRepository: FolderRepository {
       id: id,
       requestDTO: requestDTO)
     )
-    .map(APIResponse.self)
+    .map(DefaultResponse.self)
     .flatMap { response in
       return .create { observer in
-        if response.isSuccess {
+        if response.apiResponse.isSuccess {
           observer(.success(()))
         } else {
-          observer(.failure(FolderError.failFetchUpdateFolder))
+          observer(.failure(FolderError.failUpdateFolder))
         }
 
         return Disposables.create()
@@ -63,13 +76,13 @@ public struct DefaultFolderRepository: FolderRepository {
   
   public func deleteFolder(id: Int) -> Single<Void> {
     return folderService.request(.deleteFolder(id: id))
-      .map(APIResponse.self)
+      .map(DefaultResponse.self)
       .flatMap { response in
         return .create { observer in
-          if response.isSuccess {
+          if response.apiResponse.isSuccess {
             observer(.success(()))
           } else {
-            observer(.failure(FolderError.failFetchDeleteFolder))
+            observer(.failure(FolderError.failDeleteFolder))
           }
 
           return Disposables.create()
