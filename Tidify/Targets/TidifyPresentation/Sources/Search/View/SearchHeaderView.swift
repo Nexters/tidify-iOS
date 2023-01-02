@@ -55,13 +55,13 @@ private extension SearchHeaderView {
     }
 
     historyListGuideLabel.snp.makeConstraints {
-      $0.centerY.equalToSuperview()
+      $0.top.bottom.equalToSuperview().inset(32)
       $0.leading.equalToSuperview().offset(20)
     }
 
     eraseAllButton.snp.makeConstraints {
-      $0.centerY.equalToSuperview()
-      $0.trailing.equalToSuperview().offset(-20)
+      $0.top.bottom.equalTo(historyListGuideLabel)
+      $0.trailing.equalToSuperview().inset(20)
     }
   }
 }
