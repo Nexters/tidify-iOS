@@ -44,8 +44,9 @@ public final class DefaultMainCoordinator: MainCoordinator {
 
 private extension DefaultMainCoordinator {
   func startOnboarding() {
-    guard let onboardingCoordinator = container.resolve(type: OnboardingCoordinator.self)
-            as? DefaultOnboardingCoordinator else { return }
+    guard let onboardingCoordinator = container.resolve(type: OnboardingCoordinator.self) else {
+      return
+    }
 
     onboardingCoordinator.parentCoordinator = self
     addChild(onboardingCoordinator)
@@ -54,8 +55,9 @@ private extension DefaultMainCoordinator {
   }
 
   func startSignIn() {
-    guard let signInCoordinator = container.resolve(type: SignInCoordinator.self)
-            as? DefaultSignInCoordinator else { return }
+    guard let signInCoordinator = container.resolve(type: SignInCoordinator.self) else {
+      return
+    }
 
     signInCoordinator.parentCoordinator = self
     addChild(signInCoordinator)
@@ -64,8 +66,9 @@ private extension DefaultMainCoordinator {
   }
   
   func startTabBar() {
-    guard let tabBarCoordinator = container.resolve(type: TabBarCoordinator.self)
-            as? DefaultTabBarCoordinator else { return }
+    guard let tabBarCoordinator = container.resolve(type: TabBarCoordinator.self) else {
+      return
+    }
 
     tabBarCoordinator.parentCoordinator = self
     addChild(tabBarCoordinator)

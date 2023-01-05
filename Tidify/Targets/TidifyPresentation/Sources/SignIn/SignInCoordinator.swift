@@ -11,6 +11,8 @@ import TidifyDomain
 import UIKit
 
 protocol SignInCoordinator: Coordinator {
+  var parentCoordinator: Coordinator? { get set }
+  
   func didSuccessSignIn()
   func pushAuthView(urlString: String)
   func popAuthView()
