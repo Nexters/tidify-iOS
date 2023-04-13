@@ -88,7 +88,7 @@ extension BookmarkService: TargetType {
       return [
         "folder_id": requestDTO.folderID,
         "bookmark_url": requestDTO.url,
-        "bookmark_title": requestDTO.title
+        "bookmark_title": requestDTO.name
       ]
 
     case .deleteBookmark(let bookmarkID):
@@ -101,7 +101,7 @@ extension BookmarkService: TargetType {
         "bookmark_id": bookmarkID,
         "folder_id": requestDTO.folderID,
         "bookmark_url": requestDTO.url,
-        "bookmark_title": requestDTO.title
+        "bookmark_title": requestDTO.name
       ]
     }
   }

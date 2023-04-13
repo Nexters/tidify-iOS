@@ -61,7 +61,7 @@ final class MockBookmarkRepository: BookmarkRepository {
       if var updateTargetBookmark = self?.bookmarks.first(where: { $0.id == bookmarkID}) {
         updateTargetBookmark.updateBookmark(with: requestDTO)
 
-        if updateTargetBookmark.title == requestDTO.title,
+        if updateTargetBookmark.name == requestDTO.name,
            updateTargetBookmark.urlString == requestDTO.url {
           observer(.success(()))
         } else {

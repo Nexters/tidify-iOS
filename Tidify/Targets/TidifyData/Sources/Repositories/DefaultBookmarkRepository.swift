@@ -42,19 +42,14 @@ final class DefaultBookmarkRepository: BookmarkRepository {
 
   public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
     return bookmarkService.rx.request(.createBookmark(requestDTO))
-      .filterSuccessfulStatusCodes()
-      .map(APIResponse.self)
-      .flatMap { response in
+      .map(BookmarkDTO.self)
+      .catch { _ in
         return .create { observer in
-          if response.isSuccess {
-            observer(.success(()))
-          } else {
-            observer(.failure(BookmarkError.failCreateBookmark))
-          }
-
+          observer(.failure(BookmarkError.failCreateBookmark))
           return Disposables.create()
         }
       }
+      .map { _ in }
   }
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {

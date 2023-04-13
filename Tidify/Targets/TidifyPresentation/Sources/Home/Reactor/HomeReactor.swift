@@ -56,8 +56,8 @@ final class HomeReactor: Reactor {
         .map { $0.filter { $0.id != bookmark.id } }
         .map { .setBookmarks($0) }
 
-    case let .didFetchSharedBookmark(url, title):
-      return useCase.createBookmark(requestDTO: .init(folderID: 0, url: url, title: title))
+    case let .didFetchSharedBookmark(url, name):
+      return useCase.createBookmark(requestDTO: .init(folderID: 0, url: url, name: name))
         .flatMapLatest { [weak self] _ -> Observable<[Bookmark]> in
           guard let usecase = self?.useCase else {
             return .just([])
