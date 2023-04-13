@@ -18,7 +18,7 @@ private enum Layer: CaseIterable {
   }
 }
 
-private let deploymentTarget: DeploymentTarget = .iOS(targetVersion: "13.0", devices: [.iphone])
+private let deploymentTarget: DeploymentTarget = .iOS(targetVersion: "14.0", devices: [.iphone])
 
 // MARK: - Project
 
