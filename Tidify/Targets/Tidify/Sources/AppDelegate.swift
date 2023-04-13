@@ -52,7 +52,7 @@ private extension AppDelegate {
   func setupLibrary() {
 
     // KakaoSDK
-    guard let appKey: String = Bundle.main.object(forInfoDictionaryKey: "KAKAO_API_KEY") as? String
+    guard let appKey: String = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String
     else { return }
     KakaoSDK.initSDK(appKey: appKey)
   }

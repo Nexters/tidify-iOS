@@ -9,9 +9,11 @@
 import TidifyDomain
 
 import RxSwift
+import RxKakaoSDKUser
+import KakaoSDKUser
 import Moya
 
-public struct DefaultSignInRepository: SignInRepository {
+final class DefaultSignInRepository: SignInRepository {
   // MARK: - Properties
   private let authService: MoyaProvider<AuthService>
   
@@ -22,16 +24,40 @@ public struct DefaultSignInRepository: SignInRepository {
   
   // MARK: - Methods
   public func tryAppleLogin(token: String) -> Single<UserToken> {
-    return authService.request(.apple(token: token))
+    return authService.rx.request(.apple(token: token))
       .map(UserTokenDTO.self)
       .flatMap { tokenDTO in
         return .create { observer in
-          if tokenDTO.response.isSuccess {
-            observer(.success(tokenDTO.toDomain()))
-          }
-          
+          observer(.success(tokenDTO.toDomain()))
           return Disposables.create()
         }
+      }
+  }
+
+  public func tryKakaoLogin() -> Observable<UserToken> {
+    if UserApi.isKakaoTalkLoginAvailable() {
+      return UserApi.shared.rx.loginWithKakaoTalk()
+        .withUnretained(self)
+        .flatMapLatest { owner, oAuthToken in
+          return owner.requestKakaoSignIn(accessToken: oAuthToken.accessToken)
+        }
+    } else {
+      return UserApi.shared.rx.loginWithKakaoAccount()
+        .withUnretained(self)
+        .flatMapLatest { owner, oAuthToken in
+          return owner.requestKakaoSignIn(accessToken: oAuthToken.accessToken)
+        }
+    }
+  }
+}
+
+private extension DefaultSignInRepository {
+  func requestKakaoSignIn(accessToken: String) -> Single<UserToken> {
+    authService.rx.request(.tryKakaoSignIn(accessToken: accessToken))
+      .map(UserTokenDTO.self)
+      .map { response in
+        print("response: \(response)")
+        return response.toDomain()
       }
   }
 }

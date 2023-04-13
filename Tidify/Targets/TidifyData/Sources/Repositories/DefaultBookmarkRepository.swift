@@ -11,7 +11,7 @@ import TidifyDomain
 import Moya
 import RxSwift
 
-public struct DefaultBookmarkRepository: BookmarkRepository {
+final class DefaultBookmarkRepository: BookmarkRepository {
 
   // MARK: - Properties
   private let bookmarkService: MoyaProvider<BookmarkService>
@@ -24,7 +24,7 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   // MARK: - Methods
 
   public func fetchBookmarkList(folderID: Int) -> Single<[Bookmark]> {
-    return bookmarkService.request(.fetchBookmarkList(folderID: folderID))
+    return bookmarkService.rx.request(.fetchBookmarkList(folderID: folderID))
       .filterSuccessfulStatusCodes()
       .map(BookmarkListDTO.self)
       .flatMap { listDTO in
@@ -41,7 +41,7 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   }
 
   public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkService.request(.createBookmark(requestDTO))
+    return bookmarkService.rx.request(.createBookmark(requestDTO))
       .filterSuccessfulStatusCodes()
       .map(APIResponse.self)
       .flatMap { response in
@@ -58,7 +58,7 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   }
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
-    return bookmarkService.request(.deleteBookmark(bookmarkID: bookmarkID))
+    return bookmarkService.rx.request(.deleteBookmark(bookmarkID: bookmarkID))
       .filterSuccessfulStatusCodes()
       .map(APIResponse.self)
       .flatMap { response in
@@ -75,7 +75,7 @@ public struct DefaultBookmarkRepository: BookmarkRepository {
   }
 
   public func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkService.request(.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO))
+    return bookmarkService.rx.request(.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO))
       .filterSuccessfulStatusCodes()
       .map(APIResponse.self)
       .flatMap { response in

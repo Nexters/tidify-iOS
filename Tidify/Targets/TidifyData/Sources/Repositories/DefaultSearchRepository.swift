@@ -12,7 +12,7 @@ import TidifyDomain
 import Moya
 import RxSwift
 
-public struct DefaultSearchRepository: SearchRepository {
+final class DefaultSearchRepository: SearchRepository {
 
   // MARK: - Properties
   static let searchHistory: String = "SearchHistory"
@@ -39,7 +39,7 @@ public struct DefaultSearchRepository: SearchRepository {
       saveQuery(query: query)
     }
 
-    return bookmarkService.request(.fetchBookmarkList(keyword: query))
+    return bookmarkService.rx.request(.fetchBookmarkList(keyword: query))
       .map(BookmarkListDTO.self)
       .flatMap { bookmarkListDTO in
         return .create { observer in

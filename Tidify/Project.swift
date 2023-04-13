@@ -72,8 +72,13 @@ func makeTidifyAppTarget(
       "CFBundleDisplayName": "$(PRODUCT_NAME)",
       "UILaunchStoryboardName": "LaunchScreen",
       "UIUserInterfaceStyle": "Light",
-      "CFBundleURLTypes": ["CFBundleTypeRole": "Editor", "CFBundleURLSchemes": ["kakaoc7088851270493d80c903f77ecbad7e5"]],
-      "KAKAO_API_KEY": "c7088851270493d80c903f77ecbad7e5",
+      "CFBundleURLTypes": [
+        [
+          "CFBundleTypeRole": "Editor",
+          "CFBundleURLSchemes": ["kakao${KAKAO_NATIVE_APP_KEY}"]
+        ]
+      ],
+      "KAKAO_NATIVE_APP_KEY": "${KAKAO_NATIVE_APP_KEY}",
       "LSApplicationQueriesSchemes": ["kakaokompassauth", "kakaolink"],
       "NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true],
       "NSPhotoLibraryAddUsageDescription": "사진첩 접근 권한 요청",
@@ -171,14 +176,14 @@ let project: Project = .init(
       dependencies: [
         .target(name: Layer.domain.layerName),
         .external(name: "Moya"),
-        .external(name: "RxMoya")
+        .external(name: "RxMoya"),
+        .external(name: "RxKakaoSDK")
       ]),
     makeTidifyFrameworkTargets(
       name: Layer.domain.layerName,
       platform: .iOS,
       dependencies: [
-        .target(name: Layer.core.layerName),
-        .external(name: "RxKakaoSDK")
+        .target(name: Layer.core.layerName)
       ]),
     makeTidifyFrameworkTargets(
       name: Layer.core.layerName,
