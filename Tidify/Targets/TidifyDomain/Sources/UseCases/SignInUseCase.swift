@@ -14,7 +14,7 @@ public protocol SignInUseCase {
   var signInRepository: SignInRepository { get set }
 
   func tryAppleSignIn(token: String) -> Observable<UserToken>
-  func tryWebViewSignIn(type: SocialLoginType) -> Observable<String>
+  func tryKakaoSignIn() -> Observable<UserToken>
 }
 
 public final class DefaultSignInUseCase: SignInUseCase {
@@ -32,11 +32,7 @@ public final class DefaultSignInUseCase: SignInUseCase {
     signInRepository.tryAppleLogin(token: token).asObservable()
   }
   
-  public func tryWebViewSignIn(type: SocialLoginType) -> Observable<String> {
-    switch type {
-    case .kakao: return Observable.just(AppProperties.baseURL + "/auth/kakao")
-    case .google: return Observable.just(AppProperties.baseURL + "/auth/google")
-    default: return .empty()
-    }
+  public func tryKakaoSignIn() -> Observable<UserToken> {
+    signInRepository.tryKakaoLogin()
   }
 }

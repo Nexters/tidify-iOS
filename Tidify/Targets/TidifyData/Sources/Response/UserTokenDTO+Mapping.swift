@@ -13,12 +13,12 @@ struct UserTokenDTO: Decodable {
   // MARK: - Properties
   let accessToken: String
   let refreshToken: String
-  let response: APIResponse
+  let key: String
+  let oAuthType: String
 
   enum CodingKeys: String, CodingKey {
-    case accessToken = "access_token"
-    case refreshToken = "refresh_token"
-    case response = "api_response"
+    case accessToken, refreshToken, key
+    case oAuthType = "type"
   }
 }
 

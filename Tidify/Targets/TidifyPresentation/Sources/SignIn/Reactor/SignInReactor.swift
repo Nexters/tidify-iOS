@@ -30,13 +30,12 @@ final class SignInReactor: Reactor {
 
   enum Action {
     case tryAppleSignIn(userToken: String)
-    case tryWebViewSignIn(type: SocialLoginType)
+    case tryKakaoSignIn
   }
 
   enum Mutation {
     case setLoading(Bool)
     case setUserToken(UserToken)
-    case openWebView(String)
   }
 
   struct State {
@@ -52,10 +51,10 @@ final class SignInReactor: Reactor {
         usecase.tryAppleSignIn(token: userToken).map { .setUserToken($0) },
         .just(.setLoading(false))
       ])
-    case .tryWebViewSignIn(let type):
+    case .tryKakaoSignIn:
       return .concat([
         .just(.setLoading(true)),
-        usecase.tryWebViewSignIn(type: type).map { .openWebView($0) },
+        usecase.tryKakaoSignIn().map { .setUserToken($0) },
         .just(.setLoading(false))
       ])
     }
@@ -77,9 +76,6 @@ final class SignInReactor: Reactor {
         KeyChain.save(key: .refreshToken, data: refreshTokenData)
       }
       coordinator.didSuccessSignIn()
-      
-    case .openWebView(let urlString):
-      coordinator.pushAuthView(urlString: urlString)
     }
 
     return newState

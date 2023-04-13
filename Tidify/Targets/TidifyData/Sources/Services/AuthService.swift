@@ -13,7 +13,8 @@ import Moya
 
 enum AuthService {
   case apple(token: String)
-  case updateToken
+  case tryKakaoSignIn(accessToken: String)
+
 }
 
 extension AuthService: TargetType {
@@ -24,14 +25,14 @@ extension AuthService: TargetType {
   var path: String {
     switch self {
     case .apple: return "/auth/apple"
-    case .updateToken: return "/signin"
+    case .tryKakaoSignIn: return "/oauth2/login"
     }
   }
 
   var method: Moya.Method {
     switch self {
     case .apple: return .post
-    case .updateToken: return .get
+    case .tryKakaoSignIn: return .get
     }
   }
 
@@ -44,10 +45,9 @@ extension AuthService: TargetType {
     let encoding: ParameterEncoding
 
     switch self.method {
-    case .get:
-      return .requestPlain
-    case .post, .patch, .put:
+    case .post, .patch, .put, .delete:
       encoding = JSONEncoding.default
+
     default:
       encoding = URLEncoding.default
     }
@@ -57,17 +57,17 @@ extension AuthService: TargetType {
 
   var headers: [String : String]? {
     switch self {
-    case .updateToken:
-      return ["refresh-token": AppProperties.refreshToken]
     case .apple:
       return nil
+    case .tryKakaoSignIn(let accessToken):
+      return ["Authorization": accessToken]
     }
   }
 
   private var parameters: [String: Any]? {
     switch self {
-    case .apple(let token): return ["id_token": token]
-    case .updateToken: return nil
+    case .apple: return ["type": "APPLE"]
+    case .tryKakaoSignIn: return ["type": "KAKAO"]
     }
   }
 }
