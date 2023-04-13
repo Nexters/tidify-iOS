@@ -13,7 +13,7 @@ import RxKakaoSDKUser
 import KakaoSDKUser
 import Moya
 
-public struct DefaultSignInRepository: SignInRepository {
+final class DefaultSignInRepository: SignInRepository {
   // MARK: - Properties
   private let authService: MoyaProvider<AuthService>
   
@@ -28,28 +28,24 @@ public struct DefaultSignInRepository: SignInRepository {
       .map(UserTokenDTO.self)
       .flatMap { tokenDTO in
         return .create { observer in
-//          if tokenDTO.response.isSuccess {
-//            observer(.success(tokenDTO.toDomain()))
-//          }
-          
+          observer(.success(tokenDTO.toDomain()))
           return Disposables.create()
         }
       }
   }
 
   public func tryKakaoLogin() -> Observable<UserToken> {
-    let isInstalledKakaoTalk: Bool = UserApi.isKakaoTalkLoginAvailable()
-
-    if isInstalledKakaoTalk {
+    if UserApi.isKakaoTalkLoginAvailable() {
       return UserApi.shared.rx.loginWithKakaoTalk()
-        .flatMap { oAuthToken in
-          self.requestKakaoSignIn(accessToken: oAuthToken.accessToken)
+        .withUnretained(self)
+        .flatMapLatest { owner, oAuthToken in
+          return owner.requestKakaoSignIn(accessToken: oAuthToken.accessToken)
         }
     } else {
       return UserApi.shared.rx.loginWithKakaoAccount()
-        .flatMap { oAuthToken in
-          print("oAuthToken: \(oAuthToken)")
-          return self.requestKakaoSignIn(accessToken: oAuthToken.accessToken)
+        .withUnretained(self)
+        .flatMapLatest { owner, oAuthToken in
+          return owner.requestKakaoSignIn(accessToken: oAuthToken.accessToken)
         }
     }
   }

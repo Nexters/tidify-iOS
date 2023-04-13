@@ -15,8 +15,6 @@ public enum SearchError: Error {
 }
 
 public protocol SearchUseCase {
-  var searchRepository: SearchRepository { get }
-
   /// 최근 검색내역을 반환합니다.
   func fetchSearchHistory() -> Observable<[String]>
 
@@ -27,10 +25,10 @@ public protocol SearchUseCase {
   func eraseAllSearchHistory() -> Observable<Void>
 }
 
-public final class DefaultSearchUseCase: SearchUseCase {
+final class DefaultSearchUseCase: SearchUseCase {
 
   // MARK: - Properties
-  public var searchRepository: SearchRepository
+  private let searchRepository: SearchRepository
 
   public init(searchRepository: SearchRepository) {
     self.searchRepository = searchRepository

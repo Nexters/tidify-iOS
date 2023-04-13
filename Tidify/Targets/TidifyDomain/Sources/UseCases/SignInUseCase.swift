@@ -11,16 +11,13 @@ import TidifyCore
 import RxSwift
 
 public protocol SignInUseCase {
-  var signInRepository: SignInRepository { get set }
-
   func tryAppleSignIn(token: String) -> Observable<UserToken>
   func tryKakaoSignIn() -> Observable<UserToken>
 }
 
-public final class DefaultSignInUseCase: SignInUseCase {
+final class DefaultSignInUseCase: SignInUseCase {
 
-  // MARK: - Properties
-  public var signInRepository: SignInRepository
+  private let signInRepository: SignInRepository
 
   // MARK: - Initializer
   public init(repository: SignInRepository) {
