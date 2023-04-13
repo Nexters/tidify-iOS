@@ -19,7 +19,7 @@ final class BookmarkCreationViewController: UIViewController, View {
   private var urlGuideLabel: UILabel = .init()
   private var urlTextField: UITextField = .init()
   private var bookmarkGuideLabel: UILabel = .init()
-  private var titleTextField: UITextField = .init()
+  private var nameTextField: UITextField = .init()
   private var folderGuideLabel: UILabel = .init()
   private var createBookmarkButton: UIButton = .init()
   private var folderTextField: TidifyRightButtonTextField = .init(
@@ -51,18 +51,11 @@ private extension BookmarkCreationViewController {
     createBookmarkButton.rx.tap
       .withUnretained(self)
       .map { owner, _ -> Action in
-        let folderID: Int = reactor.currentState.folders[owner.selectedFolderIndexRelay.value].id
-
-        var title: String = owner.titleTextField.text ?? ""
-        if title.isEmpty {
-          title = owner.urlTextField.text ?? ""
-        }
-
-        let requestDTO: BookmarkRequestDTO = .init(
-          folderID: folderID,
-          url: owner.urlTextField.text ?? "",
-          title: title
-        )
+        let index = owner.selectedFolderIndexRelay.value
+        let folderID = reactor.currentState.folders[index].id
+        let url = owner.urlTextField.text ?? ""
+        let name = owner.nameTextField.text ?? url
+        let requestDTO = BookmarkRequestDTO(folderID: folderID, url: url, name: name)
 
         return .didTapCreateButton(requestDTO)
       }
@@ -128,7 +121,7 @@ private extension BookmarkCreationViewController {
     view.addSubview(urlGuideLabel)
     view.addSubview(urlTextField)
     view.addSubview(bookmarkGuideLabel)
-    view.addSubview(titleTextField)
+    view.addSubview(nameTextField)
     view.addSubview(folderGuideLabel)
     view.addSubview(folderTextField)
     view.addSubview(createBookmarkButton)
@@ -137,7 +130,7 @@ private extension BookmarkCreationViewController {
     urlTextField = setTextField(urlTextField, placeholder: "URL 주소를 넣어주세요")
 
     bookmarkGuideLabel = setGuideLabel(bookmarkGuideLabel, title: "북마크 이름")
-    titleTextField = setTextField(titleTextField, placeholder: "입력하지 않으면 자동으로 저장돼요")
+    nameTextField = setTextField(nameTextField, placeholder: "입력하지 않으면 자동으로 저장돼요")
 
     folderGuideLabel = setGuideLabel(folderGuideLabel, title: "저장할 폴더")
 
@@ -170,7 +163,7 @@ private extension BookmarkCreationViewController {
       $0.trailing.lessThanOrEqualToSuperview()
     }
 
-    titleTextField.snp.makeConstraints {
+    nameTextField.snp.makeConstraints {
       $0.top.equalTo(bookmarkGuideLabel.snp.bottom).offset(16)
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.equalToSuperview().offset(-sidePadding)
@@ -178,7 +171,7 @@ private extension BookmarkCreationViewController {
     }
 
     folderGuideLabel.snp.makeConstraints {
-      $0.top.equalTo(titleTextField.snp.bottom).offset(40)
+      $0.top.equalTo(nameTextField.snp.bottom).offset(40)
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.lessThanOrEqualToSuperview()
     }

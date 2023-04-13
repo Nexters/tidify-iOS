@@ -24,6 +24,6 @@ public struct BookmarkListDTO: Decodable {
 
 extension BookmarkListDTO {
   public func toDomain() -> [Bookmark] {
-    return bookmarks.map { $0.toDomaion() }
+    return bookmarks.map { $0.toDomain() }
   }
 }

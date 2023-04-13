@@ -36,8 +36,8 @@ final class MockSearchRepository: SearchRepository {
 
   func fetchSearchResult(query: String) -> Single<[Bookmark]> {
     return .create { [weak self] observer in
-      if self?.bookmarks.map({ $0.title }).contains(query) ?? false,
-         let bookmark = self?.bookmarks.first(where: { $0.title == query }) {
+      if self?.bookmarks.map({ $0.name }).contains(query) ?? false,
+         let bookmark = self?.bookmarks.first(where: { $0.name == query }) {
         observer(.success([bookmark]))
       } else {
         observer(.success([]))
