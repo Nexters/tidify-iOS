@@ -9,6 +9,8 @@
 import UIKit
 
 protocol OnboardingCoordinator: Coordinator {
+  var parentCoordinator: Coordinator? { get set }
+
   func showNextScene()
 }
 

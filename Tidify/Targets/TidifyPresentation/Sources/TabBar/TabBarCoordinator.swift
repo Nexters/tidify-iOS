@@ -24,7 +24,9 @@ enum TabBarItem: CaseIterable {
   }
 }
 
-protocol TabBarCoordinator: Coordinator {}
+protocol TabBarCoordinator: Coordinator {
+  var parentCoordinator: Coordinator? { get set }
+}
 
 final class DefaultTabBarCoordinator: TabBarCoordinator {
   
