@@ -23,11 +23,11 @@ public struct DefaultFolderRepository: FolderRepository {
   
   // MARK: - Methods
   public func createFolder(requestDTO: FolderRequestDTO) -> Single<Void> {
-    return folderService.request(.createFolder(requestDTO)).map { _ in }
+    return folderService.rx.request(.createFolder(requestDTO)).map { _ in }
   }
   
   public func fetchFolders(start: Int, count: Int) -> Single<[Folder]> {
-    return folderService.request(.fetchFolders(start: start, count: count))
+    return folderService.rx.request(.fetchFolders(start: start, count: count))
       .map(FolderListDTO.self)
       .flatMap { folderListDTO in
         return .create { observer in
@@ -43,7 +43,7 @@ public struct DefaultFolderRepository: FolderRepository {
   }
   
   public func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void> {
-    return folderService.request(.updateFolder(
+    return folderService.rx.request(.updateFolder(
       id: id,
       requestDTO: requestDTO)
     )
@@ -62,7 +62,7 @@ public struct DefaultFolderRepository: FolderRepository {
   }
   
   public func deleteFolder(id: Int) -> Single<Void> {
-    return folderService.request(.deleteFolder(id: id))
+    return folderService.rx.request(.deleteFolder(id: id))
       .map(APIResponse.self)
       .flatMap { response in
         return .create { observer in

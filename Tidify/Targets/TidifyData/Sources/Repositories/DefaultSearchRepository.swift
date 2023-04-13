@@ -39,7 +39,7 @@ public struct DefaultSearchRepository: SearchRepository {
       saveQuery(query: query)
     }
 
-    return bookmarkService.request(.fetchBookmarkList(keyword: query))
+    return bookmarkService.rx.request(.fetchBookmarkList(keyword: query))
       .map(BookmarkListDTO.self)
       .flatMap { bookmarkListDTO in
         return .create { observer in
