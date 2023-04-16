@@ -27,8 +27,11 @@ extension BookmarkService: TargetType {
     let baseRoutePath: String = "/bookmarks"
 
     switch self {
-    case .fetchBookmarkList, .createBookmark, .deleteBookmark, .updateBookmark:
+    case .fetchBookmarkList, .createBookmark, .deleteBookmark:
       return baseRoutePath
+
+    case .updateBookmark(let bookmarkID, _):
+      return baseRoutePath + "/\(bookmarkID)"
     }
   }
 
@@ -41,7 +44,7 @@ extension BookmarkService: TargetType {
     case .deleteBookmark:
       return .delete
     case .updateBookmark:
-      return .put
+      return .patch
     }
   }
 
@@ -96,12 +99,11 @@ extension BookmarkService: TargetType {
         "bookmark_id": bookmarkID
       ]
 
-    case let .updateBookmark(bookmarkID, requestDTO):
+    case let .updateBookmark(_, requestDTO):
       return [
-        "bookmark_id": bookmarkID,
-        "folder_id": requestDTO.folderID,
-        "bookmark_url": requestDTO.url,
-        "bookmark_title": requestDTO.name
+        "folderId": requestDTO.folderID,
+        "url": requestDTO.url,
+        "name": requestDTO.name
       ]
     }
   }
