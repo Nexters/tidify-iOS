@@ -12,8 +12,8 @@ import ReactorKit
 
 final class FolderReactor: Reactor {
   var initialState: State = .init(folders: [])
-  private var startingFetchNumber: Int = 0
-  private var isEnablePaging: Bool = true
+  private var currentPage: Int = 0
+  private var isLastPage: Bool = false
   private let coordinator: FolderCoordinator
   private let usecase: FolderUseCase
 
@@ -35,6 +35,7 @@ final class FolderReactor: Reactor {
     case pushDetailView(_ folder: Folder)
     case pushEditView(_ folder: Folder)
     case appendFolders([Folder])
+    case deleteFolder(_ index: Int)
   }
 
   struct State {
@@ -44,8 +45,12 @@ final class FolderReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:
+      currentPage = 0
       return usecase.fetchFolders(start: 0, count: 10)
-        .map { .setupFolders($0) }
+        .map { [weak self] in
+          self?.isLastPage = $0.isLast
+          return .setupFolders($0.folders)
+        }
       
     case .didSelect(let folder):
       return .just(.pushDetailView(folder))
@@ -54,15 +59,15 @@ final class FolderReactor: Reactor {
       return .just(.pushEditView(folder))
       
     case .tryDelete(let folder):
-      return usecase.deleteFolder(id: folder.id)
-        .withLatestFrom(state.map { $0.folders }.asObservable())
-        .map { $0.filter { $0.id != folder.id } }
-        .map { .setupFolders($0) }
+      return deleteFolder(folder)
       
     case .didScroll:
-      if !isEnablePaging { return .empty() }
-      return usecase.fetchFolders(start: startingFetchNumber, count: 10)
-        .map { .appendFolders($0) }
+      guard !isLastPage else { return .empty() }
+      return usecase.fetchFolders(start: currentPage, count: 10)
+        .map { [weak self] in
+          self?.isLastPage = $0.isLast
+          return .appendFolders($0.folders)
+        }
     }
   }
 
@@ -71,21 +76,42 @@ final class FolderReactor: Reactor {
 
     switch mutation {
     case .setupFolders(let folders):
-      isEnablePaging = true
       newState.folders = folders
-      startingFetchNumber = 10
+      currentPage += 1
     case .pushDetailView(let folder):
       coordinator.pushDetailScene(folder: folder)
     case .pushEditView(let folder):
       coordinator.pushEditScene(folder: folder)
     case .appendFolders(let folders):
-      if folders.isEmpty { isEnablePaging = false }
-      guard newState.folders.last?.id != folders.last?.id else { break }
-      
       newState.folders += folders
-      startingFetchNumber += 10
+      currentPage += 1
+    case .deleteFolder(let index):
+      newState.folders.remove(at: index)
+      return newState
     }
 
     return newState
+  }
+}
+
+// MARK: - Private
+private extension FolderReactor {
+  func deleteFolder(_ folder: Folder) -> Observable<Mutation> {
+    guard let index = currentState.folders.firstIndex(where: { $0.id == folder.id })
+    else { return .empty() }
+
+    let deleteFolderMutation: Observable<Mutation> = usecase.deleteFolder(id: folder.id)
+      .map { .deleteFolder(index) }
+
+    guard !isLastPage else { return deleteFolderMutation }
+    let appendFolderMutation: Observable<Mutation> = usecase.fetchFolders(start: currentPage-1, count: 10)
+      .map { [weak self] in
+        self?.currentPage -= 1
+        self?.isLastPage = $0.isLast
+        guard let lastFolder = $0.folders.last else { return .appendFolders([]) }
+        return .appendFolders([lastFolder])
+      }
+
+    return .concat(deleteFolderMutation, appendFolderMutation)
   }
 }
