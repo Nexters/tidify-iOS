@@ -54,10 +54,10 @@ extension TidifyRightButtonTextField {
     textField.textColor = color
   }
   
-  func getColorHexString() -> String {
+  func getColorString() -> String {
     guard let textColor = textField.textColor else { return .init() }
     
-    return textColor.toHexString()
+    return textColor.toColorString()
   }
 }
 
@@ -78,7 +78,7 @@ private extension TidifyRightButtonTextField {
       $0.attributedPlaceholder = attrString
       $0.backgroundColor = .white
       $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.init(hex: "3C3C43").withAlphaComponent(0.08).cgColor
+      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.cornerRadius(radius: 16)
       $0.font = .t_SB(16)
       $0.textColor = .black

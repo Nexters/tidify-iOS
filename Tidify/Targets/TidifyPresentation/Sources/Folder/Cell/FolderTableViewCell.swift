@@ -37,8 +37,8 @@ final class FolderTableViewCell: UITableViewCell {
   
   func configure(folder: Folder) {
     nameLabel.text = folder.title
-    nameLabel.textColor = UIColor(hex: folder.color)
-    colorView.backgroundColor = UIColor(hex: folder.color)
+    nameLabel.textColor = .toColor(folder.color)
+    colorView.backgroundColor = .toColor(folder.color)
   }
 }
 

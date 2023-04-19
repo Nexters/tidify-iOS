@@ -220,7 +220,7 @@ private extension BookmarkCreationViewController {
       $0.attributedPlaceholder = attrString
       $0.backgroundColor = .white
       $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor(hex: "3C3C43").withAlphaComponent(0.08).cgColor
+      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.cornerRadius(radius: 16)
       $0.font = .t_R(16)
       $0.textColor = .black
@@ -261,7 +261,7 @@ private extension BookmarkCreationViewController {
       }
 
       owner.folderTextField.setText(text: selectedFolder.title)
-      owner.folderTextField.setColor(color: .init(hex: selectedFolder.color))
+      owner.folderTextField.setColor(color: .toColor(selectedFolder.color))
     }
   }
 }
