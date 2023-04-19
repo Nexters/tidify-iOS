@@ -8,9 +8,7 @@
 
 public struct APIResponse: Decodable {
   enum ResponseCode: String {
-    case success = "N200"
-    case failAuthToken = "E300"
-    case expiredToken = "E301"
+    case success = "200"
   }
 
   // MARK: - Properties
@@ -22,8 +20,7 @@ public struct APIResponse: Decodable {
   }
 
   enum CodingKeys: String, CodingKey {
-    case code = "result_code"
-    case message = "result_message"
+    case code, message
   }
 
   public init(from decoder: Decoder) throws {

@@ -11,22 +11,18 @@ import TidifyDomain
 public struct FolderDTO: Decodable {
 
   // MARK: - Properties
-  let createdAt, updatedAt, userEmail: String
-  let id: Int
-  let title, color: String
+  let folderID: Int
+  let folderName, color: String
+  let count: Int
 
   enum CodingKeys: String, CodingKey {
-      case createdAt = "CreatedAt"
-      case updatedAt = "UpdatedAt"
-      case userEmail = "user_email"
-      case id = "folder_id"
-      case title = "folder_title"
-      case color = "folder_color"
+      case folderID = "folderId"
+      case folderName, color, count
   }
 }
 
 extension FolderDTO {
   public func toDomaion() -> Folder {
-    .init(id: id, title: title, color: color)
+    .init(id: folderID, title: folderName, color: color)
   }
 }

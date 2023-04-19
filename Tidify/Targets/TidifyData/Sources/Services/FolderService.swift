@@ -13,7 +13,7 @@ import Moya
 
 enum FolderService {
   case createFolder(_ requestDTO: FolderRequestDTO)
-  case fetchFolders(start: Int = 0, count: Int, keyword: String? = nil)
+  case fetchFolders(start: Int = 0, count: Int = 10)
   case deleteFolder(id: Int)
   case updateFolder(id: Int, requestDTO: FolderRequestDTO)
 }
@@ -24,7 +24,13 @@ extension FolderService: TargetType {
   }
   
   var path: String {
-    return "/folders"
+    let baseRoutePath: String = "/app/folders"
+
+    switch self {
+    case let .updateFolder(id, _): return baseRoutePath + "/\(id)"
+    case .deleteFolder(let id): return baseRoutePath + "/\(id)"
+    default: return baseRoutePath
+    }
   }
 
   var method: Moya.Method {
@@ -34,7 +40,7 @@ extension FolderService: TargetType {
     case .fetchFolders:
       return .get
     case .updateFolder:
-      return .put
+      return .patch
     case .deleteFolder:
       return .delete
     }
@@ -45,26 +51,26 @@ extension FolderService: TargetType {
     case .createFolder(let requestDTO):
       return .requestJSONEncodable(requestDTO)
       
-    case .fetchFolders(let start, let count, let keyword):
-      var param: [String: Any] = ["start": start, "count": count]
-      if let keyword = keyword { param["keyword"] = keyword }
+    case .fetchFolders(let start, let count):
+      let param: [String: Any] = ["page": start, "size": count]
       return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
       
-    case .updateFolder(let id, let requestDTO):
+    case .updateFolder(_, let requestDTO):
       let param: [String: Any] = [
-        "folder_id": id,
-        "folder_title": requestDTO.title,
-        "folder_color": requestDTO.color
+        "folderName": requestDTO.title,
+        "label": requestDTO.color
       ]
       return .requestParameters(parameters: param, encoding: JSONEncoding.default)
       
-    case .deleteFolder(let id):
-      let param: [String: Any] = ["folder_id": id]
-      return .requestParameters(parameters: param, encoding: JSONEncoding.default)
+    case .deleteFolder:
+      return .requestPlain
     }
   }
 
   var headers: [String : String]? {
-    ["access-token": AppProperties.accessToken]
+    [
+      "X-Auth-Token": AppProperties.accessToken,
+      "refreshToken": AppProperties.refreshToken
+    ]
   }
 }

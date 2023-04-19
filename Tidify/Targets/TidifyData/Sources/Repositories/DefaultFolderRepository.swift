@@ -26,13 +26,17 @@ public struct DefaultFolderRepository: FolderRepository {
     return folderService.rx.request(.createFolder(requestDTO)).map { _ in }
   }
   
-  public func fetchFolders(start: Int, count: Int) -> Single<[Folder]> {
+  public func fetchFolders(start: Int, count: Int) -> Single<FetchFoldersResponse> {
     return folderService.rx.request(.fetchFolders(start: start, count: count))
-      .map(FolderListDTO.self)
-      .flatMap { folderListDTO in
+      .map(FolderListResponse.self)
+      .flatMap { response in
         return .create { observer in
-          if folderListDTO.apiResponse.isSuccess {
-            observer(.success(folderListDTO.toDomain()))
+          if response.code.isSuccess {
+            let fetchFoldersResponse = FetchFoldersResponse(
+              folders: response.folderListDTO.toDomain(),
+              isLast: response.folderListDTO.isLast
+            )
+            observer(.success(fetchFoldersResponse))
           } else {
             observer(.failure(FolderError.failFetchFolders))
           }
@@ -47,10 +51,10 @@ public struct DefaultFolderRepository: FolderRepository {
       id: id,
       requestDTO: requestDTO)
     )
-    .map(APIResponse.self)
+    .map(FolderUpdateResponse.self)
     .flatMap { response in
       return .create { observer in
-        if response.isSuccess {
+        if response.code.isSuccess {
           observer(.success(()))
         } else {
           observer(.failure(FolderError.failFetchUpdateFolder))

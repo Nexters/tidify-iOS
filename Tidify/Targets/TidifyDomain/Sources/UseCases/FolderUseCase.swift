@@ -8,6 +8,8 @@
 
 import RxSwift
 
+public typealias FetchFoldersResponse = (folders: [Folder], isLast: Bool)
+
 public enum FolderError: Error {
   case failFetchFolders
   case failFetchCreateFolder
@@ -19,7 +21,7 @@ public protocol FolderUseCase {
   var repository: FolderRepository { get }
 
   func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void>
-  func fetchFolders(start: Int, count: Int) -> Observable<[Folder]>
+  func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse>
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void>
   func deleteFolder(id: Int) -> Observable<Void>
 }
@@ -39,8 +41,8 @@ final class DefaultFolderUseCase: FolderUseCase {
     repository.createFolder(requestDTO: requestDTO).asObservable()
   }
   
-  func fetchFolders(start: Int, count: Int) -> Observable<[Folder]> {
-    repository.fetchFolders(start: start, count: count).asObservable()
+  func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse> {
+    return repository.fetchFolders(start: start, count: count).asObservable()
   }
   
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void> {
