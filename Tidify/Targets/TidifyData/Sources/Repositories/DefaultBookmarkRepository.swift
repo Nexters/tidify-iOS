@@ -11,7 +11,7 @@ import TidifyDomain
 import Moya
 import RxSwift
 
-public struct DefaultBookmarkRepository: BookmarkRepository {
+final class DefaultBookmarkRepository: BookmarkRepository {
 
   // MARK: - Properties
   private let bookmarkService: MoyaProvider<BookmarkService>

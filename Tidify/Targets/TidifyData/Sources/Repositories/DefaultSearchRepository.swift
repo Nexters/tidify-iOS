@@ -12,7 +12,7 @@ import TidifyDomain
 import Moya
 import RxSwift
 
-public struct DefaultSearchRepository: SearchRepository {
+final class DefaultSearchRepository: SearchRepository {
 
   // MARK: - Properties
   static let searchHistory: String = "SearchHistory"

@@ -17,8 +17,6 @@ public enum BookmarkError: Error {
 }
 
 public protocol BookmarkUseCase {
-  var repository: BookmarkRepository { get }
-
   /// id에 대응되는 북마크 리스트를 반환합니다.
   func fetchBookmarkList(folderID: Int) -> Observable<[Bookmark]>
 
@@ -35,31 +33,31 @@ public protocol BookmarkUseCase {
 final class DefaultBookmarkUseCase: BookmarkUseCase {
 
   // MARK: - Properties
-  let repository: BookmarkRepository
+  private let bookmarkRepository: BookmarkRepository
 
   // MARK: - Initializer
   init(repository: BookmarkRepository) {
-    self.repository = repository
+    self.bookmarkRepository = repository
   }
 
   // MARK: - Methods
   func fetchBookmarkList(folderID: Int) -> Observable<[Bookmark]> {
-    repository.fetchBookmarkList(folderID: folderID)
+    bookmarkRepository.fetchBookmarkList(folderID: folderID)
       .asObservable()
   }
 
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void> {
-    repository.createBookmark(requestDTO: requestDTO)
+    bookmarkRepository.createBookmark(requestDTO: requestDTO)
       .asObservable()
   }
 
   func deleteBookmark(bookmarkID: Int) -> Observable<Void> {
-    repository.deleteBookmark(bookmarkID: bookmarkID)
+    bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
       .asObservable()
   }
 
   func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Observable<Void> {
-    repository.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO)
+    bookmarkRepository.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO)
       .asObservable()
   }
 }

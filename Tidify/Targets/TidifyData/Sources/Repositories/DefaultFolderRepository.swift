@@ -11,7 +11,7 @@ import TidifyDomain
 import Moya
 import RxSwift
 
-public struct DefaultFolderRepository: FolderRepository {
+final class DefaultFolderRepository: FolderRepository {
   
   // MARK: - Properties
   private let folderService: MoyaProvider<FolderService>

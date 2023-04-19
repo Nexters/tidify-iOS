@@ -8,7 +8,7 @@
 
 import RxSwift
 
-public protocol FolderRepository {
+public protocol FolderRepository: AnyObject {
   
   //MARK: - CRUD
   func createFolder(requestDTO: FolderRequestDTO) -> Single<Void>

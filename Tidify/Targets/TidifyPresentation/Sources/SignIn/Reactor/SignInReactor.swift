@@ -48,7 +48,8 @@ final class SignInReactor: Reactor {
     case .tryAppleSignIn(let userToken):
       return .concat([
         .just(.setLoading(true)),
-        usecase.tryAppleSignIn(token: userToken).map { .setUserToken($0) },
+        usecase.tryAppleSignIn(token: userToken)
+          .map { .setUserToken($0) },
         .just(.setLoading(false))
       ])
     case .tryKakaoSignIn:
