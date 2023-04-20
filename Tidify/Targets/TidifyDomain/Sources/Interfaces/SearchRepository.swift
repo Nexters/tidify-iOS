@@ -8,7 +8,7 @@
 
 import RxSwift
 
-public protocol SearchRepository {
+public protocol SearchRepository: AnyObject {
 
   /// 로컬에 저장되어 있는 검색내역을 반환합니다.
   func fetchSearchHistory() -> Single<[String]>

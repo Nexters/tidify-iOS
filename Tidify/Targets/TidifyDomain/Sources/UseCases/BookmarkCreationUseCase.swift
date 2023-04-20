@@ -9,9 +9,6 @@
 import RxSwift
 
 public protocol BookmarkCreationUseCase {
-  var bookmarkRepository: BookmarkRepository { get }
-  var folderRepository: FolderRepository { get }
-
   /// 북마크를 생성합니다.
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void>
 
@@ -22,8 +19,8 @@ public protocol BookmarkCreationUseCase {
 final class DefaultBookmarkCreationUseCase: BookmarkCreationUseCase {
 
   // MARK: - Properties
-  let bookmarkRepository: BookmarkRepository
-  let folderRepository: FolderRepository
+  private let bookmarkRepository: BookmarkRepository
+  private let folderRepository: FolderRepository
 
   init(
     bookmarkRepository: BookmarkRepository,
