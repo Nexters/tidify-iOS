@@ -17,6 +17,8 @@ final class HomeReactor: Reactor {
 
   private let coordinator: HomeCoordinator
   private let useCase: BookmarkUseCase
+  private var currentPage: Int = 0
+  private var isLastPage: Bool = false
 
   // MARK: - Initializer
   init(coordinator: HomeCoordinator, useCase: BookmarkUseCase) {
@@ -25,7 +27,7 @@ final class HomeReactor: Reactor {
   }
 
   enum Action {
-    case viewWillAppear
+    case fetchBookmarks(isInitialRequest: Bool = false)
     case didSelect(_ bookmark: Bookmark)
     case didDelete(_ bookmark: Bookmark)
     case didFetchSharedBookmark(url: String, title: String)
@@ -43,9 +45,17 @@ final class HomeReactor: Reactor {
 
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewWillAppear:
-      return useCase.fetchBookmarkList(folderID: 0)
-        .map { .setBookmarks($0) }
+    case .fetchBookmarks(let isInitialRequest):
+      guard !(isLastPage && !isInitialRequest) else {
+        return .empty()
+      }
+
+      return useCase.fetchBookmarkList(requestDTO: .init(page: isInitialRequest ? 0 : currentPage + 1))
+        .flatMapLatest { [weak self] (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool) -> Observable<Mutation> in
+          self?.currentPage = currentPage
+          self?.isLastPage = isLastPage
+          return Observable<Mutation>.just(.setBookmarks(bookmarks))
+        }
 
     case .didSelect(let bookmark):
       return .just(.pushWebView(bookmark))
@@ -58,14 +68,14 @@ final class HomeReactor: Reactor {
 
     case let .didFetchSharedBookmark(url, name):
       return useCase.createBookmark(requestDTO: .init(folderID: 0, url: url, name: name))
-        .flatMapLatest { [weak self] _ -> Observable<[Bookmark]> in
-          guard let usecase = self?.useCase else {
-            return .just([])
+        .flatMapLatest { [weak self] _ -> Observable<FetchBookmarkListResposne> in
+          guard let useCase = self?.useCase else {
+            return .empty()
           }
 
-          return usecase.fetchBookmarkList(folderID: 0)
+          return useCase.fetchBookmarkList(requestDTO: .init(page: self?.currentPage ?? 0))
         }
-        .map { .setBookmarks($0) }
+        .map { .setBookmarks($0.bookmarks)}
     }
   }
 
@@ -73,7 +83,9 @@ final class HomeReactor: Reactor {
     var newState: State = state
 
     switch mutation {
-    case .setBookmarks(let bookmarks):
+    case .setBookmarks(let newBookmarks):
+      var bookmarks = newState.bookmarks
+      bookmarks.append(contentsOf: newBookmarks)
       newState.bookmarks = bookmarks
 
     case .pushWebView(let bookmark):

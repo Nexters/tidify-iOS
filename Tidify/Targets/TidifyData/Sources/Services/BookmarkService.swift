@@ -12,8 +12,8 @@ import TidifyDomain
 import Moya
 
 enum BookmarkService {
-  case fetchBookmarkList(start: Int = 0, count: Int = 10, folderID: Int = 0, keyword: String? = nil)
-  case createBookmark(_ requestDTO: BookmarkRequestDTO)
+  case fetchBookmarkList(requestDTO: BookmarkListRequestDTO)
+  case createBookmark(requestDTO: BookmarkRequestDTO)
   case deleteBookmark(bookmarkID: Int)
   case updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO)
 }
@@ -75,36 +75,33 @@ extension BookmarkService: TargetType {
 
   private var parameters: [String: Any]? {
     switch self {
-    case let .fetchBookmarkList(start, count, folderID, keyword):
-      if let keyword = keyword {
-        return [
-          "start": start,
-          "count": count,
-          "folder": folderID,
-          "keyword": keyword
-        ]
-      }
-      return [
-        "start": start,
-        "count": count,
-        "folder": folderID,
+    case let .fetchBookmarkList(request):
+      var params: [String: Any] = [
+        "size": request.size,
+        "page": request.page
       ]
 
-    case .createBookmark(let requestDTO):
+      if let keyword = request.keyword {
+        params["keyword"] = keyword
+      }
+
+      return params
+
+    case .createBookmark(let request):
       return [
-        "folder_id": requestDTO.folderID,
-        "bookmark_url": requestDTO.url,
-        "bookmark_title": requestDTO.name
+        "folder_id": request.folderID,
+        "bookmark_url": request.url,
+        "bookmark_title": request.name
       ]
 
     case .deleteBookmark:
       return nil
 
-    case let .updateBookmark(_, requestDTO):
+    case let .updateBookmark(_, request):
       return [
-        "folderId": requestDTO.folderID,
-        "url": requestDTO.url,
-        "name": requestDTO.name
+        "folderId": request.folderID,
+        "url": request.url,
+        "name": request.name
       ]
     }
   }
