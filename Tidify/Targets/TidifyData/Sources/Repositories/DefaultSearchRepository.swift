@@ -34,21 +34,22 @@ final class DefaultSearchRepository: SearchRepository {
     }
   }
 
-  public func fetchSearchResult(query: String) -> Single<[Bookmark]> {
-    if !query.isEmpty {
-      saveQuery(query: query)
+  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
+    if let keyword = requestDTO.keyword {
+      saveSearchKeyword(keyword: keyword)
     }
 
-    return bookmarkService.rx.request(.fetchBookmarkList(keyword: query))
-      .map(BookmarkListDTO.self)
-      .flatMap { bookmarkListDTO in
+    return bookmarkService.rx.request(.fetchBookmarkList(requestDTO: requestDTO))
+      .map(BookmarkListResponse.self)
+      .flatMap { response in
         return .create { observer in
-          if bookmarkListDTO.response.isSuccess {
-            observer(.success(bookmarkListDTO.toDomain()))
+          if response.isSuccess {
+            let fetchResponse: FetchBookmarkListResposne = (bookmarks: response.bookmarkListDTO.toDomain(), currentPage: response.bookmarkListDTO.currentPage, isLastPage: response.bookmarkListDTO.isLastPage)
+            observer(.success(fetchResponse))
           } else {
             observer(.failure(BookmarkError.failFetchBookmarks))
           }
-          
+
           return Disposables.create()
         }
       }
@@ -72,14 +73,14 @@ final class DefaultSearchRepository: SearchRepository {
 }
 
 private extension DefaultSearchRepository {
-  func saveQuery(query: String) {
+  func saveSearchKeyword(keyword: String) {
     var searchHistory = UserDefaults.standard.array(forKey: Self.searchHistory) as? [String] ?? []
 
     if searchHistory.count > 10 {
       searchHistory.removeFirst()
     }
 
-    searchHistory.append(query)
+    searchHistory.append(keyword)
 
     UserDefaults.standard.set(searchHistory, forKey: Self.searchHistory)
   }

@@ -19,7 +19,7 @@ public protocol SearchUseCase {
   func fetchSearchHistory() -> Observable<[String]>
 
   /// 검색 쿼리에 대응되는 결과를 반환합니다.
-  func fetchSearchResult(query: String) -> Observable<[Bookmark]>
+  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne>
 
   /// 검색내역을 초기화합니다.
   func eraseAllSearchHistory() -> Observable<Void>
@@ -39,10 +39,16 @@ final class DefaultSearchUseCase: SearchUseCase {
       .asObservable()
   }
 
-  public func fetchSearchResult(query: String) -> Observable<[Bookmark]> {
-    searchRepository.fetchSearchResult(query: query)
+  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne> {
+    searchRepository.fetchSearchResult(requestDTO: requestDTO)
       .asObservable()
   }
+
+//  public func fetchSearchResult(query: String) -> Observable<[Bookmark]> {
+//    searchRepository.fetchSearchResult(requestDTO: <#T##BookmarkListRequestDTO#>)
+//    searchRepository.fetchSearchResult(query: query)
+//      .asObservable()
+//  }
 
   public func eraseAllSearchHistory() -> Observable<Void> {
     searchRepository.eraseAllSearchHistory()

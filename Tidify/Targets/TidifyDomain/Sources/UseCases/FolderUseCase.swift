@@ -40,7 +40,7 @@ final class DefaultFolderUseCase: FolderUseCase {
   }
   
   func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse> {
-    return repository.fetchFolders(start: start, count: count).asObservable()
+    return folderRepository.fetchFolders(start: start, count: count).asObservable()
   }
   
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void> {
