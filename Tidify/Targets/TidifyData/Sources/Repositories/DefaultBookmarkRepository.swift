@@ -44,15 +44,11 @@ final class DefaultBookmarkRepository: BookmarkRepository {
       .map(BookmarkResponse.self)
       .flatMap { response in
         return .create { observer in
-          if response.isSuccess {
-            observer(.success(()))
-          } else {
-            observer(.failure(BookmarkError.failCreateBookmark))
-          }
-
+          observer(.failure(BookmarkError.failCreateBookmark))
           return Disposables.create()
         }
       }
+      .map { _ in }
   }
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
