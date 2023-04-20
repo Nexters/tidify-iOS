@@ -23,7 +23,7 @@ final class FolderReactor: Reactor {
   }
 
   enum Action {
-    case viewWillAppear
+    case viewDidLoad
     case didSelect(_ folder: Folder)
     case tryEdit(_ folder: Folder)
     case tryDelete(_ folder: Folder)
@@ -44,8 +44,7 @@ final class FolderReactor: Reactor {
 
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewWillAppear:
-      currentPage = 0
+    case .viewDidLoad:
       return usecase.fetchFolders(start: 0, count: 10)
         .map { [weak self] in
           self?.isLastPage = $0.isLast
@@ -91,6 +90,33 @@ final class FolderReactor: Reactor {
     }
 
     return newState
+  }
+
+  func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+    let folderUpdatedEventMutation: Observable<Mutation> = usecase.updatedFolderObservable
+      .flatMap { [weak self] updatedFolder -> Observable<Mutation> in
+        guard var currentFolder = self?.currentState.folders,
+              let folderIdx = currentFolder.firstIndex(where: { $0.id == updatedFolder.id })
+        else { return .empty() }
+
+        currentFolder[folderIdx].title = updatedFolder.title
+        currentFolder[folderIdx].color = updatedFolder.color
+        self?.currentPage -= 1
+
+        return .just(.setupFolders(currentFolder))
+      }
+
+    let folderCreatedEventMutation: Observable<Mutation> = usecase.createdFolderObservable
+      .flatMap { [weak self] createdFolder -> Observable<Mutation> in
+        guard let currentFolder = self?.currentState.folders,
+              currentFolder.count < 10
+        else { return .empty() }
+
+        self?.currentPage -= 1
+        return .just(.appendFolders([createdFolder]))
+      }
+
+    return .merge(mutation, folderUpdatedEventMutation, folderCreatedEventMutation)
   }
 }
 

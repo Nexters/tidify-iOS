@@ -104,8 +104,8 @@ private extension FolderViewController {
   }
   
   func bindAction(reactor: FolderReactor) {
-    rx.viewWillAppear
-      .map { Action.viewWillAppear }
+    rx.viewDidLoad
+      .map { Action.viewDidLoad }
       .bind(to: reactor.action )
       .disposed(by: disposeBag)
 

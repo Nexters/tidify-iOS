@@ -35,6 +35,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   private let navigationBar: TidifyNavigationBar?
+  private var folderUseCase: FolderUseCase?
   
   private let disposeBag: DisposeBag = .init()
 
@@ -84,8 +85,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushEditScene(folder: Folder) {
-    guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self)
-    else { fatalError() }
+    guard let usecase: FolderUseCase = folderUseCase else { fatalError() }
     let reactor: FolderCreationReactor = .init(coordinator: self, usecase: usecase)
     let viewController: FolderCreationViewController = .init(creationType: .edit, originFolder: folder)
     viewController.reactor = reactor
@@ -96,8 +96,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushCreationScene() {
-    guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self)
-    else { fatalError() }
+    guard let usecase: FolderUseCase = folderUseCase else { fatalError() }
     let reactor: FolderCreationReactor = .init(coordinator: self, usecase: usecase)
     let viewController: FolderCreationViewController = .init(creationType: .create)
     viewController.reactor = reactor
@@ -134,6 +133,7 @@ private extension DefaultFolderCoordinator {
     let reactor: FolderReactor = .init(coordinator: self, usecase: usecase)
     let viewController: FolderViewController = .init(navigationBar)
     viewController.reactor = reactor
+    folderUseCase = usecase
 
     return viewController
   }
