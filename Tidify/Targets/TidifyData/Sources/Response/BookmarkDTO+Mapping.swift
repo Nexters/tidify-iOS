@@ -8,6 +8,18 @@
 
 import TidifyDomain
 
+struct BookmarkResponse: Decodable, Responsable {
+
+  // MARK: Properties
+  let code, message: String
+  let bookmarkDTO: BookmarkDTO
+
+  enum CodingKeys: String, CodingKey {
+    case code, message
+    case bookmarkDTO = "data"
+  }
+}
+
 public struct BookmarkDTO: Decodable {
 
   // MARK: - Properties

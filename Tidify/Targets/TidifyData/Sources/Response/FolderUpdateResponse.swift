@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FolderUpdateResponse: Decodable {
+struct FolderUpdateResponse: Decodable, Responsable {
 
   // MARK: Properties
   let message, code: String
