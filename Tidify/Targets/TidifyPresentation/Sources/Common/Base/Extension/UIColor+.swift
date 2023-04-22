@@ -11,18 +11,27 @@ import UIKit
 public extension UIColor {
 
   // MARK: Properties
-  enum LabelColors: String {
-    case SKYBLUE = "SKYBLUE"
-    case BLUE = "BLUE"
-    case PURPLE = "PURPLE"
-    case GREEN = "GREEN"
-    case YELLOW = "YELLOW"
-    case ORANGE = "ORANGE"
-    case RED = "RED"
-    case BLACK = "BLACK"
+  enum LabelColors {
+    case SKYBLUE
+    case BLUE
+    case PURPLE
+    case GREEN
+    case YELLOW
+    case ORANGE
+    case RED
+    case BLACK
 
     var colorString: String {
-      return rawValue
+      switch self {
+      case .SKYBLUE: return "SKYBLUE"
+      case .BLUE: return "BLUE"
+      case .PURPLE: return "PURPLE"
+      case .GREEN: return "GREEN"
+      case .YELLOW: return "YELLOW"
+      case .ORANGE: return "ORANGE"
+      case .RED: return "RED"
+      case .BLACK: return "BLACK"
+      }
     }
   }
 
