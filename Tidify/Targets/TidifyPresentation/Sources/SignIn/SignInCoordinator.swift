@@ -58,10 +58,10 @@ final class DefaultSignInCoordinator: SignInCoordinator {
 // MARK: - Private
 private extension DefaultSignInCoordinator {
   func getViewController() -> SignInViewController {
-    guard let usecase: SignInUseCase = DIContainer.shared.resolve(type: SignInUseCase.self)
+    guard let useCase: SignInUseCase = DIContainer.shared.resolve(type: SignInUseCase.self)
     else { fatalError() }
 
-    let reactor: SignInReactor = .init(coordinator: self,usecase: usecase)
+    let reactor: SignInReactor = .init(coordinator: self,useCase: useCase)
     let viewController: SignInViewController = .init(nibName: nil, bundle: nil)
     viewController.reactor = reactor
 

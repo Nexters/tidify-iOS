@@ -17,15 +17,15 @@ final class SignInReactor: Reactor {
   var initialState: State = .init()
 
   private let coordinator: SignInCoordinator
-  private let usecase: SignInUseCase
+  private let useCase: SignInUseCase
 
   // MARK: - Initializer
   init(
     coordinator: SignInCoordinator,
-    usecase: SignInUseCase
+    useCase: SignInUseCase
   ) {
     self.coordinator = coordinator
-    self.usecase = usecase
+    self.useCase = useCase
   }
 
   enum Action {
@@ -48,14 +48,13 @@ final class SignInReactor: Reactor {
     case .tryAppleSignIn(let userToken):
       return .concat([
         .just(.setLoading(true)),
-        usecase.tryAppleSignIn(token: userToken)
-          .map { .setUserToken($0) },
+        useCase.tryAppleSignIn(token: userToken).map { .setUserToken($0) },
         .just(.setLoading(false))
       ])
     case .tryKakaoSignIn:
       return .concat([
         .just(.setLoading(true)),
-        usecase.tryKakaoSignIn().map { .setUserToken($0) },
+        useCase.tryKakaoSignIn().map { .setUserToken($0) },
         .just(.setLoading(false))
       ])
     }

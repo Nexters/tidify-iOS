@@ -69,9 +69,9 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushDetailScene(folder: Folder) {
-    guard let usecase: BookmarkUseCase = DIContainer.shared.resolve(type: BookmarkUseCase.self)
+    guard let useCase: BookmarkUseCase = DIContainer.shared.resolve(type: BookmarkUseCase.self)
     else { fatalError() }
-    let reactor: FolderDetailReactor = .init(coordinator: self, useCase: usecase, folderID: folder.id)
+    let reactor: FolderDetailReactor = .init(coordinator: self, useCase: useCase, folderID: folder.id)
     let viewController: FolderDetailViewController = .init(
       folder: folder,
       navigationBar: getDetailNavigationBar(folder: folder)
@@ -85,8 +85,8 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushEditScene(folder: Folder) {
-    guard let usecase: FolderUseCase = folderUseCase else { fatalError() }
-    let reactor: FolderCreationReactor = .init(coordinator: self, usecase: usecase)
+    guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
+    let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
     let viewController: FolderCreationViewController = .init(creationType: .edit, originFolder: folder)
     viewController.reactor = reactor
     navigationController.pushViewController(
@@ -96,8 +96,8 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushCreationScene() {
-    guard let usecase: FolderUseCase = folderUseCase else { fatalError() }
-    let reactor: FolderCreationReactor = .init(coordinator: self, usecase: usecase)
+    guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
+    let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
     let viewController: FolderCreationViewController = .init(creationType: .create)
     viewController.reactor = reactor
     
@@ -126,14 +126,14 @@ final class DefaultFolderCoordinator: FolderCoordinator {
 // MARK: - Private
 private extension DefaultFolderCoordinator {
   func getViewController() -> FolderViewController {
-    guard let usecase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self),
+    guard let useCase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self),
           let navigationBar = navigationBar
     else { fatalError() }
 
-    let reactor: FolderReactor = .init(coordinator: self, usecase: usecase)
+    let reactor: FolderReactor = .init(coordinator: self, useCase: useCase)
     let viewController: FolderViewController = .init(navigationBar)
     viewController.reactor = reactor
-    folderUseCase = usecase
+    folderUseCase = useCase
 
     return viewController
   }

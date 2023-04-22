@@ -15,11 +15,11 @@ final class FolderReactor: Reactor {
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
   private let coordinator: FolderCoordinator
-  private let usecase: FolderUseCase
+  private let useCase: FolderUseCase
 
-  init(coordinator: FolderCoordinator, usecase: FolderUseCase) {
+  init(coordinator: FolderCoordinator, useCase: FolderUseCase) {
     self.coordinator = coordinator
-    self.usecase = usecase
+    self.useCase = useCase
   }
 
   enum Action {
@@ -45,7 +45,7 @@ final class FolderReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad:
-      return usecase.fetchFolders(start: 0, count: 10)
+      return useCase.fetchFolders(start: 0, count: 10)
         .map { [weak self] in
           self?.isLastPage = $0.isLast
           return .setupFolders($0.folders)
@@ -62,7 +62,7 @@ final class FolderReactor: Reactor {
       
     case .didScroll:
       guard !isLastPage else { return .empty() }
-      return usecase.fetchFolders(start: currentPage, count: 10)
+      return useCase.fetchFolders(start: currentPage, count: 10)
         .map { [weak self] in
           self?.isLastPage = $0.isLast
           return .appendFolders($0.folders)
@@ -93,7 +93,7 @@ final class FolderReactor: Reactor {
   }
 
   func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
-    let folderUpdatedEventMutation: Observable<Mutation> = usecase.updatedFolderObservable
+    let folderUpdatedEventMutation: Observable<Mutation> = useCase.updatedFolderObservable
       .flatMap { [weak self] updatedFolder -> Observable<Mutation> in
         guard var currentFolder = self?.currentState.folders,
               let folderIdx = currentFolder.firstIndex(where: { $0.id == updatedFolder.id })
@@ -106,7 +106,7 @@ final class FolderReactor: Reactor {
         return .just(.setupFolders(currentFolder))
       }
 
-    let folderCreatedEventMutation: Observable<Mutation> = usecase.createdFolderObservable
+    let folderCreatedEventMutation: Observable<Mutation> = useCase.createdFolderObservable
       .flatMap { [weak self] createdFolder -> Observable<Mutation> in
         guard let currentFolder = self?.currentState.folders,
               currentFolder.count < 10
@@ -126,11 +126,11 @@ private extension FolderReactor {
     guard let index = currentState.folders.firstIndex(where: { $0.id == folder.id })
     else { return .empty() }
 
-    let deleteFolderMutation: Observable<Mutation> = usecase.deleteFolder(id: folder.id)
+    let deleteFolderMutation: Observable<Mutation> = useCase.deleteFolder(id: folder.id)
       .map { .deleteFolder(index) }
 
     guard !isLastPage else { return deleteFolderMutation }
-    let appendFolderMutation: Observable<Mutation> = usecase.fetchFolders(start: currentPage-1, count: 10)
+    let appendFolderMutation: Observable<Mutation> = useCase.fetchFolders(start: currentPage-1, count: 10)
       .map { [weak self] in
         self?.currentPage -= 1
         self?.isLastPage = $0.isLast
