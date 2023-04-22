@@ -18,7 +18,6 @@ public enum FolderError: Error {
 }
 
 public protocol FolderUseCase {
-  var repository: FolderRepository { get }
   var createdFolderObservable: Observable<Folder> { get }
   var updatedFolderObservable: Observable<Folder> { get }
 
@@ -31,7 +30,7 @@ public protocol FolderUseCase {
 final class DefaultFolderUseCase: FolderUseCase {
 
   // MARK: - Properties
-  let repository: FolderRepository
+  private let folderRepository: FolderRepository
   var createdFolderObservable: Observable<Folder> {
     createdFolderSubject.asObservable()
   }
@@ -43,12 +42,12 @@ final class DefaultFolderUseCase: FolderUseCase {
 
   // MARK: - Initializer
   init(repository: FolderRepository) {
-    self.repository = repository
+    self.folderRepository = repository
   }
 
   // MARK: - Methods
   func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void> {
-    repository.createFolder(requestDTO: requestDTO)
+    folderRepository.createFolder(requestDTO: requestDTO)
       .map { [weak self] createdFolder in
         self?.createdFolderSubject.onNext(createdFolder)
       }
@@ -57,7 +56,7 @@ final class DefaultFolderUseCase: FolderUseCase {
   }
   
   func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse> {
-    return repository.fetchFolders(start: start, count: count).asObservable()
+    return folderRepository.fetchFolders(start: start, count: count).asObservable()
   }
   
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void> {
@@ -66,10 +65,10 @@ final class DefaultFolderUseCase: FolderUseCase {
       title: requestDTO.title,
       color: requestDTO.color
     ))
-    return repository.updateFolder(id: id, requestDTO: requestDTO).asObservable()
+    return folderRepository.updateFolder(id: id, requestDTO: requestDTO).asObservable()
   }
   
   func deleteFolder(id: Int) -> Observable<Void> {
-    repository.deleteFolder(id: id).asObservable()
+    folderRepository.deleteFolder(id: id).asObservable()
   }
 }
