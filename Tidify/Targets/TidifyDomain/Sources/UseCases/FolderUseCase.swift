@@ -39,6 +39,7 @@ final class DefaultFolderUseCase: FolderUseCase {
   }
   private let createdFolderSubject: PublishSubject<Folder> = .init()
   private let updatedFolderSubject: PublishSubject<Folder> = .init()
+  private let disposeBag: DisposeBag = .init()
 
   // MARK: - Initializer
   init(repository: FolderRepository) {
@@ -48,11 +49,12 @@ final class DefaultFolderUseCase: FolderUseCase {
   // MARK: - Methods
   func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void> {
     folderRepository.createFolder(requestDTO: requestDTO)
-      .map { [weak self] createdFolder in
-        self?.createdFolderSubject.onNext(createdFolder)
-      }
-      .map { _ in }
-      .asObservable()
+      .subscribe(onSuccess: { [weak self] in
+        self?.createdFolderSubject.onNext($0)
+      })
+      .disposed(by: disposeBag)
+
+    return .just(())
   }
   
   func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse> {
