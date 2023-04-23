@@ -109,7 +109,7 @@ private extension HomeViewController {
     typealias Action = HomeReactor.Action
 
     rx.viewWillAppear
-      .map { Action.viewWillAppear }
+      .map { Action.fetchBookmarks(isInitialRequest: true) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
@@ -148,7 +148,7 @@ private extension HomeViewController {
       .distinctUntilChanged()
       .bind(to: tableView.rx.items(
         cellIdentifier: "\(BookmarkCell.self)",
-        cellType: BookmarkCell.self)) { idx, model, cell in
+        cellType: BookmarkCell.self)) { _, model, cell in
           cell.configure(bookmark: model)
         }
         .disposed(by: disposeBag)
@@ -162,6 +162,22 @@ private extension HomeViewController {
       .map { $0.bookmarks.isEmpty }
       .bind(to: tableView.rx.isHidden)
       .disposed(by: disposeBag)
+  }
+}
+
+extension HomeViewController: UITableViewDelegate {
+  func tableView(
+    _ tableView: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    guard let bookmarksCount = reactor?.currentState.bookmarks.count else {
+      return
+    }
+
+    if indexPath.row >= bookmarksCount - 5 {
+      reactor?.action.onNext(.fetchBookmarks())
+    }
   }
 }
 

@@ -27,7 +27,7 @@ final class DefaultFolderRepository: FolderRepository {
       .map(FolderCreationResponse.self)
       .flatMap { response in
         return .create { observer in
-          if response.code.isSuccess {
+          if response.isSuccess {
             observer(.success(response.folderCreationDTO.toDomain()))
           } else {
             observer(.failure(FolderError.failFetchCreateFolder))
@@ -43,7 +43,7 @@ final class DefaultFolderRepository: FolderRepository {
       .map(FolderListResponse.self)
       .flatMap { response in
         return .create { observer in
-          if response.code.isSuccess {
+          if response.isSuccess {
             let fetchFoldersResponse = FetchFoldersResponse(
               folders: response.folderListDTO.toDomain(),
               isLast: response.folderListDTO.isLast
@@ -66,7 +66,7 @@ final class DefaultFolderRepository: FolderRepository {
     .map(FolderCreationResponse.self)
     .flatMap { response in
       return .create { observer in
-        if response.code.isSuccess {
+        if response.isSuccess {
           observer(.success(()))
         } else {
           observer(.failure(FolderError.failFetchUpdateFolder))

@@ -8,37 +8,41 @@
 
 import TidifyDomain
 
+struct BookmarkResponse: Decodable, Responsable {
+
+  // MARK: Properties
+  let code, message: String
+  let bookmarkDTO: BookmarkDTO
+
+  enum CodingKeys: String, CodingKey {
+    case code, message
+    case bookmarkDTO = "data"
+  }
+}
+
 public struct BookmarkDTO: Decodable {
 
   // MARK: - Properties
   let id: Int
-  let createdAt: String
-  let updatedAt: String
-  let email: String
   let folderID: Int
   let urlString: String?
-  let title: String
+  let name: String
 
   enum CodingKeys: String, CodingKey {
-    case id = "bookmark_id"
-    case createdAt = "CreatedAt"
-    case updatedAt = "UpdatedAt"
-    case email = "user_email"
-    case folderID = "folder_id"
-    case urlString = "bookmark_url"
-    case title = "bookmark_title"
+    case id = "bookmarkId"
+    case folderID = "folderId"
+    case urlString = "url"
+    case name = "name"
   }
 }
 
 extension BookmarkDTO {
-  public func toDomaion() -> Bookmark {
+  public func toDomain() -> Bookmark {
     .init(
       id: id,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
       folderID: folderID,
       urlString: urlString,
-      title: title
+      name: name
     )
   }
 }

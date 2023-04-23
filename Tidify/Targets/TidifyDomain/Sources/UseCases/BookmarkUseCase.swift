@@ -16,9 +16,11 @@ public enum BookmarkError: Error {
   case failUpdateBookmark
 }
 
+public typealias FetchBookmarkListResposne = (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool)
+
 public protocol BookmarkUseCase {
   /// id에 대응되는 북마크 리스트를 반환합니다.
-  func fetchBookmarkList(folderID: Int) -> Observable<[Bookmark]>
+  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne>
 
   /// 북마크를 생성합니다.
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void>
@@ -41,11 +43,10 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
   }
 
   // MARK: - Methods
-  func fetchBookmarkList(folderID: Int) -> Observable<[Bookmark]> {
-    bookmarkRepository.fetchBookmarkList(folderID: folderID)
+  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne> {
+    bookmarkRepository.fetchBookmarkList(requestDTO: requestDTO)
       .asObservable()
   }
-
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void> {
     bookmarkRepository.createBookmark(requestDTO: requestDTO)
       .asObservable()

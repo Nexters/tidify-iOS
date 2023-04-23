@@ -12,8 +12,8 @@ import TidifyDomain
 import Moya
 
 enum BookmarkService {
-  case fetchBookmarkList(start: Int = 0, count: Int = 10, folderID: Int = 0, keyword: String? = nil)
-  case createBookmark(_ requestDTO: BookmarkRequestDTO)
+  case fetchBookmarkList(requestDTO: BookmarkListRequestDTO)
+  case createBookmark(requestDTO: BookmarkRequestDTO)
   case deleteBookmark(bookmarkID: Int)
   case updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO)
 }
@@ -24,11 +24,17 @@ extension BookmarkService: TargetType {
   }
 
   var path: String {
-    let baseRoutePath: String = "/bookmarks"
+    let baseRoutePath: String = "/app/bookmarks"
 
     switch self {
-    case .fetchBookmarkList, .createBookmark, .deleteBookmark, .updateBookmark:
+    case .fetchBookmarkList, .createBookmark:
       return baseRoutePath
+
+    case .deleteBookmark(let bookmarkID):
+      return baseRoutePath + "/\(bookmarkID)"
+
+    case .updateBookmark(let bookmarkID, _):
+      return baseRoutePath + "/\(bookmarkID)"
     }
   }
 
@@ -41,7 +47,7 @@ extension BookmarkService: TargetType {
     case .deleteBookmark:
       return .delete
     case .updateBookmark:
-      return .put
+      return .patch
     }
   }
 
@@ -69,39 +75,33 @@ extension BookmarkService: TargetType {
 
   private var parameters: [String: Any]? {
     switch self {
-    case let .fetchBookmarkList(start, count, folderID, keyword):
-      if let keyword = keyword {
-        return [
-          "start": start,
-          "count": count,
-          "folder": folderID,
-          "keyword": keyword
-        ]
+    case let .fetchBookmarkList(request):
+      var params: [String: Any] = [
+        "size": request.size,
+        "page": request.page
+      ]
+
+      if let keyword = request.keyword {
+        params["keyword"] = keyword
       }
+
+      return params
+
+    case .createBookmark(let request):
       return [
-        "start": start,
-        "count": count,
-        "folder": folderID,
+        "folder_id": request.folderID,
+        "bookmark_url": request.url,
+        "bookmark_title": request.name
       ]
 
-    case .createBookmark(let requestDTO):
-      return [
-        "folder_id": requestDTO.folderID,
-        "bookmark_url": requestDTO.url,
-        "bookmark_title": requestDTO.title
-      ]
+    case .deleteBookmark:
+      return nil
 
-    case .deleteBookmark(let bookmarkID):
+    case let .updateBookmark(_, request):
       return [
-        "bookmark_id": bookmarkID
-      ]
-
-    case let .updateBookmark(bookmarkID, requestDTO):
-      return [
-        "bookmark_id": bookmarkID,
-        "folder_id": requestDTO.folderID,
-        "bookmark_url": requestDTO.url,
-        "bookmark_title": requestDTO.title
+        "folderId": request.folderID,
+        "url": request.url,
+        "name": request.name
       ]
     }
   }

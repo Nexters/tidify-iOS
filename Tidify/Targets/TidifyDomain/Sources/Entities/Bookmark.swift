@@ -12,11 +12,9 @@ public struct Bookmark: Equatable {
 
   // MARK: - Properties
   public let id: Int
-  private let createdAt: String
-  private let updatedAt: String
   private var folderID: Int
   public var urlString: String?
-  public var title: String
+  public var name: String
 
   public var url: URL {
     return .init(string: urlString ?? "")!
@@ -24,18 +22,14 @@ public struct Bookmark: Equatable {
 
   public init(
     id: Int,
-    createdAt: String,
-    updatedAt: String,
     folderID: Int,
     urlString: String?,
-    title: String
+    name: String
   ) {
     self.id = id
-    self.createdAt = createdAt
-    self.updatedAt = updatedAt
     self.folderID = folderID
     self.urlString = urlString
-    self.title = title
+    self.name = name
   }
 }
 
@@ -44,12 +38,12 @@ public extension Bookmark {
     return .init(
       folderID: folderID,
       url: urlString ?? "",
-      title: title
+      name: name
     )
   }
 
   mutating func updateBookmark(with requestDTO: BookmarkRequestDTO) {
-    self.title = requestDTO.title
+    self.name = requestDTO.name
     self.urlString = requestDTO.url
     self.folderID = requestDTO.folderID
   }

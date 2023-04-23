@@ -8,7 +8,7 @@
 
 import TidifyDomain
 
-struct FolderCreationResponse: Decodable {
+struct FolderCreationResponse: Decodable, Responsable {
 
   // MARK: Properties
   let message, code: String

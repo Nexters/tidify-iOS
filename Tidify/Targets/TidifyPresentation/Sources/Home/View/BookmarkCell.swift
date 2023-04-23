@@ -50,7 +50,7 @@ final class BookmarkCell: UITableViewCell {
 
 private extension BookmarkCell {
   func updateUI(bookmark: Bookmark) {
-    var bookmarkName: String = bookmark.title
+    var bookmarkName: String = bookmark.name
 
     OpenGraph.fetch(url: bookmark.url) { [weak self] result in
       switch result {
@@ -61,7 +61,7 @@ private extension BookmarkCell {
           }
         }
 
-        if bookmark.title.isEmpty {
+        if bookmark.name.isEmpty {
           bookmarkName = openGraph[.title] ?? ""
         }
 

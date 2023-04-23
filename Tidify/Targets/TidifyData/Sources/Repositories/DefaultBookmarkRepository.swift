@@ -22,15 +22,18 @@ final class DefaultBookmarkRepository: BookmarkRepository {
   }
 
   // MARK: - Methods
-
-  public func fetchBookmarkList(folderID: Int) -> Single<[Bookmark]> {
-    return bookmarkService.rx.request(.fetchBookmarkList(folderID: folderID))
-      .filterSuccessfulStatusCodes()
-      .map(BookmarkListDTO.self)
-      .flatMap { listDTO in
+  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
+    return bookmarkService.rx.request(.fetchBookmarkList(requestDTO: requestDTO))
+      .map(BookmarkListResponse.self)
+      .flatMap { response in
         return .create { observer in
-          if listDTO.response.isSuccess {
-            observer(.success(listDTO.toDomain()))
+          if response.isSuccess {
+            let fetchResponse: FetchBookmarkListResposne = (
+              bookmarks: response.bookmarkListDTO.toDomain(),
+              currentPage: response.bookmarkListDTO.currentPage,
+              isLastPage: response.bookmarkListDTO.isLastPage
+            )
+            observer(.success(fetchResponse))
           } else {
             observer(.failure(BookmarkError.failFetchBookmarks))
           }
@@ -41,16 +44,15 @@ final class DefaultBookmarkRepository: BookmarkRepository {
   }
 
   public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkService.rx.request(.createBookmark(requestDTO))
-      .filterSuccessfulStatusCodes()
-      .map(APIResponse.self)
+    return bookmarkService.rx.request(.createBookmark(requestDTO: requestDTO))
+      .map(BookmarkResponse.self)
       .flatMap { response in
         return .create { observer in
           if response.isSuccess {
-            observer(.success(()))
+            observer(.success((())))
           } else {
             observer(.failure(BookmarkError.failCreateBookmark))
-          }
+            }
 
           return Disposables.create()
         }
@@ -59,7 +61,6 @@ final class DefaultBookmarkRepository: BookmarkRepository {
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
     return bookmarkService.rx.request(.deleteBookmark(bookmarkID: bookmarkID))
-      .filterSuccessfulStatusCodes()
       .map(APIResponse.self)
       .flatMap { response in
         return .create { observer in
@@ -76,7 +77,6 @@ final class DefaultBookmarkRepository: BookmarkRepository {
 
   public func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
     return bookmarkService.rx.request(.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO))
-      .filterSuccessfulStatusCodes()
       .map(APIResponse.self)
       .flatMap { response in
         return .create { observer in
