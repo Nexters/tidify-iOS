@@ -18,6 +18,9 @@ public enum FolderError: Error {
 }
 
 public protocol FolderUseCase {
+  var createdFolderObservable: Observable<Folder> { get }
+  var updatedFolderObservable: Observable<Folder> { get }
+
   func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void>
   func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse>
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void>
@@ -28,6 +31,15 @@ final class DefaultFolderUseCase: FolderUseCase {
 
   // MARK: - Properties
   private let folderRepository: FolderRepository
+  var createdFolderObservable: Observable<Folder> {
+    createdFolderSubject.asObservable()
+  }
+  var updatedFolderObservable: Observable<Folder> {
+    updatedFolderSubject.asObservable()
+  }
+  private let createdFolderSubject: PublishSubject<Folder> = .init()
+  private let updatedFolderSubject: PublishSubject<Folder> = .init()
+  private let disposeBag: DisposeBag = .init()
 
   // MARK: - Initializer
   init(repository: FolderRepository) {
@@ -36,7 +48,13 @@ final class DefaultFolderUseCase: FolderUseCase {
 
   // MARK: - Methods
   func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void> {
-    folderRepository.createFolder(requestDTO: requestDTO).asObservable()
+    folderRepository.createFolder(requestDTO: requestDTO)
+      .subscribe(onSuccess: { [weak self] in
+        self?.createdFolderSubject.onNext($0)
+      })
+      .disposed(by: disposeBag)
+
+    return .just(())
   }
   
   func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse> {
@@ -44,7 +62,12 @@ final class DefaultFolderUseCase: FolderUseCase {
   }
   
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void> {
-    folderRepository.updateFolder(id: id, requestDTO: requestDTO).asObservable()
+    updatedFolderSubject.onNext(.init(
+      id: id,
+      title: requestDTO.title,
+      color: requestDTO.color
+    ))
+    return folderRepository.updateFolder(id: id, requestDTO: requestDTO).asObservable()
   }
   
   func deleteFolder(id: Int) -> Observable<Void> {

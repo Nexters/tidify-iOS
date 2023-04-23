@@ -22,8 +22,20 @@ final class DefaultFolderRepository: FolderRepository {
   }
   
   // MARK: - Methods
-  public func createFolder(requestDTO: FolderRequestDTO) -> Single<Void> {
-    return folderService.rx.request(.createFolder(requestDTO)).map { _ in }
+  public func createFolder(requestDTO: FolderRequestDTO) -> Single<Folder> {
+    return folderService.rx.request(.createFolder(requestDTO))
+      .map(FolderCreationResponse.self)
+      .flatMap { response in
+        return .create { observer in
+          if response.isSuccess {
+            observer(.success(response.folderCreationDTO.toDomain()))
+          } else {
+            observer(.failure(FolderError.failFetchCreateFolder))
+          }
+
+          return Disposables.create()
+        }
+      }
   }
   
   public func fetchFolders(start: Int, count: Int) -> Single<FetchFoldersResponse> {
@@ -51,7 +63,7 @@ final class DefaultFolderRepository: FolderRepository {
       id: id,
       requestDTO: requestDTO)
     )
-    .map(FolderUpdateResponse.self)
+    .map(FolderCreationResponse.self)
     .flatMap { response in
       return .create { observer in
         if response.isSuccess {

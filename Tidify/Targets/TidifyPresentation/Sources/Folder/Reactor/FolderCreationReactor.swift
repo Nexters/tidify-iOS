@@ -14,11 +14,11 @@ final class FolderCreationReactor: Reactor {
   var initialState: State = .init()
 
   private let coordinator: FolderCoordinator
-  private let usecase: FolderUseCase
+  private let useCase: FolderUseCase
 
-  init(coordinator: FolderCoordinator, usecase: FolderUseCase) {
+  init(coordinator: FolderCoordinator, useCase: FolderUseCase) {
     self.coordinator = coordinator
-    self.usecase = usecase
+    self.useCase = useCase
   }
 
   enum Action {
@@ -35,9 +35,9 @@ final class FolderCreationReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .didTapCreateFolderButton(let folder):
-      return usecase.createFolder(requestDTO: folder).map { .startCreation }
+      return useCase.createFolder(requestDTO: folder).map { .startCreation }
     case .didTapUpdateFolderButton(let id, let folder):
-      return usecase.updateFolder(id: id, requestDTO: folder).map { .startCreation }
+      return useCase.updateFolder(id: id, requestDTO: folder).map { .startCreation }
     }
   }
 

@@ -11,15 +11,28 @@ import UIKit
 public extension UIColor {
 
   // MARK: Properties
-  enum LabelColors: String {
-    case SKYBLUE = "SKYBLUE"
-    case BLUE = "BLUE"
-    case PURPLE = "PURPLE"
-    case GREEN = "GREEN"
-    case YELLOW = "YELLOW"
-    case ORANGE = "ORANGE"
-    case RED = "RED"
-    case BLACK = "BLACK"
+  enum LabelColors {
+    case SKYBLUE
+    case BLUE
+    case PURPLE
+    case GREEN
+    case YELLOW
+    case ORANGE
+    case RED
+    case BLACK
+
+    var colorString: String {
+      switch self {
+      case .SKYBLUE: return "SKYBLUE"
+      case .BLUE: return "BLUE"
+      case .PURPLE: return "PURPLE"
+      case .GREEN: return "GREEN"
+      case .YELLOW: return "YELLOW"
+      case .ORANGE: return "ORANGE"
+      case .RED: return "RED"
+      case .BLACK: return "BLACK"
+      }
+    }
   }
 
   // MARK: Initializer
@@ -62,28 +75,28 @@ public extension UIColor {
 
   static func toColor(_ colorString: String) -> UIColor {
     switch colorString {
-    case "SKYBLUE": return .t_tidiBlue01()
-    case "BLUE": return .t_tidiBlue00()
-    case "PURPLE": return .t_indigo00()
-    case "GREEN": return .systemGreen
-    case "YELLOW": return .systemYellow
-    case "ORANGE": return .systemOrange
-    case "RED": return .systemRed
-    case "BLACK": return .black
+    case LabelColors.SKYBLUE.colorString: return .t_tidiBlue01()
+    case LabelColors.BLUE.colorString: return .t_tidiBlue00()
+    case LabelColors.PURPLE.colorString: return .t_indigo00()
+    case LabelColors.GREEN.colorString: return .systemGreen
+    case LabelColors.YELLOW.colorString: return .systemYellow
+    case LabelColors.ORANGE.colorString: return .systemOrange
+    case LabelColors.RED.colorString: return .systemRed
+    case LabelColors.BLACK.colorString: return .black
     default: return .init()
     }
   }
 
   func toColorString() -> String {
     switch self {
-    case .t_tidiBlue01(): return LabelColors.SKYBLUE.rawValue
-    case .t_tidiBlue00(): return LabelColors.BLUE.rawValue
-    case .t_indigo00(): return LabelColors.PURPLE.rawValue
-    case .systemGreen: return LabelColors.GREEN.rawValue
-    case .systemYellow: return LabelColors.YELLOW.rawValue
-    case .systemOrange: return LabelColors.ORANGE.rawValue
-    case .systemRed: return LabelColors.RED.rawValue
-    case .black: return LabelColors.BLACK.rawValue
+    case .t_tidiBlue01(): return LabelColors.SKYBLUE.colorString
+    case .t_tidiBlue00(): return LabelColors.BLUE.colorString
+    case .t_indigo00(): return LabelColors.PURPLE.colorString
+    case .systemGreen: return LabelColors.GREEN.colorString
+    case .systemYellow: return LabelColors.YELLOW.colorString
+    case .systemOrange: return LabelColors.ORANGE.colorString
+    case .systemRed: return LabelColors.RED.colorString
+    case .black: return LabelColors.BLACK.colorString
     default: return ""
     }
   }
