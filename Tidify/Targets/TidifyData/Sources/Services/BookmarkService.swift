@@ -24,7 +24,7 @@ extension BookmarkService: TargetType {
   }
 
   var path: String {
-    let baseRoutePath: String = "/bookmarks"
+    let baseRoutePath: String = "/app/bookmarks"
 
     switch self {
     case .fetchBookmarkList, .createBookmark:

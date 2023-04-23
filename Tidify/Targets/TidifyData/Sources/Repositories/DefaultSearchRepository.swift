@@ -44,7 +44,11 @@ final class DefaultSearchRepository: SearchRepository {
       .flatMap { response in
         return .create { observer in
           if response.isSuccess {
-            let fetchResponse: FetchBookmarkListResposne = (bookmarks: response.bookmarkListDTO.toDomain(), currentPage: response.bookmarkListDTO.currentPage, isLastPage: response.bookmarkListDTO.isLastPage)
+            let fetchResponse: FetchBookmarkListResposne = (
+              bookmarks: response.bookmarkListDTO.toDomain(),
+              currentPage: response.bookmarkListDTO.currentPage,
+              isLastPage: response.bookmarkListDTO.isLastPage
+            )
             observer(.success(fetchResponse))
           } else {
             observer(.failure(BookmarkError.failFetchBookmarks))

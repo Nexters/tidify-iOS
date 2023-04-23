@@ -28,7 +28,11 @@ final class DefaultBookmarkRepository: BookmarkRepository {
       .flatMap { response in
         return .create { observer in
           if response.isSuccess {
-            let fetchResponse: FetchBookmarkListResposne = (bookmarks: response.bookmarkListDTO.toDomain(), currentPage: response.bookmarkListDTO.currentPage, isLastPage: response.bookmarkListDTO.isLastPage)
+            let fetchResponse: FetchBookmarkListResposne = (
+              bookmarks: response.bookmarkListDTO.toDomain(),
+              currentPage: response.bookmarkListDTO.currentPage,
+              isLastPage: response.bookmarkListDTO.isLastPage
+            )
             observer(.success(fetchResponse))
           } else {
             observer(.failure(BookmarkError.failFetchBookmarks))
@@ -44,11 +48,15 @@ final class DefaultBookmarkRepository: BookmarkRepository {
       .map(BookmarkResponse.self)
       .flatMap { response in
         return .create { observer in
-          observer(.failure(BookmarkError.failCreateBookmark))
+          if response.isSuccess {
+            observer(.success((())))
+          } else {
+            observer(.failure(BookmarkError.failCreateBookmark))
+            }
+
           return Disposables.create()
         }
       }
-      .map { _ in }
   }
 
   public func deleteBookmark(bookmarkID: Int) -> Single<Void> {

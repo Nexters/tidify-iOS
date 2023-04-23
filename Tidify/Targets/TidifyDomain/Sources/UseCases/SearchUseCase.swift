@@ -44,12 +44,6 @@ final class DefaultSearchUseCase: SearchUseCase {
       .asObservable()
   }
 
-//  public func fetchSearchResult(query: String) -> Observable<[Bookmark]> {
-//    searchRepository.fetchSearchResult(requestDTO: <#T##BookmarkListRequestDTO#>)
-//    searchRepository.fetchSearchResult(query: query)
-//      .asObservable()
-//  }
-
   public func eraseAllSearchHistory() -> Observable<Void> {
     searchRepository.eraseAllSearchHistory()
       .asObservable()
