@@ -43,8 +43,11 @@ final class FolderDetailReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:
-      return useCase.fetchBookmarkList(folderID: folderID)
-        .map { .setBookmarks($0) }
+      // TODO: API 변경에 대한 수정 필요
+      //      return useCase.fetchBookmarkList(folderID: folderID)
+      //        .map { .setBookmarks($0) }
+      return .empty()
+
 
     case .didSelect(let bookmark):
       return .just(.pushWebView(bookmark))

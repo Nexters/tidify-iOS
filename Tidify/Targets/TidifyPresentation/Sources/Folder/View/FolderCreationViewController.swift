@@ -83,10 +83,10 @@ private extension FolderCreationViewController {
     
     titleTextField.rx.text.onNext(originFolder.title)
     colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
-    colorTextField.setColor(color: UIColor(hex: originFolder.color))
+    colorTextField.setColor(color: .toColor(originFolder.color))
     
     for (index, color) in colorDataSource.enumerated() {
-      if color.toHexString() == originFolder.color {
+      if color.toColorString() == originFolder.color {
         selectedColorIndexRelay.accept(index)
       }
     }
@@ -245,7 +245,7 @@ private extension FolderCreationViewController {
   }
   
   var folderColorObservable: Observable<String> {
-    Observable.just(colorTextField.getColorHexString())
+    Observable.just(colorTextField.getColorString())
   }
   
   func bindAction(reactor: FolderCreationReactor) {

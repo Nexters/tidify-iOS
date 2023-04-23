@@ -126,6 +126,7 @@ private extension FolderViewController {
     
     folderTableView.rx.didScroll
       .withUnretained(self)
+      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
       .filter { owner, _ in owner.isEnableTableViewPaging() }
       .map { _ in Action.didScroll }
       .bind(to: reactor.action)

@@ -9,27 +9,25 @@
 import UIKit
 
 public extension UIColor {
+
+  // MARK: Properties
+  enum LabelColors: String {
+    case SKYBLUE = "SKYBLUE"
+    case BLUE = "BLUE"
+    case PURPLE = "PURPLE"
+    case GREEN = "GREEN"
+    case YELLOW = "YELLOW"
+    case ORANGE = "ORANGE"
+    case RED = "RED"
+    case BLACK = "BLACK"
+  }
+
+  // MARK: Initializer
   convenience init(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, _ alpha: CGFloat = 1.0) {
     self.init(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: alpha)
   }
 
-  convenience init(hex: String) {
-    var hexFormatted: String = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-    
-    if hexFormatted.hasPrefix("#") {
-      hexFormatted = String(hexFormatted.dropFirst())
-    }
-    
-    var color: UInt64 = 0
-    Scanner(string: hexFormatted).scanHexInt64(&color)
-    
-    let red = CGFloat((color & 0xFF0000) >> 16) / 255.0
-    let green = CGFloat((color & 0x00FF00) >> 8) / 255.0
-    let blue = CGFloat(color & 0x0000FF) / 255.0
-    
-    self.init(red: red, green: green, blue: blue, alpha: 1)
-  }
-
+  // MARK: Methods
   static func t_tidiBlue00() -> UIColor {
     return .init(28, 100, 234)
   }
@@ -62,13 +60,31 @@ public extension UIColor {
     return .init(60, 60, 67, 0.08)
   }
 
-  func toHexString() -> String {
-    var r:CGFloat = 0
-    var g:CGFloat = 0
-    var b:CGFloat = 0
-    var a:CGFloat = 0
-    getRed(&r, green: &g, blue: &b, alpha: &a)
-    let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
-    return String(format:"#%06x", rgb)
+  static func toColor(_ colorString: String) -> UIColor {
+    switch colorString {
+    case "SKYBLUE": return .t_tidiBlue01()
+    case "BLUE": return .t_tidiBlue00()
+    case "PURPLE": return .t_indigo00()
+    case "GREEN": return .systemGreen
+    case "YELLOW": return .systemYellow
+    case "ORANGE": return .systemOrange
+    case "RED": return .systemRed
+    case "BLACK": return .black
+    default: return .init()
+    }
+  }
+
+  func toColorString() -> String {
+    switch self {
+    case .t_tidiBlue01(): return LabelColors.SKYBLUE.rawValue
+    case .t_tidiBlue00(): return LabelColors.BLUE.rawValue
+    case .t_indigo00(): return LabelColors.PURPLE.rawValue
+    case .systemGreen: return LabelColors.GREEN.rawValue
+    case .systemYellow: return LabelColors.YELLOW.rawValue
+    case .systemOrange: return LabelColors.ORANGE.rawValue
+    case .systemRed: return LabelColors.RED.rawValue
+    case .black: return LabelColors.BLACK.rawValue
+    default: return ""
+    }
   }
 }

@@ -8,22 +8,34 @@
 
 import TidifyDomain
 
+struct BookmarkListResponse: Decodable, Responsable {
+
+  // MARK: Properties
+  let code, message: String
+  let bookmarkListDTO: BookmarkListDTO
+
+  enum CodingKeys: String, CodingKey {
+    case code, message
+    case bookmarkListDTO = "data"
+  }
+}
+
 public struct BookmarkListDTO: Decodable {
 
   // MARK: - Properties
   public let bookmarks: [BookmarkDTO]
-  public let count: Int
-  public let response: APIResponse
+  public let isLastPage: Bool
+  public let currentPage: Int
 
   enum CodingKeys: String, CodingKey {
-    case bookmarks = "list"
-    case count = "total_count"
-    case response = "api_response"
+    case bookmarks = "content"
+    case isLastPage = "isLast"
+    case currentPage
   }
 }
 
 extension BookmarkListDTO {
   public func toDomain() -> [Bookmark] {
-    return bookmarks.map { $0.toDomaion() }
+    return bookmarks.map { $0.toDomain() }
   }
 }
