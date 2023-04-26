@@ -19,7 +19,7 @@ public enum BookmarkError: Error {
 public typealias FetchBookmarkListResposne = (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool)
 
 public protocol BookmarkUseCase {
-  /// id에 대응되는 북마크 리스트를 반환합니다.
+  /// 북마크 리스트를 반환합니다.
   func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne>
 
   /// 북마크를 생성합니다.
