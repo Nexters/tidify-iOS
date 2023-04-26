@@ -13,7 +13,7 @@ import ReactorKit
 final class FolderCreationReactor: Reactor {
   var initialState: State = .init()
 
-  private let coordinator: FolderCoordinator
+  private weak var coordinator: FolderCoordinator?
   private let useCase: FolderUseCase
 
   init(coordinator: FolderCoordinator, useCase: FolderUseCase) {
@@ -46,7 +46,7 @@ final class FolderCreationReactor: Reactor {
 
     switch mutation {
     case .startCreation:
-      coordinator.popCreationScene()
+      coordinator?.popCreationScene()
     }
 
     return newState

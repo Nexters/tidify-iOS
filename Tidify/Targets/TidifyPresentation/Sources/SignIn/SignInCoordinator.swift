@@ -14,8 +14,6 @@ protocol SignInCoordinator: Coordinator {
   var parentCoordinator: Coordinator? { get set }
   
   func didSuccessSignIn()
-  func pushAuthView(urlString: String)
-  func popAuthView()
 }
 
 final class DefaultSignInCoordinator: SignInCoordinator {
@@ -39,19 +37,6 @@ final class DefaultSignInCoordinator: SignInCoordinator {
     guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self)
             as? DefaultTabBarCoordinator else { return }
     tabBarCoordinator.start()
-  }
-  
-  func pushAuthView(urlString: String) {
-    guard let url = URL(string: urlString) else { return }
-    navigationController.pushViewController(
-      AuthViewController(url: url, coordinator: self),
-      animated: true
-    )
-  }
-  
-  func popAuthView() {
-    navigationController.popViewController(animated: true)
-    didSuccessSignIn()
   }
 }
 

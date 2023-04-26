@@ -13,7 +13,7 @@ import ReactorKit
 final class OnboardingReactor {
 
   // MARK: Properties
-  private let coordinator: OnboardingCoordinator
+  private weak var coordinator: OnboardingCoordinator?
   var initialState: State = .init(
     contents: [
       .init(image: .init(named: "onboardingImage_0")!, buttonTitle: "공유버튼 누르면 바로 북마크 저장"),
@@ -59,7 +59,7 @@ extension OnboardingReactor: Reactor {
     switch mutation {
     case .didShowNextContent:
       if state.contentIndex == state.contents.count - 1 {
-        coordinator.showNextScene()
+        coordinator?.showNextScene()
       } else {
         newState.contentIndex += 1
       }

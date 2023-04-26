@@ -32,7 +32,7 @@ final class DefaultSettingCoordinator: SettingCoordinator {
 private extension DefaultSettingCoordinator {
   func getViewController() -> SettingViewController {
     navigationController.navigationBar.topItem?.title = ""
-    let reactor: SettingReactor = .init(coordinator: self)
+    let reactor: SettingReactor = .init()
     let alertPresenter: AlertPresenter = .init()
     let viewController: SettingViewController = .init(alertPresenter: alertPresenter)
     viewController.reactor = reactor

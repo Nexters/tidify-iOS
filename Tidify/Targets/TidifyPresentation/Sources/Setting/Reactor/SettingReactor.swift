@@ -42,13 +42,6 @@ final class SettingReactor: Reactor {
   // MARK: - Properties
   var initialState: State = .init()
 
-  private let coordinaotr: SettingCoordinator
-
-  // MARK: - Initializer
-  init(coordinator: SettingCoordinator) {
-    self.coordinaotr = coordinator
-  }
-
   enum Action {
     case didTapCell(indexPath: IndexPath)
   }
@@ -61,6 +54,7 @@ final class SettingReactor: Reactor {
     var presentAlert: AlertPresenter.AlertType? = nil
   }
 
+  // MARK: Methods
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .didTapCell(let indexPath):

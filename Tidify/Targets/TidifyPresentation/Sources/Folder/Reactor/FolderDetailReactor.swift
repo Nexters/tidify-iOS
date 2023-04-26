@@ -15,7 +15,7 @@ final class FolderDetailReactor: Reactor {
   // MARK: - Properties
   var initialState: State = .init(bookmarks: [])
 
-  private let coordinator: FolderCoordinator
+  private weak var coordinator: FolderCoordinator?
   private let useCase: BookmarkUseCase
   private let folderID: Int
 
@@ -62,7 +62,7 @@ final class FolderDetailReactor: Reactor {
       newState.bookmarks = bookmarks
 
     case .pushWebView(let bookmark):
-      coordinator.pushWebView(bookmark: bookmark)
+      coordinator?.pushWebView(bookmark: bookmark)
     }
 
     return newState
