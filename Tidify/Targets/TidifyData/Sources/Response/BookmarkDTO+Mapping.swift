@@ -24,7 +24,7 @@ public struct BookmarkDTO: Decodable {
 
   // MARK: - Properties
   let id: Int
-  let folderID: Int
+  let folderID: Int?
   let urlString: String?
   let name: String
 

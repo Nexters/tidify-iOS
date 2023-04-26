@@ -36,10 +36,9 @@ final class DefaultBookmarkCreationUseCase: BookmarkCreationUseCase {
       .asObservable()
   }
 
-  // TODO: - 수정 예정
   func fetchFolders() -> Observable<[Folder]> {
-//    folderRepository.fetchFolders(start: 0, count: .max)
-//      .asObservable()
-    .empty()
+    folderRepository.fetchFolders(start: 0, count: .max)
+      .map { $0.folders }
+      .asObservable()
   }
 }

@@ -18,6 +18,7 @@ final class BookmarkCreationViewController: UIViewController, View {
   // MARK: - Properties
   private var urlGuideLabel: UILabel = .init()
   private var urlTextField: UITextField = .init()
+  private let urlErrorLabel: UILabel = .init()
   private var bookmarkGuideLabel: UILabel = .init()
   private var nameTextField: UITextField = .init()
   private var folderGuideLabel: UILabel = .init()
@@ -49,16 +50,7 @@ private extension BookmarkCreationViewController {
 
   func bindAction(reactor: BookmarkCreationReactor) {
     createBookmarkButton.rx.tap
-      .withUnretained(self)
-      .map { owner, _ -> Action in
-        let index = owner.selectedFolderIndexRelay.value
-        let folderID = reactor.currentState.folders[index].id
-        let url = owner.urlTextField.text ?? ""
-        let name = owner.nameTextField.text ?? url
-        let requestDTO = BookmarkRequestDTO(folderID: folderID, url: url, name: name)
-
-        return .didTapCreateButton(requestDTO)
-      }
+      .map(createBookmarkButtonAction)
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
@@ -76,17 +68,9 @@ private extension BookmarkCreationViewController {
   }
 
   func bindExtra() {
-    let isEmptyURLTextObservable = urlTextField.rx.text.orEmpty
-      .map { $0.isEmpty }
-      .asObservable()
-
-    isEmptyURLTextObservable
-      .map { [weak self] isEmptyURL -> Bool in
-        let isEmptyFolder: Bool = self?.folderTextField.isEmptyTextField() ?? true
-        return !isEmptyURL && !isEmptyFolder
-      }
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(isEnableCreateBookmarkButtonBinder)
+    urlTextField.rx.text.orEmpty
+      .map(isEnableUrlTextField)
+      .bind(to: isEnableCreateBookmarkButtonBinder)
       .disposed(by: disposeBag)
 
 
@@ -119,6 +103,7 @@ private extension BookmarkCreationViewController {
     navigationController?.navigationBar.topItem?.title = ""
 
     view.addSubview(urlGuideLabel)
+    view.addSubview(urlErrorLabel)
     view.addSubview(urlTextField)
     view.addSubview(bookmarkGuideLabel)
     view.addSubview(nameTextField)
@@ -134,6 +119,11 @@ private extension BookmarkCreationViewController {
 
     folderGuideLabel = setGuideLabel(folderGuideLabel, title: "저장할 폴더")
 
+    urlErrorLabel.do {
+      $0.textColor = .systemRed
+      $0.font = .t_SB(14)
+    }
+
     createBookmarkButton.do {
       $0.setTitle("저장", for: .normal)
       $0.titleLabel?.font = .t_SB(19)
@@ -148,6 +138,11 @@ private extension BookmarkCreationViewController {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
       $0.leading.equalToSuperview().offset(sidePadding)
       $0.trailing.lessThanOrEqualToSuperview()
+    }
+
+    urlErrorLabel.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(20)
+      $0.centerY.equalTo(urlGuideLabel)
     }
 
     urlTextField.snp.makeConstraints {
@@ -223,7 +218,10 @@ private extension BookmarkCreationViewController {
   }
 
   func showBottomSheet() {
-    guard let folders = reactor?.currentState.folders else { return }
+    guard let folders = reactor?.currentState.folders,
+          !folders.isEmpty else {
+      return
+    }
 
     let bottomSheet: BottomSheetViewController = .init(
       .bookmark,
@@ -233,6 +231,44 @@ private extension BookmarkCreationViewController {
 
     bottomSheet.modalPresentationStyle = .overCurrentContext
     present(bottomSheet, animated: true)
+  }
+
+  func isEnableUrlTextField(_ text: String) -> Bool {
+    if text.isEmpty {
+      urlErrorLabel.text = "링크가 없어요!"
+      urlErrorLabel.isHidden = false
+      return false
+    }
+
+    guard let url = URL(string: text),
+          ["http", "https"].contains(url.scheme?.lowercased() ?? ""),
+          text.count >= 10 else {
+      urlErrorLabel.text = "링크를 확인해주세요!"
+      urlErrorLabel.isHidden = false
+      return false
+    }
+
+    urlErrorLabel.isHidden = true
+    return true
+  }
+
+  func createBookmarkButtonAction() -> Action {
+    let url: String = urlTextField.text ?? ""
+    let name: String = nameTextField.text ?? url
+    var folderID: Int = 0
+
+    if let reactor = reactor,
+       selectedFolderIndexRelay.value != -1 {
+      folderID = reactor.currentState.folders[selectedFolderIndexRelay.value].id
+    }
+
+    let requestDTO: BookmarkRequestDTO = .init(
+      folderID: folderID,
+      url: url,
+      name: name
+    )
+
+    return .didTapCreateButton(requestDTO)
   }
 }
 

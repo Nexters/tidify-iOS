@@ -12,7 +12,7 @@ public struct Bookmark: Equatable {
 
   // MARK: - Properties
   public let id: Int
-  private var folderID: Int
+  private var folderID: Int?
   public var urlString: String?
   public var name: String
 
@@ -22,7 +22,7 @@ public struct Bookmark: Equatable {
 
   public init(
     id: Int,
-    folderID: Int,
+    folderID: Int?,
     urlString: String?,
     name: String
   ) {
@@ -36,7 +36,7 @@ public struct Bookmark: Equatable {
 public extension Bookmark {
   func toRequestDTO() -> BookmarkRequestDTO {
     return .init(
-      folderID: folderID,
+      folderID: folderID ?? 0,
       url: urlString ?? "",
       name: name
     )
