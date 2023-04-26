@@ -75,7 +75,7 @@ private extension HomeViewController {
 
     guideLabel.do {
       $0.text = "링크를 모아서 북마크로 만들어봐요!"
-      $0.textColor = .t_indigo02()
+      $0.textColor = .secondaryLabel
       $0.font = .systemFont(ofSize: 16, weight: .bold)
     }
 
@@ -95,7 +95,7 @@ private extension HomeViewController {
     }
 
     guideView.snp.makeConstraints {
-      $0.edges.equalTo(tableView)
+      $0.edges.equalTo(containerView)
     }
 
     guideLabel.snp.makeConstraints {
