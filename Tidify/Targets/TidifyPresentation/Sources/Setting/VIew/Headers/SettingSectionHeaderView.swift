@@ -38,7 +38,7 @@ private extension SettingSectionHeaderView {
 
     titleLabel.do {
       $0.text = section.sectionTitle
-      $0.font = .systemFont(ofSize: 16, weight: .bold)
+      $0.font = .t_EB(18)
     }
 
     titleLabel.snp.makeConstraints {

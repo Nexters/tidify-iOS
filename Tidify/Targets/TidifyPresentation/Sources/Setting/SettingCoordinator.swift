@@ -8,9 +8,7 @@
 
 import UIKit
 
-protocol SettingCoordinator: Coordinator {
-  func pushSocialLoginSettingScene()
-}
+protocol SettingCoordinator: Coordinator {}
 
 final class DefaultSettingCoordinator: SettingCoordinator {
 
@@ -28,10 +26,6 @@ final class DefaultSettingCoordinator: SettingCoordinator {
   func start() {
     let viewController: SettingViewController = getViewController()
     navigationController.pushViewController(viewController, animated: true)
-  }
-
-  func pushSocialLoginSettingScene() {
-    // TODO: Implementation
   }
 }
 

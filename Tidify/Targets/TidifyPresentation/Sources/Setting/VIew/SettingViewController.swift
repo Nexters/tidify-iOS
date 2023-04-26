@@ -51,7 +51,6 @@ private extension SettingViewController {
 
   func bindAction(reactor: SettingReactor) {
     selectedIndexPathSubject
-      .asObservable()
       .map { Action.didTapCell(indexPath: $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
