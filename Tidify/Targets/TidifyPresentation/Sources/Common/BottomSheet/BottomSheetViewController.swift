@@ -138,6 +138,7 @@ private extension BottomSheetViewController {
     
     tableView.do {
       $0.separatorStyle = .none
+      $0.showsVerticalScrollIndicator = false
       $0.t_registerCellClass(cellType: BottomSheetFolderTableViewCell.self)
       $0.t_registerCellClass(cellType: BottomSheetBookmarkTableViewCell.self)
       if #available(iOS 15.0, *) { $0.sectionHeaderTopPadding = 0 }
@@ -160,6 +161,7 @@ private extension BottomSheetViewController {
     }
     
     closeButton.snp.makeConstraints {
+      $0.size.equalTo(40)
       $0.top.equalToSuperview().offset(28)
       $0.trailing.equalToSuperview().inset(20)
     }

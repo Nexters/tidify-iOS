@@ -113,14 +113,14 @@ private extension FolderCreationViewController {
     colorLabel = setGuideLabel(colorLabel, title: "라벨")
     
     titleErrorLabel.do {
-      $0.text = "폴더 이름이 필요해요!"
+      $0.text = "폴더 이름이 필요해요"
       $0.textColor = .systemRed
       $0.font = .t_SB(14)
       $0.isHidden = true
     }
     
     colorErrorLabel.do {
-      $0.text = "라벨을 달아주세요!"
+      $0.text = "라벨을 달아주세요"
       $0.textColor = .systemRed
       $0.font = .t_SB(14)
       $0.isHidden = true
@@ -131,7 +131,7 @@ private extension FolderCreationViewController {
       $0.titleLabel?.font = .t_SB(18)
       $0.setTitleColor(.systemGray2, for: .normal)
       $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.lightGray.cgColor
+      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.isEnabled = false
       $0.cornerRadius(radius: 16)
     }
@@ -227,7 +227,7 @@ private extension FolderCreationViewController {
     return .init(self) { owner, isEnable in
       owner.createFolderButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
       owner.createFolderButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
-      owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.lightGray.cgColor
+      owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.t_borderColor().cgColor
       owner.createFolderButton.isEnabled = isEnable
     }
   }

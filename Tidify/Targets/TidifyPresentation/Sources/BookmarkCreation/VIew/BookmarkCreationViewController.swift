@@ -129,7 +129,7 @@ private extension BookmarkCreationViewController {
       $0.titleLabel?.font = .t_SB(19)
       $0.setTitleColor(.systemGray2, for: .normal)
       $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.lightGray.cgColor
+      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.isEnabled = false
       $0.cornerRadius(radius: 16)
     }
@@ -235,7 +235,7 @@ private extension BookmarkCreationViewController {
 
   func isEnableUrlTextField(_ text: String) -> Bool {
     if text.isEmpty {
-      urlErrorLabel.text = "링크가 없어요!"
+      urlErrorLabel.text = "링크가 없어요"
       urlErrorLabel.isHidden = false
       return false
     }
@@ -243,7 +243,7 @@ private extension BookmarkCreationViewController {
     guard let url = URL(string: text),
           ["http", "https"].contains(url.scheme?.lowercased() ?? ""),
           text.count >= 10 else {
-      urlErrorLabel.text = "링크를 확인해주세요!"
+      urlErrorLabel.text = "링크를 확인해주세요"
       urlErrorLabel.isHidden = false
       return false
     }
@@ -278,7 +278,7 @@ private extension BookmarkCreationViewController {
       owner.createBookmarkButton.isEnabled = isEnable
       owner.createBookmarkButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
       owner.createBookmarkButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
-      owner.createBookmarkButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.lightGray.cgColor
+      owner.createBookmarkButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.t_borderColor().cgColor
     }
   }
 
