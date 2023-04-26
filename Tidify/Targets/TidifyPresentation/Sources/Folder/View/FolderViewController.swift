@@ -33,6 +33,11 @@ final class FolderViewController: UIViewController, View {
     super.viewDidLoad()
     setupUI()
   }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    navigationController?.navigationBar.isHidden = false
+  }
   
   init(_ navigationBar: TidifyNavigationBar) {
     self.navigationBar = navigationBar

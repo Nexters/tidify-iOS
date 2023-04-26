@@ -58,7 +58,7 @@ final class FolderCreationViewController: UIViewController, View {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     registerKeyboardNotification()
-    bindCreateFolderButton()
+    bindExtra()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -233,7 +233,7 @@ private extension FolderCreationViewController {
   }
   
   var isEnableFolderNameObservable: Observable<Bool> {
-    titleTextField.rx.text.orEmpty.map { !$0.isEmpty }
+    titleTextField.rx.text.orEmpty.map { !$0.isEmpty && $0.count <= 15 }
   }
   
   var isEnableFolderColorObservable: Observable<Bool> {
@@ -275,10 +275,32 @@ private extension FolderCreationViewController {
       .disposed(by: disposeBag)
   }
   
-  func bindCreateFolderButton() {
+  func bindExtra() {
     Observable.combineLatest(isEnableFolderNameObservable, isEnableFolderColorObservable)
+      .filter { [weak self] _ in
+        self?.titleTextField.text != " "
+      }
       .map { $0 && $1 }
       .bind(to: isEnableCreateFolderButtonBinder)
+      .disposed(by: disposeBag)
+
+    titleTextField.rx.text.orEmpty
+      .filter { $0.count == 1 && $0 == " " }
+      .map { _ in "" }
+      .bind(to: titleTextField.rx.text)
+      .disposed(by: disposeBag)
+
+    titleTextField.rx.text.orEmpty
+      .asSignal(onErrorSignalWith: .empty())
+      .emit(with: self, onNext: { owner, text in
+        if text.isEmpty {
+          owner.titleErrorLabel.text = "폴더 이름이 필요해요"
+        }
+
+        if text.count > 15 {
+          owner.titleErrorLabel.text = "폴더 명은 15자가 최대에요"
+        }
+      })
       .disposed(by: disposeBag)
     
     isEnableFolderNameObservable
