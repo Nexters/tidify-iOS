@@ -16,11 +16,11 @@ final class FolderDetailReactor: Reactor {
   var initialState: State = .init(bookmarks: [])
 
   private weak var coordinator: FolderCoordinator?
-  private let useCase: BookmarkUseCase
+  private let useCase: FolderDetailUseCase
   private let folderID: Int
 
   // MARK: - Initializer
-  init(coordinator: FolderCoordinator, useCase: BookmarkUseCase, folderID: Int) {
+  init(coordinator: FolderCoordinator, useCase: FolderDetailUseCase, folderID: Int) {
     self.coordinator = coordinator
     self.useCase = useCase
     self.folderID = folderID
@@ -43,10 +43,8 @@ final class FolderDetailReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:
-      // TODO: API 변경에 대한 수정 필요
-      //      return useCase.fetchBookmarkList(folderID: folderID)
-      //        .map { .setBookmarks($0) }
-      return .empty()
+      return useCase.fetchBookmarkListInFolder(folderID: folderID)
+        .map { .setBookmarks($0.bookmarks) }
 
 
     case .didSelect(let bookmark):
