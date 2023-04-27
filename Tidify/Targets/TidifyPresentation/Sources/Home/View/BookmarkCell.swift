@@ -15,7 +15,6 @@ import OpenGraph
 final class BookmarkCell: UITableViewCell {
 
   // MARK: - Properties
-  private let thumbnailImageView: UIImageView = .init()
   private let bookmarkImageView: UIImageView = .init()
   private let bookmarkNameLabel: UILabel = .init()
   private let editButton: UIButton = .init()
@@ -33,8 +32,9 @@ final class BookmarkCell: UITableViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
 
-    thumbnailImageView.image = nil
-    bookmarkImageView.image = nil
+    if bookmarkImageView.image != UIImage(named: "icon_symbol") {
+      bookmarkImageView.image = UIImage(named: "icon_symbol")
+    }
   }
   
   override func layoutSubviews() {
@@ -94,11 +94,6 @@ private extension BookmarkCell {
       $0.contentMode = .scaleAspectFit
       $0.cornerRadius(radius: 4)
       contentView.addSubview($0)
-    }
-
-    thumbnailImageView.do {
-      $0.cornerRadius(radius: 4)
-      bookmarkImageView.addSubview($0)
     }
 
     bookmarkImageView.snp.makeConstraints {
