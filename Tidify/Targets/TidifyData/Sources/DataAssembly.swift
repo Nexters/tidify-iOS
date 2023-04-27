@@ -23,5 +23,7 @@ public struct DataAssembly: Assemblable {
     container.register(type: BookmarkRepository.self) { _ in DefaultBookmarkRepository() }
 
     container.register(type: SearchRepository.self) { _ in DefaultSearchRepository() }
+
+    container.register(type: FolderDetailRepository.self) { _ in DefaultFolderDetailRepository() }
   }
 }

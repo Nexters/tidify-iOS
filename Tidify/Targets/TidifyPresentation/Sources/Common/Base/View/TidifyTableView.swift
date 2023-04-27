@@ -67,6 +67,7 @@ private extension TidifyTableView {
     separatorStyle = .none
     rowHeight = (UIScreen.main.bounds.height * 0.0689) + 24
     showsVerticalScrollIndicator = false
+    backgroundColor = .white
   }
   
   func setupBind() {

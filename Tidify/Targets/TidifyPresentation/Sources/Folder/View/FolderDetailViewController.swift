@@ -22,13 +22,14 @@ final class FolderDetailViewController: UIViewController, View {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    bindTableViewAction()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
   }
-  
+
   init(folder: Folder, navigationBar: TidifyNavigationBar) {
     self.navigationBar = navigationBar
     self.folder = folder
@@ -66,12 +67,11 @@ private extension FolderDetailViewController {
       $0.text = "폴더가 비어있어요!"
       $0.font = .t_EB(16)
     }
-    
+
     bookmarkTableView.do {
-      $0.backgroundColor = .white
-      $0.rowHeight = UIScreen.main.bounds.height * 0.07
+      $0.delegate = nil
     }
-    
+
     navigationBar.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
       $0.height.equalTo(Self.viewHeight * 0.182)
@@ -99,11 +99,6 @@ private extension FolderDetailViewController {
       .map { Action.viewWillAppear }
       .bind(to: reactor.action )
       .disposed(by: disposeBag)
-    
-    bookmarkTableView.rx.modelSelected(Bookmark.self)
-      .map { Action.didSelect($0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
   }
   
   func bindState(reactor: FolderDetailReactor) {
@@ -119,6 +114,17 @@ private extension FolderDetailViewController {
     reactor.state
       .map { $0.bookmarks.isEmpty }
       .bind(to: bookmarkTableView.rx.isHidden)
+      .disposed(by: disposeBag)
+  }
+
+  func bindTableViewAction() {
+    guard let reactor = reactor else {
+      return
+    }
+
+    bookmarkTableView.rx.modelSelected(Bookmark.self)
+      .map { Action.didSelect($0) }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
   }
 }
