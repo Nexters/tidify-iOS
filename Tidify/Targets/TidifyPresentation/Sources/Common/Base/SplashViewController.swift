@@ -57,9 +57,9 @@ private extension SplashViewController {
   func playAnimation() {
     animationView.isHidden = false
 
-    animationView.play { _ in
+    animationView.play { [weak self] _ in
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
-        self.coordinator?.start()
+        self?.coordinator?.start()
       })
     }
   }
