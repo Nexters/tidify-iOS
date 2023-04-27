@@ -27,7 +27,10 @@ extension BookmarkService: TargetType {
     let baseRoutePath: String = "/app/bookmarks"
 
     switch self {
-    case .fetchBookmarkList, .createBookmark:
+    case .fetchBookmarkList(let requestDTO):
+      return requestDTO.keyword == nil ? baseRoutePath : baseRoutePath + "/search"
+
+    case .createBookmark:
       return baseRoutePath
 
     case .deleteBookmark(let bookmarkID):
