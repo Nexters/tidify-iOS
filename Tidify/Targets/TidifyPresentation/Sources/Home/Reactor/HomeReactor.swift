@@ -85,7 +85,13 @@ final class HomeReactor: Reactor {
     switch mutation {
     case .setBookmarks(let newBookmarks):
       var bookmarks = newState.bookmarks
-      bookmarks.append(contentsOf: newBookmarks)
+
+      for bookmark in newBookmarks {
+        if !bookmarks.contains(bookmark) {
+          bookmarks.append(bookmark)
+        }
+      }
+
       newState.bookmarks = bookmarks
 
     case .pushWebView(let bookmark):
