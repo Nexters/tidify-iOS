@@ -14,7 +14,7 @@ final class FolderReactor: Reactor {
   var initialState: State = .init(folders: [])
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
-  private let coordinator: FolderCoordinator
+  private weak var coordinator: FolderCoordinator?
   private let useCase: FolderUseCase
 
   init(coordinator: FolderCoordinator, useCase: FolderUseCase) {
@@ -82,10 +82,10 @@ final class FolderReactor: Reactor {
       currentPage += 1
 
     case .pushDetailView(let folder):
-      coordinator.pushDetailScene(folder: folder)
+      coordinator?.pushDetailScene(folder: folder)
 
     case .pushEditView(let folder):
-      coordinator.pushEditScene(folder: folder)
+      coordinator?.pushEditScene(folder: folder)
 
     case .appendFolders(let folders, let addPage):
       if addPage {

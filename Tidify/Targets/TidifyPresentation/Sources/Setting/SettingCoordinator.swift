@@ -8,9 +8,7 @@
 
 import UIKit
 
-protocol SettingCoordinator: Coordinator {
-  func pushSocialLoginSettingScene()
-}
+protocol SettingCoordinator: Coordinator {}
 
 final class DefaultSettingCoordinator: SettingCoordinator {
 
@@ -29,16 +27,12 @@ final class DefaultSettingCoordinator: SettingCoordinator {
     let viewController: SettingViewController = getViewController()
     navigationController.pushViewController(viewController, animated: true)
   }
-
-  func pushSocialLoginSettingScene() {
-    // TODO: Implementation
-  }
 }
 
 private extension DefaultSettingCoordinator {
   func getViewController() -> SettingViewController {
     navigationController.navigationBar.topItem?.title = ""
-    let reactor: SettingReactor = .init(coordinator: self)
+    let reactor: SettingReactor = .init()
     let alertPresenter: AlertPresenter = .init()
     let viewController: SettingViewController = .init(alertPresenter: alertPresenter)
     viewController.reactor = reactor

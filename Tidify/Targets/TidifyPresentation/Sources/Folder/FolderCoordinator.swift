@@ -152,16 +152,15 @@ private extension DefaultFolderCoordinator {
       })
       .disposed(by: disposeBag)
 
-    //TODO: rightButton Action
-    let rightButton: UIButton = .init().then {
-      $0.setImage(UIImage(named: "shareIcon"), for: .normal)
-    }
+    //TODO: Implements
+//    let rightButton: UIButton = .init().then {
+//      $0.setImage(UIImage(named: "shareIcon"), for: .normal)
+//    }
     
     let navigationBar: TidifyNavigationBar = .init(
       .folderDetail,
       title: folder.title,
-      leftButton: backButton,
-      rightButton: rightButton
+      leftButton: backButton
     )
     
     return navigationBar

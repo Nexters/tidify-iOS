@@ -31,15 +31,15 @@ final class StickColorView: UIView {
 
 private extension StickColorView {
   func setupUI() {
-    leftColorView.do {
-      $0.cornerRadius([.topLeft, .bottomLeft], radius: 8)
-      addSubview($0)
-    }
-    
     whiteStickView.do {
       $0.cornerRadius([.topRight, .bottomRight], radius: 8)
-      $0.layer.borderColor = UIColor.lightGray.cgColor
+      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.layer.borderWidth = 1
+      addSubview($0)
+    }
+
+    leftColorView.do {
+      $0.cornerRadius([.topLeft, .bottomLeft], radius: 8)
       addSubview($0)
     }
     

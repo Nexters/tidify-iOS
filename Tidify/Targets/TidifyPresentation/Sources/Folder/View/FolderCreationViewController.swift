@@ -58,7 +58,7 @@ final class FolderCreationViewController: UIViewController, View {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     registerKeyboardNotification()
-    bindCreateFolderButton()
+    bindExtra()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -113,14 +113,14 @@ private extension FolderCreationViewController {
     colorLabel = setGuideLabel(colorLabel, title: "라벨")
     
     titleErrorLabel.do {
-      $0.text = "폴더 이름이 필요해요!"
+      $0.text = "폴더 이름이 필요해요"
       $0.textColor = .systemRed
       $0.font = .t_SB(14)
       $0.isHidden = true
     }
     
     colorErrorLabel.do {
-      $0.text = "라벨을 달아주세요!"
+      $0.text = "라벨을 달아주세요"
       $0.textColor = .systemRed
       $0.font = .t_SB(14)
       $0.isHidden = true
@@ -131,7 +131,7 @@ private extension FolderCreationViewController {
       $0.titleLabel?.font = .t_SB(18)
       $0.setTitleColor(.systemGray2, for: .normal)
       $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.lightGray.cgColor
+      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.isEnabled = false
       $0.cornerRadius(radius: 16)
     }
@@ -227,13 +227,13 @@ private extension FolderCreationViewController {
     return .init(self) { owner, isEnable in
       owner.createFolderButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
       owner.createFolderButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
-      owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.lightGray.cgColor
+      owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.t_borderColor().cgColor
       owner.createFolderButton.isEnabled = isEnable
     }
   }
   
   var isEnableFolderNameObservable: Observable<Bool> {
-    titleTextField.rx.text.orEmpty.map { !$0.isEmpty }
+    titleTextField.rx.text.orEmpty.map { !$0.isEmpty && $0.count <= 15 }
   }
   
   var isEnableFolderColorObservable: Observable<Bool> {
@@ -275,10 +275,32 @@ private extension FolderCreationViewController {
       .disposed(by: disposeBag)
   }
   
-  func bindCreateFolderButton() {
+  func bindExtra() {
     Observable.combineLatest(isEnableFolderNameObservable, isEnableFolderColorObservable)
+      .filter { [weak self] _ in
+        self?.titleTextField.text != " "
+      }
       .map { $0 && $1 }
       .bind(to: isEnableCreateFolderButtonBinder)
+      .disposed(by: disposeBag)
+
+    titleTextField.rx.text.orEmpty
+      .filter { $0.count == 1 && $0 == " " }
+      .map { _ in "" }
+      .bind(to: titleTextField.rx.text)
+      .disposed(by: disposeBag)
+
+    titleTextField.rx.text.orEmpty
+      .asSignal(onErrorSignalWith: .empty())
+      .emit(with: self, onNext: { owner, text in
+        if text.isEmpty {
+          owner.titleErrorLabel.text = "폴더 이름이 필요해요"
+        }
+
+        if text.count > 15 {
+          owner.titleErrorLabel.text = "폴더 명은 15자가 최대에요"
+        }
+      })
       .disposed(by: disposeBag)
     
     isEnableFolderNameObservable

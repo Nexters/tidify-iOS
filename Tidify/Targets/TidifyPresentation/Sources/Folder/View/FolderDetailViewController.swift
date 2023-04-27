@@ -26,12 +26,7 @@ final class FolderDetailViewController: UIViewController, View {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    setupNavigationBarHidden(true)
-  }
-  
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    setupNavigationBarHidden(false)
+    navigationController?.navigationBar.isHidden = true
   }
   
   init(folder: Folder, navigationBar: TidifyNavigationBar) {
@@ -97,10 +92,6 @@ private extension FolderDetailViewController {
       $0.height.equalTo(20)
       $0.centerX.equalToSuperview()
     }
-  }
-  
-  func setupNavigationBarHidden(_ status: Bool) {
-    navigationController?.navigationBar.isHidden = status
   }
   
   func bindAction(reactor: FolderDetailReactor) {

@@ -68,7 +68,7 @@ private extension SearchViewController {
       $0.leftView = UIView.init(frame: CGRect(x: 0, y: 0, width: 56, height: 1))
       $0.leftViewMode = .always
       $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.lightGray.cgColor
+      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.cornerRadius(radius: 20)
     }
     
@@ -93,6 +93,7 @@ private extension SearchViewController {
       $0.delegate = self
       $0.dataSource = self
       $0.bounces = false
+      $0.showsVerticalScrollIndicator = false
       $0.addGestureRecognizer(tapGestureRecognizer)
       if #available(iOS 15, *) {
         $0.sectionHeaderTopPadding = .zero

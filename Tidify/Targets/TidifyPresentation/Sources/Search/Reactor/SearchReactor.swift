@@ -13,7 +13,7 @@ import ReactorKit
 final class SearchReactor {
 
   // MARK: - Properties
-  private let coordinator: SearchCoordinator
+  private weak var coordinator: SearchCoordinator?
   private let useCase: SearchUseCase
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
@@ -95,7 +95,7 @@ extension SearchReactor: Reactor {
       newState.searchHistory = searchHistory
 
     case .pushWebView(let bookmark):
-      coordinator.pushWebView(bookmark: bookmark)
+      coordinator?.pushWebView(bookmark: bookmark)
     }
 
     return newState

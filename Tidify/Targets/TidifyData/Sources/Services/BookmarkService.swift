@@ -70,7 +70,10 @@ extension BookmarkService: TargetType {
   }
 
   var headers: [String : String]? {
-    ["access-token": AppProperties.accessToken]
+    [
+      "X-Auth-Token": AppProperties.accessToken,
+      "refreshToken": AppProperties.refreshToken
+    ]
   }
 
   private var parameters: [String: Any]? {
@@ -89,9 +92,9 @@ extension BookmarkService: TargetType {
 
     case .createBookmark(let request):
       return [
-        "folder_id": request.folderID,
-        "bookmark_url": request.url,
-        "bookmark_title": request.name
+        "name": request.name,
+        "url": request.url,
+        "folderId": request.folderID
       ]
 
     case .deleteBookmark:

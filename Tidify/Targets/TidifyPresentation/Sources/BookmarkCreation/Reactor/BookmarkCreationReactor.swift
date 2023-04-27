@@ -15,7 +15,7 @@ final class BookmarkCreationReactor: Reactor {
   // MARK: - Properties
   var initialState: State = .init()
 
-  private let coordinator: BookmarkCreationCoordinator
+  private weak var coordinator: BookmarkCreationCoordinator?
   private let useCase: BookmarkCreationUseCase
 
   // MARK: - Constructor
@@ -58,7 +58,7 @@ final class BookmarkCreationReactor: Reactor {
 
     switch mutation {
     case .requestCreateBookmark:
-      coordinator.close()
+      coordinator?.close()
 
     case .setFolders(let folders):
       newState.folders = folders

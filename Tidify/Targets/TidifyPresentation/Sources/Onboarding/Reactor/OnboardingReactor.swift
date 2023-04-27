@@ -13,13 +13,12 @@ import ReactorKit
 final class OnboardingReactor {
 
   // MARK: Properties
-  private let coordinator: OnboardingCoordinator
+  private weak var coordinator: OnboardingCoordinator?
   var initialState: State = .init(
     contents: [
       .init(image: .init(named: "onboardingImage_0")!, buttonTitle: "공유버튼 누르면 바로 북마크 저장"),
       .init(image: .init(named: "onboardingImage_1")!, buttonTitle: "링크주소만 넣어주세요"),
       .init(image: .init(named: "onboardingImage_2")!, buttonTitle: "누구보다 빠르게 기억할게요"),
-      .init(image: .init(named: "onboardingImage_3")!, buttonTitle: "필요한 것만 쏙쏙 공유해주기")
   ], contentIndex: 0)
 
   // MARK: Initializer
@@ -60,7 +59,7 @@ extension OnboardingReactor: Reactor {
     switch mutation {
     case .didShowNextContent:
       if state.contentIndex == state.contents.count - 1 {
-        coordinator.showNextScene()
+        coordinator?.showNextScene()
       } else {
         newState.contentIndex += 1
       }

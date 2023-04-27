@@ -54,11 +54,14 @@ final class SignInViewController: UIViewController, View {
     $0.cornerRadius(radius: 16)
   }
 
-  private let appleSignInButton: ASAuthorizationAppleIDButton = .init(
-    authorizationButtonType: .signIn,
-    authorizationButtonStyle: .black).then {
-      $0.cornerRadius = 14
-    }
+  private let appleSignInButton: UIButton = .init().then {
+    $0.setTitle("  Apple 로그인", for: .normal)
+    $0.setTitleColor(.white, for: .normal)
+    $0.setImage(.init(named: "login_apple_symbol")!, for: .normal)
+    $0.titleLabel?.font = .t_EB(16)
+    $0.backgroundColor = .black
+    $0.cornerRadius(radius: 16)
+  }
 
   private let appleSignInSubject: PublishSubject<String> = .init()
   private var signInWithAppleBinder: Binder<Void> {

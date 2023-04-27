@@ -55,7 +55,7 @@ private extension SearchHeaderView {
     }
 
     historyListGuideLabel.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(32)
+      $0.top.bottom.equalToSuperview().inset(22)
       $0.leading.equalToSuperview().offset(20)
     }
 

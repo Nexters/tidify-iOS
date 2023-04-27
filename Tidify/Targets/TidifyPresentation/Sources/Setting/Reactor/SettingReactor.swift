@@ -42,40 +42,29 @@ final class SettingReactor: Reactor {
   // MARK: - Properties
   var initialState: State = .init()
 
-  private let coordinaotr: SettingCoordinator
-
-  // MARK: - Initializer
-  init(coordinator: SettingCoordinator) {
-    self.coordinaotr = coordinator
-  }
-
   enum Action {
     case didTapCell(indexPath: IndexPath)
   }
 
   enum Mutation {
     case setAlertType(alertType: AlertPresenter.AlertType?)
-    case pushSocialLoginScene
   }
 
   struct State {
     var presentAlert: AlertPresenter.AlertType? = nil
   }
 
+  // MARK: Methods
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .didTapCell(let indexPath):
-      if indexPath.section == Sections.dataManaging.rawValue {
-        switch indexPath.row {
-        case 0: return .just(.setAlertType(alertType: .removeImageCache))
-        case 1: return .just(.setAlertType(alertType: .removeAllCache))
-        case 2: return .just(.setAlertType(alertType: .logout))
+      switch indexPath.section {
+      case 0:
+        return .just(.setAlertType(alertType: indexPath.row == 0 ? .logout : .signOut))
+      case 1:
+        return .just(.setAlertType(alertType: indexPath.row == 0 ? .removeImageCache : .removeAllCache))
 
-        default:
-          return .just(.setAlertType(alertType: nil))
-        }
-      } else {
-        return .just(.pushSocialLoginScene)
+      default: return .empty()
       }
     }
   }
@@ -84,8 +73,6 @@ final class SettingReactor: Reactor {
     var newState: State = state
 
     switch mutation {
-    case .pushSocialLoginScene:
-      coordinaotr.pushSocialLoginSettingScene()
     case .setAlertType(let alertType):
       newState.presentAlert = alertType
     }

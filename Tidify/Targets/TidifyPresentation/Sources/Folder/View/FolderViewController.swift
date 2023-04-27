@@ -20,7 +20,7 @@ final class FolderViewController: UIViewController, View {
   }
   
   private lazy var emptyLabel: UILabel = .init().then {
-    $0.textColor = .t_indigo02()
+    $0.textColor = .secondaryLabel
     $0.text = "폴더에 정리하고 싶지 않나요?"
     $0.font = .t_EB(16)
   }
@@ -32,6 +32,11 @@ final class FolderViewController: UIViewController, View {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    navigationController?.navigationBar.isHidden = false
   }
   
   init(_ navigationBar: TidifyNavigationBar) {
