@@ -9,7 +9,9 @@
 import TidifyCore
 import UIKit
 
-public protocol MainCoordinator: Coordinator { }
+public protocol MainCoordinator: Coordinator {
+  func startSplash()
+}
 
 public final class DefaultMainCoordinator: MainCoordinator {
 
@@ -27,7 +29,14 @@ public final class DefaultMainCoordinator: MainCoordinator {
   }
 
   // MARK: - Methods
+  public func startSplash() {
+    let splashViewController: SplashViewController = .init(coordinator: self)
+    navigationController.pushViewController(splashViewController, animated: false)
+  }
+
   public func start() {
+    navigationController.popViewController(animated: false)
+
     if isFirstLaunch {
       UserDefaultsStorage.isFirstLaunch = false
       KeyChain.deleteAll()
