@@ -69,7 +69,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushDetailScene(folder: Folder) {
-    guard let useCase: BookmarkUseCase = DIContainer.shared.resolve(type: BookmarkUseCase.self)
+    guard let useCase: FolderDetailUseCase = DIContainer.shared.resolve(type: FolderDetailUseCase.self)
     else { fatalError() }
     let reactor: FolderDetailReactor = .init(coordinator: self, useCase: useCase, folderID: folder.id)
     let viewController: FolderDetailViewController = .init(

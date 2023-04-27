@@ -16,6 +16,7 @@ enum FolderService {
   case fetchFolders(start: Int = 0, count: Int = 10)
   case deleteFolder(id: Int)
   case updateFolder(id: Int, requestDTO: FolderRequestDTO)
+  case fetchBookmarkListInFolder(id: Int)
 }
 
 extension FolderService: TargetType {
@@ -29,6 +30,7 @@ extension FolderService: TargetType {
     switch self {
     case let .updateFolder(id, _): return baseRoutePath + "/\(id)"
     case .deleteFolder(let id): return baseRoutePath + "/\(id)"
+    case .fetchBookmarkListInFolder(let id): return baseRoutePath + "/\(id)" + "/bookmarks"
     default: return baseRoutePath
     }
   }
@@ -37,7 +39,7 @@ extension FolderService: TargetType {
     switch self {
     case .createFolder:
       return .post
-    case .fetchFolders:
+    case .fetchFolders, .fetchBookmarkListInFolder:
       return .get
     case .updateFolder:
       return .patch
@@ -62,7 +64,7 @@ extension FolderService: TargetType {
       ]
       return .requestParameters(parameters: param, encoding: JSONEncoding.default)
       
-    case .deleteFolder:
+    case .deleteFolder, .fetchBookmarkListInFolder:
       return .requestPlain
     }
   }

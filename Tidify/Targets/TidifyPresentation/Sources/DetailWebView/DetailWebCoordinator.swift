@@ -26,6 +26,7 @@ final class DefaultDetailWebCoordinator: DetailWebCoordinator {
 
   func start() {
     let detailWebViewController: DetailWebViewController = .init(bookmark: bookmark!)
+    navigationController.navigationBar.isHidden = false
     navigationController.pushViewController(detailWebViewController, animated: true)
   }
 }
