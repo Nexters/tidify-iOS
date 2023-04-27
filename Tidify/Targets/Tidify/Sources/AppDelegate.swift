@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.mainCoordinator = DefaultMainCoordinator(navigationController: navigationController)
 
-    mainCoordinator?.start()
+    mainCoordinator?.startSplash()
 
     return true
   }
