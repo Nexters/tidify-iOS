@@ -136,6 +136,11 @@ private extension SearchViewController {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
+    searchTextField.rx.controlEvent(.editingChanged)
+      .map { Action.inputKeyword }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+
     searchTextField.rx.controlEvent(.editingDidEnd)
       .withUnretained(self)
       .filter { owner, _ in owner.willSearch }
@@ -212,6 +217,12 @@ private extension SearchViewController {
       .bind(with: self, onNext: { owner, _ in
         owner.willSearch = true
       })
+      .disposed(by: disposeBag)
+
+    searchTextField.rx.text.orEmpty
+      .filter { $0.count == 1 && $0 == " " }
+      .map { _ in "" }
+      .bind(to: searchTextField.rx.text)
       .disposed(by: disposeBag)
 
     Driver.merge(
@@ -307,5 +318,21 @@ extension SearchViewController: UITableViewDelegate {
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     view.endEditing(true)
+  }
+
+  func tableView(
+    _ tableView: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    guard reactor?.currentState.viewMode == .search,
+          let bookmarksCount = reactor?.currentState.searchResult.count,
+          let searchText = searchTextField.text else {
+      return
+    }
+
+    if indexPath.row >= bookmarksCount - 5 {
+      reactor?.action.onNext(.searchQuery(searchText))
+    }
   }
 }

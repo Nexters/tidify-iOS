@@ -28,7 +28,7 @@ final class DefaultSearchRepository: SearchRepository {
     let searchHistory = UserDefaults.standard.array(forKey: Self.searchHistory) as? [String] ?? []
 
     return .create { observer -> Disposable in
-      observer(.success(searchHistory))
+      observer(.success(searchHistory.reversed()))
 
       return Disposables.create()
     }
@@ -80,7 +80,11 @@ private extension DefaultSearchRepository {
   func saveSearchKeyword(keyword: String) {
     var searchHistory = UserDefaults.standard.array(forKey: Self.searchHistory) as? [String] ?? []
 
-    if searchHistory.count > 10 {
+    if let existIndex = searchHistory.firstIndex(of: keyword) {
+      searchHistory.remove(at: existIndex)
+    }
+
+    if searchHistory.count >= 10 {
       searchHistory.removeFirst()
     }
 
