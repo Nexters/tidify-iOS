@@ -21,23 +21,19 @@ final class ShareViewController: SLComposeServiceViewController {
       userDefault.set(text, forKey: "SharedText")
     }
 
-    if let item = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProvider = item.attachments?.first as? NSItemProvider,
-            itemProvider.hasItemConformingToTypeIdentifier("public.url") {
-            itemProvider.loadItem(forTypeIdentifier: "public.url", options: nil) { (url, error) in
-                if let shareURL = url as? URL {
-                  userDefault.set(shareURL.relativeString, forKey: "SharedURL")
+    if let item = extensionContext?.inputItems.first as? NSExtensionItem {
+      if let attachments = item.attachments {
+            for attachment: NSItemProvider in attachments {
+                if attachment.hasItemConformingToTypeIdentifier("public.url") {
+                  attachment.loadItem(forTypeIdentifier: "public.url", options: nil, completionHandler: { (url, error) in
+                        if let shareURL = url as? NSURL {
+                          userDefault.set(shareURL.relativeString, forKey: "SharedURL")
+                        }
+                        self.extensionContext?.completeRequest(returningItems: [])
+                    })
                 }
-                self.extensionContext?.completeRequest(returningItems: [], completionHandler:nil)
             }
         }
-
-    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-  }
-
-  override func configurationItems() -> [Any]! {
-    let item: SLComposeSheetConfigurationItem = .init()
-    item.title = "Safari 혹은 Chrome사용을 권장합니다."
-    return [item]
+    }
   }
 }
