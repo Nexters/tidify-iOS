@@ -31,6 +31,7 @@ final class HomeReactor: Reactor {
     case didSelect(_ bookmark: Bookmark)
     case didDelete(_ bookmark: Bookmark)
     case didFetchSharedBookmark(url: String, title: String)
+    case editBookmark(_ index: Int)
   }
 
   enum Mutation {
@@ -76,6 +77,9 @@ final class HomeReactor: Reactor {
           return useCase.fetchBookmarkList(requestDTO: .init(page: self?.currentPage ?? 0))
         }
         .map { .setBookmarks($0.bookmarks)}
+    case .editBookmark(let index):
+      coordinator?.pushEditBookmarkScene(bookmark: currentState.bookmarks[index])
+      return .empty()
     }
   }
 
@@ -84,15 +88,7 @@ final class HomeReactor: Reactor {
 
     switch mutation {
     case .setBookmarks(let newBookmarks):
-      var bookmarks = newState.bookmarks
-
-      for bookmark in newBookmarks {
-        if !bookmarks.contains(bookmark) {
-          bookmarks.append(bookmark)
-        }
-      }
-
-      newState.bookmarks = bookmarks
+      newState.bookmarks = newBookmarks
 
     case .pushWebView(let bookmark):
       newState.didPushWebView = true

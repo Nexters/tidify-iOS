@@ -8,7 +8,7 @@
 
 import RxSwift
 
-public protocol BookmarkCreationUseCase {
+public protocol BookmarkCreationUseCase: UpdateBookmarkUseCase {
   /// 북마크를 생성합니다.
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void>
 
@@ -33,6 +33,11 @@ final class DefaultBookmarkCreationUseCase: BookmarkCreationUseCase {
   // MARK: - Methods
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void> {
     bookmarkRepository.createBookmark(requestDTO: requestDTO)
+      .asObservable()
+  }
+
+  func updateBookmark(id: Int, requestDTO: BookmarkRequestDTO) -> Observable<Void> {
+    bookmarkRepository.updateBookmark(bookmarkID: id, requestDTO: requestDTO)
       .asObservable()
   }
 

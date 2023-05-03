@@ -44,8 +44,8 @@ final class TidifyTableView: UITableView {
     })
   }
   
-  private (set) var editAction: PublishSubject<Int> = .init()
-  private (set) var deleteAction: PublishSubject<Int> = .init()
+  private(set) var editAction: PublishSubject<Int> = .init()
+  private(set) var deleteAction: PublishSubject<Int> = .init()
   
   private let disposeBag: DisposeBag = .init()
   

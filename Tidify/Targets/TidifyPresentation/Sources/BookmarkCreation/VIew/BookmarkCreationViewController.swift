@@ -30,10 +30,16 @@ final class BookmarkCreationViewController: UIViewController, View {
 
   var disposeBag: DisposeBag = .init()
   private let selectedFolderIndexRelay: BehaviorRelay<Int> = .init(value: -1)
+  private var isEditScene: Bool = false
+  private var bookmark: Bookmark?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    if let bookmark = reactor?.bookmark {
+      self.isEditScene = true
+      self.bookmark = bookmark
+    }
     setupUI()
   }
 
@@ -65,6 +71,18 @@ private extension BookmarkCreationViewController {
       .map { $0.folders }
       .subscribe()
       .disposed(by: disposeBag)
+
+    reactor.state
+      .filter { [weak self] _ in  self?.isEditScene ?? false }
+      .map { [weak self] state -> Int in
+        guard let folderID = self?.bookmark?.folderID,
+              let folderIndex = state.folders.firstIndex(where: { $0.id == folderID }) else {
+          return -1
+        }
+        return folderIndex
+      }
+      .bind(to: selectedFolderIndexRelay)
+      .disposed(by: disposeBag)
   }
 
   func bindExtra() {
@@ -72,7 +90,6 @@ private extension BookmarkCreationViewController {
       .map(isEnableUrlTextField)
       .bind(to: isEnableCreateBookmarkButtonBinder)
       .disposed(by: disposeBag)
-
 
     view.addTap().rx.event
       .filter { $0.state == .recognized }
@@ -93,12 +110,18 @@ private extension BookmarkCreationViewController {
     selectedFolderIndexRelay
       .bind(to: didSelectFolderBinder)
       .disposed(by: disposeBag)
+
+    selectedFolderIndexRelay
+      .filter { [weak self] in $0 != -1 && self?.isEditScene ?? false }
+      .map { _ in true }
+      .bind(to: isEnableCreateBookmarkButtonBinder)
+      .disposed(by: disposeBag)
   }
 
   func setupUI() {
     let sidePadding: CGFloat = 20
 
-    title = "북마크 생성"
+    title = isEditScene ? "북마크 편집" : "북마크 생성"
     view.backgroundColor = .white
     navigationController?.navigationBar.topItem?.title = ""
 
@@ -112,10 +135,11 @@ private extension BookmarkCreationViewController {
     view.addSubview(createBookmarkButton)
 
     urlGuideLabel = setGuideLabel(urlGuideLabel, title: "주소입력")
-    urlTextField = setTextField(urlTextField, placeholder: "URL 주소를 넣어주세요")
+    urlTextField = setTextField(urlTextField, placeholder: "URL 주소를 넣어주세요", text: bookmark?.urlString)
+    isEnableUrlTextField(bookmark?.urlString ?? "")
 
     bookmarkGuideLabel = setGuideLabel(bookmarkGuideLabel, title: "북마크 이름")
-    nameTextField = setTextField(nameTextField, placeholder: "입력하지 않으면 자동으로 저장돼요")
+    nameTextField = setTextField(nameTextField, placeholder: "입력하지 않으면 자동으로 저장돼요", text: bookmark?.name)
 
     folderGuideLabel = setGuideLabel(folderGuideLabel, title: "저장할 폴더")
 
@@ -196,7 +220,7 @@ private extension BookmarkCreationViewController {
     return label
   }
 
-  func setTextField(_ textField: UITextField, placeholder: String) -> UITextField {
+  func setTextField(_ textField: UITextField, placeholder: String, text: String? = nil) -> UITextField {
     let attrString: NSAttributedString = .init(
       string: placeholder,
       attributes: [.foregroundColor: UIColor.gray]
@@ -211,6 +235,7 @@ private extension BookmarkCreationViewController {
       $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.cornerRadius(radius: 16)
       $0.font = .t_R(16)
+      $0.text = text
       $0.textColor = .black
     }
 
@@ -233,6 +258,7 @@ private extension BookmarkCreationViewController {
     present(bottomSheet, animated: true)
   }
 
+  @discardableResult
   func isEnableUrlTextField(_ text: String) -> Bool {
     if text.isEmpty {
       urlErrorLabel.text = "링크가 없어요"
@@ -268,7 +294,11 @@ private extension BookmarkCreationViewController {
       name: name
     )
 
-    return .didTapCreateButton(requestDTO)
+    if isEditScene {
+      return .updateBookmark(id: bookmark?.id ?? 0, requestDTO: requestDTO)
+    } else {
+      return .createBookmark(requestDTO)
+    }
   }
 }
 

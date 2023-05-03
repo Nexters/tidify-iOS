@@ -125,12 +125,16 @@ private extension HomeViewController {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
-    tableView.rx.itemDeleted
-      .withUnretained(self)
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { owner, indexPath in
-        owner.presentDeleteBookmarkAlert(deleteTargetRow: indexPath.row)
+    tableView.deleteAction
+      .asSignal(onErrorSignalWith: .empty())
+      .emit(with: self, onNext: { owner, index in
+        owner.presentDeleteBookmarkAlert(deleteTargetRow: index)
       })
+      .disposed(by: disposeBag)
+
+    tableView.editAction
+      .map { Action.editBookmark($0) }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
     deleteBookmarkSubject
