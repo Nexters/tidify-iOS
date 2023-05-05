@@ -24,14 +24,14 @@ extension AuthService: TargetType {
 
   var path: String {
     switch self {
-    case .apple: return "/auth/apple"
+    case .apple: return "/oauth2/login"
     case .tryKakaoSignIn: return "/oauth2/login"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .apple: return .post
+    case .apple: return .get
     case .tryKakaoSignIn: return .get
     }
   }
@@ -57,8 +57,8 @@ extension AuthService: TargetType {
 
   var headers: [String : String]? {
     switch self {
-    case .apple:
-      return nil
+    case .apple(let token):
+      return ["Authorization": token]
     case .tryKakaoSignIn(let accessToken):
       return ["Authorization": accessToken]
     }
