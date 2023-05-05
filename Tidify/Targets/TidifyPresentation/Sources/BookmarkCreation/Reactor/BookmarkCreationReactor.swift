@@ -17,23 +17,27 @@ final class BookmarkCreationReactor: Reactor {
 
   private weak var coordinator: BookmarkCreationCoordinator?
   private let useCase: BookmarkCreationUseCase
+  let bookmark: Bookmark?
 
   // MARK: - Constructor
   init(
     coordinator: BookmarkCreationCoordinator,
-    useCase: BookmarkCreationUseCase
+    useCase: BookmarkCreationUseCase,
+    bookmark: Bookmark? = nil
   ) {
     self.coordinator = coordinator
     self.useCase = useCase
+    self.bookmark = bookmark
   }
 
   enum Action {
     case viewWillAppear
-    case didTapCreateButton(_ requestDTO: BookmarkRequestDTO)
+    case createBookmark(_ requestDTO: BookmarkRequestDTO)
+    case updateBookmark(id: Int, requestDTO: BookmarkRequestDTO)
   }
 
   enum Mutation {
-    case requestCreateBookmark
+    case createOrUpdateBookmark
     case setFolders(folders: [Folder])
   }
 
@@ -47,9 +51,13 @@ final class BookmarkCreationReactor: Reactor {
       return useCase.fetchFolders()
         .map { .setFolders(folders: $0) }
 
-    case .didTapCreateButton(let requestDTO):
+    case .createBookmark(let requestDTO):
       return useCase.createBookmark(requestDTO: requestDTO)
-        .map { .requestCreateBookmark }
+        .map { .createOrUpdateBookmark }
+
+    case let .updateBookmark(id, requestDTO):
+      return useCase.updateBookmark(id: id, requestDTO: requestDTO)
+        .map { .createOrUpdateBookmark }
     }
   }
 
@@ -57,7 +65,7 @@ final class BookmarkCreationReactor: Reactor {
     var newState: State = state
 
     switch mutation {
-    case .requestCreateBookmark:
+    case .createOrUpdateBookmark:
       coordinator?.close()
 
     case .setFolders(let folders):

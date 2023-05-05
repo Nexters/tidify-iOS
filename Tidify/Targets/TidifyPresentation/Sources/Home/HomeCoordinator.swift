@@ -16,6 +16,7 @@ protocol HomeCoordinator: Coordinator {
   func pushWebView(bookmark: Bookmark)
   func pushSettingScene()
   func pushBookmarkCreationScene()
+  func pushEditBookmarkScene(bookmark: Bookmark)
 }
 
 final class DefaultHomeCoordinator: HomeCoordinator {
@@ -111,6 +112,16 @@ final class DefaultHomeCoordinator: HomeCoordinator {
     addChild(bookmarkCreationCoordinator)
 
     bookmarkCreationCoordinator.start()
+  }
+
+  func pushEditBookmarkScene(bookmark: Bookmark) {
+    guard let bookmarkCreationCoordinator = DIContainer.shared.resolve(
+      type: BookmarkCreationCoordinator.self) as? DefaultBookmarkCreationCoordinator else { return }
+
+    bookmarkCreationCoordinator.parentCoordinator = self
+    addChild(bookmarkCreationCoordinator)
+
+    bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
   }
 }
 

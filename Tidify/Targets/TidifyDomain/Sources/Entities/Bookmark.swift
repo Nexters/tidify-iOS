@@ -12,7 +12,7 @@ public struct Bookmark: Equatable {
 
   // MARK: - Properties
   public let id: Int
-  private var folderID: Int?
+  public var folderID: Int?
   public var urlString: String?
   public var name: String
 
@@ -30,6 +30,10 @@ public struct Bookmark: Equatable {
     self.folderID = folderID
     self.urlString = urlString
     self.name = name
+  }
+
+  public static func ==(lhs: Bookmark, rhs: Bookmark) -> Bool {
+    lhs.id == rhs.id
   }
 }
 
