@@ -112,7 +112,7 @@ private extension BookmarkCreationViewController {
       .disposed(by: disposeBag)
 
     selectedFolderIndexRelay
-      .filter { [weak self] in $0 != -1 && self?.isEditScene ?? false }
+      .filter { [weak self] _ in self?.isEditScene ?? false }
       .map { _ in true }
       .bind(to: isEnableCreateBookmarkButtonBinder)
       .disposed(by: disposeBag)

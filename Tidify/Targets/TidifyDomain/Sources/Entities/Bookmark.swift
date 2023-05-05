@@ -31,6 +31,10 @@ public struct Bookmark: Equatable {
     self.urlString = urlString
     self.name = name
   }
+
+  public static func ==(lhs: Bookmark, rhs: Bookmark) -> Bool {
+    lhs.id == rhs.id
+  }
 }
 
 public extension Bookmark {

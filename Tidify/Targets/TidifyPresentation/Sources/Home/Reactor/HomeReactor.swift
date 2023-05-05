@@ -55,7 +55,7 @@ final class HomeReactor: Reactor {
         .flatMapLatest { [weak self] (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool) -> Observable<Mutation> in
           self?.currentPage = currentPage
           self?.isLastPage = isLastPage
-          return Observable<Mutation>.just(.setBookmarks(bookmarks))
+          return Observable<Mutation>.just(.setBookmarks(bookmarks.reversed()))
         }
 
     case .didSelect(let bookmark):
@@ -63,7 +63,7 @@ final class HomeReactor: Reactor {
 
     case .didDelete(let bookmark):
       return useCase.deleteBookmark(bookmarkID: bookmark.id)
-        .withLatestFrom(state.map { $0.bookmarks}.asObservable())
+        .withLatestFrom(state.map { $0.bookmarks }.asObservable())
         .map { $0.filter { $0.id != bookmark.id } }
         .map { .setBookmarks($0) }
 
@@ -76,7 +76,8 @@ final class HomeReactor: Reactor {
 
           return useCase.fetchBookmarkList(requestDTO: .init(page: self?.currentPage ?? 0))
         }
-        .map { .setBookmarks($0.bookmarks)}
+        .map { .setBookmarks($0.bookmarks) }
+
     case .editBookmark(let index):
       coordinator?.pushEditBookmarkScene(bookmark: currentState.bookmarks[index])
       return .empty()
@@ -88,7 +89,15 @@ final class HomeReactor: Reactor {
 
     switch mutation {
     case .setBookmarks(let newBookmarks):
-      newState.bookmarks = newBookmarks
+      var bookmarks = state.bookmarks
+
+      for bookmark in newBookmarks {
+        if !bookmarks.contains(bookmark) {
+          bookmarks.append(bookmark)
+        }
+      }
+
+      newState.bookmarks = bookmarks
 
     case .pushWebView(let bookmark):
       newState.didPushWebView = true

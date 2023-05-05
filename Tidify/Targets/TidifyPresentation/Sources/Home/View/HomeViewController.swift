@@ -62,6 +62,8 @@ private extension HomeViewController {
     containerView.addSubview(tableView)
     guideView.addSubview(guideLabel)
 
+    tableView.delegate = self
+
     view.backgroundColor = .t_background()
 
     containerView.do {
