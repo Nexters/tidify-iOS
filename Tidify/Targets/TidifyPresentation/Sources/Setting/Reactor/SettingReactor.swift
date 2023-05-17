@@ -6,11 +6,14 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyDomain
 import Foundation
 
 import ReactorKit
 
 final class SettingReactor: Reactor {
+  private let useCase: SettingUseCase
+  private weak var coordinator: SettingCoordinator?
 
   enum Sections: Int, CaseIterable {
     case accountManaging
@@ -39,11 +42,18 @@ final class SettingReactor: Reactor {
     }
   }
 
-  // MARK: - Properties
+  // MARK: Initializer
+  init(useCase: SettingUseCase, coordinator: SettingCoordinator) {
+    self.useCase = useCase
+    self.coordinator = coordinator
+  }
+
   var initialState: State = .init()
 
   enum Action {
     case didTapCell(indexPath: IndexPath)
+    case tryLogOut
+    case trySignOut
   }
 
   enum Mutation {
@@ -66,6 +76,17 @@ final class SettingReactor: Reactor {
 
       default: return .empty()
       }
+
+    case .tryLogOut:
+      transitionToSignIn()
+      return .empty()
+
+    case .trySignOut:
+      return useCase.trySignOut()
+        .flatMap { [weak self] _ -> Observable<Mutation> in
+          self?.transitionToSignIn()
+          return .empty()
+        }
     }
   }
 
@@ -78,5 +99,11 @@ final class SettingReactor: Reactor {
     }
 
     return newState
+  }
+}
+
+private extension SettingReactor {
+  func transitionToSignIn() {
+    coordinator?.transitionToSignIn()
   }
 }

@@ -16,7 +16,7 @@ final class SignInReactor: Reactor {
   // MARK: - Properties
   var initialState: State = .init()
 
-  private weak var coordinator: SignInCoordinator?
+  private let coordinator: SignInCoordinator?
   private let useCase: SignInUseCase
 
   // MARK: - Initializer

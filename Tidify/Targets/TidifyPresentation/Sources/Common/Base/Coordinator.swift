@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
 import UIKit
 
 /// Protocol that all coordinator must be conform
@@ -24,5 +25,10 @@ public protocol Coordinator: AnyObject {
 public extension Coordinator {
   func addChild(_ child: Coordinator) {
     childCoordinators.append(child)
+  }
+
+  func transitionToSignIn() {
+    let signInCoordinator: SignInCoordinator = DIContainer.shared.resolve(type: SignInCoordinator.self)!
+    signInCoordinator.start()
   }
 }

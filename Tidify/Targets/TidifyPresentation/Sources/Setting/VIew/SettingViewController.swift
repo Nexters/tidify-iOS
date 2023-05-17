@@ -89,10 +89,12 @@ private extension SettingViewController {
   func presentAlert(type: AlertPresenter.AlertType) {
     var rightButtonAction: ButtonAction? = nil
 
-    if type == .removeAllCache {
-      rightButtonAction = { [weak self] in self?.clearAllCache() }
-    } else if type == .removeImageCache {
-      rightButtonAction = { KingfisherManager.shared.cache.clearMemoryCache() }
+    switch type {
+    case .removeAllCache: rightButtonAction = { [weak self] in self?.clearAllCache() }
+    case .removeImageCache: rightButtonAction = { KingfisherManager.shared.cache.clearMemoryCache() }
+    case .logout: rightButtonAction = { [weak self] in self?.reactor?.action.onNext(.tryLogOut) }
+    case .signOut: rightButtonAction = { [weak self] in self?.reactor?.action.onNext(.trySignOut) }
+    default: break
     }
 
     alertPresenter.present(

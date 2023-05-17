@@ -6,6 +6,8 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
+import TidifyDomain
 import UIKit
 
 protocol SettingCoordinator: Coordinator {}
@@ -32,7 +34,10 @@ final class DefaultSettingCoordinator: SettingCoordinator {
 private extension DefaultSettingCoordinator {
   func getViewController() -> SettingViewController {
     navigationController.navigationBar.topItem?.title = ""
-    let reactor: SettingReactor = .init()
+    guard let useCase: SettingUseCase = DIContainer.shared.resolve(type: SettingUseCase.self) else {
+      fatalError()
+    }
+    let reactor: SettingReactor = .init(useCase: useCase, coordinator: self)
     let alertPresenter: AlertPresenter = .init()
     let viewController: SettingViewController = .init(alertPresenter: alertPresenter)
     viewController.reactor = reactor
