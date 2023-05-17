@@ -55,9 +55,6 @@ private extension DefaultSignInRepository {
   func requestKakaoSignIn(accessToken: String) -> Single<UserToken> {
     signInService.rx.request(.tryKakaoSignIn(accessToken: accessToken))
       .map(UserTokenDTO.self)
-      .map { response in
-        print("response: \(response)")
-        return response.toDomain()
-      }
+      .map { $0.toDomain() }
   }
 }
