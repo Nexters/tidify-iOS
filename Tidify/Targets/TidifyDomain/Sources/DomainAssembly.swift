@@ -41,5 +41,9 @@ public struct DomainAssembly: Assemblable {
     container.register(type: FolderDetailUseCase.self) { container in
       return DefaultFolderDetailUseCase(repository: container.resolve(type: FolderDetailRepository.self)!)
     }
+
+    container.register(type: SettingUseCase.self) { container in
+      return DefaultSettingUseCase(repository: container.resolve(type: SettingRepository.self)!)
+    }
   }
 }
