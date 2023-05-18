@@ -33,7 +33,6 @@ final class HomeViewController: UIViewController, View {
   init(with navigationBar: TidifyNavigationBar, alertPresenter: AlertPresenter) {
     self.navigationBar = navigationBar
     self.alertPresenter = alertPresenter
-
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -62,7 +61,6 @@ private extension HomeViewController {
     containerView.addSubview(tableView)
     guideView.addSubview(guideLabel)
 
-    tableView.delegate = self
 
     view.backgroundColor = .t_background()
 
@@ -146,6 +144,14 @@ private extension HomeViewController {
       }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+
+    tableView.rx.didScroll
+      .asSignal()
+      .throttle(.seconds(1))
+      .emit(with: self) { owner, _ in
+        owner.triggerPaging()
+      }
+      .disposed(by: disposeBag)
   }
 
   func bindState(reactor: HomeReactor) {
@@ -168,22 +174,6 @@ private extension HomeViewController {
       .map { $0.bookmarks.isEmpty }
       .bind(to: tableView.rx.isHidden)
       .disposed(by: disposeBag)
-  }
-}
-
-extension HomeViewController: UITableViewDelegate {
-  func tableView(
-    _ tableView: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt indexPath: IndexPath
-  ) {
-    guard let bookmarksCount = reactor?.currentState.bookmarks.count else {
-      return
-    }
-
-    if indexPath.row >= bookmarksCount - 5 {
-      reactor?.action.onNext(.fetchBookmarks())
-    }
   }
 }
 
@@ -217,4 +207,16 @@ private extension HomeViewController {
 
     return sharedData
   }
+
+  func triggerPaging() {
+    let offsetY = tableView.contentOffset.y
+    let contentHeight = tableView.contentSize.height
+    let height = tableView.frame.height
+
+    if offsetY > (contentHeight - height) && !(reactor?.isPaging ?? true) {
+      reactor?.action.onNext(.fetchBookmarks())
+    }
+  }
 }
+
+

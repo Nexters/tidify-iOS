@@ -19,6 +19,7 @@ final class HomeReactor: Reactor {
   private let useCase: BookmarkUseCase
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
+  private(set) var isPaging: Bool = false
 
   // MARK: - Initializer
   init(coordinator: HomeCoordinator, useCase: BookmarkUseCase) {
@@ -50,6 +51,7 @@ final class HomeReactor: Reactor {
       guard !(isLastPage && !isInitialRequest) else {
         return .empty()
       }
+      isPaging = true
 
       return useCase.fetchBookmarkList(requestDTO: .init(page: isInitialRequest ? 0 : currentPage + 1))
         .flatMapLatest { [weak self] (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool) -> Observable<Mutation> in
@@ -98,6 +100,7 @@ final class HomeReactor: Reactor {
       }
 
       newState.bookmarks = bookmarks
+      isPaging = false
 
     case .pushWebView(let bookmark):
       newState.didPushWebView = true
