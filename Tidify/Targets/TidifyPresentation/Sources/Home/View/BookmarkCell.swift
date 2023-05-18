@@ -92,7 +92,7 @@ private extension BookmarkCell {
     bookmarkImageView.do {
       $0.image = .init(named: "icon_symbol")
       $0.contentMode = .scaleAspectFit
-      $0.cornerRadius(radius: 4)
+      $0.cornerRadius(radius: 6)
       contentView.addSubview($0)
     }
 
@@ -100,7 +100,7 @@ private extension BookmarkCell {
       $0.top.equalToSuperview().offset(8)
       $0.leading.equalToSuperview().offset(10)
       $0.bottom.equalToSuperview().offset(-8)
-      $0.width.equalTo(40)
+      $0.width.equalTo(52)
     }
 
     bookmarkNameLabel.snp.makeConstraints {
