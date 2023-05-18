@@ -113,7 +113,10 @@ func makeShareExtensionTarget(
       "CFBundleDisplayName": "$(PRODUCT_NAME)",
       "NSExtension": [
         "NSExtensionAttributes": [
-          "NSExtensionActivationRule": "TRUEPREDICATE"
+          "NSExtensionActivationRule": [
+            "NSExtensionActivationSupportsImageWithMaxCount": 1,
+            "NSExtensionActivationSupportsWebURLWithMaxCount": 1
+          ]
         ],
         "NSExtensionMainStoryboard": "MainInterface",
         "NSExtensionPointIdentifier": "com.apple.share-services"
