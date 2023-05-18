@@ -15,16 +15,16 @@ import Moya
 
 final class DefaultSignInRepository: SignInRepository {
   // MARK: - Properties
-  private let authService: MoyaProvider<AuthService>
+  private let signInService: MoyaProvider<SignInService>
   
   // MARK: - Initializer
   public init() {
-    self.authService = .init(plugins: [NetworkPlugin()])
+    self.signInService = .init(plugins: [NetworkPlugin()])
   }
   
   // MARK: - Methods
   public func tryAppleLogin(token: String) -> Single<UserToken> {
-    return authService.rx.request(.apple(token: token))
+    return signInService.rx.request(.apple(token: token))
       .map(UserTokenDTO.self)
       .flatMap { tokenDTO in
         return .create { observer in
@@ -53,7 +53,7 @@ final class DefaultSignInRepository: SignInRepository {
 
 private extension DefaultSignInRepository {
   func requestKakaoSignIn(accessToken: String) -> Single<UserToken> {
-    authService.rx.request(.tryKakaoSignIn(accessToken: accessToken))
+    signInService.rx.request(.tryKakaoSignIn(accessToken: accessToken))
       .map(UserTokenDTO.self)
       .map { response in
         print("response: \(response)")

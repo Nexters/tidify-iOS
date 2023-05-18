@@ -1,5 +1,5 @@
 //
-//  AuthService.swift
+//  SignInService.swift
 //  TidifyData
 //
 //  Created by Ian on 2022/08/08.
@@ -11,13 +11,13 @@ import TidifyDomain
 
 import Moya
 
-enum AuthService {
+enum SignInService {
   case apple(token: String)
   case tryKakaoSignIn(accessToken: String)
 
 }
 
-extension AuthService: TargetType {
+extension SignInService: TargetType {
   var baseURL: URL {
     return .init(string: AppProperties.baseURL)!
   }
