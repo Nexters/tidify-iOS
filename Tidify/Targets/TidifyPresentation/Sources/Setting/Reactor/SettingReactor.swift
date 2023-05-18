@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import TidifyCore
 import TidifyDomain
 import Foundation
 
@@ -104,6 +105,7 @@ final class SettingReactor: Reactor {
 
 private extension SettingReactor {
   func transitionToSignIn() {
+    KeyChain.deleteAll()
     coordinator?.transitionToSignIn()
   }
 }
