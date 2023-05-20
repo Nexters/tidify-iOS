@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Bookmark: Equatable {
+public struct Bookmark: Hashable {
 
   // MARK: - Properties
   public let id: Int

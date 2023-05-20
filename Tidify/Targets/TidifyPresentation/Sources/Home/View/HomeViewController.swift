@@ -29,6 +29,14 @@ final class HomeViewController: UIViewController, View {
   private let alertPresenter: AlertPresenter
   private let deleteBookmarkSubject: PublishSubject<Int> = .init()
 
+  private lazy var dataSource: UITableViewDiffableDataSource<Int, Bookmark> = {
+    UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, item in
+      let cell = tableView.t_dequeueReusableCell(cellType: BookmarkCell.self, indexPath: indexPath)
+      cell.configure(bookmark: item)
+      return cell
+    }
+  }()
+
   var disposeBag: DisposeBag = .init()
 
   // MARK: - Initializer
@@ -45,6 +53,10 @@ final class HomeViewController: UIViewController, View {
     super.viewDidLoad()
 
     setupUI()
+
+    var snapshot = dataSource.snapshot()
+    snapshot.appendSections([0])
+    dataSource.apply(snapshot)
   }
 
   func bind(reactor: HomeReactor) {
@@ -98,6 +110,8 @@ private extension HomeViewController {
 
     navigationBar = .init(.home, leftButton: navSettingButton, rightButton: navCreateBookmarkButton)
     view.addSubview(navigationBar)
+
+    tableView.dataSource = dataSource
 
     navigationBar.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
@@ -194,12 +208,11 @@ private extension HomeViewController {
     reactor.state
       .map { $0.bookmarks }
       .distinctUntilChanged()
-      .bind(to: tableView.rx.items(
-        cellIdentifier: "\(BookmarkCell.self)",
-        cellType: BookmarkCell.self)) { _, model, cell in
-          cell.configure(bookmark: model)
-        }
-        .disposed(by: disposeBag)
+      .asDriver(onErrorJustReturn: [])
+      .drive(with: self) { owner, bookmarks in
+        owner.applySnapshot(bookmarks: bookmarks)
+      }
+      .disposed(by: disposeBag)
 
     reactor.state
       .map { $0.didPushWebView }
@@ -251,6 +264,21 @@ private extension HomeViewController {
 
     if offsetY > (contentHeight - height) && !(reactor?.isPaging ?? true) {
       reactor?.action.onNext(.fetchBookmarks())
+    }
+  }
+
+  func applySnapshot(bookmarks: [Bookmark]) {
+    var snapshot = dataSource.snapshot()
+    var newBookmarks: [Bookmark] = []
+    let existBookmarks = snapshot.itemIdentifiers
+
+    for bookmark in bookmarks where !existBookmarks.contains(bookmark) {
+      newBookmarks.append(bookmark)
+    }
+
+    if !newBookmarks.isEmpty {
+      snapshot.appendItems(newBookmarks)
+      dataSource.apply(snapshot)
     }
   }
 }
