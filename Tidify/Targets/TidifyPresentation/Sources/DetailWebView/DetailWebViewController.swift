@@ -32,6 +32,7 @@ final class DetailWebViewController: UIViewController {
     super.viewDidLoad()
 
     setupUI()
+    webView.scrollView.delegate = self
 
     let urlRequest: URLRequest = .init(url: bookmark.url)
     webView.load(urlRequest)
@@ -59,3 +60,13 @@ private extension DetailWebViewController {
 
 extension DetailWebViewController: WKUIDelegate {}
 extension DetailWebViewController: WKNavigationDelegate {}
+
+extension DetailWebViewController: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if scrollView.panGestureRecognizer.translation(in: scrollView.superview).y > 0 {
+      self.navigationController?.setNavigationBarHidden(false, animated: true)
+    } else {
+      navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+  }
+}
