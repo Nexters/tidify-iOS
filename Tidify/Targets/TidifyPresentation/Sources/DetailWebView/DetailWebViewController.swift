@@ -48,7 +48,7 @@ private extension DetailWebViewController {
       $0.allowsBackForwardNavigationGestures = true
       $0.uiDelegate = self
       $0.navigationDelegate = self
-      $0.backgroundColor = .black
+      $0.backgroundColor = .white
     }
 
     webView.snp.makeConstraints {

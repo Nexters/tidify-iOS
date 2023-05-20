@@ -36,7 +36,7 @@ final class HomeReactor: Reactor {
   }
 
   enum Mutation {
-    case setBookmarks(_ bookmarks: [Bookmark])
+    case setBookmarks(_ bookmarks: [Bookmark], isInitialRequest: Bool = false)
     case pushWebView(_ bookmark: Bookmark)
   }
 
@@ -57,7 +57,7 @@ final class HomeReactor: Reactor {
         .flatMapLatest { [weak self] (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool) -> Observable<Mutation> in
           self?.currentPage = currentPage
           self?.isLastPage = isLastPage
-          return Observable<Mutation>.just(.setBookmarks(bookmarks.reversed()))
+          return Observable<Mutation>.just(.setBookmarks(bookmarks, isInitialRequest: isInitialRequest))
         }
 
     case .didSelect(let bookmark):
@@ -90,16 +90,23 @@ final class HomeReactor: Reactor {
     var newState: State = state
 
     switch mutation {
-    case .setBookmarks(let newBookmarks):
-      var bookmarks = state.bookmarks
+    case let .setBookmarks(newBookmarks, isInitialRequest):
+      if isInitialRequest {
+        newState.bookmarks = newBookmarks
+      } else {
+        var bookmarks = state.bookmarks
 
-      for bookmark in newBookmarks {
-        if !bookmarks.contains(bookmark) {
-          bookmarks.append(bookmark)
+        for newBookmark in newBookmarks {
+          if let index = bookmarks.firstIndex(where: { $0.id == newBookmark.id }), newBookmark != bookmarks[index] {
+            bookmarks[index] = newBookmark
+          } else {
+            bookmarks.append(newBookmark)
+          }
         }
+
+        newState.bookmarks = bookmarks
       }
 
-      newState.bookmarks = bookmarks
       isPaging = false
 
     case .pushWebView(let bookmark):

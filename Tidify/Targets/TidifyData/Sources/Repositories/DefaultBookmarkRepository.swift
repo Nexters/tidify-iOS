@@ -29,7 +29,7 @@ final class DefaultBookmarkRepository: BookmarkRepository {
         return .create { observer in
           if response.isSuccess {
             let fetchResponse: FetchBookmarkListResposne = (
-              bookmarks: response.bookmarkListDTO.toDomain(),
+              bookmarks: response.bookmarkListDTO.toDomain().reversed(),
               currentPage: response.bookmarkListDTO.currentPage,
               isLastPage: response.bookmarkListDTO.isLastPage
             )

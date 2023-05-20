@@ -33,7 +33,7 @@ public struct Bookmark: Equatable {
   }
 
   public static func ==(lhs: Bookmark, rhs: Bookmark) -> Bool {
-    lhs.id == rhs.id
+    lhs.id == rhs.id && lhs.folderID == rhs.folderID && lhs.urlString == rhs.urlString && lhs.name == rhs.name
   }
 }
 
