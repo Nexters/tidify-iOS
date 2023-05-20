@@ -18,7 +18,9 @@ import Then
 final class HomeViewController: UIViewController, View {
 
   // MARK: - Properties
-  private let navigationBar: TidifyNavigationBar!
+  private var navigationBar: TidifyNavigationBar!
+  private let navSettingButton: UIButton = .init()
+  private let navCreateBookmarkButton: UIButton = .init()
   private let containerView: UIView = .init()
   private lazy var guideView: UIView = .init()
   private lazy var guideLabel: UILabel = .init()
@@ -30,8 +32,7 @@ final class HomeViewController: UIViewController, View {
   var disposeBag: DisposeBag = .init()
 
   // MARK: - Initializer
-  init(with navigationBar: TidifyNavigationBar, alertPresenter: AlertPresenter) {
-    self.navigationBar = navigationBar
+  init(alertPresenter: AlertPresenter) {
     self.alertPresenter = alertPresenter
     super.init(nibName: nil, bundle: nil)
   }
@@ -55,13 +56,10 @@ final class HomeViewController: UIViewController, View {
 // MARK: - Private
 private extension HomeViewController {
   func setupUI() {
-    view.addSubview(navigationBar)
     view.addSubview(containerView)
     containerView.addSubview(guideView)
     containerView.addSubview(tableView)
     guideView.addSubview(guideLabel)
-
-
     view.backgroundColor = .t_background()
 
     containerView.do {
@@ -78,6 +76,28 @@ private extension HomeViewController {
       $0.textColor = .secondaryLabel
       $0.font = .systemFont(ofSize: 16, weight: .bold)
     }
+
+    navSettingButton.do {
+      $0.setImage(.init(named: "profileIcon"), for: .normal)
+      $0.frame = .init(
+        x: 0,
+        y: 0,
+        width: UIViewController.viewHeight * 0.043, height: UIViewController.viewHeight * 0.049
+      )
+    }
+
+    navCreateBookmarkButton.do {
+      $0.setImage(.init(named: "createBookMarkIcon"), for: .normal)
+      $0.frame = .init(
+        x: 0,
+        y: 0,
+        width: UIViewController.viewWidth * 0.506,
+        height: UIViewController.viewHeight * 0.049
+      )
+    }
+
+    navigationBar = .init(.home, leftButton: navSettingButton, rightButton: navCreateBookmarkButton)
+    view.addSubview(navigationBar)
 
     navigationBar.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
@@ -151,6 +171,22 @@ private extension HomeViewController {
       .emit(with: self) { owner, _ in
         owner.triggerPaging()
       }
+      .disposed(by: disposeBag)
+
+    navSettingButton.rx.tap
+      .withUnretained(reactor)
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { reactor, _ in
+        reactor.pushSettingScene()
+      })
+      .disposed(by: disposeBag)
+
+    navCreateBookmarkButton.rx.tap
+      .withUnretained(reactor)
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { reactor, _ in
+        reactor.pushBookmarkCreationScene()
+      })
       .disposed(by: disposeBag)
   }
 

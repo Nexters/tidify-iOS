@@ -15,7 +15,7 @@ final class HomeReactor: Reactor {
   // MARK: - Properties
   var initialState: State = .init(bookmarks: [], didPushWebView: false)
 
-  private weak var coordinator: HomeCoordinator?
+  private let coordinator: HomeCoordinator
   private let useCase: BookmarkUseCase
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
@@ -81,7 +81,7 @@ final class HomeReactor: Reactor {
         .map { .setBookmarks($0.bookmarks) }
 
     case .editBookmark(let index):
-      coordinator?.pushEditBookmarkScene(bookmark: currentState.bookmarks[index])
+      coordinator.pushEditBookmarkScene(bookmark: currentState.bookmarks[index])
       return .empty()
     }
   }
@@ -104,9 +104,19 @@ final class HomeReactor: Reactor {
 
     case .pushWebView(let bookmark):
       newState.didPushWebView = true
-      coordinator?.pushWebView(bookmark: bookmark)
+      coordinator.pushWebView(bookmark: bookmark)
     }
 
     return newState
+  }
+}
+
+extension HomeReactor {
+  func pushSettingScene() {
+    coordinator.pushSettingScene()
+  }
+
+  func pushBookmarkCreationScene() {
+    coordinator.pushBookmarkCreationScene()
   }
 }

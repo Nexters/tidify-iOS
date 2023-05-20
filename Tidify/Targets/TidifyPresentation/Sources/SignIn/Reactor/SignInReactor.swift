@@ -16,7 +16,7 @@ final class SignInReactor: Reactor {
   // MARK: - Properties
   var initialState: State = .init()
 
-  private let coordinator: SignInCoordinator?
+  private let coordinator: SignInCoordinator
   private let useCase: SignInUseCase
 
   // MARK: - Initializer
@@ -75,7 +75,7 @@ final class SignInReactor: Reactor {
       if let refreshTokenData = userToken.refreshToken.data(using: .utf8) {
         KeyChain.save(key: .refreshToken, data: refreshTokenData)
       }
-      coordinator?.didSuccessSignIn()
+      coordinator.didSuccessSignIn()
     }
 
     return newState

@@ -24,54 +24,9 @@ final class DefaultHomeCoordinator: HomeCoordinator {
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
 
-  private let navigationBar: TidifyNavigationBar!
-
-  private let settingButton: UIButton = .init().then {
-    $0.setImage(.init(named: "profileIcon"), for: .normal)
-    $0.frame = .init(
-      x: 0,
-      y: 0,
-      width: UIViewController.viewHeight * 0.043, height: UIViewController.viewHeight * 0.049
-    )
-  }
-
-  private let createBookmarkButton: UIButton = .init().then {
-    $0.setImage(.init(named: "createBookMarkIcon"), for: .normal)
-    $0.frame = .init(
-      x: 0,
-      y: 0,
-      width: UIViewController.viewWidth * 0.506,
-      height: UIViewController.viewHeight * 0.049
-    )
-  }
-
-  private let disposeBag: DisposeBag = .init()
-
   // MARK: - Initializer
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
-
-    self.navigationBar = .init(
-      .home,
-      leftButton: settingButton,
-      rightButton: createBookmarkButton
-    )
-
-    settingButton.rx.tap
-      .withUnretained(self)
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { coordinator, _ in
-        coordinator.pushSettingScene()
-      })
-      .disposed(by: disposeBag)
-
-    createBookmarkButton.rx.tap
-      .withUnretained(self)
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { coordinator, _ in
-        coordinator.pushBookmarkCreationScene()
-      })
-      .disposed(by: disposeBag)
   }
 
   // MARK: - Methods
@@ -133,10 +88,7 @@ private extension DefaultHomeCoordinator {
     }
 
     let reactor: HomeReactor = .init(coordinator: self, useCase: usecase)
-    let viewController: HomeViewController = .init(
-      with: navigationBar,
-      alertPresenter: AlertPresenter()
-    )
+    let viewController: HomeViewController = .init(alertPresenter: AlertPresenter())
     viewController.reactor = reactor
 
     return viewController
