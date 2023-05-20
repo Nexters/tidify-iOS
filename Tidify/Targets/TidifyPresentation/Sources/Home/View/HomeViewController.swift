@@ -15,7 +15,7 @@ import ReactorKit
 import SnapKit
 import Then
 
-final class HomeViewController: UIViewController, View {
+final class HomeViewController: UIViewController, View, UIScrollViewDelegate {
 
   // MARK: - Properties
   private var navigationBar: TidifyNavigationBar!
@@ -112,6 +112,7 @@ private extension HomeViewController {
     view.addSubview(navigationBar)
 
     tableView.dataSource = dataSource
+    tableView.prefetchDataSource = self
 
     navigationBar.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
@@ -154,8 +155,11 @@ private extension HomeViewController {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
-    tableView.rx.modelSelected(Bookmark.self)
-      .map { Action.didSelect($0) }
+    tableView.didSelectRowSubject
+      .map { indexPath in
+        let bookmark = reactor.currentState.bookmarks[indexPath.row]
+        return Action.didSelect(bookmark)
+      }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
@@ -223,6 +227,19 @@ private extension HomeViewController {
       .map { $0.bookmarks.isEmpty }
       .bind(to: tableView.rx.isHidden)
       .disposed(by: disposeBag)
+  }
+}
+
+extension HomeViewController: UITableViewDataSourcePrefetching {
+  func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+    for indexPath in indexPaths {
+      guard let bookmark = reactor?.currentState.bookmarks[indexPath.row] else {
+        return
+      }
+
+      let cell = tableView.t_dequeueReusableCell(cellType: BookmarkCell.self, indexPath: indexPath)
+      cell.preDownloadImage(url: bookmark.url)
+    }
   }
 }
 

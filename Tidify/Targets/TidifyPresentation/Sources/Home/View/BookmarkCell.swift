@@ -32,8 +32,8 @@ final class BookmarkCell: UITableViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
 
-    if bookmarkImageView.image != UIImage(named: "icon_symbol") {
-      bookmarkImageView.image = UIImage(named: "icon_symbol")
+    if !(bookmarkImageView.image?.isSame(with: .symbolImage) ?? true) {
+      bookmarkImageView.image = .symbolImage
     }
   }
   
@@ -46,21 +46,23 @@ final class BookmarkCell: UITableViewCell {
   func configure(bookmark: Bookmark) {
     updateUI(bookmark: bookmark)
   }
+
+  func preDownloadImage(url: URL) {
+    setOpenGraphImage(url: url)
+  }
 }
 
 private extension BookmarkCell {
   func updateUI(bookmark: Bookmark) {
     var bookmarkName: String = bookmark.name
 
+    if bookmarkImageView.image?.isSame(with: .symbolImage) ?? true {
+      setOpenGraphImage(url: bookmark.url)
+    }
+
     OpenGraph.fetch(url: bookmark.url) { [weak self] result in
       switch result {
       case .success(let openGraph):
-        if let imageURL = URL(string: openGraph[.image] ?? "") {
-          DispatchQueue.main.async {
-            self?.bookmarkImageView.kf.setImage(with: imageURL)
-          }
-        }
-
         if bookmark.name.isEmpty {
           bookmarkName = openGraph[.title] ?? ""
         }
@@ -119,5 +121,23 @@ private extension BookmarkCell {
         right: 0
       )
     )
+  }
+
+  func setOpenGraphImage(url: URL) {
+    OpenGraph.fetch(url: url) { result in
+      switch result {
+      case .success(let openGraph):
+        if let urlString = openGraph[.image] {
+          DispatchQueue.main.async { [weak self] in
+            self?.bookmarkImageView.setImage(with: urlString)
+          }
+        }
+
+      case .failure:
+        DispatchQueue.main.async { [weak self] in
+          self?.bookmarkImageView.image = .init(named: "icon_symbol")
+        }
+      }
+    }
   }
 }

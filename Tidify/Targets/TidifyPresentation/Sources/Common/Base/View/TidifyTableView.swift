@@ -12,6 +12,7 @@ import RxSwift
 
 final class TidifyTableView: UITableView {
   private let swipedCellIndexPathSubject: PublishSubject<IndexPath> = .init()
+  private(set) var didSelectRowSubject: PublishSubject<IndexPath> = .init()
   
   private let tabType: TabType
   
@@ -116,5 +117,9 @@ extension TidifyTableView: UITableViewDelegate {
     else { return }
     
     cell.contentView.layer.cornerRadius = 8
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    didSelectRowSubject.onNext(indexPath)
   }
 }
