@@ -85,7 +85,7 @@ final class FolderReactor: Reactor {
       coordinator?.pushDetailScene(folder: folder)
 
     case .pushEditView(let folder):
-      coordinator?.pushEditScene(folder: folder)
+      coordinator?.pushFolderEditScene(folder: folder)
 
     case .appendFolders(let folders, let addPage):
       if addPage {

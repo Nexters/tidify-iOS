@@ -29,11 +29,15 @@ final class FolderDetailReactor: Reactor {
   enum Action {
     case viewWillAppear
     case didSelect(_ bookmark: Bookmark)
+    case tryEdit(_ bookmark: Bookmark)
+    case tryDelete(_ bookmark: Bookmark)
   }
 
   enum Mutation {
     case setBookmarks(_ bookmarks: [Bookmark])
     case pushWebView(_ bookmark: Bookmark)
+    case pushEditView(_ bookmark: Bookmark)
+    case deleteBookmark(_ index: Int)
   }
 
   struct State {
@@ -49,6 +53,12 @@ final class FolderDetailReactor: Reactor {
 
     case .didSelect(let bookmark):
       return .just(.pushWebView(bookmark))
+
+    case .tryEdit(let bookmark):
+      return .just(.pushEditView(bookmark))
+
+    case .tryDelete(let bookmark):
+      return deleteBookmark(bookmark)
     }
   }
 
@@ -61,8 +71,28 @@ final class FolderDetailReactor: Reactor {
 
     case .pushWebView(let bookmark):
       coordinator?.pushWebView(bookmark: bookmark)
+
+    case .pushEditView(let bookmark):
+      coordinator?.pushBookmarkEditScene(bookmark: bookmark)
+
+    case .deleteBookmark(let index):
+      newState.bookmarks.remove(at: index)
     }
 
     return newState
+  }
+}
+
+// MARK: - Private
+private extension FolderDetailReactor {
+
+  // MARK: Methods
+  func deleteBookmark(_ bookmark: Bookmark) -> Observable<Mutation> {
+    guard let index = currentState.bookmarks.firstIndex(where: { $0.id == bookmark.id }) else {
+      return .empty()
+    }
+
+    return useCase.deleteBookmark(bookmarkID: bookmark.id)
+      .map { .deleteBookmark(index) }
   }
 }

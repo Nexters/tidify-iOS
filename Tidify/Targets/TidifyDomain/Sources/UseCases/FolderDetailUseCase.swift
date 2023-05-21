@@ -8,7 +8,7 @@
 
 import RxSwift
 
-public protocol FolderDetailUseCase {
+public protocol FolderDetailUseCase: DeleteBookmarkUseCase {
   func fetchBookmarkListInFolder(folderID: Int) -> Observable<FetchBookmarkListResposne>
 }
 
@@ -16,14 +16,21 @@ final class DefaultFolderDetailUseCase: FolderDetailUseCase {
 
   // MARK: - Properties
   private let folderDetailRepository: FolderDetailRepository
+  private let bookmarkRepository: BookmarkRepository
 
   // MARK: - Initializer
-  init(repository: FolderDetailRepository) {
-    self.folderDetailRepository = repository
+  init(folderDetailRepository: FolderDetailRepository, bookmarkRepository: BookmarkRepository) {
+    self.folderDetailRepository = folderDetailRepository
+    self.bookmarkRepository = bookmarkRepository
   }
 
   // MARK: - Methods
   func fetchBookmarkListInFolder(folderID: Int) -> Observable<FetchBookmarkListResposne> {
     folderDetailRepository.fetchBookmarkListInFolder(folderID: folderID).asObservable()
+  }
+
+  func deleteBookmark(bookmarkID: Int) -> Observable<Void> {
+    bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
+      .asObservable()
   }
 }

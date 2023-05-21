@@ -68,10 +68,6 @@ private extension FolderDetailViewController {
       $0.font = .t_EB(16)
     }
 
-    bookmarkTableView.do {
-      $0.delegate = nil
-    }
-
     navigationBar.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
       $0.height.equalTo(Self.viewHeight * 0.182)
@@ -126,5 +122,34 @@ private extension FolderDetailViewController {
       .map { Action.didSelect($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+
+    bookmarkTableView.editAction
+      .flatMap { row in
+        Observable.just(reactor.currentState.bookmarks[row])
+      }
+      .map { Action.tryEdit($0) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+
+    bookmarkTableView.deleteAction
+      .withUnretained(self)
+      .flatMap { owner, row -> PublishSubject<Int> in owner.presentDeletionAlert(row) }
+      .map { Action.tryDelete(reactor.currentState.bookmarks[$0]) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+  }
+
+  func presentDeletionAlert(_ row: Int) -> PublishSubject<Int> {
+    let deletedFolderRow: PublishSubject<Int> = .init()
+
+    let alertPresenter: AlertPresenter = .init()
+    alertPresenter.present(
+      on: self,
+      alertType: .deleteBookmark,
+      leftButtonAction: {},
+      rightButtonAction: { deletedFolderRow.onNext(row) }
+    )
+
+    return deletedFolderRow
   }
 }

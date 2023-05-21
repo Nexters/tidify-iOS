@@ -18,18 +18,12 @@ public enum BookmarkError: Error {
 
 public typealias FetchBookmarkListResposne = (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool)
 
-public protocol BookmarkUseCase {
+public protocol BookmarkUseCase: DeleteBookmarkUseCase {
   /// 북마크 리스트를 반환합니다.
   func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne>
 
   /// 북마크를 생성합니다.
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void>
-
-  /// 북마크를 삭제합니다.
-  func deleteBookmark(bookmarkID: Int) -> Observable<Void>
-
-  /// 북마크 정보를 갱신합니다.
-  func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Observable<Void>
 }
 
 final class DefaultBookmarkUseCase: BookmarkUseCase {
@@ -56,10 +50,4 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
     bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
       .asObservable()
   }
-
-  func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Observable<Void> {
-    bookmarkRepository.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO)
-      .asObservable()
-  }
 }
-
