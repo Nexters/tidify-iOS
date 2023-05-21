@@ -227,13 +227,21 @@ private extension HomeViewController {
       .map { $0.bookmarks.isEmpty }
       .bind(to: tableView.rx.isHidden)
       .disposed(by: disposeBag)
+
+    reactor.state
+      .map { $0.deleteBookmark }
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(with: self, onNext: { owner, bookmark in
+        owner.deleteBookmark(bookmark)
+      })
+      .disposed(by: disposeBag)
   }
 }
 
 extension HomeViewController: UITableViewDataSourcePrefetching {
   func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
     for indexPath in indexPaths {
-      guard let bookmark = reactor?.currentState.bookmarks[indexPath.row] else {
+      guard let bookmark = reactor?.currentState.bookmarks[safe: indexPath.row] else {
         return
       }
 
@@ -290,13 +298,28 @@ private extension HomeViewController {
     let existBookmarks = snapshot.itemIdentifiers
 
     for bookmark in bookmarks where !existBookmarks.contains(bookmark) {
+      if let exist = existBookmarks.first(where: { $0.id == bookmark.id }) {
+        snapshot.insertItems([bookmark], afterItem: exist)
+        snapshot.deleteItems([exist])
+      } else {
       newBookmarks.append(bookmark)
     }
+  }
 
     if !newBookmarks.isEmpty {
       snapshot.appendItems(newBookmarks)
-      dataSource.apply(snapshot)
     }
+    dataSource.apply(snapshot)
+  }
+
+  func deleteBookmark(_ bookmark: Bookmark?) {
+    guard let bookmark else {
+      return
+    }
+
+    var snapshot = dataSource.snapshot()
+    snapshot.deleteItems([bookmark])
+    dataSource.apply(snapshot)
   }
 }
 

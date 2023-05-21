@@ -37,12 +37,14 @@ final class HomeReactor: Reactor {
 
   enum Mutation {
     case setBookmarks(_ bookmarks: [Bookmark], isInitialRequest: Bool = false)
+    case deleteBookmark(bookmark: Bookmark)
     case pushWebView(_ bookmark: Bookmark)
   }
 
   struct State {
     var bookmarks: [Bookmark]
     var didPushWebView: Bool
+    var deleteBookmark: Bookmark?
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
@@ -65,9 +67,8 @@ final class HomeReactor: Reactor {
 
     case .didDelete(let bookmark):
       return useCase.deleteBookmark(bookmarkID: bookmark.id)
-        .withLatestFrom(state.map { $0.bookmarks }.asObservable())
-        .map { $0.filter { $0.id != bookmark.id } }
-        .map { .setBookmarks($0) }
+        .map { .deleteBookmark(bookmark: bookmark)
+        }
 
     case let .didFetchSharedBookmark(url, name):
       return useCase.createBookmark(requestDTO: .init(folderID: 0, url: url, name: name))
@@ -112,6 +113,13 @@ final class HomeReactor: Reactor {
     case .pushWebView(let bookmark):
       newState.didPushWebView = true
       coordinator.pushWebView(bookmark: bookmark)
+
+    case .deleteBookmark(let bookmark):
+      var bookmarks = newState.bookmarks
+      if let index = bookmarks.firstIndex(of: bookmark) {
+        bookmarks.remove(at: index)
+        newState.deleteBookmark = bookmark
+      }
     }
 
     return newState
