@@ -15,7 +15,8 @@ import RxSwift
 protocol FolderCoordinator: Coordinator {
   func pushSettingScene()
   func pushDetailScene(folder: Folder)
-  func pushEditScene(folder: Folder)
+  func pushFolderEditScene(folder: Folder)
+  func pushBookmarkEditScene(bookmark: Bookmark)
   func pushCreationScene()
   func popCreationScene()
   func pushWebView(bookmark: Bookmark)
@@ -84,7 +85,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     )
   }
   
-  func pushEditScene(folder: Folder) {
+  func pushFolderEditScene(folder: Folder) {
     guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
     let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
     let viewController: FolderCreationViewController = .init(creationType: .edit, originFolder: folder)
@@ -93,6 +94,16 @@ final class DefaultFolderCoordinator: FolderCoordinator {
       viewController,
       animated: true
     )
+  }
+
+  func pushBookmarkEditScene(bookmark: Bookmark) {
+    guard let bookmarkCreationCoordinator = DIContainer.shared.resolve(
+      type: BookmarkCreationCoordinator.self) as? DefaultBookmarkCreationCoordinator else { return }
+
+    bookmarkCreationCoordinator.parentCoordinator = self
+    addChild(bookmarkCreationCoordinator)
+
+    bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
   }
   
   func pushCreationScene() {
