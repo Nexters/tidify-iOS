@@ -302,9 +302,13 @@ private extension HomeViewController {
         snapshot.insertItems([bookmark], afterItem: exist)
         snapshot.deleteItems([exist])
       } else {
-      newBookmarks.append(bookmark)
+        newBookmarks.append(bookmark)
+      }
     }
-  }
+
+    for existBookmark in existBookmarks where !bookmarks.contains(existBookmark) {
+      snapshot.deleteItems([existBookmark])
+    }
 
     if !newBookmarks.isEmpty {
       snapshot.appendItems(newBookmarks)

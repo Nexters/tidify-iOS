@@ -115,9 +115,8 @@ final class HomeReactor: Reactor {
       coordinator.pushWebView(bookmark: bookmark)
 
     case .deleteBookmark(let bookmark):
-      var bookmarks = newState.bookmarks
-      if let index = bookmarks.firstIndex(of: bookmark) {
-        bookmarks.remove(at: index)
+      if let index = newState.bookmarks.firstIndex(of: bookmark) {
+        newState.bookmarks.remove(at: index)
         newState.deleteBookmark = bookmark
       }
     }
