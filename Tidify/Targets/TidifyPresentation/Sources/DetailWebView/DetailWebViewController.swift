@@ -33,8 +33,18 @@ final class DetailWebViewController: UIViewController {
 
     setupUI()
     webView.scrollView.delegate = self
+    navigationController?.navigationBar.topItem?.title = ""
 
-    let urlRequest: URLRequest = .init(url: bookmark.url)
+    var urlString: String = bookmark.urlString ?? ""
+    if !(urlString.contains("http://") || urlString.contains("https://")) {
+      urlString = "https://" + urlString
+    }
+
+    guard let url = URL(string: urlString) else {
+      return
+    }
+
+    let urlRequest: URLRequest = .init(url: url)
     webView.load(urlRequest)
   }
 }

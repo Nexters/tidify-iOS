@@ -46,7 +46,7 @@ public extension Bookmark {
     )
   }
 
-  mutating func updateBookmark(with requestDTO: BookmarkRequestDTO) {
+  mutating func update(with requestDTO: BookmarkRequestDTO) {
     self.name = requestDTO.name
     self.urlString = requestDTO.url
     self.folderID = requestDTO.folderID

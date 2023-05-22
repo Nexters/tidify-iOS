@@ -59,7 +59,7 @@ final class MockBookmarkRepository: BookmarkRepository {
   func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
     return .create { [weak self] observer in
       if var updateTargetBookmark = self?.bookmarks.first(where: { $0.id == bookmarkID}) {
-        updateTargetBookmark.updateBookmark(with: requestDTO)
+        updateTargetBookmark.update(with: requestDTO)
 
         if updateTargetBookmark.name == requestDTO.name,
            updateTargetBookmark.urlString == requestDTO.url {
