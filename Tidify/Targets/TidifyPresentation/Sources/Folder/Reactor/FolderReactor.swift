@@ -14,7 +14,7 @@ final class FolderReactor: Reactor {
   var initialState: State = .init(folders: [])
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
-  private weak var coordinator: FolderCoordinator?
+  private let coordinator: FolderCoordinator?
   private let useCase: FolderUseCase
 
   init(coordinator: FolderCoordinator, useCase: FolderUseCase) {

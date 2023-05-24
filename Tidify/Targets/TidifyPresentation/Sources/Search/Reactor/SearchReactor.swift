@@ -13,7 +13,7 @@ import ReactorKit
 final class SearchReactor {
 
   // MARK: - Properties
-  private weak var coordinator: SearchCoordinator?
+  private let coordinator: SearchCoordinator?
   private let useCase: SearchUseCase
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
