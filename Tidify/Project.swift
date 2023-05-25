@@ -67,7 +67,7 @@ func makeTidifyAppTarget(
 
     let platform = platform
     let infoPlist: [String: InfoPlist.Value] = [
-      "CFBundleShortVersionString": "1.0",
+      "CFBundleShortVersionString": "1.0.1",
       "CFBundleVersion": "1",
       "CFBundleDisplayName": "$(PRODUCT_NAME)",
       "UILaunchStoryboardName": "LaunchScreen",
