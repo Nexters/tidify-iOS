@@ -19,7 +19,7 @@ final class OnboardingViewController: UIViewController, View {
     $0.currentPageIndicatorTintColor = .t_indigo00()
     $0.pageIndicatorTintColor = .systemGray
     $0.currentPage = 0
-    $0.numberOfPages = 4
+    $0.numberOfPages = 3
     $0.transform = .init(scaleX: 2.0, y: 2.0)
   }
 
@@ -59,6 +59,12 @@ final class OnboardingViewController: UIViewController, View {
     bindAction(reactor: reactor)
     bindState(reactor: reactor)
   }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    navigationController?.navigationBar.isHidden = false
+  }
 }
 
 private extension OnboardingViewController {
@@ -66,6 +72,7 @@ private extension OnboardingViewController {
 
   func setupUI() {
     view.backgroundColor = .white
+    navigationController?.navigationBar.isHidden = true
 
     view.addSubview(pageControl)
     view.addSubview(collectionView)

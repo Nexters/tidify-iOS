@@ -16,9 +16,9 @@ final class OnboardingReactor {
   private weak var coordinator: OnboardingCoordinator?
   var initialState: State = .init(
     contents: [
-      .init(image: .init(named: "onboardingImage_0")!, buttonTitle: "공유버튼 누르면 바로 북마크 저장"),
-      .init(image: .init(named: "onboardingImage_1")!, buttonTitle: "링크주소만 넣어주세요"),
-      .init(image: .init(named: "onboardingImage_2")!, buttonTitle: "누구보다 빠르게 기억할게요"),
+      .init(imageName: "onboardingImage_0", buttonTitle: "다음"),
+      .init(imageName: "onboardingImage_1", buttonTitle: "다음"),
+      .init(imageName: "onboardingImage_2", buttonTitle: "시작")
   ], contentIndex: 0)
 
   // MARK: Initializer
