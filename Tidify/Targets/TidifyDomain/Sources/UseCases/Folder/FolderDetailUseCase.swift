@@ -16,7 +16,7 @@ final class DefaultFolderDetailUseCase: FolderDetailUseCase {
 
   // MARK: - Properties
   private let folderDetailRepository: FolderDetailRepository
-  private let bookmarkRepository: BookmarkRepository
+  let bookmarkRepository: BookmarkRepository
 
   // MARK: - Initializer
   init(folderDetailRepository: FolderDetailRepository, bookmarkRepository: BookmarkRepository) {

@@ -30,6 +30,7 @@ final class DefaultSearchUseCase: SearchUseCase {
   // MARK: - Properties
   private let searchRepository: SearchRepository
 
+  // MARK: Initializer
   public init(searchRepository: SearchRepository) {
     self.searchRepository = searchRepository
   }

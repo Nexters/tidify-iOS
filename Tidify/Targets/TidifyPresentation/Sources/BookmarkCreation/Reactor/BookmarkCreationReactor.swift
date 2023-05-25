@@ -16,13 +16,13 @@ final class BookmarkCreationReactor: Reactor {
   var initialState: State = .init()
 
   private weak var coordinator: BookmarkCreationCoordinator?
-  private let useCase: BookmarkCreationUseCase
+  private let useCase: CreateBookmarkUseCase
   let bookmark: Bookmark?
 
   // MARK: - Constructor
   init(
     coordinator: BookmarkCreationCoordinator,
-    useCase: BookmarkCreationUseCase,
+    useCase: CreateBookmarkUseCase,
     bookmark: Bookmark? = nil
   ) {
     self.coordinator = coordinator
