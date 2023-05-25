@@ -28,7 +28,7 @@ final class DefaultSignInUseCase: SignInUseCase {
   public func tryAppleSignIn(token: String) -> Observable<UserToken> {
     signInRepository.tryAppleLogin(token: token).asObservable()
   }
-  
+
   public func tryKakaoSignIn() -> Observable<UserToken> {
     signInRepository.tryKakaoLogin()
   }

@@ -16,13 +16,13 @@ final class HomeReactor: Reactor {
   var initialState: State = .init(bookmarks: [], didPushWebView: false)
 
   private let coordinator: HomeCoordinator
-  private let useCase: BookmarkUseCase
+  private let useCase: BookmarkCRUDUseCase
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
   private(set) var isPaging: Bool = false
 
   // MARK: - Initializer
-  init(coordinator: HomeCoordinator, useCase: BookmarkUseCase) {
+  init(coordinator: HomeCoordinator, useCase: BookmarkCRUDUseCase) {
     self.coordinator = coordinator
     self.useCase = useCase
   }

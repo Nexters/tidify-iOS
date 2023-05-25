@@ -83,11 +83,11 @@ final class DefaultHomeCoordinator: HomeCoordinator {
 // MARK: - Private
 private extension DefaultHomeCoordinator {
   func getViewController() -> HomeViewController {
-    guard let usecase: BookmarkUseCase = DIContainer.shared.resolve(type: BookmarkUseCase.self) else {
+    guard let useCase = DIContainer.shared.resolve(type: BookmarkCRUDUseCase.self) else {
       fatalError()
     }
 
-    let reactor: HomeReactor = .init(coordinator: self, useCase: usecase)
+    let reactor: HomeReactor = .init(coordinator: self, useCase: useCase)
     let viewController: HomeViewController = .init(alertPresenter: AlertPresenter())
     viewController.reactor = reactor
 

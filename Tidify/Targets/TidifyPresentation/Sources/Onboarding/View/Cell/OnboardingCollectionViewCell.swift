@@ -38,7 +38,7 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
   }
 
   func configure(_ onboarding: Onboarding) {
-    imageView.image = onboarding.image
+    imageView.image = UIImage(named: onboarding.imageName)
   }
 }
 

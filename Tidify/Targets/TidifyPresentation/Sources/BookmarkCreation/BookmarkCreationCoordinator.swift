@@ -46,8 +46,8 @@ final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
 // MARK: - Private
 private extension DefaultBookmarkCreationCoordinator {
   func getViewController(_ bookmark: Bookmark? = nil) -> BookmarkCreationViewController {
-    guard let useCase: BookmarkCreationUseCase = DIContainer.shared.resolve(
-      type: BookmarkCreationUseCase.self) else { fatalError() }
+    guard let useCase: CreateBookmarkUseCase = DIContainer.shared.resolve(
+      type: CreateBookmarkUseCase.self) else { fatalError() }
     navigationController.navigationBar.topItem?.title = ""
     let reactor: BookmarkCreationReactor = .init(coordinator: self, useCase: useCase, bookmark: bookmark)
     let viewController: BookmarkCreationViewController = .init(nibName: nil, bundle: nil)

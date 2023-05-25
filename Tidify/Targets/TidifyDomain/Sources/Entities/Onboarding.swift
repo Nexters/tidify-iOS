@@ -9,11 +9,11 @@
 import UIKit
 
 public struct Onboarding {
-  public private(set) var image: UIImage
-  public private(set) var buttonTitle: String
+  public let imageName: String
+  public let buttonTitle: String
 
-  public init(image: UIImage, buttonTitle: String) {
-    self.image = image
+  public init(imageName: String, buttonTitle: String) {
+    self.imageName = imageName
     self.buttonTitle = buttonTitle
   }
 }

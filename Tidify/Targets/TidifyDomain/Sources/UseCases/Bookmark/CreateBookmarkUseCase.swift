@@ -1,5 +1,5 @@
 //
-//  BookmarkCreationUseCase.swift
+//  CreateBookmarkUseCase.swift
 //  TidifyDomain
 //
 //  Created by Ian on 2022/10/22.
@@ -8,7 +8,11 @@
 
 import RxSwift
 
-public protocol BookmarkCreationUseCase: UpdateBookmarkUseCase {
+public protocol CreateBookmarkUseCase: UpdateBookmarkUseCase {
+
+  var bookmarkRepository: BookmarkRepository { get }
+  var folderRepository: FolderRepository { get }
+
   /// 북마크를 생성합니다.
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void>
 
@@ -16,11 +20,24 @@ public protocol BookmarkCreationUseCase: UpdateBookmarkUseCase {
   func fetchFolders() -> Observable<[Folder]>
 }
 
-final class DefaultBookmarkCreationUseCase: BookmarkCreationUseCase {
+extension CreateBookmarkUseCase {
+  func createBookmark(requestDTO: BookmarkRequestDTO) -> Observable<Void> {
+    bookmarkRepository.createBookmark(requestDTO: requestDTO)
+      .asObservable()
+  }
+
+  func fetchFolders() -> Observable<[Folder]> {
+    folderRepository.fetchFolders(start: 0, count: .max)
+      .map { $0.folders }
+      .asObservable()
+  }
+}
+
+final class DefaultCreateBookmarkUseCase: CreateBookmarkUseCase {
 
   // MARK: - Properties
-  private let bookmarkRepository: BookmarkRepository
-  private let folderRepository: FolderRepository
+  let bookmarkRepository: BookmarkRepository
+  let folderRepository: FolderRepository
 
   init(
     bookmarkRepository: BookmarkRepository,

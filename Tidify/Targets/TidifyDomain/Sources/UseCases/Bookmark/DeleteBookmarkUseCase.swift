@@ -9,6 +9,16 @@
 import RxSwift
 
 public protocol DeleteBookmarkUseCase {
+
+  var bookmarkRepository: BookmarkRepository { get }
+
   /// 북마크를 삭제합니다.
   func deleteBookmark(bookmarkID: Int) -> Observable<Void>
+}
+
+extension DeleteBookmarkUseCase {
+  func deleteBookmark(bookmarkID: Int) -> Observable<Void> {
+    bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
+      .asObservable()
+  }
 }

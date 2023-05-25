@@ -57,7 +57,9 @@ private extension BookmarkCell {
     var bookmarkName: String = bookmark.name
 
     if bookmarkImageView.image?.isSame(with: .symbolImage) ?? true {
-      setOpenGraphImage(url: bookmark.url)
+      DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+        self?.setOpenGraphImage(url: bookmark.url)
+      }
     }
 
     OpenGraph.fetch(url: bookmark.url) { [weak self] result in
