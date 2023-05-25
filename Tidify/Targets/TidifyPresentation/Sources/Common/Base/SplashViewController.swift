@@ -30,7 +30,12 @@ final class SplashViewController: UIViewController {
     super.viewDidLoad()
 
     setupAnimationView()
-    playAnimation()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    cooridnateAfterAnimation()
   }
 }
 
@@ -54,13 +59,11 @@ private extension SplashViewController {
     }
   }
   
-  func playAnimation() {
+  func cooridnateAfterAnimation() {
     animationView.isHidden = false
 
     animationView.play { [weak self] _ in
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
-        self?.coordinator?.start()
-      })
+      self?.coordinator?.start()
     }
   }
 }
