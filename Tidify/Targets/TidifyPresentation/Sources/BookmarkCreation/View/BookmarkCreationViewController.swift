@@ -266,14 +266,6 @@ private extension BookmarkCreationViewController {
       return false
     }
 
-    guard let url = URL(string: text),
-          ["http", "https"].contains(url.scheme?.lowercased() ?? ""),
-          text.count >= 10 else {
-      urlErrorLabel.text = "링크를 확인해주세요"
-      urlErrorLabel.isHidden = false
-      return false
-    }
-
     urlErrorLabel.isHidden = true
     return true
   }
