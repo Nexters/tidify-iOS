@@ -151,7 +151,7 @@ private extension HomeViewController {
     Observable.merge(rx.viewDidAppear, UIApplication.rx.willEnterForeground.asObservable())
       .map(fetchSharedBookmark)
       .filter { !$0.url.isEmpty && !$0.title.isEmpty }
-      .map { Action.didFetchSharedBookmark(url: $0.url, title: $0.url) }
+      .map { Action.didFetchSharedBookmark(url: $0.url, title: $0.title) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 

@@ -100,7 +100,7 @@ final class HomeReactor: Reactor {
         for newBookmark in newBookmarks {
           if let index = bookmarks.firstIndex(where: { $0.id == newBookmark.id }), newBookmark != bookmarks[index] {
             bookmarks[index] = newBookmark
-          } else {
+          } else if !bookmarks.contains(newBookmark) {
             bookmarks.append(newBookmark)
           }
         }
