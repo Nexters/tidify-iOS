@@ -17,7 +17,7 @@ public struct Bookmark: Hashable {
   public var name: String
 
   public var url: URL {
-    return .init(string: urlString ?? "")!
+    return .init(string: urlString?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
   }
 
   public init(
