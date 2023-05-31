@@ -15,6 +15,9 @@ public enum FolderError: Error {
   case failFetchCreateFolder
   case failFetchUpdateFolder
   case failFetchDeleteFolder
+  case emptyFolderTitle
+  case emptyColorValue
+  case emptyMatchedFolder
 }
 
 public protocol FolderUseCase {

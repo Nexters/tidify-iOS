@@ -7,14 +7,18 @@
 //
 
 import Foundation
-import TidifyDomain
+@testable import TidifyDomain
 
 import RxSwift
 
 final class MockSearchRepository: SearchRepository {
 
   private(set) var searchHistory: [String] = ["Test1", "Test2", "Test3"]
-  private let bookmarks: [Bookmark] = [.stub(), .stub(), .stub()]
+  private let bookmarks: [Bookmark] = Bookmark.stubList()
+
+  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
+    return .just((bookmarks: bookmarks, currentPage: 0, isLastPage: true))
+  }
 
   func fetchSearchHistory() -> Single<[String]> {
     return .just(searchHistory)

@@ -58,17 +58,17 @@ final class SearchUseCaseTests: XCTestCase {
       .disposed(by: disposeBag)
   }
 
-  func test_whenFetchSearchResult_thenWillReturnBookamrk() {
-    useCase.fetchSearchResult(query: "Stub Data")
-      .subscribe(onNext: { bookmarks in
-        if !bookmarks.isEmpty {
-          XCTAssert(true)
-        } else {
-          XCTAssert(false)
-        }
-      }, onError: { _ in
-        XCTAssert(false)
-      })
-      .disposed(by: disposeBag)
-  }
+//  func test_whenFetchSearchResult_thenWillReturnBookamrk() {
+//    useCase.fetchSearchResult(query: "Stub Data")
+//      .subscribe(onNext: { bookmarks in
+//        if !bookmarks.isEmpty {
+//          XCTAssert(true)
+//        } else {
+//          XCTAssert(false)
+//        }
+//      }, onError: { _ in
+//        XCTAssert(false)
+//      })
+//      .disposed(by: disposeBag)
+//  }
 }

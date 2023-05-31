@@ -7,25 +7,31 @@
 //
 
 import Foundation
-import TidifyDomain
-
 import RxSwift
+@testable import TidifyDomain
 
 final class MockBookmarkRepository: BookmarkRepository {
-  private(set) var bookmarks: [Bookmark] = [.stub(), .stub(), .stub()]
 
-  func fetchBookmarkList() -> Single<[Bookmark]> {
-    return .just(bookmarks)
+  private(set) var bookmarks: [Bookmark] = Bookmark.stubList()
+
+  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
+    return .create { [weak self] observer in
+      if let keyword = requestDTO.keyword {
+        observer(.success((bookmarks: self?.bookmarks.filter { $0.name.contains(keyword)} ?? [] , currentPage: 1, isLastPage: true)))
+      } else {
+        observer(.success((bookmarks: self?.bookmarks ?? [], currentPage: 1, isLastPage: true)))
+      }
+
+      return Disposables.create()
+    }
   }
 
   func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
     let bookmark: Bookmark = .init(
-      id: 0,
-      createdAt: Date().toString(),
-      updatedAt: Date().toString(),
+      id: 99,
       folderID: requestDTO.folderID,
       urlString: requestDTO.url,
-      title: requestDTO.title
+      name: requestDTO.name
     )
     bookmarks.append(bookmark)
 
@@ -41,15 +47,12 @@ final class MockBookmarkRepository: BookmarkRepository {
   }
 
   func deleteBookmark(bookmarkID: Int) -> Single<Void> {
-    if let bookmark = bookmarks.first(where: { $0.id == bookmarkID }) {
-      bookmarks.removeAll(where: { $0.id == bookmark.id })
-    }
-
     return .create { [weak self] observer in
-      if self?.bookmarks.contains(where: { $0.id == bookmarkID}) ?? true {
-        observer(.failure(BookmarkError.failDeleteBookmark))
-      } else {
+      if let index = self?.bookmarks.firstIndex(where: { $0.id == bookmarkID }) {
+        self?.bookmarks.remove(at: index)
         observer(.success(()))
+      } else {
+        observer(.failure(BookmarkError.cannotFindMachedBookmark))
       }
 
       return Disposables.create()
