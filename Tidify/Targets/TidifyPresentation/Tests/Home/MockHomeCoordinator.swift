@@ -11,13 +11,15 @@ import UIKit
 
 @testable import TidifyPresentation
 final class MockHomeCoordinator: HomeCoordinator {
+
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController = .init()
 
   // MARK: - Properties
-  var pushWebViewCalled: Bool = false
-  var pushSettingSceneCalled: Bool = false
-  var pushBookmarkCreateionSceneCalled: Bool = false
+  private(set) var pushWebViewCalled: Bool = false
+  private(set) var pushSettingSceneCalled: Bool = false
+  private(set) var pushBookmarkCreateionSceneCalled: Bool = false
+  private(set) var pushEditBookmarkSceneCalled: Bool = false
 
   func pushWebView(bookmark: Bookmark) {
     pushWebViewCalled = true
@@ -29,6 +31,10 @@ final class MockHomeCoordinator: HomeCoordinator {
 
   func pushBookmarkCreationScene() {
     pushBookmarkCreateionSceneCalled = true
+  }
+
+  func pushEditBookmarkScene(bookmark: TidifyDomain.Bookmark) {
+    pushEditBookmarkSceneCalled = true
   }
 
   func start() {

@@ -17,7 +17,6 @@ import RxTest
 final class BookmarkUseCaseTests: XCTestCase {
 
   // MARK: - Properteis
-  private var scheduler: TestScheduler!
   private var disposeBag: DisposeBag!
   private var bookmarkRepository: MockBookmarkRepository!
   private var folderRepository: MockFolderRepository!
@@ -26,7 +25,6 @@ final class BookmarkUseCaseTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    self.scheduler = .init(initialClock: 0)
     self.disposeBag = .init()
     self.bookmarkRepository = MockBookmarkRepository()
     self.folderRepository = MockFolderRepository()
@@ -36,7 +34,6 @@ final class BookmarkUseCaseTests: XCTestCase {
   override func tearDown() {
     super.tearDown()
 
-    self.scheduler = nil
     self.disposeBag = nil
     self.bookmarkRepository = nil
     self.folderRepository = nil

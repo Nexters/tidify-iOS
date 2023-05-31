@@ -22,8 +22,9 @@ final class HomeReactorTests: XCTestCase {
   private var scheduler: TestScheduler!
   private var disposeBag: DisposeBag!
   private var coordinator: MockHomeCoordinator!
-  private var repository: BookmarkRepository!
-  private var useCase: BookmarkUseCase!
+  private var bookmarkRepository: MockBookmarkRepository!
+  private var folderRepository: FolderRepository!
+  private var useCase: BookmarkCRUDUseCase!
   private var reactor: HomeReactor!
 
   override func setUpWithError() throws {
@@ -32,8 +33,9 @@ final class HomeReactorTests: XCTestCase {
     scheduler = .init(initialClock: 0)
     disposeBag = .init()
     coordinator = MockHomeCoordinator()
-    repository = MockBookmarkRepository()
-    useCase = DefaultBookmarkUseCase(repository: repository)
+    bookmarkRepository = MockBookmarkRepository()
+    folderRepository = MockFolderRepository()
+    useCase = DefaultBookmarkCRUDUseCase(bookmarkRepository: bookmarkRepository, folderRepository: folderRepository)
     reactor = .init(coordinator: coordinator, useCase: useCase)
   }
 
@@ -47,11 +49,10 @@ final class HomeReactorTests: XCTestCase {
     reactor = nil
   }
 
-  func test_whenViewWillAppear_thenStateBookmarkIsNotEmpty() {
+  func test_whenViewWillAppear_thenStateBookmarkShouldNotEmpty() {
     scheduler
-      .createHotObservable([
-        .next(5, HomeReactor.Action.fetchBookmarks),
-        .next(10, HomeReactor.Action.fetchBookmarks)
+      .createColdObservable([
+        .next(1, HomeReactor.Action.fetchBookmarks(isInitialRequest: true))
       ])
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -60,15 +61,16 @@ final class HomeReactorTests: XCTestCase {
       .events(scheduler: scheduler, disposeBag: disposeBag)
       .to(equal([
         .next(0, true),
-        .next(5, false),
-        .next(10, false)
+        .next(1, false)
       ]))
   }
 
-  func test_whenDidSelectCell_thenPushWebViewIsTrue() {
+  func test_whenDidSelectCell_thenPushWebViewShouldTrue() {
+    let bookmark = bookmarkRepository.bookmarks[0]
+
     scheduler
-      .createHotObservable([
-        .next(5, HomeReactor.Action.didSelect(.stub()))
+      .createColdObservable([
+        .next(1, HomeReactor.Action.didSelect(bookmark))
       ])
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -77,7 +79,26 @@ final class HomeReactorTests: XCTestCase {
       .events(scheduler: scheduler, disposeBag: disposeBag)
       .to(equal([
         .next(0, false),
-        .next(5, true)
+        .next(1, true)
+      ]))
+  }
+
+  func test_whenDeleteBookmark_thenStateBookmarksShouldNotContainDeletedBookmark() {
+    let bookmark = bookmarkRepository.bookmarks[0]
+
+    scheduler
+      .createColdObservable([
+        .next(0, HomeReactor.Action.fetchBookmarks(isInitialRequest: true)),
+        .next(3, HomeReactor.Action.didDelete(bookmark))
+    ])
+    .bind(to: reactor.action)
+    .disposed(by: disposeBag)
+
+    expect(self.reactor.state.map { $0.bookmarks.contains { $0.id == bookmark.id } })
+      .events(scheduler: scheduler, disposeBag: disposeBag)
+      .to(equal([
+        .next(0, true),
+        .next(3, false)
       ]))
   }
 }
