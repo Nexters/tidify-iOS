@@ -28,7 +28,9 @@ public extension Coordinator {
   }
 
   func transitionToSignIn() {
+    childCoordinators = .init()
     let signInCoordinator: SignInCoordinator = DIContainer.shared.resolve(type: SignInCoordinator.self)!
+    addChild(signInCoordinator)
     signInCoordinator.start()
   }
 }

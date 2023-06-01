@@ -36,6 +36,7 @@ final class DefaultSignInCoordinator: SignInCoordinator {
   func didSuccessSignIn() {
     guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self)
             as? DefaultTabBarCoordinator else { return }
+    addChild(tabBarCoordinator)
     tabBarCoordinator.start()
   }
 }
