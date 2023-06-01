@@ -45,7 +45,7 @@ final class DefaultFolderRepository: FolderRepository {
         return .create { observer in
           if response.isSuccess {
             let fetchFoldersResponse = FetchFoldersResponse(
-              folders: response.folderListDTO.toDomain(),
+              folders: response.folderListDTO.toDomain().reversed(),
               isLast: response.folderListDTO.isLast
             )
             observer(.success(fetchFoldersResponse))
