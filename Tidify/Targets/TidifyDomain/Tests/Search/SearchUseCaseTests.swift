@@ -34,41 +34,49 @@ final class SearchUseCaseTests: XCTestCase {
     self.useCase = nil
   }
 
-  func test_whenEraseAllHistory_thenWillSuccess() {
-    useCase.eraseAllSearchHistory()
-      .subscribe(onNext: { _ in
-        XCTAssert(true)
-      }, onError: { error in
-        XCTAssert(false)
+  func test_whenFetchSearchHistory_thenShouldNotEmpty() {
+    useCase.fetchSearchHistory()
+      .subscribe(onNext: { history in
+        if history.isEmpty {
+          XCTAssert(false)
+        } else {
+          XCTAssert(true)
+        }
       })
       .disposed(by: disposeBag)
   }
 
-  func test_whenFetchAllHistory_thenWillNotEmpty() {
-    useCase.fetchSearchHistory()
-      .subscribe(onNext: { searchHistory in
-        if !searchHistory.isEmpty {
-          XCTAssert(true)
-        } else {
-          XCTAssert(false)
-        }
+  func test_whenEraseAllHistory_thenShouldBeEmpty() {
+    useCase.eraseAllSearchHistory()
+      .flatMapLatest { _ -> Observable<[String]> in self.useCase.fetchSearchHistory() }
+      .subscribe(onNext: { history in
+        XCTAssert(history.isEmpty)
       }, onError: { _ in
         XCTAssert(false)
       })
       .disposed(by: disposeBag)
   }
 
-//  func test_whenFetchSearchResult_thenWillReturnBookamrk() {
-//    useCase.fetchSearchResult(query: "Stub Data")
-//      .subscribe(onNext: { bookmarks in
-//        if !bookmarks.isEmpty {
-//          XCTAssert(true)
-//        } else {
-//          XCTAssert(false)
-//        }
-//      }, onError: { _ in
-//        XCTAssert(false)
-//      })
-//      .disposed(by: disposeBag)
-//  }
+  func test_whenSearchWithKeyword_thenShouldReturnMappedBookmarks() {
+    let requestDTO: BookmarkListRequestDTO = .init(page: 0, keyword: "Github")
+    useCase.fetchSearchResult(requestDTO: requestDTO)
+      .subscribe(onNext: { response in
+        XCTAssert(response.bookmarks.allSatisfy({ bookmark in bookmark.name.contains("Github") }))
+      }, onError: { _ in
+        XCTAssert(false)
+      })
+      .disposed(by: disposeBag)
+  }
+
+  func test_whenSearchWithEmptyKeyword_thenShouldReturnError() {
+    let requestDTO: BookmarkListRequestDTO = .init(page: 0, keyword: "")
+
+    useCase.fetchSearchResult(requestDTO: requestDTO)
+      .subscribe(onNext: { _ in
+        XCTAssert(false)
+      }, onError: { error in
+        XCTAssert(SearchError.emptySearchQuery == error as! SearchError)
+      })
+      .disposed(by: disposeBag)
+  }
 }

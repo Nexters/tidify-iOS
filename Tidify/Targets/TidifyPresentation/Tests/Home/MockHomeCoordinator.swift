@@ -38,6 +38,6 @@ final class MockHomeCoordinator: HomeCoordinator {
   }
 
   func start() {
-    print("TEST")
+    print("Start")
   }
 }

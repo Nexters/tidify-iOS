@@ -16,10 +16,6 @@ final class MockSearchRepository: SearchRepository {
   private(set) var searchHistory: [String] = ["Test1", "Test2", "Test3"]
   private let bookmarks: [Bookmark] = Bookmark.stubList()
 
-  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
-    return .just((bookmarks: bookmarks, currentPage: 0, isLastPage: true))
-  }
-
   func fetchSearchHistory() -> Single<[String]> {
     return .just(searchHistory)
   }
@@ -39,12 +35,31 @@ final class MockSearchRepository: SearchRepository {
   }
 
   func fetchSearchResult(query: String) -> Single<[Bookmark]> {
+    if query.isEmpty {
+      return .error(SearchError.emptySearchQuery)
+    }
+
     return .create { [weak self] observer in
-      if self?.bookmarks.map({ $0.name }).contains(query) ?? false,
-         let bookmark = self?.bookmarks.first(where: { $0.name == query }) {
-        observer(.success([bookmark]))
+      if let searchedBookmarks = self?.bookmarks.filter({ bookmark in bookmark.name.contains(query) }) {
+        observer(.success(searchedBookmarks))
       } else {
         observer(.success([]))
+      }
+
+      return Disposables.create()
+    }
+  }
+
+  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
+    if requestDTO.keyword?.isEmpty ?? true {
+      return .error(SearchError.emptySearchQuery)
+    }
+
+    return .create { [weak self] observer in
+      if let searchedBookmarks = self?.bookmarks.filter({ $0.name.contains(requestDTO.keyword ?? "") }) {
+        observer(.success((bookmarks: searchedBookmarks, currentPage: 0, isLastPage: true)))
+      } else {
+        observer(.success((bookmarks: [], currentPage: 0, isLastPage: true)))
       }
 
       return Disposables.create()

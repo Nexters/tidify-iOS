@@ -12,6 +12,7 @@ import RxSwift
 
 public enum SearchError: Error {
   case failEraseAllSearchHistory
+  case emptySearchQuery
 }
 
 public protocol SearchUseCase {
