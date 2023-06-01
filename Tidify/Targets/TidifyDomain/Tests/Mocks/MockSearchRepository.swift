@@ -14,7 +14,7 @@ import RxSwift
 final class MockSearchRepository: SearchRepository {
 
   private(set) var searchHistory: [String] = ["Test1", "Test2", "Test3"]
-  private let bookmarks: [Bookmark] = Bookmark.stubList()
+  private(set) var bookmarks: [Bookmark] = Bookmark.stubList()
 
   func fetchSearchHistory() -> Single<[String]> {
     return .just(searchHistory)
