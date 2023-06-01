@@ -22,20 +22,13 @@ final class TidifyTabBar: UIView, View {
   // MARK: - Properties
   weak var delegate: TidifyTabBarDelegate?
   
-  private let blurEffectView: UIVisualEffectView = .init().then {
-    $0.effect = UIBlurEffect(style: .regular)
-    $0.frame = $0.bounds
-    $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    $0.layer.cornerRadius = 28
-    $0.clipsToBounds = true
-  }
-  
   private let backgroundView: UIView = .init().then {
     $0.layer.shadowColor = UIColor.black.cgColor
     $0.layer.shadowOpacity = 0.25
     $0.layer.shadowOffset = CGSize(w: 0, h: 8)
     $0.layer.shadowRadius = 16
-    $0.backgroundColor = UIAccessibility.isReduceTransparencyEnabled ? .gray : .clear
+    $0.layer.cornerRadius = 28
+    $0.backgroundColor = .white
   }
   
   private let stackView: UIStackView = .init().then {
@@ -84,14 +77,15 @@ private extension TidifyTabBar {
     backgroundColor = .clear
     
     addSubview(backgroundView)
-    backgroundView.addSubview(blurEffectView)
     backgroundView.addSubview(stackView)
     stackView.addArrangedSubview(homeTabButton)
     stackView.addArrangedSubview(searchTabButton)
     stackView.addArrangedSubview(folderTabButton)
     
     backgroundView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.leading.trailing.equalToSuperview().inset(76)
+      $0.top.equalToSuperview().inset(22)
+      $0.bottom.equalToSuperview().inset(38)
     }
     
     stackView.snp.makeConstraints {

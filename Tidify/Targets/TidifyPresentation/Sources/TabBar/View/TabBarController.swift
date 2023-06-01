@@ -36,9 +36,9 @@ private extension TabBarController {
     view.addSubview(tidifyTabBar)
     
     tidifyTabBar.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(76)
-      $0.height.greaterThanOrEqualTo(Self.viewHeight * 0.068)
-      $0.bottom.equalToSuperview().inset(38)
+      $0.leading.trailing.equalToSuperview()
+      $0.height.greaterThanOrEqualTo(Self.viewHeight * 0.068 + 22)
+      $0.bottom.equalToSuperview()
     }
   }
 }

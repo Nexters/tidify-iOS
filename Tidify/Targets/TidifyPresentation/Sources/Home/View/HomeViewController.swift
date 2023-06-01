@@ -126,7 +126,7 @@ private extension HomeViewController {
 
     tableView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview().inset(20)
-      $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
+      $0.bottom.equalToSuperview()
     }
 
     guideView.snp.makeConstraints {
