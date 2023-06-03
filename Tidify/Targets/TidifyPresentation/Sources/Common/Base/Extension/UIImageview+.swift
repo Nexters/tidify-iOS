@@ -18,12 +18,19 @@ extension UIImageView {
         if let image = cacheResult.image {
           self.image = image
         } else {
-          guard let url = URL(string: urlString) else {
-            return
-          }
+          DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let url = URL(string: urlString), let _ = try? Data(contentsOf: url) else {
+              DispatchQueue.main.async {
+                self?.image = .symbolImage
+              }
+              return
+            }
 
-          let resource = ImageResource(downloadURL: url, cacheKey: urlString)
-          self.kf.setImage(with: resource)
+            let resource = ImageResource(downloadURL: url, cacheKey: urlString)
+            DispatchQueue.main.async {
+              self?.kf.setImage(with: resource)
+            }
+          }
         }
 
       case .failure:
