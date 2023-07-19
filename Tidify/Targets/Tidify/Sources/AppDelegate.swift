@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window.makeKeyAndVisible()
     self.window = window
 
+    NetworkMonitor.shared.startMonitoring()
+
     let navigationController: UINavigationController = .init(nibName: nil, bundle: nil)
     self.navigationController = navigationController
     window.rootViewController = navigationController
@@ -30,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     assemble()
 
     self.mainCoordinator = DefaultMainCoordinator(navigationController: navigationController)
-
     mainCoordinator?.startSplash()
 
     return true
