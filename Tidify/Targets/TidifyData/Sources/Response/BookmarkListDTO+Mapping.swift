@@ -20,6 +20,12 @@ struct BookmarkListResponse: Decodable, Responsable {
   }
 }
 
+extension BookmarkListResponse {
+  public func toDomain() -> [Bookmark] {
+    bookmarkListDTO.bookmarks.map { $0.toDomain() }
+  }
+}
+
 public struct BookmarkListDTO: Decodable {
 
   // MARK: - Properties
@@ -31,11 +37,5 @@ public struct BookmarkListDTO: Decodable {
     case bookmarks = "content"
     case isLastPage = "isLast"
     case currentPage
-  }
-}
-
-extension BookmarkListDTO {
-  public func toDomain() -> [Bookmark] {
-    return bookmarks.map { $0.toDomain() }
   }
 }

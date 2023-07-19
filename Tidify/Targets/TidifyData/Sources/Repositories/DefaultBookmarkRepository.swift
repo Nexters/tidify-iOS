@@ -8,86 +8,52 @@
 
 import TidifyDomain
 
-import Moya
-import RxSwift
-
 final class DefaultBookmarkRepository: BookmarkRepository {
 
-  // MARK: - Properties
-  private let bookmarkService: MoyaProvider<BookmarkService>
+  // MARK: Properties
+  private let networkProvider: NetworkProviderType
 
-  // MARK: - Initializer
-  public init() {
-    self.bookmarkService = .init(plugins: [NetworkPlugin()])
+  // MARK: Initializer
+  init(networkProvider: NetworkProviderType) {
+    self.networkProvider = networkProvider
   }
 
-  // MARK: - Methods
-  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
-    return bookmarkService.rx.request(.fetchBookmarkList(requestDTO: requestDTO))
-      .map(BookmarkListResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            let fetchResponse: FetchBookmarkListResposne = (
-              bookmarks: response.bookmarkListDTO.toDomain().reversed(),
-              currentPage: response.bookmarkListDTO.currentPage,
-              isLastPage: response.bookmarkListDTO.isLastPage
-            )
-            observer(.success(fetchResponse))
-          } else {
-            observer(.failure(BookmarkError.failFetchBookmarks))
-          }
+  // MARK: Methods
+  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) async throws -> FetchBookmarkListResposne {
+    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.fetchBoomarkList(request: requestDTO), type: BookmarkListResponse.self)
 
-          return Disposables.create()
-        }
-      }
+    guard response.isSuccess else {
+      throw BookmarkError.failFetchBookmarks
+    }
+
+    return FetchBookmarkListResposne(
+      bookmarks: response.toDomain(),
+      currentPage: response.bookmarkListDTO.currentPage,
+      isLastPage: response.bookmarkListDTO.isLastPage
+    )
   }
 
-  public func createBookmark(requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkService.rx.request(.createBookmark(requestDTO: requestDTO))
-      .map(BookmarkResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            observer(.success((())))
-          } else {
-            observer(.failure(BookmarkError.failCreateBookmark))
-            }
+  func createBookmark(requestDTO: BookmarkRequestDTO) async throws {
+    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.createBookmark(request: requestDTO), type: BookmarkResponse.self)
 
-          return Disposables.create()
-        }
-      }
+    guard response.isSuccess else {
+      throw BookmarkError.failCreateBookmark
+    }
   }
 
-  public func deleteBookmark(bookmarkID: Int) -> Single<Void> {
-    return bookmarkService.rx.request(.deleteBookmark(bookmarkID: bookmarkID))
-      .map(APIResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            observer(.success(()))
-          } else {
-            observer(.failure(BookmarkError.failDeleteBookmark))
-          }
+  func deleteBookmark(bookmarkID: Int) async throws {
+    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.deleteBookmark(ID: bookmarkID), type: APIResponse.self)
 
-          return Disposables.create()
-        }
-      }
+    guard response.isSuccess else {
+      throw BookmarkError.failCreateBookmark
+    }
   }
 
-  public func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) -> Single<Void> {
-    return bookmarkService.rx.request(.updateBookmark(bookmarkID: bookmarkID, requestDTO: requestDTO))
-      .map(APIResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            observer(.success(()))
-          } else {
-            observer(.failure(BookmarkError.failUpdateBookmark))
-          }
+  func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) async throws {
+    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.updateBookmark(ID: bookmarkID, request: requestDTO), type: APIResponse.self)
 
-          return Disposables.create()
-        }
-      }
+    guard response.isSuccess else {
+      throw BookmarkError.failUpdateBookmark
+    }
   }
 }

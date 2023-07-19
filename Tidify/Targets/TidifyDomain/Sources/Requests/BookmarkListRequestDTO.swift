@@ -15,6 +15,7 @@ public struct BookmarkListRequestDTO: Encodable {
   public let size: Int
   public let keyword: String?
 
+  // MARK: Initializer
   public init(page: Int, size: Int = 20, keyword: String? = nil) {
     self.page = page
     self.size = size
