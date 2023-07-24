@@ -6,19 +6,16 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-import RxSwift
-
 public protocol DeleteBookmarkUseCase {
 
   var bookmarkRepository: BookmarkRepository { get }
 
   /// 북마크를 삭제합니다.
-  func deleteBookmark(bookmarkID: Int) -> Observable<Void>
+  func deleteBookmark(bookmarkID: Int) async throws
 }
 
 extension DeleteBookmarkUseCase {
-  func deleteBookmark(bookmarkID: Int) -> Observable<Void> {
-    bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
-      .asObservable()
+  func deleteBookmark(bookmarkID: Int) async throws {
+    try await bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
   }
 }

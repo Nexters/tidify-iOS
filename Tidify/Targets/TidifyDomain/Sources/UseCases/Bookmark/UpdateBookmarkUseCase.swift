@@ -6,19 +6,16 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-import RxSwift
-
 public protocol UpdateBookmarkUseCase {
 
   var bookmarkRepository: BookmarkRepository { get }
 
   /// 북마크를 수정합니다.
-  func updateBookmark(id: Int, requestDTO: BookmarkRequestDTO) -> Observable<Void>
+  func updateBookmark(id: Int, request: BookmarkRequestDTO) async throws
 }
 
 extension UpdateBookmarkUseCase {
-  func updateBookmark(id: Int, requestDTO: BookmarkRequestDTO) -> Observable<Void> {
-    bookmarkRepository.updateBookmark(bookmarkID: id, requestDTO: requestDTO)
-      .asObservable()
+  func updateBookmark(id: Int, request: BookmarkRequestDTO) async throws {
+    try await bookmarkRepository.updateBookmark(bookmarkID: id, request: request)
   }
 }

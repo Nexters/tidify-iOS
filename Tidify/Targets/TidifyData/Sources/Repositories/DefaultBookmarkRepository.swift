@@ -19,8 +19,8 @@ final class DefaultBookmarkRepository: BookmarkRepository {
   }
 
   // MARK: Methods
-  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) async throws -> FetchBookmarkListResposne {
-    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.fetchBoomarkList(request: requestDTO), type: BookmarkListResponse.self)
+  func fetchBookmarkList(request: BookmarkListRequestDTO) async throws -> FetchBookmarkListResponse {
+    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.fetchBoomarkList(request: request), type: BookmarkListResponse.self)
 
     guard response.isSuccess else {
       throw BookmarkError.failFetchBookmarks
@@ -33,8 +33,8 @@ final class DefaultBookmarkRepository: BookmarkRepository {
     )
   }
 
-  func createBookmark(requestDTO: BookmarkRequestDTO) async throws {
-    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.createBookmark(request: requestDTO), type: BookmarkResponse.self)
+  func createBookmark(request: BookmarkRequestDTO) async throws {
+    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.createBookmark(request: request), type: BookmarkResponse.self)
 
     guard response.isSuccess else {
       throw BookmarkError.failCreateBookmark

@@ -6,9 +6,7 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-import RxSwift
-
-public typealias FetchBookmarkListResposne = (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool)
+public typealias FetchBookmarkListResponse = (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool)
 
 public protocol FetchBookmarkListUseCase {
 
@@ -16,12 +14,11 @@ public protocol FetchBookmarkListUseCase {
 
   /// 북마크 리스트를 가져옵니다.
   /// - Returns: bookamrks: 북마크 리스트, currentPage: 현재 페이지, isLastPage: 마지막 페이지 여부
-  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne>
+  func fetchBookmarkList(request: BookmarkListRequestDTO) async throws -> FetchBookmarkListResponse
 }
 
 extension FetchBookmarkListUseCase {
-  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne> {
-    bookmarkRepository.fetchBookmarkList(requestDTO: requestDTO)
-      .asObservable()
+  func fetchBookmarkList(request: BookmarkListRequestDTO) async throws -> FetchBookmarkListResponse {
+    try await bookmarkRepository.fetchBookmarkList(request: request)
   }
 }

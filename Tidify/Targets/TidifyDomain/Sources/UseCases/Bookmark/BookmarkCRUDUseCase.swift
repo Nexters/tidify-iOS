@@ -6,8 +6,6 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-import RxSwift
-
 public enum BookmarkError: Error {
   case cannotFindMachedBookmark
   case failFetchBookmarks
