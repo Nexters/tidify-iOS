@@ -26,7 +26,7 @@ final class DefaultBookmarkRepository: BookmarkRepository {
       throw BookmarkError.failFetchBookmarks
     }
 
-    return FetchBookmarkListResposne(
+    return FetchBookmarkListResponse(
       bookmarks: response.toDomain(),
       currentPage: response.bookmarkListDTO.currentPage,
       isLastPage: response.bookmarkListDTO.isLastPage

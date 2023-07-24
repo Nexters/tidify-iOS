@@ -22,13 +22,13 @@ final class DefaultFolderDetailRepository: FolderDetailRepository {
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(folderID: Int) -> Single<FetchBookmarkListResposne> {
+  func fetchBookmarkListInFolder(folderID: Int) -> Single<FetchBookmarkListResponse> {
     return folderService.rx.request(.fetchBookmarkListInFolder(id: folderID))
       .map(BookmarkListResponse.self)
       .flatMap { response in
         return .create { observer in
           if response.isSuccess {
-            let fetchResponse: FetchBookmarkListResposne = (
+            let fetchResponse: FetchBookmarkListResponse = (
               bookmarks: response.bookmarkListDTO.toDomain(),
               currentPage: response.bookmarkListDTO.currentPage,
               isLastPage: response.bookmarkListDTO.isLastPage

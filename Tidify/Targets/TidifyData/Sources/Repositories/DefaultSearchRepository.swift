@@ -34,7 +34,7 @@ final class DefaultSearchRepository: SearchRepository {
     }
   }
 
-  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
+  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResponse> {
     if let keyword = requestDTO.keyword {
       saveSearchKeyword(keyword: keyword)
     }
@@ -44,7 +44,7 @@ final class DefaultSearchRepository: SearchRepository {
       .flatMap { response in
         return .create { observer in
           if response.isSuccess {
-            let fetchResponse: FetchBookmarkListResposne = (
+            let fetchResponse: FetchBookmarkListResponse = (
               bookmarks: response.bookmarkListDTO.toDomain(),
               currentPage: response.bookmarkListDTO.currentPage,
               isLastPage: response.bookmarkListDTO.isLastPage

@@ -17,5 +17,5 @@ public protocol SearchRepository: AnyObject {
   func eraseAllSearchHistory() -> Single<Void>
 
   /// @GET: 검색 쿼리에 대응되는 결과를 반환합니다.
-  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne>
+  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResponse>
 }
