@@ -45,12 +45,12 @@ final class DefaultBookmarkRepository: BookmarkRepository {
     let response = try await networkProvider.request(endpoint: BookmarkEndpoint.deleteBookmark(ID: bookmarkID), type: APIResponse.self)
 
     guard response.isSuccess else {
-      throw BookmarkError.failCreateBookmark
+      throw BookmarkError.failDeleteBookmark
     }
   }
 
-  func updateBookmark(bookmarkID: Int, requestDTO: BookmarkRequestDTO) async throws {
-    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.updateBookmark(ID: bookmarkID, request: requestDTO), type: APIResponse.self)
+  func updateBookmark(bookmarkID: Int, request: BookmarkRequestDTO) async throws {
+    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.updateBookmark(ID: bookmarkID, request: request), type: APIResponse.self)
 
     guard response.isSuccess else {
       throw BookmarkError.failUpdateBookmark
