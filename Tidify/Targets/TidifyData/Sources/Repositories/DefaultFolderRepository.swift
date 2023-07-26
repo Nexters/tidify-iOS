@@ -8,88 +8,51 @@
 
 import TidifyDomain
 
-import Moya
-import RxSwift
-
 final class DefaultFolderRepository: FolderRepository {
   
   // MARK: - Properties
-  private let folderService: MoyaProvider<FolderService>
+  private let networkProvider: NetworkProviderType
 
   // MARK: - Initializer
-  public init() {
-    self.folderService = .init(plugins: [NetworkPlugin()])
+  init(networkProvider: NetworkProviderType) {
+    self.networkProvider = networkProvider
   }
   
   // MARK: - Methods
-  public func createFolder(requestDTO: FolderRequestDTO) -> Single<Folder> {
-    return folderService.rx.request(.createFolder(requestDTO))
-      .map(FolderCreationResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            observer(.success(response.folderCreationDTO.toDomain()))
-          } else {
-            observer(.failure(FolderError.failFetchCreateFolder))
-          }
+  func createFolder(request: FolderRequestDTO) async throws {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.createFolder(request: request), type: FolderCreationResponse.self)
 
-          return Disposables.create()
-        }
-      }
+    guard response.isSuccess else {
+      throw FolderError.failCreateFolder
+    }
   }
-  
-  public func fetchFolders(start: Int, count: Int) -> Single<FetchFoldersResponse> {
-    return folderService.rx.request(.fetchFolders(start: start, count: count))
-      .map(FolderListResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            let fetchFoldersResponse = FetchFoldersResponse(
-              folders: response.folderListDTO.toDomain().reversed(),
-              isLast: response.folderListDTO.isLast
-            )
-            observer(.success(fetchFoldersResponse))
-          } else {
-            observer(.failure(FolderError.failFetchFolders))
-          }
 
-          return Disposables.create()
-        }
-      }
-  }
-  
-  public func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void> {
-    return folderService.rx.request(.updateFolder(
-      id: id,
-      requestDTO: requestDTO)
+  func fetchFolderList(start: Int, count: Int) async throws -> FetchFolderListResponse {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchFolderList(start: start, count: count), type: FolderListResponse.self)
+
+    guard response.isSuccess else {
+      throw FolderError.failFetchFolderList
+    }
+
+    return FetchFolderListResponse(
+      folders: response.folderListDTO.toDomain(),
+      isLast: response.folderListDTO.isLast
     )
-    .map(FolderCreationResponse.self)
-    .flatMap { response in
-      return .create { observer in
-        if response.isSuccess {
-          observer(.success(()))
-        } else {
-          observer(.failure(FolderError.failFetchUpdateFolder))
-        }
+  }
+  
+  func updateFolder(id: Int, request: FolderRequestDTO) async throws {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.updateFolder(id: id, request: request), type: FolderCreationResponse.self)
 
-        return Disposables.create()
-      }
+    guard response.isSuccess else {
+      throw FolderError.failUpdateFolder
     }
   }
   
-  public func deleteFolder(id: Int) -> Single<Void> {
-    return folderService.rx.request(.deleteFolder(id: id))
-      .map(APIResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            observer(.success(()))
-          } else {
-            observer(.failure(FolderError.failFetchDeleteFolder))
-          }
+  func deleteFolder(id: Int) async throws {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.deleteFolder(id: id), type: APIResponse.self)
 
-          return Disposables.create()
-        }
-      }
+    guard response.isSuccess else {
+      throw FolderError.failDeleteFolder
+    }
   }
 }
