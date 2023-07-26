@@ -1,35 +1,37 @@
 //
-//  SignInUseCase.swift
+//  LoginUseCase.swift
 //  TidifyDomain
 //
 //  Created by Ian on 2022/08/07.
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import TidifyCore
-
-import RxSwift
-
-public protocol SignInUseCase {
-  func tryAppleSignIn(token: String) -> Observable<UserToken>
-  func tryKakaoSignIn() -> Observable<UserToken>
+public enum LoginError: Error {
+  case failAppleLogin
+  case failKakaoLogin
 }
 
-final class DefaultSignInUseCase: SignInUseCase {
+public protocol LoginUseCase {
+  func appleLogin(token: String) async throws -> UserToken
+  func kakaoLogin() async throws -> UserToken
+}
 
-  private let signInRepository: SignInRepository
+final class DefaultLoginUseCase: LoginUseCase {
 
-  // MARK: - Initializer
-  public init(repository: SignInRepository) {
-    signInRepository = repository
+  // MARK: Properties
+  private let loginRepository: LoginRepository
+
+  // MARK: Initializer
+  public init(loginRepository: LoginRepository) {
+    self.loginRepository = loginRepository
   }
 
-  // MARK: - Methods
-  public func tryAppleSignIn(token: String) -> Observable<UserToken> {
-    signInRepository.tryAppleLogin(token: token).asObservable()
+  // MARK: Methods
+  func appleLogin(token: String) async throws -> UserToken {
+    try await loginRepository.appleLogin(token: token)
   }
 
-  public func tryKakaoSignIn() -> Observable<UserToken> {
-    signInRepository.tryKakaoLogin()
+  func kakaoLogin() async throws -> UserToken {
+    try await loginRepository.kakaoLogin()
   }
 }

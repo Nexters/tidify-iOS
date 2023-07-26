@@ -6,8 +6,6 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-import RxSwift
-
 public protocol SettingRepository: AnyObject {
-  func trySignOut() -> Single<Void>
+  func signOut() async throws
 }

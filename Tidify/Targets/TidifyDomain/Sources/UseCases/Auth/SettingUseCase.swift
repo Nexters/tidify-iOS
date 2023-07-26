@@ -6,12 +6,12 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-import TidifyCore
-
-import RxSwift
+public enum SettingError: Error {
+  case failSignOut
+}
 
 public protocol SettingUseCase {
-  func trySignOut() -> Observable<Void>
+  func signOut() async throws
 }
 
 final class DefaultSettingUseCase: SettingUseCase {
@@ -19,13 +19,13 @@ final class DefaultSettingUseCase: SettingUseCase {
   // MARK: Properties
   private let settingRepository: SettingRepository
 
-  // MARK: - Initializer
-  public init(repository: SettingRepository) {
-    settingRepository = repository
+  // MARK: Initializer
+  public init(settingRepository: SettingRepository) {
+    self.settingRepository = settingRepository
   }
 
-  // MARK: - Methods
-  public func trySignOut() -> Observable<Void> {
-    settingRepository.trySignOut().asObservable()
+  // MARK: Methods
+  func signOut() async throws {
+    try await settingRepository.signOut()
   }
 }
