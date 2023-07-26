@@ -14,11 +14,16 @@ protocol EndpointType {
   var fullPath: String { get }
   var method: HTTPMethod { get }
   var parameters: [String: String]? { get }
+  var headers: [String: String]? { get }
 
   func makeURLRequest() throws -> URLRequest
 }
 
 extension EndpointType {
+  var headers: [String: String]? {
+    return nil
+  }
+
   func makeURLRequest() throws -> URLRequest {
     var request: URLRequest
 
@@ -60,8 +65,14 @@ extension EndpointType {
       request.httpMethod = method.rawValue
     }
 
-    request.addValue(AppProperties.accessToken, forHTTPHeaderField: "X-Auth-Token")
-    request.addValue(AppProperties.refreshToken, forHTTPHeaderField: "refreshToken")
+    if let headers {
+      for header in headers {
+        request.addValue(header.value, forHTTPHeaderField: header.key)
+      }
+    } else {
+      request.addValue(AppProperties.accessToken, forHTTPHeaderField: "X-Auth-Token")
+      request.addValue(AppProperties.refreshToken, forHTTPHeaderField: "refreshToken")
+    }
     return request
   }
 }

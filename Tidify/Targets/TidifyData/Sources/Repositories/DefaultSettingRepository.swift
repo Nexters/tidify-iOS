@@ -8,22 +8,22 @@
 
 import TidifyDomain
 
-import RxSwift
-import Moya
-
 final class DefaultSettingRepository: SettingRepository {
 
   // MARK: Properties
-  private let settingService: MoyaProvider<SettingService>
+  private let networkProvider: NetworkProviderType
 
   // MARK: Initializer
-  public init() {
-    self.settingService = .init(plugins: [NetworkPlugin()])
+  init(networkProvider: NetworkProviderType) {
+    self.networkProvider = networkProvider
   }
 
   // MARK: Methods
-  public func trySignOut() -> Single<Void> {
-    return settingService.rx.request(.trySignOut)
-      .map { _ in }
+  func signOut() async throws {
+    let response = try await networkProvider.request(endpoint: SettingEndpoint.signOut, type: APIResponse.self)
+
+    guard response.isSuccess else {
+      throw SettingError.failSignOut
+    }
   }
 }
