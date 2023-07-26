@@ -6,43 +6,29 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import RxSwift
-
-public typealias FetchFoldersResponse = (folders: [Folder], isLast: Bool)
+public typealias FetchFolderListResponse = (folders: [Folder], isLast: Bool)
 
 public enum FolderError: Error {
-  case failFetchFolders
-  case failFetchCreateFolder
-  case failFetchUpdateFolder
-  case failFetchDeleteFolder
+  case failFetchFolderList
+  case failCreateFolder
+  case failUpdateFolder
+  case failDeleteFolder
   case emptyFolderTitle
   case emptyColorValue
   case emptyMatchedFolder
 }
 
 public protocol FolderUseCase {
-  var createdFolderObservable: Observable<Folder> { get }
-  var updatedFolderObservable: Observable<Folder> { get }
-
-  func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void>
-  func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse>
-  func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void>
-  func deleteFolder(id: Int) -> Observable<Void>
+  func createFolder(request: FolderRequestDTO) async throws
+  func fetchFolderList(start: Int, count: Int) async throws -> FetchFolderListResponse
+  func updateFolder(id: Int, request: FolderRequestDTO) async throws
+  func deleteFolder(id: Int) async throws
 }
 
 final class DefaultFolderUseCase: FolderUseCase {
 
   // MARK: - Properties
   private let folderRepository: FolderRepository
-  var createdFolderObservable: Observable<Folder> {
-    createdFolderSubject.asObservable()
-  }
-  var updatedFolderObservable: Observable<Folder> {
-    updatedFolderSubject.asObservable()
-  }
-  private let createdFolderSubject: PublishSubject<Folder> = .init()
-  private let updatedFolderSubject: PublishSubject<Folder> = .init()
-  private let disposeBag: DisposeBag = .init()
 
   // MARK: - Initializer
   init(repository: FolderRepository) {
@@ -50,30 +36,19 @@ final class DefaultFolderUseCase: FolderUseCase {
   }
 
   // MARK: - Methods
-  func createFolder(requestDTO: FolderRequestDTO) -> Observable<Void> {
-    folderRepository.createFolder(requestDTO: requestDTO)
-      .subscribe(onSuccess: { [weak self] in
-        self?.createdFolderSubject.onNext($0)
-      })
-      .disposed(by: disposeBag)
-
-    return .just(())
+  func createFolder(request: FolderRequestDTO) async throws {
+    try await folderRepository.createFolder(request: request)
   }
   
-  func fetchFolders(start: Int, count: Int) -> Observable<FetchFoldersResponse> {
-    return folderRepository.fetchFolders(start: start, count: count).asObservable()
+  func fetchFolderList(start: Int, count: Int) async throws -> FetchFolderListResponse {
+    try await folderRepository.fetchFolderList(start: start, count: count)
   }
   
-  func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Observable<Void> {
-    updatedFolderSubject.onNext(.init(
-      id: id,
-      title: requestDTO.title,
-      color: requestDTO.color
-    ))
-    return folderRepository.updateFolder(id: id, requestDTO: requestDTO).asObservable()
+  func updateFolder(id: Int, request: FolderRequestDTO) async throws {
+    try await folderRepository.updateFolder(id: id, request: request)
   }
   
-  func deleteFolder(id: Int) -> Observable<Void> {
-    folderRepository.deleteFolder(id: id).asObservable()
+  func deleteFolder(id: Int) async throws {
+    try await folderRepository.deleteFolder(id: id)
   }
 }
