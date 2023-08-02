@@ -16,7 +16,8 @@ protocol NetworkRequestable {
 extension URLSession: NetworkRequestable {}
 
 protocol NetworkProviderType: AnyObject {
-  func request<T: Decodable>(endpoint: EndpointType, type: T.Type) async throws -> T
+  @discardableResult
+  func request<T: Decodable & Responsable>(endpoint: EndpointType, type: T.Type) async throws -> T
 }
 
 final class NetworkProvider: NetworkProviderType {
@@ -30,7 +31,8 @@ final class NetworkProvider: NetworkProviderType {
   }
 
   // MARK: Methods
-  func request<T: Decodable>(endpoint: EndpointType, type: T.Type) async throws -> T {
+  @discardableResult
+  func request<T: Decodable & Responsable>(endpoint: EndpointType, type: T.Type) async throws -> T {
     guard NetworkMonitor.shared.isConnected else {
       throw NetworkError.failConnection
     }
@@ -39,11 +41,15 @@ final class NetworkProvider: NetworkProviderType {
     let (data, response) = try await session.data(for: request)
     try filterNetworkingError(data: data, response: response)
 
-    do {
-      return try JSONDecoder().decode(T.self, from: data)
-    } catch {
+    guard let decoded = try? JSONDecoder().decode(T.self, from: data) else {
       throw NetworkError.decodingError
     }
+
+    guard decoded.isSuccess else {
+      throw NetworkError.unknownError(message: decoded.message)
+    }
+
+    return decoded
   }
 }
 
@@ -51,7 +57,7 @@ final class NetworkProvider: NetworkProviderType {
 private extension NetworkProvider {
   func filterNetworkingError(data: Data, response: URLResponse) throws {
     guard let httpResponse = response as? HTTPURLResponse else {
-      throw NetworkError.unknownError
+      throw NetworkError.responseError
     }
 
     guard 200...299 ~= httpResponse.statusCode else {
