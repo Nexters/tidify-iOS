@@ -15,7 +15,7 @@ import ReactorKit
 import SnapKit
 import Then
 
-final class HomeViewController: UIViewController, View, UIScrollViewDelegate {
+final class HomeViewController: UIViewController, View, UIScrollViewDelegate, Alertable {
 
   // MARK: - Properties
   private var navigationBar: TidifyNavigationBar!
@@ -26,7 +26,6 @@ final class HomeViewController: UIViewController, View, UIScrollViewDelegate {
   private lazy var guideLabel: UILabel = .init()
   private lazy var tableView: TidifyTableView = .init(tabType: .bookmark)
 
-  private let alertPresenter: AlertPresenter
   private let deleteBookmarkSubject: PublishSubject<Int> = .init()
 
   private lazy var dataSource: UITableViewDiffableDataSource<Int, Bookmark> = {
@@ -40,8 +39,7 @@ final class HomeViewController: UIViewController, View, UIScrollViewDelegate {
   var disposeBag: DisposeBag = .init()
 
   // MARK: - Initializer
-  init(alertPresenter: AlertPresenter) {
-    self.alertPresenter = alertPresenter
+  init() {
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -254,14 +252,9 @@ extension HomeViewController: UITableViewDataSourcePrefetching {
 // MARK: - Private Extension
 private extension HomeViewController {
   func presentDeleteBookmarkAlert(deleteTargetRow: Int) {
-    let rightButtonAction: ButtonAction = { [weak self] in
-      self?.deleteBookmarkSubject.onNext(deleteTargetRow)
-    }
-
-    alertPresenter.present(
-      on: self,
-      alertType: .deleteBookmark,
-      rightButtonAction: rightButtonAction
+    presentAlert(
+      type: .deleteBookmark,
+      rightButtonTapHandler: { [weak self] in self?.deleteBookmarkSubject.onNext(deleteTargetRow) }
     )
   }
 

@@ -11,7 +11,7 @@ import UIKit
 
 import ReactorKit
 
-final class FolderDetailViewController: UIViewController, View {
+final class FolderDetailViewController: UIViewController, View, Alertable {
   private let navigationBar: TidifyNavigationBar
   private let folder: Folder
   private let containerView: UIView = .init()
@@ -141,13 +141,9 @@ private extension FolderDetailViewController {
 
   func presentDeletionAlert(_ row: Int) -> PublishSubject<Int> {
     let deletedFolderRow: PublishSubject<Int> = .init()
-
-    let alertPresenter: AlertPresenter = .init()
-    alertPresenter.present(
-      on: self,
-      alertType: .deleteBookmark,
-      leftButtonAction: {},
-      rightButtonAction: { deletedFolderRow.onNext(row) }
+    presentAlert(
+      type: .deleteBookmark,
+      rightButtonTapHandler: { deletedFolderRow.onNext(row) }
     )
 
     return deletedFolderRow
