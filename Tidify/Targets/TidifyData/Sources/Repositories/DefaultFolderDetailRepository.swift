@@ -29,7 +29,7 @@ final class DefaultFolderDetailRepository: FolderDetailRepository {
         return .create { observer in
           if response.isSuccess {
             let fetchResponse: FetchBookmarkListResponse = (
-              bookmarks: response.bookmarkListDTO.toDomain(),
+              bookmarks: response.toDomain(),
               currentPage: response.bookmarkListDTO.currentPage,
               isLastPage: response.bookmarkListDTO.isLastPage
             )

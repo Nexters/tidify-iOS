@@ -14,7 +14,7 @@ final class MockBookmarkRepository: BookmarkRepository {
 
   private(set) var bookmarks: [Bookmark] = Bookmark.stubList()
 
-  func fetchBookmarkList(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
+  func fetchBookmarkList(requestDTO: BookmarkListRequest) -> Single<FetchBookmarkListResposne> {
     return .create { [weak self] observer in
       if let keyword = requestDTO.keyword {
         observer(.success((bookmarks: self?.bookmarks.filter { $0.name.contains(keyword)} ?? [] , currentPage: 1, isLastPage: true)))

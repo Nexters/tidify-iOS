@@ -58,7 +58,7 @@ final class SearchUseCaseTests: XCTestCase {
   }
 
   func test_whenSearchWithKeyword_thenShouldReturnMappedBookmarks() {
-    let requestDTO: BookmarkListRequestDTO = .init(page: 0, keyword: "Github")
+    let requestDTO: BookmarkListRequest = .init(page: 0, keyword: "Github")
     useCase.fetchSearchResult(requestDTO: requestDTO)
       .subscribe(onNext: { response in
         XCTAssert(response.bookmarks.allSatisfy({ bookmark in bookmark.name.contains("Github") }))
@@ -69,7 +69,7 @@ final class SearchUseCaseTests: XCTestCase {
   }
 
   func test_whenSearchWithEmptyKeyword_thenShouldReturnError() {
-    let requestDTO: BookmarkListRequestDTO = .init(page: 0, keyword: "")
+    let requestDTO: BookmarkListRequest = .init(page: 0, keyword: "")
 
     useCase.fetchSearchResult(requestDTO: requestDTO)
       .subscribe(onNext: { _ in

@@ -41,7 +41,7 @@ final class BookmarkUseCaseTests: XCTestCase {
   }
 
   func test_whenFetchBookmark_thenShouldNotEmpty() {
-    let requestDTO: BookmarkListRequestDTO = .init(page: 0)
+    let requestDTO: BookmarkListRequest = .init(page: 0)
     useCase.fetchBookmarkList(requestDTO: requestDTO)
       .subscribe(onNext: { bookmarks, _, _ in
         XCTAssert(!bookmarks.isEmpty)
@@ -52,7 +52,7 @@ final class BookmarkUseCaseTests: XCTestCase {
   }
 
   func test_whenFetchBookmarkWithKeyword_thenResultShouldContainsKeyword() {
-    let requestDTO: BookmarkListRequestDTO = .init(page: 0, keyword: "tistory")
+    let requestDTO: BookmarkListRequest = .init(page: 0, keyword: "tistory")
     useCase.fetchBookmarkList(requestDTO: requestDTO)
       .subscribe(onNext: { bookmarks, _, _ in
         XCTAssert(bookmarks.allSatisfy({ $0.name.contains(requestDTO.keyword!) }))

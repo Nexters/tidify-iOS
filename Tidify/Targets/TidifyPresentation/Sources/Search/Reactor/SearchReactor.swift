@@ -14,7 +14,7 @@ final class SearchReactor {
 
   // MARK: - Properties
   private weak var coordinator: SearchCoordinator?
-  private let useCase: SearchUseCase
+  private let usecase: SearchUseCase
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
   private var lastKeyword: String = ""
@@ -26,9 +26,9 @@ final class SearchReactor {
   }
 
   // MARK: - Initializer
-  init(coordinator: SearchCoordinator, useCase: SearchUseCase) {
+  init(coordinator: SearchCoordinator, usecase: SearchUseCase) {
     self.coordinator = coordinator
-    self.useCase = useCase
+    self.usecase = usecase
   }
 
   var initialState: State = .init(viewMode: .history, searchHistory: [], searchResult: [])

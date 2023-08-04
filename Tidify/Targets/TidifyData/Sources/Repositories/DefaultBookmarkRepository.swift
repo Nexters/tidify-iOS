@@ -14,12 +14,12 @@ final class DefaultBookmarkRepository: BookmarkRepository {
   private let networkProvider: NetworkProviderType
 
   // MARK: Initializer
-  init(networkProvider: NetworkProviderType) {
+  init(networkProvider: NetworkProviderType = NetworkProvider()) {
     self.networkProvider = networkProvider
   }
 
   // MARK: Methods
-  func fetchBookmarkList(request: BookmarkListRequestDTO) async throws -> FetchBookmarkListResponse {
+  func fetchBookmarkList(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse {
     let response = try await networkProvider.request(endpoint: BookmarkEndpoint.fetchBoomarkList(request: request), type: BookmarkListResponse.self)
 
     return FetchBookmarkListResponse(

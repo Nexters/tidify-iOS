@@ -9,7 +9,7 @@
 import RxSwift
 
 public protocol FolderDetailUseCase: DeleteBookmarkUseCase {
-  func fetchBookmarkListInFolder(folderID: Int) -> Observable<FetchBookmarkListResposne>
+  func fetchBookmarkListInFolder(folderID: Int) -> Observable<FetchBookmarkListResponse>
 }
 
 final class DefaultFolderDetailUseCase: FolderDetailUseCase {
@@ -25,12 +25,12 @@ final class DefaultFolderDetailUseCase: FolderDetailUseCase {
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(folderID: Int) -> Observable<FetchBookmarkListResposne> {
+  func fetchBookmarkListInFolder(folderID: Int) -> Observable<FetchBookmarkListResponse> {
     folderDetailRepository.fetchBookmarkListInFolder(folderID: folderID).asObservable()
   }
 
   func deleteBookmark(bookmarkID: Int) -> Observable<Void> {
-    bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
-      .asObservable()
+//    bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
+    return .just(())
   }
 }
