@@ -1,5 +1,5 @@
 //
-//  Storage.swift
+//  UserDefaultsStorage.swift
 //  TidifyCore
 //
 //  Created by Ian on 2022/11/01.
@@ -10,11 +10,12 @@ import Foundation
 
 /// UserDefaults Wrapper
 @propertyWrapper
-public struct Storage<T> {
+public struct UserDefaultsStorage<T> {
 
   // MARK: - Properties
   public enum StorageKey: String, CaseIterable {
     case isFirstLaunch = "isFirstLaunch"
+    case searchHistory = "searchHistory"
   }
 
   private let key: StorageKey
@@ -22,7 +23,7 @@ public struct Storage<T> {
 
   public var wrappedValue: T {
     get {
-      return UserDefaults.standard.value(forKey: key.rawValue) as? T ?? defaultValue
+      UserDefaults.standard.value(forKey: key.rawValue) as? T ?? defaultValue
     }
     set {
       UserDefaults.standard.setValue(newValue, forKey: key.rawValue)
@@ -34,9 +35,4 @@ public struct Storage<T> {
     self.key = key
     self.defaultValue = defaultValue
   }
-}
-
-public struct UserDefaultsStorage {
-  @Storage(key: .isFirstLaunch, defaultValue: true)
-  public static var isFirstLaunch: Bool
 }

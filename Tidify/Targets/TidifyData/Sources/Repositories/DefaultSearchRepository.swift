@@ -7,15 +7,14 @@
 //
 
 import Foundation
+import TidifyCore
 import TidifyDomain
-
-import Moya
-import RxSwift
 
 final class DefaultSearchRepository: SearchRepository {
 
   // MARK: - Properties
   private let networkProvivder: NetworkProviderType
+  private let searchHistory: [String] = UserProperties.searchHistory
 
   // MARK: - Initializer
   public init(networkProvider: NetworkProviderType = NetworkProvider()) {
@@ -24,14 +23,11 @@ final class DefaultSearchRepository: SearchRepository {
 
   // MARK: Methods
   func fetchSearchHistory() -> [String] {
-    // TODO: - PropertyWrapper & LocalStorage 적용
-    let history = UserDefaults.standard.array(forKey: "SearchHistory") as? [String]
-
-    return history ?? []
+    return searchHistory
   }
 
   func eraseAllSearchHistory() {
-    UserDefaults.standard.set([], forKey: "SearchHistory")
+    UserProperties.searchHistory = []
   }
 
   func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse {
@@ -51,18 +47,18 @@ final class DefaultSearchRepository: SearchRepository {
 
 private extension DefaultSearchRepository {
   func saveSearchKeyword(keyword: String) {
-        var searchHistory = UserDefaults.standard.array(forKey: "SearchHistory") as? [String] ?? []
+    var searchHistory = searchHistory
 
-        if let existIndex = searchHistory.firstIndex(of: keyword) {
-          searchHistory.remove(at: existIndex)
-        }
+    if let existIndex = searchHistory.firstIndex(of: keyword) {
+      searchHistory.remove(at: existIndex)
+    }
 
-        if searchHistory.count >= 10 {
-          searchHistory.removeFirst()
-        }
+    if searchHistory.count >= 10 {
+      searchHistory.removeFirst()
+    }
 
-        searchHistory.append(keyword)
+    searchHistory.append(keyword)
 
-        UserDefaults.standard.set(searchHistory, forKey: "SearchHistory")
+    UserProperties.searchHistory = searchHistory
   }
 }
