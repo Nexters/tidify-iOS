@@ -38,8 +38,7 @@ private extension DefaultSettingCoordinator {
       fatalError()
     }
     let reactor: SettingReactor = .init(useCase: useCase, coordinator: self)
-    let alertPresenter: AlertPresenter = .init()
-    let viewController: SettingViewController = .init(alertPresenter: alertPresenter)
+    let viewController: SettingViewController = .init()
     viewController.reactor = reactor
 
     return viewController

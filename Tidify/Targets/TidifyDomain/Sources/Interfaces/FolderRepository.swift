@@ -6,13 +6,11 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import RxSwift
-
 public protocol FolderRepository: AnyObject {
   
   //MARK: - CRUD
-  func createFolder(requestDTO: FolderRequestDTO) -> Single<Folder>
-  func fetchFolders(start: Int, count: Int) -> Single<FetchFoldersResponse>
-  func updateFolder(id: Int, requestDTO: FolderRequestDTO) -> Single<Void>
-  func deleteFolder(id: Int) -> Single<Void>
+  func createFolder(request: FolderRequestDTO) async throws
+  func fetchFolderList(start: Int, count: Int) async throws -> FetchFolderListResponse
+  func updateFolder(id: Int, request: FolderRequestDTO) async throws
+  func deleteFolder(id: Int) async throws
 }

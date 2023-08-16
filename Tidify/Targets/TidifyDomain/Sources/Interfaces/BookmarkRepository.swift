@@ -9,7 +9,7 @@
 public protocol BookmarkRepository: AnyObject {
 
   /// @GET: 대응되는 북마크 리스트를 반환합니다.
-  func fetchBookmarkList(request: BookmarkListRequestDTO) async throws -> FetchBookmarkListResponse
+  func fetchBookmarkList(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse
 
   /// @POST: 북마크를 생성합니다.
   func createBookmark(request: BookmarkRequestDTO) async throws

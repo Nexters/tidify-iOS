@@ -10,7 +10,7 @@ import TidifyCore
 import TidifyDomain
 
 enum BookmarkEndpoint: EndpointType {
-  case fetchBoomarkList(request: BookmarkListRequestDTO)
+  case fetchBoomarkList(request: BookmarkListRequest)
   case createBookmark(request: BookmarkRequestDTO)
   case deleteBookmark(ID: Int)
   case updateBookmark(ID: Int, request: BookmarkRequestDTO)

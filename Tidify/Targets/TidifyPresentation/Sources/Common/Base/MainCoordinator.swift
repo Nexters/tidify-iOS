@@ -20,7 +20,7 @@ public final class DefaultMainCoordinator: MainCoordinator {
   public var navigationController: UINavigationController
   private let container: DIContainer = .shared
 
-  private let isFirstLaunch: Bool = UserDefaultsStorage.isFirstLaunch
+  private var isFirstLaunch = UserProperties.isFirstLaunch
 
   // MARK: - Initialize
   public init(navigationController: UINavigationController) {
@@ -38,7 +38,7 @@ public final class DefaultMainCoordinator: MainCoordinator {
     navigationController.popViewController(animated: false)
 
     if isFirstLaunch {
-      UserDefaultsStorage.isFirstLaunch = false
+      UserProperties.isFirstLaunch = false
       KeyChain.deleteAll()
     }
 

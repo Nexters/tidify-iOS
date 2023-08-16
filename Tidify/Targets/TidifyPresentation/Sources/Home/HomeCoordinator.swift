@@ -88,7 +88,7 @@ private extension DefaultHomeCoordinator {
     }
 
     let reactor: HomeReactor = .init(coordinator: self, useCase: useCase)
-    let viewController: HomeViewController = .init(alertPresenter: AlertPresenter())
+    let viewController: HomeViewController = .init()
     viewController.reactor = reactor
 
     return viewController
