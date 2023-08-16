@@ -6,10 +6,10 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-import RxSwift
-
 public protocol FolderDetailUseCase: DeleteBookmarkUseCase {
-  func fetchBookmarkListInFolder(folderID: Int) -> Observable<FetchBookmarkListResponse>
+  var bookmarkRepository: BookmarkRepository { get }
+
+  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkListResponse
 }
 
 final class DefaultFolderDetailUseCase: FolderDetailUseCase {
@@ -25,12 +25,7 @@ final class DefaultFolderDetailUseCase: FolderDetailUseCase {
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(folderID: Int) -> Observable<FetchBookmarkListResponse> {
-    folderDetailRepository.fetchBookmarkListInFolder(folderID: folderID).asObservable()
-  }
-
-  func deleteBookmark(bookmarkID: Int) -> Observable<Void> {
-//    bookmarkRepository.deleteBookmark(bookmarkID: bookmarkID)
-    return .just(())
+  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkListResponse {
+    try await folderDetailRepository.fetchBookmarkListInFolder(id: id)
   }
 }

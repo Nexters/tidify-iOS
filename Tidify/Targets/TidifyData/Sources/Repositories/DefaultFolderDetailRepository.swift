@@ -8,38 +8,24 @@
 
 import TidifyDomain
 
-import Moya
-import RxSwift
-
 final class DefaultFolderDetailRepository: FolderDetailRepository {
 
   // MARK: - Properties
-  private let folderService: MoyaProvider<FolderService>
+  private let networkProvider: NetworkProviderType
 
   // MARK: - Initializer
-  public init() {
-    self.folderService = .init(plugins: [NetworkPlugin()])
+  init(networkProvider: NetworkProviderType) {
+    self.networkProvider = networkProvider
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(folderID: Int) -> Single<FetchBookmarkListResponse> {
-    return folderService.rx.request(.fetchBookmarkListInFolder(id: folderID))
-      .map(BookmarkListResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            let fetchResponse: FetchBookmarkListResponse = (
-              bookmarks: response.toDomain(),
-              currentPage: response.bookmarkListDTO.currentPage,
-              isLastPage: response.bookmarkListDTO.isLastPage
-            )
-            observer(.success(fetchResponse))
-          } else {
-            observer(.failure(BookmarkError.failFetchBookmarks))
-          }
+  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkListResponse {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchBookmarkListInFolder(id: id), type: BookmarkListResponse.self)
 
-          return Disposables.create()
-        }
-      }
+    return FetchBookmarkListResponse(
+      bookmarks: response.toDomain(),
+      currentPage: response.bookmarkListDTO.currentPage,
+      isLastPage: response.bookmarkListDTO.isLastPage
+    )
   }
 }
