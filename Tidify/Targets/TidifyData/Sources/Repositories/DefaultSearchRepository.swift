@@ -7,78 +7,47 @@
 //
 
 import Foundation
+import TidifyCore
 import TidifyDomain
-
-import Moya
-import RxSwift
 
 final class DefaultSearchRepository: SearchRepository {
 
   // MARK: - Properties
-  static let searchHistory: String = "SearchHistory"
-  private let bookmarkService: MoyaProvider<BookmarkService>
+  private let networkProvivder: NetworkProviderType
+  private let searchHistory: [String] = UserProperties.searchHistory
 
   // MARK: - Initializer
-  public init() {
-    self.bookmarkService = .init(plugins: [NetworkPlugin()])
+  public init(networkProvider: NetworkProviderType = NetworkProvider()) {
+    self.networkProvivder = networkProvider
   }
 
-  // MARK: - Methods
-  public func fetchSearchHistory() -> Single<[String]> {
-    let searchHistory = UserDefaults.standard.array(forKey: Self.searchHistory) as? [String] ?? []
-
-    return .create { observer -> Disposable in
-      observer(.success(searchHistory.reversed()))
-
-      return Disposables.create()
-    }
+  // MARK: Methods
+  func fetchSearchHistory() -> [String] {
+    return searchHistory
   }
 
-  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResponse> {
-    if let keyword = requestDTO.keyword {
+  func eraseAllSearchHistory() {
+    UserProperties.searchHistory = []
+  }
+
+  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse {
+    if let keyword = request.keyword {
       saveSearchKeyword(keyword: keyword)
     }
 
-    return bookmarkService.rx.request(.fetchBookmarkList(requestDTO: requestDTO))
-      .map(BookmarkListResponse.self)
-      .flatMap { response in
-        return .create { observer in
-          if response.isSuccess {
-            let fetchResponse: FetchBookmarkListResponse = (
-              bookmarks: response.bookmarkListDTO.toDomain(),
-              currentPage: response.bookmarkListDTO.currentPage,
-              isLastPage: response.bookmarkListDTO.isLastPage
-            )
-            observer(.success(fetchResponse))
-          } else {
-            observer(.failure(BookmarkError.failFetchBookmarks))
-          }
+    let response = try await networkProvivder.request(endpoint: BookmarkEndpoint.fetchBoomarkList(request: request), type: BookmarkListResponse.self)
 
-          return Disposables.create()
-        }
-      }
-  }
-
-  public func eraseAllSearchHistory() -> Single<Void> {
-    UserDefaults.standard.set([], forKey: Self.searchHistory)
-
-    let searchHistory = UserDefaults.standard.array(forKey: Self.searchHistory) as? [String] ?? []
-
-    return .create { observer -> Disposable in
-      if searchHistory.isEmpty {
-        observer(.success(()))
-      } else {
-        observer(.failure(SearchError.failEraseAllSearchHistory))
-      }
-
-      return Disposables.create()
-    }
+    return FetchBookmarkListResponse(
+      bookmarks: response.toDomain(),
+      currentPage: response.bookmarkListDTO.currentPage,
+      isLastPage: response.bookmarkListDTO.isLastPage
+    )
   }
 }
 
 private extension DefaultSearchRepository {
   func saveSearchKeyword(keyword: String) {
-    var searchHistory = UserDefaults.standard.array(forKey: Self.searchHistory) as? [String] ?? []
+    var searchHistory = searchHistory
 
     if let existIndex = searchHistory.firstIndex(of: keyword) {
       searchHistory.remove(at: existIndex)
@@ -90,6 +59,6 @@ private extension DefaultSearchRepository {
 
     searchHistory.append(keyword)
 
-    UserDefaults.standard.set(searchHistory, forKey: Self.searchHistory)
+    UserProperties.searchHistory = searchHistory
   }
 }

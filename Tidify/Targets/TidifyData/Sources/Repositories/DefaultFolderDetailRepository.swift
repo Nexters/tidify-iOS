@@ -22,10 +22,6 @@ final class DefaultFolderDetailRepository: FolderDetailRepository {
   func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkListResponse {
     let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchBookmarkListInFolder(id: id), type: BookmarkListResponse.self)
 
-    guard response.isSuccess else {
-      throw BookmarkError.failFetchBookmarks
-    }
-
     return FetchBookmarkListResponse(
       bookmarks: response.toDomain(),
       currentPage: response.bookmarkListDTO.currentPage,

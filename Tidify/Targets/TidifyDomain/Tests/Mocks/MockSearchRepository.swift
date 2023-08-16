@@ -50,7 +50,7 @@ final class MockSearchRepository: SearchRepository {
     }
   }
 
-  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Single<FetchBookmarkListResposne> {
+  func fetchSearchResult(requestDTO: BookmarkListRequest) -> Single<FetchBookmarkListResposne> {
     if requestDTO.keyword?.isEmpty ?? true {
       return .error(SearchError.emptySearchQuery)
     }

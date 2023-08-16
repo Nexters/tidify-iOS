@@ -1,5 +1,5 @@
 //
-//  BookmarkListRequestDTO.swift
+//  BookmarkListRequest.swift
 //  TidifyDomain
 //
 //  Created by 여정수 on 2023/04/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct BookmarkListRequestDTO: Encodable {
+public struct BookmarkListRequest: Encodable {
 
   // MARK: Properties
   public let page: Int

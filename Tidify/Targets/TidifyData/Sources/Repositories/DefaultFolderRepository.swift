@@ -20,19 +20,11 @@ final class DefaultFolderRepository: FolderRepository {
   
   // MARK: - Methods
   func createFolder(request: FolderRequestDTO) async throws {
-    let response = try await networkProvider.request(endpoint: FolderEndpoint.createFolder(request: request), type: FolderCreationResponse.self)
-
-    guard response.isSuccess else {
-      throw FolderError.failCreateFolder
-    }
+    try await networkProvider.request(endpoint: FolderEndpoint.createFolder(request: request), type: FolderCreationResponse.self)
   }
 
   func fetchFolderList(start: Int, count: Int) async throws -> FetchFolderListResponse {
     let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchFolderList(start: start, count: count), type: FolderListResponse.self)
-
-    guard response.isSuccess else {
-      throw FolderError.failFetchFolderList
-    }
 
     return FetchFolderListResponse(
       folders: response.folderListDTO.toDomain(),
@@ -41,18 +33,10 @@ final class DefaultFolderRepository: FolderRepository {
   }
   
   func updateFolder(id: Int, request: FolderRequestDTO) async throws {
-    let response = try await networkProvider.request(endpoint: FolderEndpoint.updateFolder(id: id, request: request), type: FolderCreationResponse.self)
-
-    guard response.isSuccess else {
-      throw FolderError.failUpdateFolder
-    }
+    try await networkProvider.request(endpoint: FolderEndpoint.updateFolder(id: id, request: request), type: FolderCreationResponse.self)
   }
   
   func deleteFolder(id: Int) async throws {
-    let response = try await networkProvider.request(endpoint: FolderEndpoint.deleteFolder(id: id), type: APIResponse.self)
-
-    guard response.isSuccess else {
-      throw FolderError.failDeleteFolder
-    }
+    try await networkProvider.request(endpoint: FolderEndpoint.deleteFolder(id: id), type: APIResponse.self)
   }
 }

@@ -12,20 +12,17 @@ import UIKit
 import ReactorKit
 import Kingfisher
 
-final class SettingViewController: UIViewController, View {
+final class SettingViewController: UIViewController, View, Alertable {
 
   // MARK: - Properties
   private let tableView: UITableView = .init(frame: .zero, style: .grouped)
   private let headerView: SettingTableHeaderView = .init(frame: .init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
-  private let alertPresenter: AlertPresenter
 
   private let selectedIndexPathSubject: PublishSubject<IndexPath> = .init()
   var disposeBag: DisposeBag = .init()
 
   // MARK: - Initializer
-  init(alertPresenter: AlertPresenter) {
-    self.alertPresenter = alertPresenter
-
+  init() {
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -61,7 +58,10 @@ private extension SettingViewController {
       .map { $0.presentAlert }
       .asDriver(onErrorDriveWith: .empty())
       .drive(with: self, onNext: { owner, alertType in
-        guard let alertType = alertType else { return }
+        guard let alertType else {
+          return
+        }
+
         owner.presentAlert(type: alertType)
       })
       .disposed(by: disposeBag)
@@ -86,8 +86,8 @@ private extension SettingViewController {
     }
   }
 
-  func presentAlert(type: AlertPresenter.AlertType) {
-    var rightButtonAction: ButtonAction? = nil
+  func presentAlert(type: AlertType) {
+    var rightButtonAction: (() -> Void)? = nil
 
     switch type {
     case .removeAllCache: rightButtonAction = { [weak self] in self?.clearAllCache() }
@@ -97,11 +97,7 @@ private extension SettingViewController {
     default: break
     }
 
-    alertPresenter.present(
-      on: self,
-      alertType: type,
-      leftButtonAction: nil,
-      rightButtonAction: rightButtonAction)
+    presentAlert(type: type, rightButtonTapHandler: rightButtonAction)
   }
 
   func clearAllCache() {

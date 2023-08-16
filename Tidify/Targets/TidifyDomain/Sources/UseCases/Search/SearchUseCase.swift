@@ -17,13 +17,13 @@ public enum SearchError: Error {
 
 public protocol SearchUseCase {
   /// 최근 검색내역을 반환합니다.
-  func fetchSearchHistory() -> Observable<[String]>
+  func fetchSearchHistory() -> [String]
 
   /// 검색 쿼리에 대응되는 결과를 반환합니다.
-  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne>
+  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse
 
   /// 검색내역을 초기화합니다.
-  func eraseAllSearchHistory() -> Observable<Void>
+  func eraseAllSearchHistory()
 }
 
 final class DefaultSearchUseCase: SearchUseCase {
@@ -36,18 +36,15 @@ final class DefaultSearchUseCase: SearchUseCase {
     self.searchRepository = searchRepository
   }
 
-  public func fetchSearchHistory() -> Observable<[String]> {
+  func fetchSearchHistory() -> [String] {
     searchRepository.fetchSearchHistory()
-      .asObservable()
   }
 
-  func fetchSearchResult(requestDTO: BookmarkListRequestDTO) -> Observable<FetchBookmarkListResposne> {
-    searchRepository.fetchSearchResult(requestDTO: requestDTO)
-      .asObservable()
+  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse {
+    try await searchRepository.fetchSearchResult(request: request)
   }
 
-  public func eraseAllSearchHistory() -> Observable<Void> {
+  func eraseAllSearchHistory() {
     searchRepository.eraseAllSearchHistory()
-      .asObservable()
   }
 }

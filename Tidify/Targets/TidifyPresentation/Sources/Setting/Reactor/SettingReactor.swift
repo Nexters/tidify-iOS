@@ -58,11 +58,11 @@ final class SettingReactor: Reactor {
   }
 
   enum Mutation {
-    case setAlertType(alertType: AlertPresenter.AlertType?)
+    case setAlertType(alertType: AlertType?)
   }
 
   struct State {
-    var presentAlert: AlertPresenter.AlertType? = nil
+    var presentAlert: AlertType? = nil
   }
 
   // MARK: Methods
