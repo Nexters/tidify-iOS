@@ -8,7 +8,7 @@
 
 import TidifyDomain
 
-struct UserTokenDTO: Decodable {
+struct UserTokenDTO: Decodable, Responsable {
 
   // MARK: - Properties
   let accessToken: String
