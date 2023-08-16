@@ -1,5 +1,5 @@
 //
-//  DefaultLoginRepository.swift
+//  DefaultUserRepository.swift
 //  TidifyData
 //
 //  Created by Ian on 2022/08/08.
@@ -9,7 +9,7 @@
 import KakaoSDKUser
 import TidifyDomain
 
-final class DefaultLoginRepository: LoginRepository {
+final class DefaultUserRepository: UserRepository {
 
   // MARK: Properties
   private let networkProvider: NetworkProviderType
@@ -21,7 +21,10 @@ final class DefaultLoginRepository: LoginRepository {
   
   // MARK: Methods
   func appleLogin(token: String) async throws -> UserToken {
-    let response = try await networkProvider.request(endpoint: LoginEndpoint.appleLogin(token: token), type: UserTokenDTO.self)
+    let response = try await networkProvider.request(
+      endpoint: UserEndpoint.signIn(socialType: .apple(token: token)),
+      type: UserTokenDTO.self
+    )
 
     return response.toDomain()
   }
@@ -35,10 +38,14 @@ final class DefaultLoginRepository: LoginRepository {
       }
     }
   }
+
+  func signOut() async throws {
+    try await networkProvider.request(endpoint: UserEndpoint.signOut, type: APIResponse.self)
+  }
 }
 
 // MARK: - Private
-private extension DefaultLoginRepository {
+private extension DefaultUserRepository {
   func loginWithKakaoTalk(continuation: CheckedContinuation<UserToken, Error>) {
     UserApi.shared.loginWithKakaoTalk { [weak self] oauthToken, error in
       if let error = error {
@@ -52,7 +59,10 @@ private extension DefaultLoginRepository {
       }
 
       Task {
-        let response = try await self.networkProvider.request(endpoint: LoginEndpoint.kakaoLogin(token: oauthToken.accessToken), type: UserTokenDTO.self)
+        let response = try await self.networkProvider.request(
+          endpoint: UserEndpoint.signIn(socialType: .kakao(token: oauthToken.accessToken)),
+          type: UserTokenDTO.self
+        )
         continuation.resume(returning: response.toDomain())
       }
     }
@@ -71,7 +81,10 @@ private extension DefaultLoginRepository {
       }
 
       Task {
-        let response = try await self.networkProvider.request(endpoint: LoginEndpoint.kakaoLogin(token: oauthToken.accessToken), type: UserTokenDTO.self)
+        let response = try await self.networkProvider.request(
+          endpoint: UserEndpoint.signIn(socialType: .kakao(token: oauthToken.accessToken)),
+          type: UserTokenDTO.self
+        )
         continuation.resume(returning: response.toDomain())
       }
     }
