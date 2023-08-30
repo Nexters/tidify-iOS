@@ -45,21 +45,22 @@ final class FolderDetailReactor: Reactor {
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
-    switch action {
-    case .viewWillAppear:
-      return useCase.fetchBookmarkListInFolder(folderID: folderID)
-        .map { .setBookmarks($0.bookmarks) }
-
-
-    case .didSelect(let bookmark):
-      return .just(.pushWebView(bookmark))
-
-    case .tryEdit(let bookmark):
-      return .just(.pushEditView(bookmark))
-
-    case .tryDelete(let bookmark):
-      return deleteBookmark(bookmark)
-    }
+//    switch action {
+//    case .viewWillAppear:
+//      return useCase.fetchBookmarkListInFolder(folderID: folderID)
+//        .map { .setBookmarks($0.bookmarks) }
+//
+//
+//    case .didSelect(let bookmark):
+//      return .just(.pushWebView(bookmark))
+//
+//    case .tryEdit(let bookmark):
+//      return .just(.pushEditView(bookmark))
+//
+//    case .tryDelete(let bookmark):
+//      return deleteBookmark(bookmark)
+//    }
+    return .empty()
   }
 
   func reduce(state: State, mutation: Mutation) -> State {
@@ -87,12 +88,12 @@ final class FolderDetailReactor: Reactor {
 private extension FolderDetailReactor {
 
   // MARK: Methods
-  func deleteBookmark(_ bookmark: Bookmark) -> Observable<Mutation> {
-    guard let index = currentState.bookmarks.firstIndex(where: { $0.id == bookmark.id }) else {
-      return .empty()
-    }
-
-    return useCase.deleteBookmark(bookmarkID: bookmark.id)
-      .map { .deleteBookmark(index) }
-  }
+//  func deleteBookmark(_ bookmark: Bookmark) -> Observable<Mutation> {
+//    guard let index = currentState.bookmarks.firstIndex(where: { $0.id == bookmark.id }) else {
+//      return .empty()
+//    }
+//
+//    return useCase.deleteBookmark(bookmarkID: bookmark.id)
+//      .map { .deleteBookmark(index) }
+//  }
 }

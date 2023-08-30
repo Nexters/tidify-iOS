@@ -48,43 +48,44 @@ final class HomeReactor: Reactor {
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
-    switch action {
-    case .fetchBookmarks(let isInitialRequest):
-      guard !(isLastPage && !isInitialRequest) else {
-        return .empty()
-      }
-      isPaging = true
-
-      return useCase.fetchBookmarkList(requestDTO: .init(page: isInitialRequest ? 0 : currentPage + 1))
-        .flatMapLatest { [weak self] (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool) -> Observable<Mutation> in
-          self?.currentPage = currentPage
-          self?.isLastPage = isLastPage
-          return Observable<Mutation>.just(.setBookmarks(bookmarks, isInitialRequest: isInitialRequest))
-        }
-
-    case .didSelect(let bookmark):
-      return .just(.pushWebView(bookmark))
-
-    case .didDelete(let bookmark):
-      return useCase.deleteBookmark(bookmarkID: bookmark.id)
-        .map { .deleteBookmark(bookmark: bookmark)
-        }
-
-    case let .didFetchSharedBookmark(url, name):
-      return useCase.createBookmark(requestDTO: .init(folderID: 0, url: url, name: name))
-        .flatMapLatest { [weak self] _ -> Observable<FetchBookmarkListResposne> in
-          guard let useCase = self?.useCase else {
-            return .empty()
-          }
-
-          return useCase.fetchBookmarkList(requestDTO: .init(page: self?.currentPage ?? 0))
-        }
-        .map { .setBookmarks($0.bookmarks) }
-
-    case .editBookmark(let index):
-      coordinator?.pushEditBookmarkScene(bookmark: currentState.bookmarks[index])
-      return .empty()
-    }
+//    switch action {
+//    case .fetchBookmarks(let isInitialRequest):
+//      guard !(isLastPage && !isInitialRequest) else {
+//        return .empty()
+//      }
+//      isPaging = true
+//
+//      return useCase.fetchBookmarkList(requestDTO: .init(page: isInitialRequest ? 0 : currentPage + 1))
+//        .flatMapLatest { [weak self] (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool) -> Observable<Mutation> in
+//          self?.currentPage = currentPage
+//          self?.isLastPage = isLastPage
+//          return Observable<Mutation>.just(.setBookmarks(bookmarks, isInitialRequest: isInitialRequest))
+//        }
+//
+//    case .didSelect(let bookmark):
+//      return .just(.pushWebView(bookmark))
+//
+//    case .didDelete(let bookmark):
+//      return useCase.deleteBookmark(bookmarkID: bookmark.id)
+//        .map { .deleteBookmark(bookmark: bookmark)
+//        }
+//
+//    case let .didFetchSharedBookmark(url, name):
+//      return useCase.createBookmark(requestDTO: .init(folderID: 0, url: url, name: name))
+//        .flatMapLatest { [weak self] _ -> Observable<FetchBookmarkListResposne> in
+//          guard let useCase = self?.useCase else {
+//            return .empty()
+//          }
+//
+//          return useCase.fetchBookmarkList(requestDTO: .init(page: self?.currentPage ?? 0))
+//        }
+//        .map { .setBookmarks($0.bookmarks) }
+//
+//    case .editBookmark(let index):
+//      coordinator?.pushEditBookmarkScene(bookmark: currentState.bookmarks[index])
+//      return .empty()
+//    }
+    return .empty()
   }
 
   func reduce(state: State, mutation: Mutation) -> State {

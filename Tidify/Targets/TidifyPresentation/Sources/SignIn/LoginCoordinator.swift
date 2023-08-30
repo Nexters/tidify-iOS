@@ -1,5 +1,5 @@
 //
-//  SignInCoordinator.swift
+//  LoginCoordinator.swift
 //  TidifyPresentation
 //
 //  Created by Ian on 2022/08/07.
@@ -10,13 +10,13 @@ import TidifyCore
 import TidifyDomain
 import UIKit
 
-protocol SignInCoordinator: Coordinator {
+protocol LoginCoordinator: Coordinator {
   var parentCoordinator: Coordinator? { get set }
   
-  func didSuccessSignIn()
+  func didSuccessLogin()
 }
 
-final class DefaultSignInCoordinator: SignInCoordinator {
+final class DefaultLoginCoordinator: LoginCoordinator {
 
   // MARK: - Properties
   weak var parentCoordinator: Coordinator?
@@ -33,7 +33,7 @@ final class DefaultSignInCoordinator: SignInCoordinator {
     navigationController.viewControllers = [getViewController()]
   }
 
-  func didSuccessSignIn() {
+  func didSuccessLogin() {
     guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self)
             as? DefaultTabBarCoordinator else { return }
     addChild(tabBarCoordinator)
@@ -42,15 +42,20 @@ final class DefaultSignInCoordinator: SignInCoordinator {
 }
 
 // MARK: - Private
-private extension DefaultSignInCoordinator {
-  func getViewController() -> SignInViewController {
-    guard let useCase: SignInUseCase = DIContainer.shared.resolve(type: SignInUseCase.self)
+private extension DefaultLoginCoordinator {
+  func getViewController() -> LoginViewController {
+//    guard let useCase: UserUseCase = DIContainer.shared.resolve(type: UserUseCase.self)
+//    else { fatalError() }
+//
+//    let reactor: SignInReactor = .init(coordinator: self,useCase: useCase)
+//    let viewController: SignInViewController = .init(nibName: nil, bundle: nil)
+//    viewController.reactor = reactor
+//
+//    return viewController
+    guard let useCase: UserUseCase = DIContainer.shared.resolve(type: UserUseCase.self)
     else { fatalError() }
 
-    let reactor: SignInReactor = .init(coordinator: self,useCase: useCase)
-    let viewController: SignInViewController = .init(nibName: nil, bundle: nil)
-    viewController.reactor = reactor
-
-    return viewController
+    let viewModel: LoginViewModel = .init(coordinator: self, useCase: useCase)
+    return .init(viewModel: viewModel)
   }
 }

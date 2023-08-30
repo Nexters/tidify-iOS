@@ -13,7 +13,7 @@ import Foundation
 import ReactorKit
 
 final class SettingReactor: Reactor {
-  private let useCase: SettingUseCase
+  private let useCase: UserUseCase
   private weak var coordinator: SettingCoordinator?
 
   enum Sections: Int, CaseIterable {
@@ -44,7 +44,7 @@ final class SettingReactor: Reactor {
   }
 
   // MARK: Initializer
-  init(useCase: SettingUseCase, coordinator: SettingCoordinator) {
+  init(useCase: UserUseCase, coordinator: SettingCoordinator) {
     self.useCase = useCase
     self.coordinator = coordinator
   }
@@ -83,11 +83,11 @@ final class SettingReactor: Reactor {
       return .empty()
 
     case .trySignOut:
-      return useCase.trySignOut()
-        .flatMap { [weak self] _ -> Observable<Mutation> in
-          self?.transitionToSignIn()
+//      return useCase.trySignOut()
+//        .flatMap { [weak self] _ -> Observable<Mutation> in
+//          self?.transitionToSignIn()
           return .empty()
-        }
+//        }
     }
   }
 
@@ -106,6 +106,6 @@ final class SettingReactor: Reactor {
 private extension SettingReactor {
   func transitionToSignIn() {
     KeyChain.deleteAll()
-    coordinator?.transitionToSignIn()
+    coordinator?.transitionToLogin()
   }
 }

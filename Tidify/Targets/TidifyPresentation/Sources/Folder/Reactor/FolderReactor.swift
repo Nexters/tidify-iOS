@@ -44,33 +44,34 @@ final class FolderReactor: Reactor {
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
-    switch action {
-    case .viewDidLoad:
-      return useCase.fetchFolders(start: 0, count: 10)
-        .map { [weak self] in
-          self?.setLastPage($0.isLast)
-          return .setupFolders($0.folders)
-        }
-      
-    case .didSelect(let folder):
-      return .just(.pushDetailView(folder))
-      
-    case .tryEdit(let folder):
-      return .just(.pushEditView(folder))
-      
-    case .tryDelete(let folder):
-      return deleteFolder(folder)
-      
-    case .didScroll:
-      guard !isLastPage else {
-        return .empty()
-      }
-      return useCase.fetchFolders(start: currentPage, count: 10)
-        .map { [weak self] in
-          self?.setLastPage($0.isLast)
-          return .appendFolders(folders: $0.folders, addPage: true)
-        }
-    }
+//    switch action {
+//    case .viewDidLoad:
+//      return useCase.fetchFolders(start: 0, count: 10)
+//        .map { [weak self] in
+//          self?.setLastPage($0.isLast)
+//          return .setupFolders($0.folders)
+//        }
+//
+//    case .didSelect(let folder):
+//      return .just(.pushDetailView(folder))
+//
+//    case .tryEdit(let folder):
+//      return .just(.pushEditView(folder))
+//
+//    case .tryDelete(let folder):
+//      return deleteFolder(folder)
+//
+//    case .didScroll:
+//      guard !isLastPage else {
+//        return .empty()
+//      }
+//      return useCase.fetchFolders(start: currentPage, count: 10)
+//        .map { [weak self] in
+//          self?.setLastPage($0.isLast)
+//          return .appendFolders(folders: $0.folders, addPage: true)
+//        }
+//    }
+    return .empty()
   }
 
   func reduce(state: State, mutation: Mutation) -> State {
@@ -103,27 +104,27 @@ final class FolderReactor: Reactor {
     return newState
   }
 
-  func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
-    let folderUpdatedEventMutation: Observable<Mutation> = useCase.updatedFolderObservable
-      .flatMap { [weak self] updatedFolder -> Observable<Mutation> in
-        guard let folderIdx = self?.currentState.folders.firstIndex(where: { $0.id == updatedFolder.id }) else {
-          return .empty()
-        }
-
-        return .just(.updateFolder(folderIdx: folderIdx, folder: updatedFolder))
-      }
-
-    let folderCreatedEventMutation: Observable<Mutation> = useCase.createdFolderObservable
-      .withUnretained(self)
-      .filter { owner, _ in
-        owner.isLastPage
-      }
-      .flatMap { _, createdFolder -> Observable<Mutation> in
-        .just(.appendFolders(folders: [createdFolder], addPage: false))
-      }
-
-    return .merge(mutation, folderUpdatedEventMutation, folderCreatedEventMutation)
-  }
+//  func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+//    let folderUpdatedEventMutation: Observable<Mutation> = useCase.updatedFolderObservable
+//      .flatMap { [weak self] updatedFolder -> Observable<Mutation> in
+//        guard let folderIdx = self?.currentState.folders.firstIndex(where: { $0.id == updatedFolder.id }) else {
+//          return .empty()
+//        }
+//
+//        return .just(.updateFolder(folderIdx: folderIdx, folder: updatedFolder))
+//      }
+//
+//    let folderCreatedEventMutation: Observable<Mutation> = useCase.createdFolderObservable
+//      .withUnretained(self)
+//      .filter { owner, _ in
+//        owner.isLastPage
+//      }
+//      .flatMap { _, createdFolder -> Observable<Mutation> in
+//        .just(.appendFolders(folders: [createdFolder], addPage: false))
+//      }
+//
+//    return .merge(mutation, folderUpdatedEventMutation, folderCreatedEventMutation)
+//  }
 }
 
 // MARK: - Private
@@ -132,25 +133,25 @@ private extension FolderReactor {
     isLastPage = isLast
   }
 
-  func deleteFolder(_ folder: Folder) -> Observable<Mutation> {
-    guard let index = currentState.folders.firstIndex(where: { $0.id == folder.id }) else {
-      return .empty()
-    }
-
-    let deleteFolderMutation: Observable<Mutation> = useCase.deleteFolder(id: folder.id)
-      .map { .deleteFolder(index) }
-
-    guard !isLastPage else {
-      return deleteFolderMutation
-    }
-
-    let appendFolderMutation: Observable<Mutation> = useCase.fetchFolders(start: currentPage-1, count: 10)
-      .filter { [weak self] in
-        self?.setLastPage($0.isLast)
-        return $0.folders.last != nil
-      }
-      .map { .appendFolders(folders: [$0.folders.last!], addPage: false) }
-
-    return .concat(deleteFolderMutation, appendFolderMutation)
-  }
+//  func deleteFolder(_ folder: Folder) -> Observable<Mutation> {
+//    guard let index = currentState.folders.firstIndex(where: { $0.id == folder.id }) else {
+//      return .empty()
+//    }
+//
+//    let deleteFolderMutation: Observable<Mutation> = useCase.deleteFolder(id: folder.id)
+//      .map { .deleteFolder(index) }
+//
+//    guard !isLastPage else {
+//      return deleteFolderMutation
+//    }
+//
+//    let appendFolderMutation: Observable<Mutation> = useCase.fetchFolders(start: currentPage-1, count: 10)
+//      .filter { [weak self] in
+//        self?.setLastPage($0.isLast)
+//        return $0.folders.last != nil
+//      }
+//      .map { .appendFolders(folders: [$0.folders.last!], addPage: false) }
+//
+//    return .concat(deleteFolderMutation, appendFolderMutation)
+//  }
 }

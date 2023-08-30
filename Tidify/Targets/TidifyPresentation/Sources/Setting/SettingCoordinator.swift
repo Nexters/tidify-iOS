@@ -33,14 +33,15 @@ final class DefaultSettingCoordinator: SettingCoordinator {
 
 private extension DefaultSettingCoordinator {
   func getViewController() -> SettingViewController {
-    navigationController.navigationBar.topItem?.title = ""
-    guard let useCase: SettingUseCase = DIContainer.shared.resolve(type: SettingUseCase.self) else {
-      fatalError()
-    }
-    let reactor: SettingReactor = .init(useCase: useCase, coordinator: self)
-    let viewController: SettingViewController = .init()
-    viewController.reactor = reactor
-
-    return viewController
+//    navigationController.navigationBar.topItem?.title = ""
+//    guard let useCase: SettingUseCase = DIContainer.shared.resolve(type: SettingUseCase.self) else {
+//      fatalError()
+//    }
+//    let reactor: SettingReactor = .init(useCase: useCase, coordinator: self)
+//    let viewController: SettingViewController = .init()
+//    viewController.reactor = reactor
+//
+//    return viewController
+    return .init()
   }
 }

@@ -33,12 +33,13 @@ final class FolderCreationReactor: Reactor {
   struct State {}
 
   func mutate(action: Action) -> Observable<Mutation> {
-    switch action {
-    case .didTapCreateFolderButton(let folder):
-      return useCase.createFolder(requestDTO: folder).map { .startCreation }
-    case .didTapUpdateFolderButton(let id, let folder):
-      return useCase.updateFolder(id: id, requestDTO: folder).map { .startCreation }
-    }
+//    switch action {
+//    case .didTapCreateFolderButton(let folder):
+//      return useCase.createFolder(requestDTO: folder).map { .startCreation }
+//    case .didTapUpdateFolderButton(let id, let folder):
+//      return useCase.updateFolder(id: id, requestDTO: folder).map { .startCreation }
+//    }
+    return .empty()
   }
 
   func reduce(state: State, mutation: Mutation) -> State {

@@ -58,42 +58,43 @@ extension SearchReactor: Reactor {
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
-    let fetchSearchHistory: Observable<Mutation> = useCase.fetchSearchHistory()
-      .map { .setSearchHistory($0) }
-
-    switch action {
-    case .viewWillAppear:
-      return fetchSearchHistory
-
-    case .inputKeyword:
-      return .just(.clearSearchResult)
-
-    case .requestEraseAllHistory:
-      return useCase.eraseAllSearchHistory()
-        .map { .setSearchHistory([]) }
-
-    case .searchQuery(let keyword):
-      if keyword.isEmpty {
-        return fetchSearchHistory
-      }
-      
-      let isInitialRequest = !isSameWithLastKeyword(currentKeyword: keyword)
-
-      guard !isLastPage && !isSearching else {
-        return .empty()
-      }
-
-      isSearching = true
-      return useCase.fetchSearchResult(requestDTO: .init(page: isInitialRequest ? 0 : currentPage + 1, keyword: keyword))
-        .flatMapLatest { [weak self] (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool) -> Observable<Mutation> in
-          self?.currentPage = currentPage
-          self?.isLastPage = isLastPage
-          return Observable<Mutation>.just(.setSearchResult(bookmarks, isInitialRequest: isInitialRequest))
-        }
-
-    case .didSelectBookmark(let bookmark):
-      return .just(.pushWebView(bookmark))
-    }
+//    let fetchSearchHistory: Observable<Mutation> = useCase.fetchSearchHistory()
+//      .map { .setSearchHistory($0) }
+//
+//    switch action {
+//    case .viewWillAppear:
+//      return fetchSearchHistory
+//
+//    case .inputKeyword:
+//      return .just(.clearSearchResult)
+//
+//    case .requestEraseAllHistory:
+//      return useCase.eraseAllSearchHistory()
+//        .map { .setSearchHistory([]) }
+//
+//    case .searchQuery(let keyword):
+//      if keyword.isEmpty {
+//        return fetchSearchHistory
+//      }
+//
+//      let isInitialRequest = !isSameWithLastKeyword(currentKeyword: keyword)
+//
+//      guard !isLastPage && !isSearching else {
+//        return .empty()
+//      }
+//
+//      isSearching = true
+//      return useCase.fetchSearchResult(requestDTO: .init(page: isInitialRequest ? 0 : currentPage + 1, keyword: keyword))
+//        .flatMapLatest { [weak self] (bookmarks: [Bookmark], currentPage: Int, isLastPage: Bool) -> Observable<Mutation> in
+//          self?.currentPage = currentPage
+//          self?.isLastPage = isLastPage
+//          return Observable<Mutation>.just(.setSearchResult(bookmarks, isInitialRequest: isInitialRequest))
+//        }
+//
+//    case .didSelectBookmark(let bookmark):
+//      return .just(.pushWebView(bookmark))
+//    }
+    return .empty()
   }
 
   func reduce(state: State, mutation: Mutation) -> State {

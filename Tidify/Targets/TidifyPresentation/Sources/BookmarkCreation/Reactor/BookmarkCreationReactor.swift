@@ -46,19 +46,20 @@ final class BookmarkCreationReactor: Reactor {
   }
 
   func mutate(action: Action) -> Observable<Mutation> {
-    switch action {
-    case .viewWillAppear:
-      return useCase.fetchFolders()
-        .map { .setFolders(folders: $0) }
-
-    case .createBookmark(let requestDTO):
-      return useCase.createBookmark(requestDTO: requestDTO)
-        .map { .createOrUpdateBookmark }
-
-    case let .updateBookmark(id, requestDTO):
-      return useCase.updateBookmark(id: id, requestDTO: requestDTO)
-        .map { .createOrUpdateBookmark }
-    }
+//    switch action {
+//    case .viewWillAppear:
+//      return useCase.fetchFolders()
+//        .map { .setFolders(folders: $0) }
+//
+//    case .createBookmark(let requestDTO):
+//      return useCase.createBookmark(requestDTO: requestDTO)
+//        .map { .createOrUpdateBookmark }
+//
+//    case let .updateBookmark(id, requestDTO):
+//      return useCase.updateBookmark(id: id, requestDTO: requestDTO)
+//        .map { .createOrUpdateBookmark }
+//    }
+    return .empty()
   }
 
   func reduce(state: State, mutation: Mutation) -> State {

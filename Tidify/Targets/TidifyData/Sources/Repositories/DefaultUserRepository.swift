@@ -15,7 +15,7 @@ final class DefaultUserRepository: UserRepository {
   private let networkProvider: NetworkProviderType
 
   // MARK: Initializer
-  init(networkProvider: NetworkProviderType) {
+  init(networkProvider: NetworkProviderType = NetworkProvider()) {
     self.networkProvider = networkProvider
   }
   
@@ -23,7 +23,7 @@ final class DefaultUserRepository: UserRepository {
   func appleLogin(token: String) async throws -> UserToken {
     let response = try await networkProvider.request(
       endpoint: UserEndpoint.signIn(socialType: .apple(token: token)),
-      type: UserTokenDTO.self
+      type: UserResponse.self
     )
 
     return response.toDomain()
@@ -61,7 +61,7 @@ private extension DefaultUserRepository {
       Task {
         let response = try await self.networkProvider.request(
           endpoint: UserEndpoint.signIn(socialType: .kakao(token: oauthToken.accessToken)),
-          type: UserTokenDTO.self
+          type: UserResponse.self
         )
         continuation.resume(returning: response.toDomain())
       }
@@ -83,7 +83,7 @@ private extension DefaultUserRepository {
       Task {
         let response = try await self.networkProvider.request(
           endpoint: UserEndpoint.signIn(socialType: .kakao(token: oauthToken.accessToken)),
-          type: UserTokenDTO.self
+          type: UserResponse.self
         )
         continuation.resume(returning: response.toDomain())
       }

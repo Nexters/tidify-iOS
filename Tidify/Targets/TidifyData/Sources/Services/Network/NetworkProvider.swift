@@ -17,7 +17,7 @@ extension URLSession: NetworkRequestable {}
 
 protocol NetworkProviderType: AnyObject {
   @discardableResult
-  func request<T: Decodable & Responsable>(endpoint: EndpointType, type: T.Type) async throws -> T
+  func request<T: Decodable>(endpoint: EndpointType, type: T.Type) async throws -> T
 }
 
 final class NetworkProvider: NetworkProviderType {
@@ -32,7 +32,7 @@ final class NetworkProvider: NetworkProviderType {
 
   // MARK: Methods
   @discardableResult
-  func request<T: Decodable & Responsable>(endpoint: EndpointType, type: T.Type) async throws -> T {
+  func request<T: Decodable>(endpoint: EndpointType, type: T.Type) async throws -> T {
     guard NetworkMonitor.shared.isConnected else {
       throw NetworkError.failConnection
     }
@@ -45,9 +45,9 @@ final class NetworkProvider: NetworkProviderType {
       throw NetworkError.decodingError
     }
 
-    guard decoded.isSuccess else {
-      throw NetworkError.unknownError(message: decoded.message)
-    }
+//    guard decoded.isSuccess else {
+//      throw NetworkError.unknownError(message: decoded.message)
+//    }
 
     return decoded
   }
