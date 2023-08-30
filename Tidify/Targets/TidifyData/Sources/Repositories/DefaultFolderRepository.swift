@@ -14,7 +14,7 @@ final class DefaultFolderRepository: FolderRepository {
   private let networkProvider: NetworkProviderType
 
   // MARK: - Initializer
-  init(networkProvider: NetworkProviderType) {
+  init(networkProvider: NetworkProviderType = NetworkProvider()) {
     self.networkProvider = networkProvider
   }
   

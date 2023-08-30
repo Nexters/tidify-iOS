@@ -27,10 +27,10 @@ public extension Coordinator {
     childCoordinators.append(child)
   }
 
-  func transitionToSignIn() {
+  func transitionToLogin() {
     childCoordinators = .init()
-    let signInCoordinator: SignInCoordinator = DIContainer.shared.resolve(type: SignInCoordinator.self)!
-    addChild(signInCoordinator)
-    signInCoordinator.start()
+    let loginCoordinator: LoginCoordinator = DIContainer.shared.resolve(type: LoginCoordinator.self)!
+    addChild(loginCoordinator)
+    loginCoordinator.start()
   }
 }

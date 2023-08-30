@@ -1,5 +1,5 @@
 //
-//  SignInViewController.swift
+//  LoginViewController.swift
 //  TidifyPresentation
 //
 //  Created by Ian on 2022/08/07.
@@ -7,15 +7,11 @@
 //
 
 import AuthenticationServices
-import TidifyDomain
-import UIKit
 
-import RxCocoa
-import ReactorKit
 import SnapKit
 import Then
 
-final class SignInViewController: UIViewController, View {
+final class LoginViewController: BaseViewController<LoginViewModel> {
 
   // MARK: - Properties
   private let indicatorview: UIActivityIndicatorView = .init().then {
@@ -52,6 +48,7 @@ final class SignInViewController: UIViewController, View {
     $0.titleLabel?.font = .t_EB(16)
     $0.backgroundColor = .init(254, 229, 0)
     $0.cornerRadius(radius: 16)
+    $0.addTarget(self, action: #selector(didTapkakaoLoginButton), for: .touchUpInside)
   }
 
   private let appleSignInButton: UIButton = .init().then {
@@ -61,42 +58,34 @@ final class SignInViewController: UIViewController, View {
     $0.titleLabel?.font = .t_EB(16)
     $0.backgroundColor = .black
     $0.cornerRadius(radius: 16)
+    $0.addTarget(self, action: #selector(didTapAppleLoginButton), for: .touchUpInside)
   }
-
-  private let appleSignInSubject: PublishSubject<String> = .init()
-  private var signInWithAppleBinder: Binder<Void> {
-    return .init(self, binding: { vc, _ in
-      vc.signInWithApple()
-    })
-  }
-  
-  var disposeBag: DisposeBag = .init()
 
   override func viewDidLoad() {
-    super.viewDidLoad()
-
     setupUI()
+    super.viewDidLoad()
   }
 
-  func bind(reactor: SignInReactor) {
-    bindAction(reactor: reactor)
-    bindState(reactor: reactor)
+  override func bindState() {
+    viewModel.$state
+      .receive(on: DispatchQueue.main)
+      .removeDuplicates()
+      .sink(receiveValue: { [weak self] state in
+        switch state {
+        case .isLoading(let isLoading):
+          if isLoading {
+            self?.indicatorview.startAnimating()
+          } else {
+            self?.indicatorview.isHidden = true
+          }
+        }
+      })
+      .store(in: &cancellable)
   }
 }
 
-private extension SignInViewController {
-  var indicatorBinder: Binder<Bool> {
-    return .init(self, binding: { vc, isLoading in
-      if isLoading {
-        vc.indicatorview.startAnimating()
-      } else {
-        vc.indicatorview.isHidden = true
-      }
-    })
-  }
-}
-
-extension SignInViewController: ASAuthorizationControllerDelegate {
+// MARK: - Extension
+extension LoginViewController: ASAuthorizationControllerDelegate {
   func authorizationController(
     controller: ASAuthorizationController,
     didCompleteWithAuthorization authorization: ASAuthorization
@@ -105,7 +94,7 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
     switch authorization.credential {
     case let appleIDCredential as ASAuthorizationAppleIDCredential:
       let token: String = String(data: appleIDCredential.identityToken!, encoding: .utf8)!
-      appleSignInSubject.onNext(token)
+      viewModel.action(.tryAppleLogin(token: token))
 
     default: break
     }
@@ -119,15 +108,19 @@ extension SignInViewController: ASAuthorizationControllerDelegate {
   }
 }
 
-extension SignInViewController: ASAuthorizationControllerPresentationContextProviding {
+extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
   func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
     return self.view.window!
   }
 }
 
 // MARK: - Private
-private extension SignInViewController {
-  func signInWithApple() {
+private extension LoginViewController {
+  @objc func didTapkakaoLoginButton() {
+    viewModel.action(.tryKakaoLogin)
+  }
+
+  @objc func didTapAppleLoginButton() {
     let appleIDProvider: ASAuthorizationAppleIDProvider = .init()
     let request: ASAuthorizationAppleIDRequest = appleIDProvider.createRequest()
     request.requestedScopes = [.fullName, .email]
@@ -179,32 +172,5 @@ private extension SignInViewController {
         $0.height.equalTo(56)
       }
     }
-  }
-
-  func bindAction(reactor: SignInReactor) {
-    typealias Action = SignInReactor.Action
-
-    kakaoSignInButton.rx.tap
-      .map { Action.tryKakaoSignIn }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    appleSignInButton.rx.controlEvent(.touchUpInside)
-      .bind(to: signInWithAppleBinder)
-      .disposed(by: disposeBag)
-
-    appleSignInSubject
-      .map { Action.tryAppleSignIn(userToken: $0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-  }
-
-  func bindState(reactor: SignInReactor) {
-    reactor.state
-      .map { $0.isLoading }
-      .distinctUntilChanged()
-      .subscribe(on: MainScheduler.instance)
-      .bind(to: indicatorBinder)
-      .disposed(by: disposeBag)
   }
 }

@@ -64,14 +64,14 @@ private extension DefaultMainCoordinator {
   }
 
   func startSignIn() {
-    guard let signInCoordinator = container.resolve(type: SignInCoordinator.self) else {
+    guard let loginCoordinator = container.resolve(type: LoginCoordinator.self) else {
       return
     }
 
-    signInCoordinator.parentCoordinator = self
-    addChild(signInCoordinator)
+    loginCoordinator.parentCoordinator = self
+    addChild(loginCoordinator)
 
-    signInCoordinator.start()
+    loginCoordinator.start()
   }
   
   func startTabBar() {

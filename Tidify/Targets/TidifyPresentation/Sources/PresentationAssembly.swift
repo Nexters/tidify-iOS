@@ -28,8 +28,8 @@ public struct PresentationAssembly: Assemblable {
       DefaultOnboardingCoordinator(navigationController: navigationController)
     }
 
-    container.register(type: SignInCoordinator.self) { _ in
-      DefaultSignInCoordinator(navigationController: navigationController)
+    container.register(type: LoginCoordinator.self) { _ in
+      DefaultLoginCoordinator(navigationController: navigationController)
     }
 
     container.register(type: TabBarCoordinator.self) { _ in

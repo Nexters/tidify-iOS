@@ -15,8 +15,8 @@ public struct DomainAssembly: Assemblable {
   
   // MARK: - Methods
   public func assemble(container: DIContainer) {
-    container.register(type: SignInUseCase.self) { container in
-      return DefaultSignInUseCase(repository: container.resolve(type: SignInRepository.self)!)
+    container.register(type: UserUseCase.self) { container in
+      return DefaultUserUseCase(userRepository: container.resolve(type: UserRepository.self)!)
     }
     
     container.register(type: FolderUseCase.self) { container in
@@ -46,10 +46,6 @@ public struct DomainAssembly: Assemblable {
         folderDetailRepository: container.resolve(type: FolderDetailRepository.self)!,
         bookmarkRepository: container.resolve(type: BookmarkRepository.self)!
       )
-    }
-
-    container.register(type: SettingUseCase.self) { container in
-      return DefaultSettingUseCase(repository: container.resolve(type: SettingRepository.self)!)
     }
   }
 }

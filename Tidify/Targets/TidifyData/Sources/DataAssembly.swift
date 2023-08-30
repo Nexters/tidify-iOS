@@ -16,7 +16,7 @@ public struct DataAssembly: Assemblable {
 
   // MARK: - Methods
   public func assemble(container: DIContainer) {
-    container.register(type: SignInRepository.self) { _ in DefaultSignInRepository() }
+    container.register(type: UserRepository.self) { _ in DefaultUserRepository() }
     
     container.register(type: FolderRepository.self) { _ in DefaultFolderRepository() }
 
@@ -25,7 +25,5 @@ public struct DataAssembly: Assemblable {
     container.register(type: SearchRepository.self) { _ in DefaultSearchRepository() }
 
     container.register(type: FolderDetailRepository.self) { _ in DefaultFolderDetailRepository() }
-
-    container.register(type: SettingRepository.self) { _ in DefaultSettingRepository() }
   }
 }

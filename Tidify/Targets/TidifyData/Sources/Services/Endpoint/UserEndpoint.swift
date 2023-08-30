@@ -27,9 +27,9 @@ extension UserEndpoint {
   var fullPath: String {
     switch self {
     case .signIn:
-      return "/login"
+      return AppProperties.baseURL + baseRouthPath + "/login"
     case .signOut:
-      return "/withdrawal"
+      return AppProperties.baseURL + baseRouthPath + "/withdrawal"
     }
   }
 

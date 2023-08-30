@@ -32,12 +32,12 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
   }
 
   func showNextScene() {
-    let signInCoordinator: DefaultSignInCoordinator = .init(
+    let loginCoordinator: DefaultLoginCoordinator = .init(
       navigationController: navigationController
     )
-    signInCoordinator.parentCoordinator = self
-    addChild(signInCoordinator)
-    signInCoordinator.start()
+    loginCoordinator.parentCoordinator = self
+    addChild(loginCoordinator)
+    loginCoordinator.start()
   }
 }
 
