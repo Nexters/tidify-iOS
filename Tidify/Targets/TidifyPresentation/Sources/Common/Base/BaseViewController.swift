@@ -7,18 +7,19 @@
 //
 
 import Combine
-import TidifyDomain
 import UIKit
 
-class BaseViewController<T>: UIViewController {
+class BaseViewController<T: ViewModelType, U: Coordinator>: UIViewController {
 
   // MARK: Properties
-  var viewModel: T
+  let viewModel: T
+  let coordinator: U
   var cancellable: Set<AnyCancellable> = []
 
   // MARK: Initializer
-  init(viewModel: T) {
+  init(viewModel: T, coordinator: U) {
     self.viewModel = viewModel
+    self.coordinator = coordinator
     super.init(nibName: nil, bundle: nil)
   }
 

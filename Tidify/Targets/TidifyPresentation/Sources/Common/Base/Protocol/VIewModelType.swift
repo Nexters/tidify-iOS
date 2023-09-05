@@ -8,18 +8,16 @@
 
 import UIKit
 
-public protocol ViewModelDendencyType {
+public protocol ViewModelDependencyType {
 
   // MARK: associatedtype
-  associatedtype Coordinator
   associatedtype UseCase
 
   // MARK: Properties
-  var coordinator: Coordinator { get }
   var useCase: UseCase { get }
 }
 
-public protocol ViewModelType: ViewModelDendencyType, ObservableObject {
+public protocol ViewModelType: ViewModelDependencyType {
 
   // MARK: associatedtype
   associatedtype Action
