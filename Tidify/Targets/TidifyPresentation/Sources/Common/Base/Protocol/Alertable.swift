@@ -64,5 +64,7 @@ extension Alertable where Self: UIViewController {
     alertController.addAction(UIAlertAction(title: type.rightButtonTitle, style: .default, handler: { _ in
       rightButtonTapHandler?()
     }))
+
+    present(alertController, animated: true)
   }
 }

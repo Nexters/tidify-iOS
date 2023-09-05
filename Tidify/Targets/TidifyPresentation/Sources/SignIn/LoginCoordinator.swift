@@ -44,18 +44,13 @@ final class DefaultLoginCoordinator: LoginCoordinator {
 // MARK: - Private
 private extension DefaultLoginCoordinator {
   func getViewController() -> LoginViewController {
-//    guard let useCase: UserUseCase = DIContainer.shared.resolve(type: UserUseCase.self)
-//    else { fatalError() }
-//
-//    let reactor: SignInReactor = .init(coordinator: self,useCase: useCase)
-//    let viewController: SignInViewController = .init(nibName: nil, bundle: nil)
-//    viewController.reactor = reactor
-//
-//    return viewController
-    guard let useCase: UserUseCase = DIContainer.shared.resolve(type: UserUseCase.self)
-    else { fatalError() }
+    let useCase: UserUseCase = DIContainer.shared.resolve(type: UserUseCase.self)!
+    let viewModel: LoginViewModel = .init(useCase: useCase)
+    let viewController: LoginViewController = .init(
+      viewModel: viewModel,
+      coordinator: self
+    )
 
-    let viewModel: LoginViewModel = .init(coordinator: self, useCase: useCase)
-    return .init(viewModel: viewModel)
+    return viewController
   }
 }

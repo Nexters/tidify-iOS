@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let window = UIWindow(frame: UIScreen.main.bounds)
     window.makeKeyAndVisible()
     self.window = window
-    KeyChain.deleteAll()
+
     NetworkMonitor.shared.startMonitoring()
 
     let navigationController: UINavigationController = .init(nibName: nil, bundle: nil)

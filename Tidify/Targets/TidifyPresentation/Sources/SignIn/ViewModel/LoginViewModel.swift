@@ -11,55 +11,37 @@ import TidifyCore
 import TidifyDomain
 
 final class LoginViewModel: ViewModelType {
-  typealias Coordinator = LoginCoordinator
   typealias UseCase = UserUseCase
 
-  enum Action {
+  enum Action: Equatable {
     case tryAppleLogin(token: String)
     case tryKakaoLogin
   }
 
-  enum State: Equatable {
-    case isLoading(Bool)
+  struct State: Equatable {
+    var isLoading: Bool
+    var isEntered: Bool
+    var isError: UserError?
   }
 
-  private (set) var coordinator: Coordinator
-  private (set) var useCase: UseCase
+  let useCase: UseCase
   @Published var state: State
 
-  init(coordinator: Coordinator, useCase: UseCase) {
-    self.coordinator = coordinator
+  init(useCase: UseCase) {
     self.useCase = useCase
-    state = .isLoading(false)
+    state = .init(isLoading: false, isEntered: false, isError: .failAppleLogin)
   }
 
   func action(_ action: Action) {
-    switch action {
-    case .tryAppleLogin(let token):
-      Task {
-        do {
-          state = .isLoading(true)
-          let token = try await useCase.appleLogin(token: token)
-          saveTokens(token)
-          state = .isLoading(false)
-          coordinator.didSuccessLogin()
-        } catch {
-          print("error")
-        }
-      }
-
-    case .tryKakaoLogin:
-      state = .isLoading(true)
-      Task {
-        do {
-          state = .isLoading(true)
-          let token = try await useCase.kakaoLogin()
-          saveTokens(token)
-          state = .isLoading(false)
-          coordinator.didSuccessLogin()
-        } catch {
-          print("error")
-        }
+    Task {
+      do {
+        state.isLoading = true
+        let userToken: UserToken = try await tryLogin(action: action)
+        saveTokens(userToken: userToken)
+        state.isLoading = false
+        state.isEntered = true
+      } catch {
+        state.isError = action == .tryKakaoLogin ? .failKakaoLogin : .failAppleLogin
       }
     }
   }
@@ -68,12 +50,21 @@ final class LoginViewModel: ViewModelType {
 private extension LoginViewModel {
 
   // MARK: Methods
-  func saveTokens(_ userToken: UserToken) {
+  func saveTokens(userToken: UserToken) {
     if let accessTokenData = userToken.accessToken.data(using: .utf8) {
       KeyChain.save(key: .accessToken, data: accessTokenData)
     }
     if let refreshTokenData = userToken.refreshToken.data(using: .utf8) {
       KeyChain.save(key: .refreshToken, data: refreshTokenData)
+    }
+  }
+
+  func tryLogin(action: Action) async throws -> UserToken {
+    switch action {
+    case .tryAppleLogin(let token):
+      return try await useCase.appleLogin(token: token)
+    case .tryKakaoLogin:
+      return try await useCase.kakaoLogin()
     }
   }
 }
