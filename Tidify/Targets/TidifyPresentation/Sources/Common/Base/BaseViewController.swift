@@ -9,7 +9,7 @@
 import Combine
 import UIKit
 
-class BaseViewController<T: ViewModelType, U: Coordinator>: UIViewController {
+class BaseViewController<T: ViewModelType, U: Coordinator>: UIViewController, Alertable {
 
   // MARK: Properties
   let viewModel: T
