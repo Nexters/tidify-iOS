@@ -10,7 +10,7 @@ import AuthenticationServices
 
 import SnapKit
 
-final class LoginViewController: BaseViewController<LoginViewModel, DefaultLoginCoordinator>, Alertable {
+final class LoginViewController: BaseViewController<LoginViewModel, DefaultLoginCoordinator> {
 
   // MARK: - Properties
   private let indicatorView: UIActivityIndicatorView = {
@@ -145,8 +145,7 @@ final class LoginViewController: BaseViewController<LoginViewModel, DefaultLogin
       .compactMap { $0 }
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] error in
-        // TODO: 에러 메세지 정의 후 수정 예정
-        print(error)
+        self?.presentAlert(type: .loginError)
       })
       .store(in: &cancellable)
   }

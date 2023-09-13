@@ -29,7 +29,7 @@ final class LoginViewModel: ViewModelType {
 
   init(useCase: UseCase) {
     self.useCase = useCase
-    state = .init(isLoading: false, isEntered: false, isError: .failAppleLogin)
+    state = .init(isLoading: false, isEntered: false, isError: nil)
   }
 
   func action(_ action: Action) {

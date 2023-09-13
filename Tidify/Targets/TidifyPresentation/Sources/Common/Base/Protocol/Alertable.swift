@@ -10,6 +10,7 @@ import UIKit
 
 @frozen
 internal enum AlertType: CaseIterable {
+  case loginError
   case deleteBookmark
   case deleteFolder
   case removeImageCache
@@ -25,6 +26,7 @@ internal enum AlertType: CaseIterable {
     case .removeAllCache: return "모든 캐시 정리 안내"
     case .logout: return "로그아웃 안내"
     case .signOut: return "회원탈퇴"
+    case .loginError: return "소셜 로그인에 실패했습니다"
     }
   }
 
@@ -36,12 +38,15 @@ internal enum AlertType: CaseIterable {
     case .removeAllCache: return "디바이스 저장공간이 부족할 때 도움이 될 수 있습니다"
     case .logout: return "지금까지 모은 북마크는 계정에 저장됩니다"
     case .signOut: return "지금까지 모은 북마크는 모두 삭제되며 되돌릴 수 없어요"
+    case .loginError: return "네트워크 연결상태 혹은 로그인을 원하는 플랫폼을 확인해주세요"
     }
   }
 
   var leftButtonTitle: String { "취소" }
 
   var rightButtonTitle: String { "실행" }
+
+  var okButtonTitle: String { "확인" }
 }
 
 protocol Alertable {}
@@ -58,12 +63,16 @@ extension Alertable where Self: UIViewController {
       preferredStyle: .alert
     )
 
-    alertController.addAction(UIAlertAction(title: type.leftButtonTitle, style: .cancel, handler: { _ in
-      leftButtonTapHandler?()
-    }))
-    alertController.addAction(UIAlertAction(title: type.rightButtonTitle, style: .default, handler: { _ in
-      rightButtonTapHandler?()
-    }))
+    if let rightButtonTapHandler = rightButtonTapHandler {
+      alertController.addAction(UIAlertAction(title: type.leftButtonTitle, style: .cancel, handler: { _ in
+        leftButtonTapHandler?()
+      }))
+      alertController.addAction(UIAlertAction(title: type.rightButtonTitle, style: .default, handler: { _ in
+        rightButtonTapHandler()
+      }))
+    } else {
+      alertController.addAction(UIAlertAction(title: type.okButtonTitle, style: .default))
+    }
 
     present(alertController, animated: true)
   }
