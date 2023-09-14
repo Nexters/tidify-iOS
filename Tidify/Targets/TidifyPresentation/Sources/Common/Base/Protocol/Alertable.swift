@@ -38,7 +38,7 @@ internal enum AlertType: CaseIterable {
     case .removeAllCache: return "디바이스 저장공간이 부족할 때 도움이 될 수 있습니다"
     case .logout: return "지금까지 모은 북마크는 계정에 저장됩니다"
     case .signOut: return "지금까지 모은 북마크는 모두 삭제되며 되돌릴 수 없어요"
-    case .loginError: return "네트워크 연결상태 혹은 로그인을 원하는 플랫폼을 확인해주세요"
+    case .loginError: return "네트워크 연결상태 혹은 선택한 플랫폼을 확인해주세요"
     }
   }
 
