@@ -30,6 +30,10 @@ public struct DomainAssembly: Assemblable {
       )
     }
 
+    container.register(type: FetchBookmarkListUseCase.self) { container in
+      return DefaultFetchBookmarkUseCase(bookmarkRepository: container.resolve(type: BookmarkRepository.self)!)
+    }
+
     container.register(type: SearchUseCase.self) { container in
       return DefaultSearchUseCase(searchRepository: container.resolve(type: SearchRepository.self)!)
     }
