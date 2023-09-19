@@ -36,6 +36,7 @@ final class EmptyBookmarkSearchResultCell: UITableViewCell {
   private let descLabel: UILabel = {
     let label: UILabel = .init()
     label.text = "다른 키워드를 입력해주세요"
+    label.textColor = .init(87, 96, 107)
     label.numberOfLines = 2
     label.font = .t_R(16)
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -44,6 +45,7 @@ final class EmptyBookmarkSearchResultCell: UITableViewCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    setupLayout()
   }
 
   required init?(coder: NSCoder) {

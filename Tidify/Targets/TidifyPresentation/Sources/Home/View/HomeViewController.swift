@@ -9,37 +9,53 @@
 import TidifyCore
 import TidifyDomain
 import UIKit
+import Combine
 
-import RxCocoa
-import ReactorKit
-import SnapKit
-import Then
-
-final class HomeViewController: UIViewController, View, UIScrollViewDelegate, Alertable {
+final class HomeViewController: UIViewController, UIScrollViewDelegate, Alertable {
 
   // MARK: - Properties
   private var navigationBar: TidifyNavigationBar!
   private let navSettingButton: UIButton = .init()
   private let navCreateBookmarkButton: UIButton = .init()
-  private let containerView: UIView = .init()
-  private lazy var guideView: UIView = .init()
-  private lazy var guideLabel: UILabel = .init()
-  private lazy var tableView: TidifyTableView = .init(tabType: .bookmark)
 
-  private let deleteBookmarkSubject: PublishSubject<Int> = .init()
-
-  private lazy var dataSource: UITableViewDiffableDataSource<Int, Bookmark> = {
-    UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, item in
-      let cell = tableView.t_dequeueReusableCell(cellType: BookmarkCell.self, indexPath: indexPath)
-      cell.configure(bookmark: item)
-      return cell
-    }
+  private lazy var searchTextField: UITextField = {
+    let textField: UITextField = .init()
+    textField.attributedPlaceholder = .init(string: "북마크 찾기", attributes: [
+      .font: UIFont.t_SB(14),
+      .foregroundColor: UIColor.init(110, 121, 135)
+    ])
+    textField.backgroundColor = .init(224, 227, 230)
+    textField.cornerRadius(radius: 10)
+    let leftView = UIImageView(frame: .init(x: 0, y: 0, width: 16, height: 16))
+    leftView.image = .init(named: "home_search_bookmark")
+    textField.leftView = leftView
+    textField.leftViewMode = .unlessEditing
+    textField.delegate = self
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    return textField
   }()
 
-  var disposeBag: DisposeBag = .init()
+  private lazy var tableView: UITableView = {
+    let tableView: UITableView = .init(frame: .zero)
+    tableView.keyboardDismissMode = .onDrag
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.t_registerCellClasses([EmptyBookmarkGuideCell.self, BookmarkCell.self, EmptyBookmarkSearchResultCell.self])
+    tableView.rowHeight = UITableView.automaticDimension
+    tableView.estimatedRowHeight = 250
+    tableView.cornerRadius([.topLeft, .topRight], radius: 15)
+    tableView.backgroundColor = .clear
+    tableView.separatorStyle = .none
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    return tableView
+  }()
+
+  private let viewModel: HomeViewModel
+  private var cancellable: Set<AnyCancellable> = []
 
   // MARK: - Initializer
-  init() {
+  init(viewModel: HomeViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -52,40 +68,98 @@ final class HomeViewController: UIViewController, View, UIScrollViewDelegate, Al
 
     setupUI()
 
-    var snapshot = dataSource.snapshot()
-    snapshot.appendSections([0])
-    dataSource.apply(snapshot)
+    viewModel.action(.viewDidLoad)
+
+    viewModel.$state
+      .map(\.bookmarks)
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak tableView] _ in
+        tableView?.reloadData()
+      })
+      .store(in: &cancellable)
+  }
+}
+
+// MARK: - UITableViewDataSource
+extension HomeViewController: UITableViewDataSource {
+  func tableView(
+    _ tableView: UITableView,
+    numberOfRowsInSection section: Int
+  ) -> Int {
+    if viewModel.state.bookmarks.isEmpty {
+      return 1
+    }
+
+    return viewModel.state.bookmarks.count
   }
 
-  func bind(reactor: HomeReactor) {
-    bindAction(reactor: reactor)
-    bindState(reactor: reactor)
+  func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
+    if viewModel.state.bookmarks.isEmpty {
+      switch viewModel.state.viewMode {
+      case .bookmarkList:
+        let cell: EmptyBookmarkGuideCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+        cell.delegate = self
+        return cell
+      case .search:
+        let cell: EmptyBookmarkSearchResultCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+        return cell
+      }
+    } else {
+      guard let bookmark = viewModel.state.bookmarks[safe: indexPath.row] else {
+        assertionFailure("Bookmarks Index Out of bound")
+        return .init()
+      }
+      let cell: BookmarkCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+      cell.configure(bookmark: bookmark)
+      return cell
+    }
+  }
+}
+
+// MARK: - UITableViewDelegate
+extension HomeViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    if viewModel.state.bookmarks.isEmpty {
+      return viewModel.state.viewMode == .bookmarkList ? 250 : 140
+    } else {
+      return 80
+    }
+  }
+}
+
+// MARK: - EmptyBookmarkGuideCellDelegate
+extension HomeViewController: EmptyBookmarkGuideCellDelegate {
+  func didTapShowGuideButton() {
+    // TODO: 디자인 작업 이후 온보딩으로 이동
+  }
+}
+
+// MARK: - UITextFieldDelegate
+extension HomeViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    guard let text = textField.text else {
+      return false
+    }
+
+    viewModel.action(.search(keyword: text))
+    return true
+  }
+
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    guard !(textField.text?.isEmpty ?? true) else {
+      return
+    }
   }
 }
 
 // MARK: - Private
 private extension HomeViewController {
   func setupUI() {
-    view.addSubview(containerView)
-    containerView.addSubview(guideView)
-    containerView.addSubview(tableView)
-    guideView.addSubview(guideLabel)
+    [searchTextField, tableView].forEach { view.addSubview($0) }
     view.backgroundColor = .t_background()
-
-    containerView.do {
-      $0.cornerRadius([.topLeft, .topRight], radius: 16)
-      $0.backgroundColor = .white
-    }
-
-    guideView.do {
-      $0.backgroundColor = .white
-    }
-
-    guideLabel.do {
-      $0.text = "링크를 모아서 북마크로 만들어봐요!"
-      $0.textColor = .secondaryLabel
-      $0.font = .systemFont(ofSize: 16, weight: .bold)
-    }
 
     navSettingButton.do {
       $0.setImage(.init(named: "profileIcon"), for: .normal)
@@ -107,155 +181,35 @@ private extension HomeViewController {
     }
 
     navigationBar = .init(.home, leftButton: navSettingButton, rightButton: navCreateBookmarkButton)
+    navigationBar.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(navigationBar)
 
-    tableView.dataSource = dataSource
-    tableView.prefetchDataSource = self
+    NSLayoutConstraint.activate([
+      navigationBar.topAnchor.constraint(equalTo: view.topAnchor),
+      navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      navigationBar.heightAnchor.constraint(equalToConstant: Self.viewHeight * 0.182),
 
-    navigationBar.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(Self.viewHeight * 0.182)
-    }
+      searchTextField.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 10),
+      searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+      searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+      searchTextField.heightAnchor.constraint(equalToConstant: 40),
 
-    containerView.snp.makeConstraints {
-      $0.top.equalTo(navigationBar.snp.bottom).offset(16)
-      $0.leading.trailing.bottom.equalToSuperview()
-    }
-
-    tableView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview().inset(20)
-      $0.bottom.equalToSuperview()
-    }
-
-    guideView.snp.makeConstraints {
-      $0.edges.equalTo(containerView)
-    }
-
-    guideLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(32)
-      $0.height.equalTo(20)
-      $0.centerX.equalToSuperview()
-    }
-  }
-
-  func bindAction(reactor: HomeReactor) {
-    typealias Action = HomeReactor.Action
-
-    rx.viewWillAppear
-      .map { Action.fetchBookmarks(isInitialRequest: true) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    Observable.merge(rx.viewDidAppear, UIApplication.rx.willEnterForeground.asObservable())
-      .map(fetchSharedBookmark)
-      .filter { !$0.url.isEmpty && !$0.title.isEmpty }
-      .map { Action.didFetchSharedBookmark(url: $0.url, title: $0.title) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    tableView.didSelectRowSubject
-      .map { indexPath in
-        let bookmark = reactor.currentState.bookmarks[indexPath.row]
-        return Action.didSelect(bookmark)
-      }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    tableView.deleteAction
-      .asSignal(onErrorSignalWith: .empty())
-      .emit(with: self, onNext: { owner, index in
-        owner.presentDeleteBookmarkAlert(deleteTargetRow: index)
-      })
-      .disposed(by: disposeBag)
-
-    tableView.editAction
-      .map { Action.editBookmark($0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    deleteBookmarkSubject
-      .withLatestFrom(reactor.state.map { $0.bookmarks }) { ($0, $1) }
-      .map { index, bookmarks in
-        Action.didDelete(bookmarks[index])
-      }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    tableView.rx.didScroll
-      .asSignal()
-      .throttle(.seconds(1))
-      .emit(with: self) { owner, _ in
-        owner.triggerPaging()
-      }
-      .disposed(by: disposeBag)
-
-    navSettingButton.rx.tap
-      .withUnretained(reactor)
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { reactor, _ in
-        reactor.pushSettingScene()
-      })
-      .disposed(by: disposeBag)
-
-    navCreateBookmarkButton.rx.tap
-      .withUnretained(reactor)
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { reactor, _ in
-        reactor.pushBookmarkCreationScene()
-      })
-      .disposed(by: disposeBag)
-  }
-
-  func bindState(reactor: HomeReactor) {
-    reactor.state
-      .map { $0.bookmarks }
-      .distinctUntilChanged()
-      .asDriver(onErrorJustReturn: [])
-      .drive(with: self) { owner, bookmarks in
-        owner.applySnapshot(bookmarks: bookmarks)
-      }
-      .disposed(by: disposeBag)
-
-    reactor.state
-      .map { $0.didPushWebView }
-      .subscribe()
-      .disposed(by: disposeBag)
-
-    reactor.state
-      .map { $0.bookmarks.isEmpty }
-      .bind(to: tableView.rx.isHidden)
-      .disposed(by: disposeBag)
-
-    reactor.state
-      .map { $0.deleteBookmark }
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(with: self, onNext: { owner, bookmark in
-        owner.deleteBookmark(bookmark)
-      })
-      .disposed(by: disposeBag)
-  }
-}
-
-extension HomeViewController: UITableViewDataSourcePrefetching {
-  func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-    for indexPath in indexPaths {
-      guard let bookmark = reactor?.currentState.bookmarks[safe: indexPath.row] else {
-        return
-      }
-
-      let cell = tableView.t_dequeueReusableCell(cellType: BookmarkCell.self, indexPath: indexPath)
-      cell.preDownloadImage(url: bookmark.url)
-    }
+      tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 15),
+      tableView.leadingAnchor.constraint(equalTo: searchTextField.leadingAnchor),
+      tableView.trailingAnchor.constraint(equalTo: searchTextField.trailingAnchor),
+      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    ])
   }
 }
 
 // MARK: - Private Extension
 private extension HomeViewController {
   func presentDeleteBookmarkAlert(deleteTargetRow: Int) {
-    presentAlert(
-      type: .deleteBookmark,
-      rightButtonTapHandler: { [weak self] in self?.deleteBookmarkSubject.onNext(deleteTargetRow) }
-    )
+//    presentAlert(
+//      type: .deleteBookmark,
+//      rightButtonTapHandler: { [weak self] in self?.deleteBookmarkSubject.onNext(deleteTargetRow) }
+//    )
   }
 
   func fetchSharedBookmark() -> (url: String, title: String) {
@@ -275,49 +229,12 @@ private extension HomeViewController {
     return sharedData
   }
 
-  func triggerPaging() {
-    let offsetY = tableView.contentOffset.y
-    let contentHeight = tableView.contentSize.height
-    let height = tableView.frame.height
-
-    if offsetY > (contentHeight - height) && !(reactor?.isPaging ?? true) {
-      reactor?.action.onNext(.fetchBookmarks())
-    }
-  }
-
-  func applySnapshot(bookmarks: [Bookmark]) {
-    var snapshot = dataSource.snapshot()
-    var newBookmarks: [Bookmark] = []
-    let existBookmarks = snapshot.itemIdentifiers
-
-    for bookmark in bookmarks where !existBookmarks.contains(bookmark) {
-      if let exist = existBookmarks.first(where: { $0.id == bookmark.id }) {
-        snapshot.insertItems([bookmark], afterItem: exist)
-        snapshot.deleteItems([exist])
-      } else {
-        newBookmarks.append(bookmark)
-      }
-    }
-
-    for existBookmark in existBookmarks where !bookmarks.contains(existBookmark) {
-      snapshot.deleteItems([existBookmark])
-    }
-
-    if !newBookmarks.isEmpty {
-      snapshot.appendItems(newBookmarks)
-    }
-    dataSource.apply(snapshot)
-  }
-
-  func deleteBookmark(_ bookmark: Bookmark?) {
-    guard let bookmark else {
-      return
-    }
-
-    var snapshot = dataSource.snapshot()
-    snapshot.deleteItems([bookmark])
-    dataSource.apply(snapshot)
-  }
+//  @objc
+//  func didChangeTextField(_ textfield: UITextField) {
+//    guard let text = textfield.text else {
+//      return
+//    }
+//
+//    viewModel.action(.search(keyword: text))
+//  }
 }
-
-
