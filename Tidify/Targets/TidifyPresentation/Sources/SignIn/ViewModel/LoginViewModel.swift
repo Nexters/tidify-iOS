@@ -21,7 +21,7 @@ final class LoginViewModel: ViewModelType {
   struct State: Equatable {
     var isLoading: Bool
     var isEntered: Bool
-    var isError: UserError?
+    var errorType: UserError?
   }
 
   let useCase: UseCase
@@ -29,7 +29,7 @@ final class LoginViewModel: ViewModelType {
 
   init(useCase: UseCase) {
     self.useCase = useCase
-    state = .init(isLoading: false, isEntered: false, isError: nil)
+    state = .init(isLoading: false, isEntered: false, errorType: nil)
   }
 
   func action(_ action: Action) {
@@ -41,7 +41,7 @@ final class LoginViewModel: ViewModelType {
         state.isLoading = false
         state.isEntered = true
       } catch {
-        state.isError = action == .tryKakaoLogin ? .failKakaoLogin : .failAppleLogin
+        state.errorType = action == .tryKakaoLogin ? .failKakaoLogin : .failAppleLogin
       }
     }
   }
