@@ -58,7 +58,6 @@ private extension HomeViewModel {
     Task {
       state.isLoading = true
       let bookmarkResponse = try await fetchUseCase.fetchBookmarkList(request: .init(page: 0))
-      let searchHistory = searchUseCase.fetchSearchHistory()
 
       currentPage = bookmarkResponse.currentPage
       isLastPage = bookmarkResponse.isLastPage
@@ -97,7 +96,7 @@ private extension HomeViewModel {
       state.viewMode = .search
     }
 
-    Task {
+    Task { @MainActor in
       state.isLoading = true
       let searchResponse = try await searchUseCase.fetchSearchResult(request: .init(page: currentPage, keyword: keyword))
       state.bookmarks = searchResponse.bookmarks

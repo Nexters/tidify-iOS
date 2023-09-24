@@ -40,7 +40,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate, Alertabl
     tableView.keyboardDismissMode = .onDrag
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.t_registerCellClasses([EmptyBookmarkGuideCell.self, BookmarkCell.self, EmptyBookmarkSearchResultCell.self])
+    tableView.t_registerCellClasses([EmptyBookmarkGuideCell.self, BookmarkCell.self, EmptyBookmarkSearchResultCell.self, SearchHistoryCell.self])
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 250
     tableView.cornerRadius([.topLeft, .topRight], radius: 15)
@@ -86,36 +86,56 @@ extension HomeViewController: UITableViewDataSource {
     _ tableView: UITableView,
     numberOfRowsInSection section: Int
   ) -> Int {
-    if viewModel.state.bookmarks.isEmpty {
-      return 1
-    }
+    let bookmarksCount = viewModel.state.bookmarks.count
 
-    return viewModel.state.bookmarks.count
+    switch viewModel.state.viewMode {
+    case .bookmarkList:
+      return bookmarksCount == 0 ? 1 : bookmarksCount
+    case .search:
+      if (searchTextField.text?.isEmpty ?? true) {
+        return viewModel.state.searchHistory.count
+      } else {
+        return bookmarksCount == 0 ? 1 : bookmarksCount
+      }
+    }
   }
 
   func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    if viewModel.state.bookmarks.isEmpty {
-      switch viewModel.state.viewMode {
-      case .bookmarkList:
+    switch viewModel.state.viewMode {
+    case .bookmarkList:
+      if viewModel.state.bookmarks.isEmpty {
         let cell: EmptyBookmarkGuideCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
         cell.delegate = self
         return cell
-      case .search:
-        let cell: EmptyBookmarkSearchResultCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-        return cell
       }
-    } else {
-      guard let bookmark = viewModel.state.bookmarks[safe: indexPath.row] else {
-        assertionFailure("Bookmarks Index Out of bound")
-        return .init()
+
+    case .search:
+      if searchTextField.text?.isEmpty ?? true {
+        let cell: SearchHistoryCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+        let searchTitle = viewModel.state.searchHistory[safe: indexPath.row] ?? ""
+        cell.configure(title: searchTitle)
+        cell.delegate = self
+         return cell
+      } else {
+        if viewModel.state.bookmarks.isEmpty {
+          let cell: EmptyBookmarkSearchResultCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+          return cell
+        }
       }
-      let cell: BookmarkCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-      cell.configure(bookmark: bookmark)
-      return cell
     }
+
+    guard let bookmark = viewModel.state.bookmarks[safe: indexPath.row] else {
+      assertionFailure("Bookamrks Index Out of range")
+      return .init()
+    }
+
+    let cell: BookmarkCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+    cell.configure(bookmark: bookmark)
+
+    return cell
   }
 }
 
@@ -125,8 +145,16 @@ extension HomeViewController: UITableViewDelegate {
     if viewModel.state.bookmarks.isEmpty {
       return viewModel.state.viewMode == .bookmarkList ? 250 : 140
     } else {
-      return 80
+      return 60
     }
+  }
+}
+
+// MARK: - SearchHistoryCellDelegate
+extension HomeViewController: SearchHistoryCellDelegate {
+  func didTapSearchTitle(_ title: String) {
+    searchTextField.text = title
+    viewModel.action(.search(keyword: title))
   }
 }
 
@@ -149,8 +177,9 @@ extension HomeViewController: UITextFieldDelegate {
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    guard !(textField.text?.isEmpty ?? true) else {
-      return
+    if textField.text?.isEmpty ?? true {
+      viewModel.state.viewMode = .search
+      tableView.reloadData()
     }
   }
 }
@@ -206,10 +235,7 @@ private extension HomeViewController {
 // MARK: - Private Extension
 private extension HomeViewController {
   func presentDeleteBookmarkAlert(deleteTargetRow: Int) {
-//    presentAlert(
-//      type: .deleteBookmark,
-//      rightButtonTapHandler: { [weak self] in self?.deleteBookmarkSubject.onNext(deleteTargetRow) }
-//    )
+    // TODO: 홈 작업 완료 이후 수정
   }
 
   func fetchSharedBookmark() -> (url: String, title: String) {
@@ -228,13 +254,4 @@ private extension HomeViewController {
 
     return sharedData
   }
-
-//  @objc
-//  func didChangeTextField(_ textfield: UITextField) {
-//    guard let text = textfield.text else {
-//      return
-//    }
-//
-//    viewModel.action(.search(keyword: text))
-//  }
 }
