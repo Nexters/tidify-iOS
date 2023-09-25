@@ -8,16 +8,7 @@
 
 import UIKit
 
-public protocol ViewModelDependencyType {
-
-  // MARK: associatedtype
-  associatedtype UseCase
-
-  // MARK: Properties
-  var useCase: UseCase { get }
-}
-
-public protocol ViewModelType: ViewModelDependencyType {
+public protocol ViewModelType {
 
   // MARK: associatedtype
   associatedtype Action

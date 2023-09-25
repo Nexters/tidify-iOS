@@ -36,11 +36,6 @@ final class BookmarkCell: UITableViewCell {
       bookmarkImageView.image = .symbolImage
     }
   }
-  
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    setupPadding()
-  }
 
   // MARK: - Methods
   func configure(bookmark: Bookmark) {
@@ -112,17 +107,6 @@ private extension BookmarkCell {
       $0.trailing.lessThanOrEqualToSuperview().offset(-10)
       $0.centerY.equalTo(bookmarkImageView)
     }
-  }
-  
-  func setupPadding() {
-    contentView.frame = contentView.frame.inset(
-      by: UIEdgeInsets(
-        top: 0,
-        left: 0,
-        bottom: 20,
-        right: 0
-      )
-    )
   }
 
   func setOpenGraphImage(url: URL) {

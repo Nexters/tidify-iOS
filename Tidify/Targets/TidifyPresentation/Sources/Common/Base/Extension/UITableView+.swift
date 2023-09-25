@@ -15,6 +15,13 @@ public extension UITableView {
     register(cellType, forCellReuseIdentifier: identifier)
   }
 
+  func t_registerCellClasses(_ cellTypes: [UITableViewCell.Type]) {
+    cellTypes.forEach {
+      let identifier: String = "\($0)"
+      register($0, forCellReuseIdentifier: identifier)
+    }
+  }
+
   func t_registerHeaderFooterClass(viewType: UITableViewHeaderFooterView.Type) {
     let identifier: String = "\(viewType)"
     register(viewType, forHeaderFooterViewReuseIdentifier: identifier)
