@@ -10,9 +10,12 @@ import AuthenticationServices
 
 import SnapKit
 
-final class LoginViewController: BaseViewController<LoginViewModel, DefaultLoginCoordinator>, Alertable {
+final class LoginViewController: BaseViewController, Alertable {
 
   // MARK: - Properties
+  private let viewModel: LoginViewModel
+  private let coordinator: LoginCoordinator
+
   private let indicatorView: UIActivityIndicatorView = {
     let indicatorView: UIActivityIndicatorView = .init()
     indicatorView.color = .t_tidiBlue00()
@@ -73,6 +76,17 @@ final class LoginViewController: BaseViewController<LoginViewModel, DefaultLogin
     button.addTarget(self, action: #selector(didTapAppleLoginButton), for: .touchUpInside)
     return button
   }()
+
+  // MARK: Initializer
+  init(viewModel: LoginViewModel, coordinator: LoginCoordinator) {
+    self.viewModel = viewModel
+    self.coordinator = coordinator
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func setupViews() {
     view.addSubview(indicatorView)
@@ -141,12 +155,11 @@ final class LoginViewController: BaseViewController<LoginViewModel, DefaultLogin
       .store(in: &cancellable)
 
     viewModel.$state
-      .map { $0.isError }
+      .map { $0.errorType }
       .compactMap { $0 }
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] error in
-        // TODO: 에러 메세지 정의 후 수정 예정
-        print(error)
+        self?.presentAlert(type: .loginError)
       })
       .store(in: &cancellable)
   }
