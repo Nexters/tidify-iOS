@@ -24,7 +24,7 @@ extension BookmarkEndpoint {
   var fullPath: String {
     switch self {
     case .fetchBoomarkList(let request):
-      return AppProperties.baseURL + (request.keyword == nil ? baseRouthPath : baseRouthPath + "/search")
+      return AppProperties.baseURL + (request.keyword.isNil ? baseRouthPath : baseRouthPath + "/search")
     case .createBookmark:
       return AppProperties.baseURL + baseRouthPath
     case .deleteBookmark(let id), .updateBookmark(let id, _):

@@ -53,8 +53,7 @@ private extension DefaultUserRepository {
         return
       }
 
-      guard let oauthToken = oauthToken,
-            let self = self else {
+      guard let oauthToken, let self else {
         return
       }
 
@@ -75,8 +74,7 @@ private extension DefaultUserRepository {
         return
       }
 
-      guard let oauthToken = oauthToken,
-            let self = self else {
+      guard let oauthToken, let self else {
         return
       }
 

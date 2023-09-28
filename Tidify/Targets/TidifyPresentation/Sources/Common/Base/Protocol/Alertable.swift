@@ -63,7 +63,7 @@ extension Alertable where Self: UIViewController {
       preferredStyle: .alert
     )
 
-    if leftButtonTapHandler == nil && rightButtonTapHandler == nil {
+    if leftButtonTapHandler.isNil && rightButtonTapHandler.isNil {
       alertController.addAction(UIAlertAction(title: type.okButtonTitle, style: .default))
     } else {
       alertController.addAction(UIAlertAction(title: type.leftButtonTitle, style: .cancel, handler: { _ in
