@@ -16,6 +16,7 @@ public protocol MainCoordinator: Coordinator {
 public final class DefaultMainCoordinator: MainCoordinator {
 
   // MARK: - Properties
+  public var parentCoordinator: Coordinator?
   public var childCoordinators: [Coordinator] = []
   public var navigationController: UINavigationController
   private let container: DIContainer = .shared
@@ -40,6 +41,7 @@ public final class DefaultMainCoordinator: MainCoordinator {
     if isFirstLaunch {
       UserProperties.isFirstLaunch = false
       KeyChain.deleteAll()
+      startOnboarding()
     }
 
     if KeyChain.load(key: .accessToken) != nil {
@@ -47,8 +49,10 @@ public final class DefaultMainCoordinator: MainCoordinator {
       return
     }
 
-    isFirstLaunch ? startOnboarding() : startSignIn()
+    startSignIn()
   }
+
+  public func didFinish() {}
 }
 
 private extension DefaultMainCoordinator {

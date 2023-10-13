@@ -29,6 +29,10 @@ final class DefaultSettingCoordinator: SettingCoordinator {
     let viewController: SettingViewController = getViewController()
     navigationController.pushViewController(viewController, animated: true)
   }
+
+  func didFinish() {
+    parentCoordinator?.removeChild(self)
+  }
 }
 
 private extension DefaultSettingCoordinator {

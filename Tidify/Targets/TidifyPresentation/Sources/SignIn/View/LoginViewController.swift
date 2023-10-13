@@ -10,11 +10,11 @@ import AuthenticationServices
 
 import SnapKit
 
-final class LoginViewController: BaseViewController, Alertable {
+final class LoginViewController: BaseViewController, Alertable, Coordinatable {
 
   // MARK: - Properties
   private let viewModel: LoginViewModel
-  private let coordinator: LoginCoordinator
+  weak var coordinator: DefaultLoginCoordinator?
 
   private let indicatorView: UIActivityIndicatorView = {
     let indicatorView: UIActivityIndicatorView = .init()
@@ -78,9 +78,8 @@ final class LoginViewController: BaseViewController, Alertable {
   }()
 
   // MARK: Initializer
-  init(viewModel: LoginViewModel, coordinator: LoginCoordinator) {
+  init(viewModel: LoginViewModel) {
     self.viewModel = viewModel
-    self.coordinator = coordinator
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -89,6 +88,8 @@ final class LoginViewController: BaseViewController, Alertable {
   }
 
   override func setupViews() {
+    super.setupViews()
+
     view.addSubview(indicatorView)
     view.addSubview(logoImageView)
     view.addSubview(titleLabel)
@@ -149,8 +150,8 @@ final class LoginViewController: BaseViewController, Alertable {
       .map { $0.isEntered }
       .filter { $0 }
       .receive(on: DispatchQueue.main)
-      .sink(receiveValue: { [weak self] _ in
-        self?.coordinator.didSuccessLogin()
+      .sink(receiveValue: { [weak coordinator] _ in
+        coordinator?.didSuccessLogin()
       })
       .store(in: &cancellable)
 
@@ -162,6 +163,12 @@ final class LoginViewController: BaseViewController, Alertable {
         self?.presentAlert(type: .loginError)
       })
       .store(in: &cancellable)
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    coordinator?.didFinish()
   }
 }
 

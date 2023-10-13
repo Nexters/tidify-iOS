@@ -44,6 +44,10 @@ final class DefaultSearchCoordinator: SearchCoordinator {
 
     detailWebViewCoordinator.start()
   }
+
+  func didFinish() {
+    parentCoordinator?.removeChild(self)
+  }
 }
 
 private extension DefaultSearchCoordinator {

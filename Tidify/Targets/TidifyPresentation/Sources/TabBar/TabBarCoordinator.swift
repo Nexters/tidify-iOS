@@ -47,6 +47,8 @@ final class DefaultTabBarCoordinator: TabBarCoordinator {
     setupTabBar()
     navigationController.viewControllers = [tabBarController]
   }
+
+  func didFinish() {}
 }
 
 private extension DefaultTabBarCoordinator {

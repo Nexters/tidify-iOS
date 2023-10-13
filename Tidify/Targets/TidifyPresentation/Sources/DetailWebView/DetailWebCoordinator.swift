@@ -29,4 +29,8 @@ final class DefaultDetailWebCoordinator: DetailWebCoordinator {
     navigationController.navigationBar.isHidden = false
     navigationController.pushViewController(detailWebViewController, animated: true)
   }
+
+  func didFinish() {
+    parentCoordinator?.removeChild(self)
+  }
 }

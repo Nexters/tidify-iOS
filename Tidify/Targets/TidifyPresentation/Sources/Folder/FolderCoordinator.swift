@@ -110,6 +110,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
     let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
     let viewController: FolderCreationViewController = .init(creationType: .create)
+    viewController.coordinator = self
     viewController.reactor = reactor
     
     navigationController.pushViewController(
@@ -131,6 +132,10 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     addChild(detailWebViewCoordinator)
 
     detailWebViewCoordinator.start()
+  }
+
+  func didFinish() {
+    parentCoordinator?.removeChild(self)
   }
 }
 

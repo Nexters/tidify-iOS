@@ -11,8 +11,6 @@ import TidifyDomain
 import UIKit
 
 protocol LoginCoordinator: Coordinator {
-  var parentCoordinator: Coordinator? { get set }
-  
   func didSuccessLogin()
 }
 
@@ -30,13 +28,19 @@ final class DefaultLoginCoordinator: LoginCoordinator {
 
   // MARK: - Methods
   func start() {
-    navigationController.viewControllers = [getViewController()]
+    let vc = getViewController()
+    navigationController.setViewControllers([vc], animated: false)
+  }
+
+  func didFinish() {
+    parentCoordinator?.removeChild(self)
   }
 
   func didSuccessLogin() {
     guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self)
             as? DefaultTabBarCoordinator else { return }
     addChild(tabBarCoordinator)
+    didFinish()
     tabBarCoordinator.start()
   }
 }
@@ -44,13 +48,12 @@ final class DefaultLoginCoordinator: LoginCoordinator {
 // MARK: - Private
 private extension DefaultLoginCoordinator {
   func getViewController() -> LoginViewController {
-    let useCase: UserUseCase = DIContainer.shared.resolve(type: UserUseCase.self)!
-    let viewModel: LoginViewModel = .init(useCase: useCase)
-    let viewController: LoginViewController = .init(
-      viewModel: viewModel,
-      coordinator: self
-    )
-
+    guard let useCase = DIContainer.shared.resolve(type: UserUseCase.self) else {
+      fatalError()
+    }
+    let viewModel = LoginViewModel(useCase: useCase)
+    let viewController = LoginViewController(viewModel: viewModel)
+    viewController.coordinator = self
     return viewController
   }
 }

@@ -12,7 +12,6 @@ import UIKit
 
 protocol BookmarkCreationCoordinator: Coordinator {
   func pushEditBookmarkScene(with bookmark: Bookmark)
-  func close()
 }
 
 final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
@@ -33,7 +32,8 @@ final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
     navigationController.pushViewController(viewController, animated: true)
   }
 
-  func close() {
+  func didFinish() {
+    parentCoordinator?.removeChild(self)
     navigationController.popViewController(animated: true)
   }
 

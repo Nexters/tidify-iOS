@@ -37,6 +37,7 @@ final class FolderCreationViewController: UIViewController, View {
   private let titleErrorLabel: UILabel = .init()
   private let colorErrorLabel: UILabel = .init()
   var disposeBag: DisposeBag = .init()
+  weak var coordinator: FolderCoordinator?
   
   init(creationType: CreationType, originFolder: Folder? = nil) {
     self.creationType = creationType
@@ -64,6 +65,7 @@ final class FolderCreationViewController: UIViewController, View {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     removeKeyboardNotification()
+    coordinator?.didFinish()
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

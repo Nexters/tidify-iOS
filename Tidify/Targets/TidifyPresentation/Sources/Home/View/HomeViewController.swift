@@ -52,6 +52,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate, Alertabl
 
   private let viewModel: HomeViewModel
   private var cancellable: Set<AnyCancellable> = []
+  weak var coordinator: HomeCoordinator?
 
   // MARK: - Initializer
   init(viewModel: HomeViewModel) {
@@ -77,6 +78,12 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate, Alertabl
         tableView?.reloadData()
       })
       .store(in: &cancellable)
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    coordinator?.didFinish()
   }
 }
 

@@ -9,16 +9,23 @@
 import TidifyCore
 import UIKit
 
+protocol Coordinatable: AnyObject {
+  associatedtype CoordinatorType: Coordinator
+
+  var coordinator: CoordinatorType? { get }
+}
+
 /// Protocol that all coordinator must be conform
 public protocol Coordinator: AnyObject {
 
   // MARK: - Properties
+  var parentCoordinator: Coordinator? { get set }
   var childCoordinators: [Coordinator] { get set }
   var navigationController: UINavigationController { get set }
 
   // MARK: - Methods
   func start()
-  func addChild(_ child: Coordinator)
+  func didFinish()
 }
 
 // MARK: - Default Implementation
@@ -32,5 +39,14 @@ public extension Coordinator {
     let loginCoordinator: LoginCoordinator = DIContainer.shared.resolve(type: LoginCoordinator.self)!
     addChild(loginCoordinator)
     loginCoordinator.start()
+  }
+
+  func removeChild(_ child: Coordinator?) {
+    for (idx, coordinator) in childCoordinators.enumerated() {
+      if coordinator === child {
+        childCoordinators.remove(at: idx)
+        break
+      }
+    }
   }
 }

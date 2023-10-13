@@ -39,6 +39,10 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
     addChild(loginCoordinator)
     loginCoordinator.start()
   }
+
+  func didFinish() {
+    parentCoordinator?.didFinish()
+  }
 }
 
 private extension DefaultOnboardingCoordinator {

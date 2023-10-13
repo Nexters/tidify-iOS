@@ -78,6 +78,10 @@ final class DefaultHomeCoordinator: HomeCoordinator {
 
     bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
   }
+
+  func didFinish() {
+    parentCoordinator?.removeChild(self)
+  }
 }
 
 // MARK: - Private
@@ -90,6 +94,7 @@ private extension DefaultHomeCoordinator {
 
     let viewModel = HomeViewModel(fetchUseCase: fetchUseCase, searchUseCase: searchUseCase)
     let viewController = HomeViewController(viewModel: viewModel)
+    viewController.coordinator = self
 
     return viewController
   }

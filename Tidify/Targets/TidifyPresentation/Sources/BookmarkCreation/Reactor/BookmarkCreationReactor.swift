@@ -67,7 +67,7 @@ final class BookmarkCreationReactor: Reactor {
 
     switch mutation {
     case .createOrUpdateBookmark:
-      coordinator?.close()
+      coordinator?.didFinish()
 
     case .setFolders(let folders):
       newState.folders = folders
