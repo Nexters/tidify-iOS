@@ -132,21 +132,21 @@ private extension FolderCreationViewController {
       $0.setTitle("저장", for: .normal)
       $0.titleLabel?.font = .t_SB(18)
       $0.setTitleColor(.systemGray2, for: .normal)
-      $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.isEnabled = false
       $0.cornerRadius(radius: 16)
     }
     
     colorDataSource = [
-      .t_tidiBlue01(),
-      .t_tidiBlue00(),
-      .t_indigo00(),
-      .systemGreen,
-      .systemYellow,
-      .systemOrange,
-      .systemRed,
-      .black
+      .t_pink(),
+      .t_red(),
+      .t_orange(),
+      .t_yellow(),
+      .t_green(),
+      .t_mint(),
+      .t_ashBlue(),
+      .t_purple(),
+      .t_indigo(),
+      .t_blue()
     ]
 
     titleLabel.snp.makeConstraints {
@@ -214,8 +214,6 @@ private extension FolderCreationViewController {
       $0.leftViewMode = .always
       $0.attributedPlaceholder = attrString
       $0.backgroundColor = .white
-      $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.cornerRadius(radius: 16)
       $0.font = .t_SB(16)
       $0.textColor = .black
@@ -227,10 +225,10 @@ private extension FolderCreationViewController {
   //MARK: - Binding
   var isEnableCreateFolderButtonBinder: Binder<Bool> {
     return .init(self) { owner, isEnable in
-      owner.createFolderButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
-      owner.createFolderButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
-      owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.t_borderColor().cgColor
-      owner.createFolderButton.isEnabled = isEnable
+//      owner.createFolderButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
+//      owner.createFolderButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
+//      owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.t_borderColor().cgColor
+//      owner.createFolderButton.isEnabled = isEnable
     }
   }
   

@@ -34,9 +34,9 @@ final class TidifyTableView: UITableView {
                     let deleteButton = $0.subviews.last as? UIButton
               else { return }
               
-              editButton.setTitleColor(.t_indigo00(), for: .normal)
-              editButton.layer.borderWidth = 1
-              editButton.layer.borderColor = UIColor.t_borderColor().cgColor
+//              editButton.setTitleColor(.t_indigo00(), for: .normal)
+//              editButton.layer.borderWidth = 1
+//              editButton.layer.borderColor = UIColor.t_borderColor().cgColor
               deleteButton.setTitleColor(.white, for: .normal)
             }
           }

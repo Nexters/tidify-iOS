@@ -12,25 +12,29 @@ public extension UIColor {
 
   // MARK: Properties
   enum LabelColors {
-    case SKYBLUE
+    case ASHBLUE
     case BLUE
     case PURPLE
     case GREEN
     case YELLOW
     case ORANGE
     case RED
-    case BLACK
+    case INDIGO
+    case MINT
+    case PINK
 
     var colorString: String {
       switch self {
-      case .SKYBLUE: return "SKYBLUE"
+      case .ASHBLUE: return "ASHBLUE"
       case .BLUE: return "BLUE"
       case .PURPLE: return "PURPLE"
       case .GREEN: return "GREEN"
       case .YELLOW: return "YELLOW"
       case .ORANGE: return "ORANGE"
       case .RED: return "RED"
-      case .BLACK: return "BLACK"
+      case .MINT: return "MINT"
+      case .INDIGO: return "INDIGO"
+      case .PINK: return "PINK"
       }
     }
   }
@@ -41,62 +45,98 @@ public extension UIColor {
   }
 
   // MARK: Methods
-  static func t_tidiBlue00() -> UIColor {
-    return .init(28, 100, 234)
+  static func t_background() -> UIColor {
+    return .init(244, 245, 246)
   }
 
-  static func t_tidiBlue01() -> UIColor {
-    return .init(55, 154, 240)
+  static func t_pink() -> UIColor {
+    return .init(255, 45, 85)
   }
 
-  static func t_tidiBlue02() -> UIColor {
-    return .init(84, 200, 245)
+  static func t_red() -> UIColor {
+    return .init(255, 59, 48)
   }
 
-  static func t_indigo00() -> UIColor {
+  static func t_orange() -> UIColor {
+    return .init(255, 149, 0)
+  }
+
+  static func t_yellow() -> UIColor {
+    return .init(255, 204, 0)
+  }
+
+  static func t_green() -> UIColor {
+    return .init(52, 199, 89)
+  }
+
+  static func t_mint() -> UIColor {
+    return .init(0, 199, 190)
+  }
+
+  static func t_purple() -> UIColor {
+    return .init(175, 82, 222)
+  }
+
+  static func t_indigo() -> UIColor {
     return .init(80, 78, 210)
   }
 
-  static func t_indigo01() -> UIColor {
-    return .init(105, 103, 215)
+  static func t_blue() -> UIColor {
+    return .init(28, 100, 234)
   }
 
-  static func t_indigo02() -> UIColor {
-    return .init(137, 152, 233)
+  static func t_ashBlue(weight: Int = 500) -> UIColor {
+    switch weight {
+    case 50: return .init(251, 252, 254)
+    case 100: return .init(231, 237, 243)
+    case 300: return .init(174, 195, 213)
+    case 500: return .init(103, 142, 177)
+    case 800: return .init(42, 62, 81)
+    default: return .init()
+    }
   }
 
-  static func t_background() -> UIColor {
-    return .init(235, 235, 240)
-  }
-  
-  static func t_borderColor() -> UIColor {
-    return .init(60, 60, 67, 0.08)
+  static func t_gray(weight: Int) -> UIColor {
+    switch weight {
+    case 50: return .init(244, 245, 246)
+    case 100: return .init(224, 227, 230)
+    case 400: return .init(162, 170, 180)
+    case 500: return .init(139, 149, 161)
+    case 600: return .init(110, 121, 135)
+    case 700: return .init(87, 96, 107)
+    case 800: return .init(57, 63, 70)
+    default: return .init()
+    }
   }
 
   static func toColor(_ colorString: String) -> UIColor {
     switch colorString {
-    case LabelColors.SKYBLUE.colorString: return .t_tidiBlue01()
-    case LabelColors.BLUE.colorString: return .t_tidiBlue00()
-    case LabelColors.PURPLE.colorString: return .t_indigo00()
-    case LabelColors.GREEN.colorString: return .systemGreen
-    case LabelColors.YELLOW.colorString: return .systemYellow
-    case LabelColors.ORANGE.colorString: return .systemOrange
-    case LabelColors.RED.colorString: return .systemRed
-    case LabelColors.BLACK.colorString: return .black
+    case LabelColors.ASHBLUE.colorString: return .t_ashBlue()
+    case LabelColors.BLUE.colorString: return .t_blue()
+    case LabelColors.PURPLE.colorString: return .t_purple()
+    case LabelColors.GREEN.colorString: return .t_green()
+    case LabelColors.YELLOW.colorString: return .t_yellow()
+    case LabelColors.ORANGE.colorString: return .t_orange()
+    case LabelColors.RED.colorString: return .t_red()
+    case LabelColors.MINT.colorString: return .t_mint()
+    case LabelColors.INDIGO.colorString: return t_indigo()
+    case LabelColors.PINK.colorString: return .t_pink()
     default: return .init()
     }
   }
 
   func toColorString() -> String {
     switch self {
-    case .t_tidiBlue01(): return LabelColors.SKYBLUE.colorString
-    case .t_tidiBlue00(): return LabelColors.BLUE.colorString
-    case .t_indigo00(): return LabelColors.PURPLE.colorString
-    case .systemGreen: return LabelColors.GREEN.colorString
-    case .systemYellow: return LabelColors.YELLOW.colorString
-    case .systemOrange: return LabelColors.ORANGE.colorString
-    case .systemRed: return LabelColors.RED.colorString
-    case .black: return LabelColors.BLACK.colorString
+    case .t_ashBlue(): return LabelColors.ASHBLUE.colorString
+    case .t_blue(): return LabelColors.BLUE.colorString
+    case .t_purple(): return LabelColors.PURPLE.colorString
+    case .t_green(): return LabelColors.GREEN.colorString
+    case .t_yellow(): return LabelColors.YELLOW.colorString
+    case .t_orange(): return LabelColors.ORANGE.colorString
+    case .t_red(): return LabelColors.RED.colorString
+    case .t_indigo(): return LabelColors.INDIGO.colorString
+    case .t_pink(): return LabelColors.PINK.colorString
+    case .t_mint(): return LabelColors.MINT.colorString
     default: return ""
     }
   }
