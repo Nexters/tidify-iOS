@@ -48,9 +48,9 @@ private extension FolderTableViewCell {
     selectionStyle = .none
     
     contentView.backgroundColor = .white
-    contentView.layer.cornerRadius = 8
-    contentView.layer.borderWidth = 1
-    contentView.layer.borderColor = UIColor.t_borderColor().cgColor
+//    contentView.layer.cornerRadius = 8
+//    contentView.layer.borderWidth = 1
+//    contentView.layer.borderColor = UIColor.t_borderColor().cgColor
     
     contentView.addSubview(colorView)
     contentView.addSubview(nameLabel)

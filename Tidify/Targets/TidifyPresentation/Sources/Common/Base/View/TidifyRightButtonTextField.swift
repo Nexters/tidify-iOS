@@ -73,8 +73,8 @@ private extension TidifyRightButtonTextField {
       $0.leftViewMode = .always
       $0.attributedPlaceholder = attrString
       $0.backgroundColor = .white
-      $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.t_borderColor().cgColor
+//      $0.layer.borderWidth = 1
+//      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.cornerRadius(radius: 16)
       $0.font = .t_SB(16)
       $0.textColor = .black

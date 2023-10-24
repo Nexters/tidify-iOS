@@ -67,8 +67,8 @@ private extension SearchViewController {
       $0.placeholder = "어떤 것을 찾으시나요?"
       $0.leftView = UIView.init(frame: CGRect(x: 0, y: 0, width: 56, height: 1))
       $0.leftViewMode = .always
-      $0.layer.borderWidth = 1
-      $0.layer.borderColor = UIColor.t_borderColor().cgColor
+//      $0.layer.borderWidth = 1
+//      $0.layer.borderColor = UIColor.t_borderColor().cgColor
       $0.cornerRadius(radius: 20)
     }
     

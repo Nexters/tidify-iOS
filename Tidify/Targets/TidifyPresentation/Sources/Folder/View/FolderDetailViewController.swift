@@ -63,7 +63,7 @@ private extension FolderDetailViewController {
     }
     
     emptyLabel.do {
-      $0.textColor = .t_indigo02()
+      $0.textColor = .t_indigo()
       $0.text = "폴더가 비어있어요!"
       $0.font = .t_EB(16)
     }

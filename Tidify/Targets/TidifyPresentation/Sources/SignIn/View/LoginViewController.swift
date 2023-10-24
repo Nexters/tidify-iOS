@@ -18,7 +18,7 @@ final class LoginViewController: BaseViewController, Alertable {
 
   private let indicatorView: UIActivityIndicatorView = {
     let indicatorView: UIActivityIndicatorView = .init()
-    indicatorView.color = .t_tidiBlue00()
+    indicatorView.color = .t_blue()
     return indicatorView
   }()
 
@@ -33,7 +33,7 @@ final class LoginViewController: BaseViewController, Alertable {
     let label: UILabel = .init()
     label.text = "Tidify"
     label.font = .t_B(32)
-    label.textColor = .t_tidiBlue00()
+    label.textColor = .t_blue()
     return label
   }()
 
@@ -41,7 +41,7 @@ final class LoginViewController: BaseViewController, Alertable {
     let label: UILabel = .init()
     label.text = "쉽고 깔끔한 북마크"
     label.font = .t_B(18)
-    label.textColor = .t_tidiBlue00()
+    label.textColor = .t_blue()
     return label
   }()
 

@@ -45,7 +45,7 @@ private extension SearchHeaderView {
     historyListGuideLabel.do {
       $0.text = "최근 검색목록"
       $0.font = .t_SB(14)
-      $0.textColor = .t_tidiBlue00()
+//      $0.textColor = .t_tidiBlue00()
     }
 
     eraseAllButton.do {

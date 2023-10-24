@@ -16,7 +16,7 @@ final class OnboardingViewController: UIViewController, View {
 
   // MARK: UI Components
   private var pageControl: UIPageControl = .init().then {
-    $0.currentPageIndicatorTintColor = .t_indigo00()
+    $0.currentPageIndicatorTintColor = .t_blue()
     $0.pageIndicatorTintColor = .systemGray
     $0.currentPage = 0
     $0.numberOfPages = 3
@@ -39,7 +39,7 @@ final class OnboardingViewController: UIViewController, View {
     }
 
   private var nextButton: UIButton = .init().then {
-    $0.backgroundColor = .t_tidiBlue00()
+    $0.backgroundColor = .t_blue()
     $0.titleLabel?.font = .t_B(16)
     $0.setTitleColor(.white, for: .normal)
     $0.titleLabel?.textColor = .white
