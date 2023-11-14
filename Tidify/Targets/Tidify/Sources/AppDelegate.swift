@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     self.navigationController = navigationController
     window.rootViewController = navigationController
 
+    setupNavigationBar()
     setupLibrary()
     assemble()
 
@@ -50,6 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 private extension AppDelegate {
+  func setupNavigationBar() {
+    UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.clear], for: .normal)
+    UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.t_gray(weight: 800)]
+    UINavigationBar.appearance().backIndicatorImage = UIImage(named: "backButtonIcon")
+    UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "backButtonIcon")
+  }
+
   func setupLibrary() {
 
     // KakaoSDK
