@@ -23,6 +23,6 @@ public struct FolderDTO: Decodable {
 
 extension FolderDTO {
   public func toDomaion() -> Folder {
-    .init(id: folderID, title: folderName, color: color)
+    .init(id: folderID, title: folderName, color: color, count: count, category: .normal)
   }
 }
