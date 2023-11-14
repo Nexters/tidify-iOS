@@ -40,7 +40,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate, Alertabl
     tableView.keyboardDismissMode = .onDrag
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.t_registerCellClasses([EmptyBookmarkGuideCell.self, BookmarkCell.self, EmptyBookmarkSearchResultCell.self, SearchHistoryCell.self])
+    tableView.t_registerCellClasses([EmptyGuideCell.self, BookmarkCell.self, EmptyBookmarkSearchResultCell.self, SearchHistoryCell.self])
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 250
     tableView.cornerRadius([.topLeft, .topRight], radius: 15)
@@ -114,7 +114,8 @@ extension HomeViewController: UITableViewDataSource {
     switch viewModel.state.viewMode {
     case .bookmarkList:
       if viewModel.state.bookmarks.isEmpty {
-        let cell: EmptyBookmarkGuideCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+        let cell: EmptyGuideCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+        cell.setupBookmarkGuideLabel()
         cell.delegate = self
         return cell
       }
@@ -166,7 +167,7 @@ extension HomeViewController: SearchHistoryCellDelegate {
 }
 
 // MARK: - EmptyBookmarkGuideCellDelegate
-extension HomeViewController: EmptyBookmarkGuideCellDelegate {
+extension HomeViewController: EmptyGuideCellDelegate {
   func didTapShowGuideButton() {
     // TODO: 디자인 작업 이후 온보딩으로 이동
   }
@@ -216,7 +217,9 @@ private extension HomeViewController {
       )
     }
 
-    navigationBar = .init(.home, leftButton: navSettingButton, rightButton: navCreateBookmarkButton)
+    // TODO: 수정 필요
+//    navigationBar = .init(.home, leftButton: navSettingButton, rightButton: navCreateBookmarkButton)
+    navigationBar = .init(leftButtonStackView: .init(), settingButton: .init())
     navigationBar.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(navigationBar)
 

@@ -13,8 +13,19 @@ import RxCocoa
 import RxSwift
 
 public extension UIViewController {
-  static let viewHeight = UIScreen.main.bounds.height
-  static let viewWidth = UIScreen.main.bounds.width
+  static var viewHeight: CGFloat {
+    guard let window = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+      return 0
+    }
+    return window.screen.bounds.height
+  }
+
+  static var viewWidth: CGFloat {
+    guard let window = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+      return 0
+    }
+    return window.screen.bounds.width
+  }
 }
 
 public extension Reactive where Base: UIViewController {

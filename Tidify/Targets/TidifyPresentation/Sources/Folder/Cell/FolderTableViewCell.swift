@@ -10,17 +10,29 @@ import TidifyDomain
 import UIKit
 
 final class FolderTableViewCell: UITableViewCell {
-  private let cellHeight = UIScreen.main.bounds.height * 0.068
-  private let cellWidth = UIScreen.main.bounds.width * 0.893
+
+  // MARK: Properties
+  private let colorView: UIView = {
+    let view: UIView = .init(frame: .zero)
+    view.cornerRadius(radius: 2)
+    return view
+  }()
   
-  private let colorView: UIView = .init().then {
-    $0.cornerRadius([.topLeft, .bottomLeft], radius: 8)
-  }
-  
-  private let nameLabel: UILabel = .init().then {
-    $0.font = .t_B(16)
-  }
-  
+  private let nameLabel: UILabel = {
+    let label: UILabel = .init(frame: .zero)
+    label.font = .t_B(15)
+    label.textColor = .t_ashBlue(weight: 800)
+    return label
+  }()
+
+  private let countLabel: UILabel = {
+    let label: UILabel = .init()
+    label.font = .t_SB(14)
+    label.textColor = .t_gray(weight: 500)
+    return label
+  }()
+
+  // MARK: Initializer
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setupUI()
@@ -29,51 +41,38 @@ final class FolderTableViewCell: UITableViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    setupPadding()
-  }
-  
+
+  // MARK: Methods
   func configure(folder: Folder) {
     nameLabel.text = folder.title
-    nameLabel.textColor = .toColor(folder.color)
     colorView.backgroundColor = .toColor(folder.color)
+    countLabel.text = folder.category == .share ? "\(folder.count)명 구독중" : "\(folder.count)개 정리됨"
   }
 }
 
+// MARK: - Private
 private extension FolderTableViewCell {
   func setupUI() {
-    backgroundColor = .white
     selectionStyle = .none
-    
     contentView.backgroundColor = .white
-//    contentView.layer.cornerRadius = 8
-//    contentView.layer.borderWidth = 1
-//    contentView.layer.borderColor = UIColor.t_borderColor().cgColor
-    
     contentView.addSubview(colorView)
     contentView.addSubview(nameLabel)
+    contentView.addSubview(countLabel)
     
     colorView.snp.makeConstraints {
-      $0.leading.top.bottom.equalToSuperview()
-      $0.width.equalTo(cellWidth * 0.047)
+      $0.leading.equalToSuperview().offset(20)
+      $0.top.bottom.equalToSuperview().inset(15)
+      $0.width.equalTo(UIViewController.viewWidth * 0.025)
     }
     
     nameLabel.snp.makeConstraints {
-      $0.leading.equalTo(colorView.snp.trailing).offset(24)
+      $0.leading.equalTo(colorView.snp.trailing).offset(20)
       $0.centerY.equalToSuperview()
     }
-  }
-  
-  func setupPadding() {
-    contentView.frame = contentView.frame.inset(
-      by: UIEdgeInsets(
-        top: 0,
-        left: 0,
-        bottom: 24,
-        right: 0
-      )
-    )
+
+    countLabel.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(20)
+      $0.centerY.equalToSuperview()
+    }
   }
 }

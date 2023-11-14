@@ -1,18 +1,19 @@
 //
-//  EmptyBookmarkGuideCell.swift
+//  EmptyGuideCell.swift
 //  TidifyPresentation
 //
 //  Created by 여정수 on 2023/09/18.
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
+import TidifyDomain
 import UIKit
 
-protocol EmptyBookmarkGuideCellDelegate: AnyObject {
+protocol EmptyGuideCellDelegate: AnyObject {
   func didTapShowGuideButton()
 }
 
-final class EmptyBookmarkGuideCell: UITableViewCell {
+final class EmptyGuideCell: UITableViewCell {
 
   // MARK: Properties
   private let containerView: UIView = {
@@ -31,24 +32,24 @@ final class EmptyBookmarkGuideCell: UITableViewCell {
 
   private let titleLabel: UILabel = {
     let label: UILabel = .init()
-    label.text = "아직 모아놓은 북마크가 없어요"
     label.font = .t_EB(20)
+    label.textColor = .t_ashBlue(weight: 800)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
   private let descLabel: UILabel = {
     let label: UILabel = .init()
-    label.text = "깔끔한 정리를 도와주는\n티디파이 가이드를 보러 가실래요?"
     label.numberOfLines = 2
     label.font = .t_R(16)
+    label.textColor = .t_gray(weight: 700)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
   private lazy var guideButton: UIButton = {
     let button: UIButton = .init()
-    button.backgroundColor = .init(28, 100, 234)
+    button.backgroundColor = .t_blue()
     button.setTitle("가이드 보기", for: .normal)
     button.titleLabel?.font = .t_B(16)
     button.setTitleColor(.white, for: .normal)
@@ -58,7 +59,7 @@ final class EmptyBookmarkGuideCell: UITableViewCell {
     return button
   }()
 
-  weak var delegate: EmptyBookmarkGuideCellDelegate?
+  weak var delegate: EmptyGuideCellDelegate?
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -69,9 +70,28 @@ final class EmptyBookmarkGuideCell: UITableViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  func setupBookmarkGuideLabel() {
+    titleLabel.text = "아직 모아놓은 북마크가 없어요"
+    descLabel.text = "깔끔한 정리를 도와주는\n티디파이 가이드를 보러 가실래요?"
+  }
+
+  func setupFolderGuideLabel(category: Folder.FolderCategory) {
+    switch category {
+    case .normal:
+      titleLabel.text = "아직 정리된 폴더가 없어요"
+      descLabel.text = "깔끔한 정리를 도와주는\n티디파이 가이드를 보러 가실래요?"
+    case .share:
+      titleLabel.text = "연재중인 폴더가 없어요"
+      descLabel.text = "다른 사람들에게 내가 정리한 폴더를\n공유하는 방법을 알아볼까요?"
+    case .subscribe:
+      titleLabel.text = "구독중인 폴더가 없어요"
+      descLabel.text = "다른 사람이 정리한 폴더를 볼 수 있는\n초대링크를 받아보셨나요?"
+    }
+  }
 }
 
-private extension EmptyBookmarkGuideCell {
+private extension EmptyGuideCell {
   @objc func didTapShowGuideButton() {
     // TODO
   }
