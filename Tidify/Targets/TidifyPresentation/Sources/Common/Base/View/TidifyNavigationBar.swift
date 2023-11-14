@@ -44,6 +44,7 @@ private extension TidifyNavigationBar {
     settingButton.snp.makeConstraints {
       $0.trailing.equalToSuperview().inset(26)
       $0.top.bottom.equalToSuperview().inset(11)
+      $0.width.equalTo(settingButton.snp.height)
     }
   }
 }
