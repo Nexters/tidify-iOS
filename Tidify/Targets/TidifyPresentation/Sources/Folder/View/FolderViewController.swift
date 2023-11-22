@@ -11,12 +11,12 @@ import UIKit
 
 import SnapKit
 
-final class FolderViewController: BaseViewController, Alertable {
+final class FolderViewController: BaseViewController, Alertable, Coordinatable {
 
   // MARK: Properties
   private let navigationBar: TidifyNavigationBar
   private let viewModel: FolderViewModel
-  private let coordinator: FolderCoordinator
+  weak var coordinator: DefaultFolderCoordinator?
   private var scrollWorkItem: DispatchWorkItem?
   private var scrollOffset: CGFloat = 0
 
@@ -67,10 +67,9 @@ final class FolderViewController: BaseViewController, Alertable {
   }()
 
   // MARK: Initializer
-  init(navigationBar: TidifyNavigationBar, viewModel: FolderViewModel, coordinator: FolderCoordinator) {
+  init(navigationBar: TidifyNavigationBar, viewModel: FolderViewModel) {
     self.navigationBar = navigationBar
     self.viewModel = viewModel
-    self.coordinator = coordinator
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -80,7 +79,9 @@ final class FolderViewController: BaseViewController, Alertable {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    coordinator.navigationBarDelegate = self
+    setupLayoutConstraints()
+    bindState()
+    coordinator?.navigationBarDelegate = self
     viewModel.action(.viewDidLoad)
   }
 
@@ -103,8 +104,11 @@ final class FolderViewController: BaseViewController, Alertable {
     scrollView.addSubview(contentView)
     contentView.addSubview(tableView)
   }
+}
 
-  override func setupLayoutConstraints() {
+// MARK: - Private
+private extension FolderViewController {
+  func setupLayoutConstraints() {
     navigationBar.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.leading.trailing.equalToSuperview()
@@ -134,7 +138,7 @@ final class FolderViewController: BaseViewController, Alertable {
     }
   }
 
-  override func bindState() {
+  func bindState() {
     viewModel.$state
       .map { $0.isLoading }
       .receive(on: DispatchQueue.main)
@@ -157,10 +161,7 @@ final class FolderViewController: BaseViewController, Alertable {
       })
       .store(in: &cancellable)
   }
-}
 
-// MARK: - Private
-private extension FolderViewController {
   func updateConstraints(by folders: [Folder]) {
     if folders.count == 0 {
       tableView.snp.updateConstraints {

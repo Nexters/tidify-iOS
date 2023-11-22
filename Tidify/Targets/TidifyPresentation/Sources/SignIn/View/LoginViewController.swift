@@ -99,70 +99,10 @@ final class LoginViewController: BaseViewController, Alertable, Coordinatable {
     loginMethodStackView.addArrangedSubview(appleSignInButton)
   }
 
-  override func setupLayoutConstraints() {
-    indicatorView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-
-    logoImageView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(180)
-      $0.centerX.equalToSuperview()
-    }
-
-    titleLabel.snp.makeConstraints {
-      $0.top.equalTo(logoImageView.snp.bottom).offset(48)
-      $0.centerX.equalToSuperview()
-    }
-
-    subTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(16)
-      $0.centerX.equalToSuperview()
-    }
-
-    loginMethodStackView.snp.makeConstraints {
-      $0.leading.equalToSuperview().offset(20)
-      $0.trailing.equalToSuperview().offset(-20)
-      $0.bottom.equalToSuperview().offset(-40)
-    }
-
-    [kakaoSignInButton, appleSignInButton].forEach {
-      $0.snp.makeConstraints {
-        $0.height.equalTo(56)
-      }
-    }
-  }
-
-  override func bindState() {
-    viewModel.$state
-      .map { $0.isLoading }
-      .receive(on: DispatchQueue.main)
-      .removeDuplicates()
-      .sink(receiveValue: { [weak self] isLoading in
-        if isLoading {
-          self?.indicatorView.startAnimating()
-        } else {
-          self?.indicatorView.isHidden = true
-        }
-      })
-      .store(in: &cancellable)
-
-    viewModel.$state
-      .map { $0.isEntered }
-      .filter { $0 }
-      .receive(on: DispatchQueue.main)
-      .sink(receiveValue: { [weak coordinator] _ in
-        coordinator?.didSuccessLogin()
-      })
-      .store(in: &cancellable)
-
-    viewModel.$state
-      .map { $0.errorType }
-      .compactMap { $0 }
-      .receive(on: DispatchQueue.main)
-      .sink(receiveValue: { [weak self] error in
-        self?.presentAlert(type: .loginError)
-      })
-      .store(in: &cancellable)
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setupLayoutConstraints()
+    bindState()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -204,6 +144,72 @@ extension LoginViewController: ASAuthorizationControllerPresentationContextProvi
 
 // MARK: - Private
 private extension LoginViewController {
+  func setupLayoutConstraints() {
+    indicatorView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
+    logoImageView.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(180)
+      $0.centerX.equalToSuperview()
+    }
+
+    titleLabel.snp.makeConstraints {
+      $0.top.equalTo(logoImageView.snp.bottom).offset(48)
+      $0.centerX.equalToSuperview()
+    }
+
+    subTitleLabel.snp.makeConstraints {
+      $0.top.equalTo(titleLabel.snp.bottom).offset(16)
+      $0.centerX.equalToSuperview()
+    }
+
+    loginMethodStackView.snp.makeConstraints {
+      $0.leading.equalToSuperview().offset(20)
+      $0.trailing.equalToSuperview().offset(-20)
+      $0.bottom.equalToSuperview().offset(-40)
+    }
+
+    [kakaoSignInButton, appleSignInButton].forEach {
+      $0.snp.makeConstraints {
+        $0.height.equalTo(56)
+      }
+    }
+  }
+
+  func bindState() {
+    viewModel.$state
+      .map { $0.isLoading }
+      .receive(on: DispatchQueue.main)
+      .removeDuplicates()
+      .sink(receiveValue: { [weak self] isLoading in
+        if isLoading {
+          self?.indicatorView.startAnimating()
+        } else {
+          self?.indicatorView.isHidden = true
+        }
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.isEntered }
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak coordinator] _ in
+        coordinator?.didSuccessLogin()
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.errorType }
+      .compactMap { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] error in
+        self?.presentAlert(type: .loginError)
+      })
+      .store(in: &cancellable)
+  }
+
   @objc func didTapkakaoLoginButton() {
     viewModel.action(.tryKakaoLogin)
   }

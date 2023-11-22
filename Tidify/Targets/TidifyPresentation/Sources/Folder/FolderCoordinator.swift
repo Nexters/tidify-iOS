@@ -104,9 +104,9 @@ final class DefaultFolderCoordinator: FolderCoordinator {
 
     let viewController: FolderViewController = .init(
       navigationBar: navigationBar,
-      viewModel: viewModel,
-      coordinator: self
+      viewModel: viewModel
     )
+    viewController.coordinator = self
 
     return viewController
   }

@@ -11,7 +11,7 @@ public struct Folder: Equatable {
   public var title: String
   public var color: String
   public let count: Int
-  public var category: FolderCategory
+  public let category: FolderCategory
   
   public init(id: Int, title: String, color: String, count: Int, category: FolderCategory) {
     self.id = id
