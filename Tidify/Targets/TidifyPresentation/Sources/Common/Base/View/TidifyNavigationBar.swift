@@ -9,119 +9,42 @@
 import UIKit
 
 import SnapKit
-import Then
 
 final class TidifyNavigationBar: UIView {
-  private let viewHeight = UIScreen.main.bounds.height
-  private let viewWidth = UIScreen.main.bounds.width
-  
-  enum NavigationBarStyle {
-    case normal
-    case home
-    case folder
-    case folderDetail
-    
-    var sidePadding: CGFloat {
-      switch self {
-      case .normal, .folderDetail: return 8
-      case .home, .folder : return 20
-      }
-    }
-    
-    var bottomPadding: CGFloat {
-      switch self {
-      case .normal: return 10
-      case .home, .folder, .folderDetail: return 24
-      }
-    }
-  }
-  
-  // MARK: - Properties
-  
-  private lazy var titleLabel: UILabel = .init().then {
-    $0.font = .t_EB(16)
-    $0.textColor = .black
-  }
-  
-  private let leftButton: UIButton
-  
-  private let rightButton: UIButton?
-  
-  private let navigationBarStyle: NavigationBarStyle
-  
-  // MARK: - Initialize
-  
-  init(
-    _ navigationBarStyle: NavigationBarStyle,
-    title: String? = nil,
-    leftButton: UIButton,
-    rightButton: UIButton? = nil
-  ) {
-    self.navigationBarStyle = navigationBarStyle
-    self.leftButton = leftButton
-    self.rightButton = rightButton
+
+  // MARK: Properties
+  private let leftButtonStackView: UIStackView
+  private let settingButton: UIButton
+
+  init(leftButtonStackView: UIStackView, settingButton: UIButton) {
+    self.leftButtonStackView = leftButtonStackView
+    self.settingButton = settingButton
     super.init(frame: .zero)
-    self.titleLabel.text = title
-    
-    setupUI(
-      navigationBarStyle,
-      title: title,
-      leftButton: leftButton,
-      rightButton: rightButton
-    )
+
+    setupUI()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  // MARK: - Methods
-  
-  func setupUI(
-    _ navigationBarStyle: NavigationBarStyle,
-    title: String?,
-    leftButton: UIButton,
-    rightButton: UIButton?
-  ) {
-    backgroundColor = .white
-    
-    addSubview(leftButton)
-    
-    if navigationBarStyle != .normal {
-      cornerRadius([.bottomLeft, .bottomRight], radius: 16)
+}
+
+private extension TidifyNavigationBar {
+  func setupUI() {
+    backgroundColor = .clear
+
+    addSubview(leftButtonStackView)
+    addSubview(settingButton)
+
+    leftButtonStackView.snp.makeConstraints {
+      $0.leading.equalToSuperview().offset(20)
+      $0.top.bottom.equalToSuperview().inset(10)
     }
-    
-    if navigationBarStyle == .folderDetail {
-      titleLabel.font = .t_EB(20)
+
+    settingButton.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(26)
+      $0.top.bottom.equalToSuperview().inset(11)
+      $0.width.equalTo(settingButton.snp.height)
     }
-    
-    leftButton.snp.makeConstraints {
-      $0.leading.equalToSuperview().offset(navigationBarStyle.sidePadding)
-      $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
-      $0.size.equalTo(viewWidth * 0.106)
-    }
-    
-    if let rightButton = rightButton {
-      addSubview(rightButton)
-      rightButton.snp.makeConstraints {
-        $0.bottom.equalToSuperview().inset(navigationBarStyle.bottomPadding)
-        $0.trailing.equalToSuperview().inset(navigationBarStyle.sidePadding)
-        $0.height.equalTo(leftButton)
-        $0.width.equalTo(viewWidth * (navigationBarStyle == .home ? 0.208 : 0.106))
-      }
-    }
-    
-    if let _ = title {
-      addSubview(titleLabel)
-      titleLabel.snp.makeConstraints {
-        $0.centerY.equalTo(leftButton).offset(-3)
-        if navigationBarStyle != .folderDetail {
-          $0.centerX.equalToSuperview()
-        } else {
-          $0.leading.equalTo(leftButton.snp.trailing).offset(16)
-        }
-      }
-    }
-    
   }
 }

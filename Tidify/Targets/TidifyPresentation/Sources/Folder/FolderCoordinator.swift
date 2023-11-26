@@ -10,9 +10,15 @@ import TidifyCore
 import TidifyDomain
 import UIKit
 
-import RxSwift
+protocol FolderNavigationBarDelegate: AnyObject {
+  func didTapFolderButton()
+  func didTapSubscribeButton()
+  func didTapShareButton()
+}
 
 protocol FolderCoordinator: Coordinator {
+
+  // MARK: Methods
   func pushSettingScene()
   func pushDetailScene(folder: Folder)
   func pushFolderEditScene(folder: Folder)
@@ -20,47 +26,92 @@ protocol FolderCoordinator: Coordinator {
   func pushCreationScene()
   func popCreationScene()
   func pushWebView(bookmark: Bookmark)
+
+  // MARK: Properties
+  var navigationBarDelegate: FolderNavigationBarDelegate? { get set }
 }
 
 final class DefaultFolderCoordinator: FolderCoordinator {
   weak var parentCoordinator: Coordinator?
+  weak var navigationBarDelegate: FolderNavigationBarDelegate?
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
-  
-  private let settingButton: UIButton = .init().then {
-    $0.setImage(UIImage(named: "profileIcon"), for: .normal)
-  }
-  
-  private let createButton: UIButton = .init().then {
-    $0.setImage(UIImage(named: "createFolderIcon"), for: .normal)
-  }
-  
-  private let navigationBar: TidifyNavigationBar?
-  private var folderUseCase: FolderUseCase?
-  
-  private let disposeBag: DisposeBag = .init()
+
+  private lazy var folderButton: UIButton = {
+    let button: UIButton = .init()
+    button.setTitle("폴더", for: .normal)
+    button.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+    button.titleLabel?.font = .t_EB(22)
+    button.addTarget(self, action: #selector(didTapFolderButton), for: .touchUpInside)
+    return button
+  }()
+
+  private lazy var subscribeButton: UIButton = {
+    let button: UIButton = .init()
+    button.setTitle("구독", for: .normal)
+    button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    button.titleLabel?.font = .t_EB(22)
+    button.addTarget(self, action: #selector(didTapSubscribeButton), for: .touchUpInside)
+    return button
+  }()
+
+  private lazy var shareButton: UIButton = {
+    let button: UIButton = .init()
+    button.setTitle("공유중", for: .normal)
+    button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    button.titleLabel?.font = .t_EB(22)
+    button.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+    return button
+  }()
+
+  private let leftButtonStackView: UIStackView = {
+    let stackView: UIStackView = .init()
+    stackView.distribution = .equalSpacing
+    stackView.spacing = 15
+    return stackView
+  }()
+
+  private lazy var settingButton: UIButton = {
+    let button: UIButton = .init()
+    button.setImage(.init(named: "settingButtonIcon"), for: .normal)
+    button.addTarget(self, action: #selector(pushSettingScene), for: .touchUpInside)
+    return button
+  }()
 
   // MARK: - Initialize
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
-    self.navigationBar = TidifyNavigationBar(
-      .folder,
-      leftButton: settingButton,
-      rightButton: createButton
-    )
-    setupNavigationBar()
   }
 
   // MARK: - Methods
-  func start() {
-    navigationController.pushViewController(getViewController(), animated: true)
-  }
+  func start() {}
   
   func startPush() -> UIViewController {
-    return getViewController()
+    guard let useCase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self) else {
+      fatalError()
+    }
+
+    [folderButton, subscribeButton, shareButton].forEach {
+      leftButtonStackView.addArrangedSubview($0)
+    }
+
+    let navigationBar: TidifyNavigationBar = .init(
+      leftButtonStackView: leftButtonStackView,
+      settingButton: settingButton
+    )
+
+    let viewModel: FolderViewModel = .init(useCase: useCase)
+
+    let viewController: FolderViewController = .init(
+      navigationBar: navigationBar,
+      viewModel: viewModel
+    )
+    viewController.coordinator = self
+
+    return viewController
   }
   
-  func pushSettingScene() {
+  @objc func pushSettingScene() {
     guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self)
             as? DefaultSettingCoordinator else { return }
     settingCoordinator.parentCoordinator = self
@@ -70,53 +121,53 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushDetailScene(folder: Folder) {
-    guard let useCase: FolderDetailUseCase = DIContainer.shared.resolve(type: FolderDetailUseCase.self)
-    else { fatalError() }
-    let reactor: FolderDetailReactor = .init(coordinator: self, useCase: useCase, folderID: folder.id)
-    let viewController: FolderDetailViewController = .init(
-      folder: folder,
-      navigationBar: getDetailNavigationBar(folder: folder)
-    )
-    viewController.reactor = reactor
-    
-    navigationController.pushViewController(
-      viewController,
-      animated: true
-    )
+//    guard let useCase: FolderDetailUseCase = DIContainer.shared.resolve(type: FolderDetailUseCase.self)
+//    else { fatalError() }
+//    let reactor: FolderDetailReactor = .init(coordinator: self, useCase: useCase, folderID: folder.id)
+//    let viewController: FolderDetailViewController = .init(
+//      folder: folder,
+//      navigationBar: getDetailNavigationBar(folder: folder)
+//    )
+//    viewController.reactor = reactor
+//
+//    navigationController.pushViewController(
+//      viewController,
+//      animated: true
+//    )
   }
   
   func pushFolderEditScene(folder: Folder) {
-    guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
-    let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
-    let viewController: FolderCreationViewController = .init(creationType: .edit, originFolder: folder)
-    viewController.reactor = reactor
-    navigationController.pushViewController(
-      viewController,
-      animated: true
-    )
+//    guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
+//    let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
+//    let viewController: FolderCreationViewController = .init(creationType: .edit, originFolder: folder)
+//    viewController.reactor = reactor
+//    navigationController.pushViewController(
+//      viewController,
+//      animated: true
+//    )
   }
 
   func pushBookmarkEditScene(bookmark: Bookmark) {
-    guard let bookmarkCreationCoordinator = DIContainer.shared.resolve(
-      type: BookmarkCreationCoordinator.self) as? DefaultBookmarkCreationCoordinator else { return }
-
-    bookmarkCreationCoordinator.parentCoordinator = self
-    addChild(bookmarkCreationCoordinator)
-
-    bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
+//    guard let bookmarkCreationCoordinator = DIContainer.shared.resolve(
+//      type: BookmarkCreationCoordinator.self) as? DefaultBookmarkCreationCoordinator else { return }
+//
+//    bookmarkCreationCoordinator.parentCoordinator = self
+//    addChild(bookmarkCreationCoordinator)
+//
+//    bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
   }
   
   func pushCreationScene() {
-    guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
-    let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
-    let viewController: FolderCreationViewController = .init(creationType: .create)
-    viewController.coordinator = self
-    viewController.reactor = reactor
-    
-    navigationController.pushViewController(
-      viewController,
-      animated: true
-    )
+//    guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
+//    let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
+//    let viewController: FolderCreationViewController = .init(creationType: .create)
+//    viewController.coordinator = self
+//    viewController.reactor = reactor
+//
+//    navigationController.pushViewController(
+//      viewController,
+//      animated: true
+//    )
   }
   
   func popCreationScene() {
@@ -139,62 +190,23 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
 }
 
-// MARK: - Private
 private extension DefaultFolderCoordinator {
-  func getViewController() -> FolderViewController {
-    guard let useCase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self),
-          let navigationBar = navigationBar
-    else { fatalError() }
-
-    let reactor: FolderReactor = .init(coordinator: self, useCase: useCase)
-    let viewController: FolderViewController = .init(navigationBar)
-    viewController.reactor = reactor
-    folderUseCase = useCase
-
-    return viewController
+  @objc func didTapFolderButton() {
+    navigationBarDelegate?.didTapFolderButton()
+    folderButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+    subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
   }
-  
-  func getDetailNavigationBar(folder: Folder) -> TidifyNavigationBar {
-    let backButton: UIButton = .init().then {
-      $0.setImage(UIImage(named: "backIcon"), for: .normal)
-      $0.setTitle("  \(folder.title)", for: .normal)
-      $0.titleLabel?.font = .t_EB(20)
-    }
-    
-    backButton.rx.tap
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { [weak self] in
-        self?.navigationController.popViewController(animated: true)
-      })
-      .disposed(by: disposeBag)
-
-    //TODO: Implements
-//    let rightButton: UIButton = .init().then {
-//      $0.setImage(UIImage(named: "shareIcon"), for: .normal)
-//    }
-    
-    let navigationBar: TidifyNavigationBar = .init(
-      .folderDetail,
-      title: folder.title,
-      leftButton: backButton
-    )
-    
-    return navigationBar
+  @objc func didTapSubscribeButton() {
+    navigationBarDelegate?.didTapSubscribeButton()
+    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    subscribeButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+    shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
   }
-  
-  func setupNavigationBar() {
-    settingButton.rx.tap
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { [weak self] in
-        self?.pushSettingScene()
-      })
-      .disposed(by: disposeBag)
-    
-    createButton.rx.tap
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { [weak self] in
-        self?.pushCreationScene()
-      })
-      .disposed(by: disposeBag)
+  @objc func didTapShareButton() {
+    navigationBarDelegate?.didTapShareButton()
+    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    shareButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
   }
 }

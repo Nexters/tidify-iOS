@@ -19,15 +19,10 @@ class BaseViewController: UIViewController {
     super.viewDidLoad()
 
     setupViews()
-    setupLayoutConstraints()
-    bindState()
   }
 
   // MARK: Methods
   func setupViews() {
-    view.backgroundColor = .white
+    view.backgroundColor = .t_background()
   }
-
-  func setupLayoutConstraints() {}
-  func bindState() {}
 }

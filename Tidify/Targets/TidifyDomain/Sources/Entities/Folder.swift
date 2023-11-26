@@ -6,15 +6,23 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-public struct Folder {
+public struct Folder: Equatable {
   public let id: Int
   public var title: String
   public var color: String
+  public let count: Int
+  public let category: FolderCategory
   
-  public init(id: Int, title: String, color: String) {
+  public init(id: Int, title: String, color: String, count: Int, category: FolderCategory) {
     self.id = id
     self.title = title
     self.color = color
+    self.count = count
+    self.category = category
+  }
+
+  public enum FolderCategory {
+    case normal, subscribe, share
   }
 }
 

@@ -20,7 +20,7 @@ public enum FolderError: Error {
 
 public protocol FolderUseCase {
   func createFolder(request: FolderRequestDTO) async throws
-  func fetchFolderList(start: Int, count: Int) async throws -> FetchFolderListResponse
+  func fetchFolderList(start: Int, count: Int, category: Folder.FolderCategory) async throws -> FetchFolderListResponse
   func updateFolder(id: Int, request: FolderRequestDTO) async throws
   func deleteFolder(id: Int) async throws
 }
@@ -40,8 +40,8 @@ final class DefaultFolderUseCase: FolderUseCase {
     try await folderRepository.createFolder(request: request)
   }
   
-  func fetchFolderList(start: Int, count: Int) async throws -> FetchFolderListResponse {
-    try await folderRepository.fetchFolderList(start: start, count: count)
+  func fetchFolderList(start: Int, count: Int, category: Folder.FolderCategory) async throws -> FetchFolderListResponse {
+    try await folderRepository.fetchFolderList(start: start, count: count, category: category)
   }
   
   func updateFolder(id: Int, request: FolderRequestDTO) async throws {
