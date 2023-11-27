@@ -66,19 +66,19 @@ final class FolderDetailReactor: Reactor {
   func reduce(state: State, mutation: Mutation) -> State {
     var newState: State = state
 
-    switch mutation {
-    case .setBookmarks(let bookmarks):
-      newState.bookmarks = bookmarks
-
-    case .pushWebView(let bookmark):
-      coordinator?.pushWebView(bookmark: bookmark)
-
-    case .pushEditView(let bookmark):
-      coordinator?.pushBookmarkEditScene(bookmark: bookmark)
-
-    case .deleteBookmark(let index):
-      newState.bookmarks.remove(at: index)
-    }
+//    switch mutation {
+//    case .setBookmarks(let bookmarks):
+//      newState.bookmarks = bookmarks
+//
+//    case .pushWebView(let bookmark):
+//      coordinator?.pushWebView(bookmark: bookmark)
+//
+//    case .pushEditView(let bookmark):
+//      coordinator?.pushBookmarkEditScene(bookmark: bookmark)
+//
+//    case .deleteBookmark(let index):
+//      newState.bookmarks.remove(at: index)
+//    }
 
     return newState
   }
