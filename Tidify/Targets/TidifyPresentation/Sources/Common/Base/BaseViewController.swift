@@ -14,6 +14,12 @@ class BaseViewController: UIViewController {
   // MARK: Properties
   var cancellable: Set<AnyCancellable> = []
 
+  lazy var indicatorView: UIActivityIndicatorView = {
+    let indicatorView: UIActivityIndicatorView = .init()
+    indicatorView.color = .t_blue()
+    return indicatorView
+  }()
+
   // MARK: LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -24,5 +30,13 @@ class BaseViewController: UIViewController {
   // MARK: Methods
   func setupViews() {
     view.backgroundColor = .t_background()
+  }
+
+  func setIndicatorView(isLoading: Bool) {
+    if isLoading {
+      indicatorView.startAnimating()
+    } else {
+      indicatorView.isHidden = true
+    }
   }
 }

@@ -16,12 +16,6 @@ final class LoginViewController: BaseViewController, Alertable, Coordinatable {
   private let viewModel: LoginViewModel
   weak var coordinator: DefaultLoginCoordinator?
 
-  private let indicatorView: UIActivityIndicatorView = {
-    let indicatorView: UIActivityIndicatorView = .init()
-    indicatorView.color = .t_blue()
-    return indicatorView
-  }()
-
   private let logoImageView: UIImageView = {
     let imageView: UIImageView = .init()
     imageView.image = .init(named: "icon_symbolColor")!
@@ -183,11 +177,7 @@ private extension LoginViewController {
       .receive(on: DispatchQueue.main)
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isLoading in
-        if isLoading {
-          self?.indicatorView.startAnimating()
-        } else {
-          self?.indicatorView.isHidden = true
-        }
+        self?.setIndicatorView(isLoading: isLoading)
       })
       .store(in: &cancellable)
 
