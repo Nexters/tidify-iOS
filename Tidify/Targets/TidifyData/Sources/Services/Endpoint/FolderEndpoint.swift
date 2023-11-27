@@ -61,8 +61,8 @@ extension FolderEndpoint {
 
     case .createFolder(let request):
       return [
-        "title": request.title,
-        "color": request.color,
+        "folderName": request.title,
+        "label": request.color,
       ]
 
     case .updateFolder(_, let request):
