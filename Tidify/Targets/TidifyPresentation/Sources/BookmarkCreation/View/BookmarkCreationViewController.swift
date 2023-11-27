@@ -239,19 +239,19 @@ private extension BookmarkCreationViewController {
   }
 
   func showBottomSheet() {
-    guard let folders = reactor?.currentState.folders,
-          !folders.isEmpty else {
-      return
-    }
-
-    let bottomSheet: BottomSheetViewController = .init(
-      .bookmark,
-      dataSource: folders.map { $0.title },
-      selectedIndexRelay: selectedFolderIndexRelay
-    )
-
-    bottomSheet.modalPresentationStyle = .overCurrentContext
-    present(bottomSheet, animated: true)
+//    guard let folders = reactor?.currentState.folders,
+//          !folders.isEmpty else {
+//      return
+//    }
+//
+//    let bottomSheet: BottomSheetViewController = .init(
+//      .bookmark,
+//      dataSource: folders.map { $0.title },
+//      selectedIndexRelay: selectedFolderIndexRelay
+//    )
+//
+//    bottomSheet.modalPresentationStyle = .overCurrentContext
+//    present(bottomSheet, animated: true)
   }
 
   @discardableResult

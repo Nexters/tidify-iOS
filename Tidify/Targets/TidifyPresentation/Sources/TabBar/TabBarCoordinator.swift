@@ -8,24 +8,24 @@
 
 import UIKit
 
-import Then
-
 enum TabBarItem: CaseIterable {
   case home
-  case search
   case folder
+  case bookmarkCreation
 
   var index: Int {
     switch self {
     case .home: return 0
-    case .search: return 1
-    case .folder: return 2
+    case .folder: return 1
+    case .bookmarkCreation: return 2
     }
   }
 }
 
 protocol TabBarCoordinator: Coordinator {
   var parentCoordinator: Coordinator? { get set }
+
+  func pushBookmarkCreationScene()
 }
 
 final class DefaultTabBarCoordinator: TabBarCoordinator {
@@ -34,9 +34,7 @@ final class DefaultTabBarCoordinator: TabBarCoordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
-  
-  private let tabBarController: TabBarController = .init()
-  
+
   // MARK: - Initialize
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
@@ -44,28 +42,35 @@ final class DefaultTabBarCoordinator: TabBarCoordinator {
   
   // MARK: - Methods
   func start() {
-    setupTabBar()
+    let tabBarController: TabBarController = .init()
+    setupTabBar(tabBarController)
     navigationController.viewControllers = [tabBarController]
   }
 
   func didFinish() {}
+
+  func pushBookmarkCreationScene() {
+    let bookmarkCreationCoordinator: DefaultBookmarkCreationCoordinator = .init(
+      navigationController: navigationController
+    )
+    let bookmarkCreationViewController = bookmarkCreationCoordinator.startPush(type: .create)
+    bookmarkCreationCoordinator.parentCoordinator = self
+    addChild(bookmarkCreationCoordinator)
+
+    navigationController.pushViewController(bookmarkCreationViewController, animated: true)
+  }
 }
 
 private extension DefaultTabBarCoordinator {
-  func setupTabBar() {
+  func setupTabBar(_ tabBarController: TabBarController) {
     tabBarController.tabBar.isHidden = true
+    tabBarController.coordinator = self
     
     let homeCoordinator: DefaultHomeCoordinator = .init(
       navigationController: navigationController
     )
     homeCoordinator.parentCoordinator = self
     addChild(homeCoordinator)
-    
-    let searchCoordinator: DefaultSearchCoordinator = .init(
-      navigationController: navigationController
-    )
-    searchCoordinator.parentCoordinator = self
-    addChild(searchCoordinator)
     
     let folderCoordinator: DefaultFolderCoordinator = .init(
       navigationController: navigationController
@@ -74,11 +79,11 @@ private extension DefaultTabBarCoordinator {
     addChild(folderCoordinator)
     
     let homeViewController: UIViewController = homeCoordinator.startPush()
-    let searchViewController: UIViewController = searchCoordinator.startPush()
     let folderViewController: UIViewController = folderCoordinator.startPush()
+    let dummyViewController: UIViewController = .init(nibName: nil, bundle: nil)
     
     tabBarController.setViewControllers(
-      [homeViewController, searchViewController, folderViewController],
+      [homeViewController, folderViewController, dummyViewController],
       animated: false
     )
   }

@@ -76,7 +76,8 @@ final class DefaultHomeCoordinator: HomeCoordinator {
     bookmarkCreationCoordinator.parentCoordinator = self
     addChild(bookmarkCreationCoordinator)
 
-    bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
+    //TODO: 구현 예정
+//    bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
   }
 
   func didFinish() {
