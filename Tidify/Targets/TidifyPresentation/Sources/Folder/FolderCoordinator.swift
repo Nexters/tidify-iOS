@@ -21,11 +21,7 @@ protocol FolderCoordinator: Coordinator {
   // MARK: Methods
   func pushSettingScene()
   func pushDetailScene(folder: Folder)
-  func pushFolderEditScene(folder: Folder)
-  func pushBookmarkEditScene(bookmark: Bookmark)
-  func pushCreationScene()
-  func popCreationScene()
-  func pushWebView(bookmark: Bookmark)
+  func pushFolderCreationScene(type: CreationType, originFolder: Folder?)
 
   // MARK: Properties
   var navigationBarDelegate: FolderNavigationBarDelegate? { get set }
@@ -136,42 +132,22 @@ final class DefaultFolderCoordinator: FolderCoordinator {
 //    )
   }
   
-  func pushFolderEditScene(folder: Folder) {
-//    guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
-//    let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
-//    let viewController: FolderCreationViewController = .init(creationType: .edit, originFolder: folder)
-//    viewController.reactor = reactor
-//    navigationController.pushViewController(
-//      viewController,
-//      animated: true
-//    )
-  }
+  func pushFolderCreationScene(type: CreationType, originFolder: Folder?) {
+    let folderCreationCoordinator: DefaultFolderCreationCoordinator = .init(
+      navigationController: navigationController
+    )
+    let folderCreationViewController = folderCreationCoordinator.startPush(type: type, originFolder: originFolder)
+    folderCreationCoordinator.parentCoordinator = self
+    addChild(folderCreationCoordinator)
 
-  func pushBookmarkEditScene(bookmark: Bookmark) {
-//    guard let bookmarkCreationCoordinator = DIContainer.shared.resolve(
-//      type: BookmarkCreationCoordinator.self) as? DefaultBookmarkCreationCoordinator else { return }
-//
-//    bookmarkCreationCoordinator.parentCoordinator = self
-//    addChild(bookmarkCreationCoordinator)
-//
-//    bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
-  }
-  
-  func pushCreationScene() {
-//    guard let useCase: FolderUseCase = folderUseCase else { fatalError() }
-//    let reactor: FolderCreationReactor = .init(coordinator: self, useCase: useCase)
-//    let viewController: FolderCreationViewController = .init(creationType: .create)
-//    viewController.coordinator = self
-//    viewController.reactor = reactor
-//
-//    navigationController.pushViewController(
-//      viewController,
-//      animated: true
-//    )
-  }
-  
-  func popCreationScene() {
-    navigationController.popViewController(animated: true)
+    guard let tabBarController = navigationController.viewControllers[0] as? TabBarController,
+          let tabBarViewControllers = tabBarController.viewControllers,
+          let folderViewController = tabBarViewControllers[1] as? FolderViewController else {
+      return
+    }
+
+    folderCreationViewController.saveButtonDelegate = folderViewController
+    navigationController.pushViewController(folderCreationViewController, animated: true)
   }
   
   func pushWebView(bookmark: Bookmark) {

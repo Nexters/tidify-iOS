@@ -17,7 +17,6 @@ final class FolderViewModel: ViewModelType {
     case viewDidLoad
     case didTapCategory(Folder.FolderCategory)
     case didSelectFolder(_ folder: Folder)
-    case didTapEdit(_ folder: Folder)
     case didTapDelete(_ folder: Folder)
     case didScroll
   }
@@ -48,8 +47,6 @@ final class FolderViewModel: ViewModelType {
       setupInitailFolders()
     case .didSelectFolder(let folder):
       print("didSelectFolder: \(folder)")
-    case .didTapEdit(let folder):
-      print("didTapEdit: \(folder)")
     case .didTapDelete(let folder):
       deleteFolder(folder)
     case .didScroll:

@@ -64,14 +64,15 @@ private extension FolderTableViewCell {
       $0.top.bottom.equalToSuperview().inset(15)
       $0.width.equalTo(UIViewController.viewWidth * 0.025)
     }
-    
-    nameLabel.snp.makeConstraints {
-      $0.leading.equalTo(colorView.snp.trailing).offset(20)
-      $0.centerY.equalToSuperview()
-    }
 
     countLabel.snp.makeConstraints {
       $0.trailing.equalToSuperview().inset(20)
+      $0.centerY.equalToSuperview()
+    }
+
+    nameLabel.snp.makeConstraints {
+      $0.leading.equalTo(colorView.snp.trailing).offset(20)
+      $0.trailing.lessThanOrEqualTo(countLabel.snp.trailing).inset(80)
       $0.centerY.equalToSuperview()
     }
   }
