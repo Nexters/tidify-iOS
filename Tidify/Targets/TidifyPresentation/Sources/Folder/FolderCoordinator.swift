@@ -83,7 +83,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   func start() {}
   
   func startPush() -> UIViewController {
-    guard let useCase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self) else {
+    guard let useCase: FolderListUseCase = DIContainer.shared.resolve(type: FolderListUseCase.self) else {
       fatalError()
     }
 

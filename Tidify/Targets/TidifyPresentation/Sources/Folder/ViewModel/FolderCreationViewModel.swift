@@ -10,7 +10,7 @@ import Combine
 import TidifyDomain
 
 final class FolderCreationViewModel: ViewModelType {
-  typealias UseCase = FolderUseCase
+  typealias UseCase = FolderCreationUseCase
 
   enum Action {
     case didTapCreateFolderButton(_ requestDTO: FolderRequestDTO)
@@ -19,7 +19,7 @@ final class FolderCreationViewModel: ViewModelType {
 
   struct State: Equatable {
     var isLoading: Bool
-    var errorType: FolderError?
+    var errorType: FolderCreationError?
     var isSuccess: Bool
   }
 

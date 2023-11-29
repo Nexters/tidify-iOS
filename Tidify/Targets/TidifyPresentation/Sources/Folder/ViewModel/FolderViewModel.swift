@@ -11,7 +11,7 @@ import TidifyCore
 import TidifyDomain
 
 final class FolderViewModel: ViewModelType {
-  typealias UseCase = FolderUseCase
+  typealias UseCase = FolderListUseCase
 
   enum Action: Equatable {
     case viewDidLoad
@@ -25,7 +25,7 @@ final class FolderViewModel: ViewModelType {
     var isLoading: Bool
     var category: Folder.FolderCategory
     var folders: [Folder]
-    var errorType: FolderError?
+    var errorType: FolderListError?
   }
 
   let useCase: UseCase

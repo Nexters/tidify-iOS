@@ -28,7 +28,7 @@ final class DefaultFolderCreationCoordinator: FolderCreationCoordinator {
   func start() {}
 
   func startPush(type: CreationType, originFolder: Folder? = nil) -> FolderCreationViewController {
-    guard let useCase: FolderUseCase = DIContainer.shared.resolve(type: FolderUseCase.self) else {
+    guard let useCase: FolderCreationUseCase = DIContainer.shared.resolve(type: FolderCreationUseCase.self) else {
       fatalError()
     }
 
