@@ -18,7 +18,6 @@ final class FolderCreationViewModel: ViewModelType {
   }
 
   struct State: Equatable {
-    var isLoading: Bool
     var errorType: FolderCreationError?
     var isSuccess: Bool
   }
@@ -28,7 +27,7 @@ final class FolderCreationViewModel: ViewModelType {
 
   init(useCase: UseCase) {
     self.useCase = useCase
-    state = .init(isLoading: false, errorType: nil, isSuccess: false)
+    state = .init(errorType: nil, isSuccess: false)
   }
 
   func action(_ action: Action) {
@@ -45,9 +44,7 @@ private extension FolderCreationViewModel {
   func createFolder(_ requestDTO: FolderRequestDTO) {
     Task {
       do {
-        state.isLoading = true
         try await useCase.createFolder(request: requestDTO)
-        state.isLoading = false
         state.isSuccess = true
       } catch {
         state.errorType = .failCreateFolder
@@ -58,9 +55,7 @@ private extension FolderCreationViewModel {
   func updateFolder(id: Int, requestDTO: FolderRequestDTO) {
     Task {
       do {
-        state.isLoading = true
         try await useCase.updateFolder(id: id, request: requestDTO)
-        state.isLoading = false
         state.isSuccess = true
       } catch {
         state.errorType = .failUpdateFolder

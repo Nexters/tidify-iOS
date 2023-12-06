@@ -11,7 +11,7 @@ import UIKit
 
 import SnapKit
 
-final class FolderViewController: BaseViewController, Alertable, Coordinatable {
+final class FolderViewController: BaseViewController, Alertable, Coordinatable, LoadingIndicatable {
 
   // MARK: Properties
   private let navigationBar: TidifyNavigationBar
@@ -19,6 +19,12 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable {
   weak var coordinator: DefaultFolderCoordinator?
   private var scrollWorkItem: DispatchWorkItem?
   private var scrollOffset: CGFloat = 0
+
+  var indicatorView: UIActivityIndicatorView = {
+    let indicatorView: UIActivityIndicatorView = .init()
+    indicatorView.color = .t_blue()
+    return indicatorView
+  }()
 
   private let searchButton: UIButton = {
     let button: UIButton = .init()
@@ -104,7 +110,8 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable {
 
   override func setupViews() {
     super.setupViews()
-    
+
+    view.addSubview(indicatorView)
     view.addSubview(navigationBar)
     view.addSubview(searchButton)
     view.addSubview(scrollView)
@@ -117,6 +124,10 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable {
 // MARK: - Private
 private extension FolderViewController {
   func setupLayoutConstraints() {
+    indicatorView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
     navigationBar.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.leading.trailing.equalToSuperview()

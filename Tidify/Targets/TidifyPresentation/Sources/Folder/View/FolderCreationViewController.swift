@@ -233,15 +233,6 @@ private extension FolderCreationViewController {
       .store(in: &cancellable)
 
     viewModel.$state
-      .map { $0.isLoading }
-      .receive(on: DispatchQueue.main)
-      .removeDuplicates()
-      .sink(receiveValue: { [weak self] isLoading in
-        self?.setIndicatorView(isLoading: isLoading)
-      })
-      .store(in: &cancellable)
-
-    viewModel.$state
       .map { $0.errorType }
       .compactMap { $0 }
       .receive(on: DispatchQueue.main)

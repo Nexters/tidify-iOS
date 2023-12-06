@@ -10,11 +10,17 @@ import AuthenticationServices
 
 import SnapKit
 
-final class LoginViewController: BaseViewController, Alertable, Coordinatable {
+final class LoginViewController: BaseViewController, Alertable, Coordinatable, LoadingIndicatable {
 
   // MARK: - Properties
   private let viewModel: LoginViewModel
   weak var coordinator: DefaultLoginCoordinator?
+
+  var indicatorView: UIActivityIndicatorView = {
+    let indicatorView: UIActivityIndicatorView = .init()
+    indicatorView.color = .t_blue()
+    return indicatorView
+  }()
 
   private let logoImageView: UIImageView = {
     let imageView: UIImageView = .init()
