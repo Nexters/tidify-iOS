@@ -10,9 +10,7 @@ import TidifyCore
 import TidifyDomain
 import UIKit
 
-protocol BookmarkCreationCoordinator: Coordinator {
-  func pushEditBookmarkScene(with bookmark: Bookmark)
-}
+protocol BookmarkCreationCoordinator: Coordinator {}
 
 final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
 
@@ -27,32 +25,29 @@ final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
   }
 
   // MARK: - Methods
-  func start() {
-    let viewController: BookmarkCreationViewController = getViewController()
-    navigationController.pushViewController(viewController, animated: true)
+  func start() {}
+
+  func startPush(type: CreationType, originBookmark: Bookmark? = nil) -> BookmarkCreationViewController {
+    guard let useCase: BookmarkCRUDUseCase = DIContainer.shared.resolve(type: BookmarkCRUDUseCase.self) else {
+      fatalError()
+    }
+
+//    let viewModel: BookmarkCreationViewModel = .init(useCase: useCase)
+//    let viewController: BookmarkCreationViewController = .init(
+//      viewModel: viewModel,
+//      creationType: type,
+//      originBookmark: originBookmark
+//    )
+//    viewController.coordinator = self
+//
+//    return viewController
+
+    //TODO: 구현 예정
+    return .init(nibName: nil, bundle: nil)
   }
 
   func didFinish() {
     parentCoordinator?.removeChild(self)
     navigationController.popViewController(animated: true)
-  }
-
-  func pushEditBookmarkScene(with bookmark: Bookmark) {
-    let viewController: BookmarkCreationViewController = getViewController(bookmark)
-    navigationController.pushViewController(viewController, animated: true)
-  }
-}
-
-// MARK: - Private
-private extension DefaultBookmarkCreationCoordinator {
-  func getViewController(_ bookmark: Bookmark? = nil) -> BookmarkCreationViewController {
-    guard let useCase: CreateBookmarkUseCase = DIContainer.shared.resolve(
-      type: CreateBookmarkUseCase.self) else { fatalError() }
-    navigationController.navigationBar.topItem?.title = ""
-    let reactor: BookmarkCreationReactor = .init(coordinator: self, useCase: useCase, bookmark: bookmark)
-    let viewController: BookmarkCreationViewController = .init(nibName: nil, bundle: nil)
-    viewController.reactor = reactor
-
-    return viewController
   }
 }

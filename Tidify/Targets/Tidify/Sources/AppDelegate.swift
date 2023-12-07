@@ -54,7 +54,10 @@ private extension AppDelegate {
   func setupNavigationBar() {
     UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.clear], for: .normal)
     let navigationBar: UINavigationBar = UINavigationBar.appearance()
-    navigationBar.titleTextAttributes = [.foregroundColor: UIColor.t_gray(weight: 800)]
+    navigationBar.titleTextAttributes = [
+      .foregroundColor: UIColor.t_gray(weight: 800),
+      .font: UIFont.t_B(17)
+    ]
     navigationBar.backIndicatorImage = UIImage(named: "backButtonIcon")
     navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backButtonIcon")
   }

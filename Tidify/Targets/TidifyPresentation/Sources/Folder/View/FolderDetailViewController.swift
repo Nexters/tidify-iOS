@@ -16,7 +16,7 @@ final class FolderDetailViewController: UIViewController, View, Alertable {
   private let folder: Folder
   private let containerView: UIView = .init()
   private lazy var emptyLabel: UILabel = .init()
-  private lazy var bookmarkTableView: TidifyTableView = .init(tabType: .bookmark)
+//  private lazy var bookmarkTableView: TidifyTableView = .init(tabType: .bookmark)
   var disposeBag: DisposeBag = .init()
   
   override func viewDidLoad() {
@@ -55,7 +55,7 @@ private extension FolderDetailViewController {
     view.addSubview(navigationBar)
     view.addSubview(containerView)
     containerView.addSubview(emptyLabel)
-    containerView.addSubview(bookmarkTableView)
+//    containerView.addSubview(bookmarkTableView)
     
     containerView.do {
       $0.cornerRadius([.topLeft, .topRight], radius: 16)
@@ -78,10 +78,10 @@ private extension FolderDetailViewController {
       $0.leading.bottom.trailing.equalToSuperview()
     }
     
-    bookmarkTableView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview().inset(20)
-      $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
-    }
+//    bookmarkTableView.snp.makeConstraints {
+//      $0.top.leading.trailing.equalToSuperview().inset(20)
+//      $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
+//    }
     
     emptyLabel.snp.makeConstraints {
       $0.top.equalToSuperview().offset(32)
@@ -98,19 +98,19 @@ private extension FolderDetailViewController {
   }
   
   func bindState(reactor: FolderDetailReactor) {
-    reactor.state
-      .map { $0.bookmarks }
-      .bind(to: bookmarkTableView.rx.items(
-        cellIdentifier: "\(BookmarkCell.self)",
-        cellType: BookmarkCell.self)) { _, folder, cell in
-          cell.configure(bookmark: folder)
-        }
-        .disposed(by: disposeBag)
-    
-    reactor.state
-      .map { $0.bookmarks.isEmpty }
-      .bind(to: bookmarkTableView.rx.isHidden)
-      .disposed(by: disposeBag)
+//    reactor.state
+//      .map { $0.bookmarks }
+//      .bind(to: bookmarkTableView.rx.items(
+//        cellIdentifier: "\(BookmarkCell.self)",
+//        cellType: BookmarkCell.self)) { _, folder, cell in
+//          cell.configure(bookmark: folder)
+//        }
+//        .disposed(by: disposeBag)
+//
+//    reactor.state
+//      .map { $0.bookmarks.isEmpty }
+//      .bind(to: bookmarkTableView.rx.isHidden)
+//      .disposed(by: disposeBag)
   }
 
   func bindTableViewAction() {
@@ -118,25 +118,25 @@ private extension FolderDetailViewController {
       return
     }
 
-    bookmarkTableView.rx.modelSelected(Bookmark.self)
-      .map { Action.didSelect($0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    bookmarkTableView.editAction
-      .flatMap { row in
-        Observable.just(reactor.currentState.bookmarks[row])
-      }
-      .map { Action.tryEdit($0) }
-      .bind(to: reactor.action)
-      .disposed(by: self.disposeBag)
-
-    bookmarkTableView.deleteAction
-      .withUnretained(self)
-      .flatMap { owner, row -> PublishSubject<Int> in owner.presentDeletionAlert(row) }
-      .map { Action.tryDelete(reactor.currentState.bookmarks[$0]) }
-      .bind(to: reactor.action)
-      .disposed(by: self.disposeBag)
+//    bookmarkTableView.rx.modelSelected(Bookmark.self)
+//      .map { Action.didSelect($0) }
+//      .bind(to: reactor.action)
+//      .disposed(by: disposeBag)
+//
+//    bookmarkTableView.editAction
+//      .flatMap { row in
+//        Observable.just(reactor.currentState.bookmarks[row])
+//      }
+//      .map { Action.tryEdit($0) }
+//      .bind(to: reactor.action)
+//      .disposed(by: self.disposeBag)
+//
+//    bookmarkTableView.deleteAction
+//      .withUnretained(self)
+//      .flatMap { owner, row -> PublishSubject<Int> in owner.presentDeletionAlert(row) }
+//      .map { Action.tryDelete(reactor.currentState.bookmarks[$0]) }
+//      .bind(to: reactor.action)
+//      .disposed(by: self.disposeBag)
   }
 
   func presentDeletionAlert(_ row: Int) -> PublishSubject<Int> {

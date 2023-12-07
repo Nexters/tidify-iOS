@@ -10,13 +10,13 @@ import AuthenticationServices
 
 import SnapKit
 
-final class LoginViewController: BaseViewController, Alertable, Coordinatable {
+final class LoginViewController: BaseViewController, Alertable, Coordinatable, LoadingIndicatable {
 
   // MARK: - Properties
   private let viewModel: LoginViewModel
   weak var coordinator: DefaultLoginCoordinator?
 
-  private let indicatorView: UIActivityIndicatorView = {
+  var indicatorView: UIActivityIndicatorView = {
     let indicatorView: UIActivityIndicatorView = .init()
     indicatorView.color = .t_blue()
     return indicatorView
@@ -183,11 +183,7 @@ private extension LoginViewController {
       .receive(on: DispatchQueue.main)
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isLoading in
-        if isLoading {
-          self?.indicatorView.startAnimating()
-        } else {
-          self?.indicatorView.isHidden = true
-        }
+        self?.setIndicatorView(isLoading: isLoading)
       })
       .store(in: &cancellable)
 

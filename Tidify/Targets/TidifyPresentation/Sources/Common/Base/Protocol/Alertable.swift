@@ -17,6 +17,7 @@ internal enum AlertType: CaseIterable {
   case removeAllCache
   case logout
   case signOut
+  case folderCreation
 
   var title: String {
     switch self {
@@ -27,6 +28,7 @@ internal enum AlertType: CaseIterable {
     case .logout: return "로그아웃 안내"
     case .signOut: return "회원탈퇴"
     case .loginError: return "소셜 로그인에 실패했습니다"
+    case .folderCreation: return "저장에 실패했습니다"
     }
   }
 
@@ -39,6 +41,7 @@ internal enum AlertType: CaseIterable {
     case .logout: return "지금까지 모은 북마크는 계정에 저장됩니다"
     case .signOut: return "지금까지 모은 북마크는 모두 삭제되며 되돌릴 수 없어요"
     case .loginError: return "네트워크 연결상태 혹은 선택한 플랫폼을 확인해주세요"
+    case .folderCreation: return "네트워크 연결상태 혹은 폴더 제목을 확인해주세요"
     }
   }
 

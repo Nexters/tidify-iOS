@@ -11,13 +11,12 @@ import TidifyCore
 import TidifyDomain
 
 final class FolderViewModel: ViewModelType {
-  typealias UseCase = FolderUseCase
+  typealias UseCase = FolderListUseCase
 
   enum Action: Equatable {
     case viewDidLoad
     case didTapCategory(Folder.FolderCategory)
     case didSelectFolder(_ folder: Folder)
-    case didTapEdit(_ folder: Folder)
     case didTapDelete(_ folder: Folder)
     case didScroll
   }
@@ -26,7 +25,7 @@ final class FolderViewModel: ViewModelType {
     var isLoading: Bool
     var category: Folder.FolderCategory
     var folders: [Folder]
-    var errorType: FolderError?
+    var errorType: FolderListError?
   }
 
   let useCase: UseCase
@@ -48,8 +47,6 @@ final class FolderViewModel: ViewModelType {
       setupInitailFolders()
     case .didSelectFolder(let folder):
       print("didSelectFolder: \(folder)")
-    case .didTapEdit(let folder):
-      print("didTapEdit: \(folder)")
     case .didTapDelete(let folder):
       deleteFolder(folder)
     case .didScroll:

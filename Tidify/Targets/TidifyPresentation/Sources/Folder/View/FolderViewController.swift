@@ -11,7 +11,7 @@ import UIKit
 
 import SnapKit
 
-final class FolderViewController: BaseViewController, Alertable, Coordinatable {
+final class FolderViewController: BaseViewController, Alertable, Coordinatable, LoadingIndicatable {
 
   // MARK: Properties
   private let navigationBar: TidifyNavigationBar
@@ -20,7 +20,7 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable {
   private var scrollWorkItem: DispatchWorkItem?
   private var scrollOffset: CGFloat = 0
 
-  private let indicatorView: UIActivityIndicatorView = {
+  var indicatorView: UIActivityIndicatorView = {
     let indicatorView: UIActivityIndicatorView = .init()
     indicatorView.color = .t_blue()
     return indicatorView
@@ -66,6 +66,19 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable {
     return tableView
   }()
 
+  private lazy var folderCreationButton: UIButton = {
+    let button: UIButton = .init()
+    button.setImage(.init(named: "plusIcon"), for: .normal)
+    button.cornerRadius(radius: 10)
+    button.backgroundColor = .t_ashBlue(weight: 100)
+    button.setTitle("폴더 추가  ", for: .normal)
+    button.titleLabel?.font = .t_B(18)
+    button.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+    button.addTarget(self, action: #selector(didTapFolderCreationButton), for: .touchUpInside)
+    button.semanticContentAttribute = .forceRightToLeft
+    return button
+  }()
+
   // MARK: Initializer
   init(navigationBar: TidifyNavigationBar, viewModel: FolderViewModel) {
     self.navigationBar = navigationBar
@@ -78,11 +91,11 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable {
   }
 
   override func viewDidLoad() {
+    viewModel.action(.viewDidLoad)
     super.viewDidLoad()
     setupLayoutConstraints()
     bindState()
     coordinator?.navigationBarDelegate = self
-    viewModel.action(.viewDidLoad)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -97,18 +110,24 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable {
 
   override func setupViews() {
     super.setupViews()
-    
+
+    view.addSubview(indicatorView)
     view.addSubview(navigationBar)
     view.addSubview(searchButton)
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     contentView.addSubview(tableView)
+    contentView.addSubview(folderCreationButton)
   }
 }
 
 // MARK: - Private
 private extension FolderViewController {
   func setupLayoutConstraints() {
+    indicatorView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
     navigationBar.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.leading.trailing.equalToSuperview()
@@ -136,6 +155,12 @@ private extension FolderViewController {
       $0.leading.trailing.equalToSuperview().inset(15)
       $0.height.equalTo(0)
     }
+
+    folderCreationButton.snp.makeConstraints {
+      $0.top.equalTo(tableView.snp.bottom).offset(15)
+      $0.leading.trailing.equalToSuperview().inset(25)
+      $0.height.equalTo(Self.viewHeight * 0.06)
+    }
   }
 
   func bindState() {
@@ -144,11 +169,7 @@ private extension FolderViewController {
       .receive(on: DispatchQueue.main)
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isLoading in
-        if isLoading {
-          self?.indicatorView.startAnimating()
-        } else {
-          self?.indicatorView.isHidden = true
-        }
+        self?.setIndicatorView(isLoading: isLoading)
       })
       .store(in: &cancellable)
 
@@ -167,20 +188,33 @@ private extension FolderViewController {
       tableView.snp.updateConstraints {
         $0.height.equalTo(254)
       }
+      contentView.snp.updateConstraints {
+        $0.height.equalTo(269 + Self.viewHeight * 0.06)
+      }
     } else {
-      let updatedHeight = Int((Self.viewHeight * 0.07)) * folders.count + 20
+      let updatedHeight = 60 * folders.count
 
       tableView.snp.updateConstraints {
         $0.height.equalTo(updatedHeight)
       }
       contentView.snp.updateConstraints {
-        $0.height.equalTo(updatedHeight + 120)
+        $0.height.equalTo(updatedHeight + 190)
       }
     }
+  }
+
+  @objc func didTapFolderCreationButton() {
+    coordinator?.pushFolderCreationScene(type: .create, originFolder: nil)
   }
 }
 
 // MARK: - Extension
+extension FolderViewController: FolderCreationDelegate {
+  func didSuccessSave() {
+    viewModel.action(.viewDidLoad)
+  }
+}
+
 extension FolderViewController: FolderNavigationBarDelegate {
   func didTapFolderButton() {
     viewModel.action(.didTapCategory(.normal))
@@ -234,7 +268,7 @@ extension FolderViewController: UITableViewDataSource {
 
 extension FolderViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return viewModel.state.folders.isEmpty ? 254 : Self.viewHeight * 0.07
+    return viewModel.state.folders.isEmpty ? 254 : 60
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -257,8 +291,8 @@ extension FolderViewController: UITableViewDelegate {
       let action: UIContextualAction = .init(
         style: .normal,
         title: "편집",
-        handler: { [weak viewModel] _, _, completion in
-          viewModel?.action(.didTapEdit(folder))
+        handler: { [weak coordinator] _, _, completion in
+          coordinator?.pushFolderCreationScene(type: .edit, originFolder: folder)
           completion(true)
         })
       action.backgroundColor = .t_blue()

@@ -18,9 +18,13 @@ public struct DomainAssembly: Assemblable {
     container.register(type: UserUseCase.self) { container in
       return DefaultUserUseCase(userRepository: container.resolve(type: UserRepository.self)!)
     }
-    
-    container.register(type: FolderUseCase.self) { container in
-      return DefaultFolderUseCase(repository: container.resolve(type: FolderRepository.self)!)
+
+    container.register(type: FolderCreationUseCase.self) { container in
+      return DefaultFolderCreationUseCase(repository: container.resolve(type: FolderRepository.self)!)
+    }
+
+    container.register(type: FolderListUseCase.self) { container in
+      return DefaultFolderListUseCase(repository: container.resolve(type: FolderRepository.self)!)
     }
     
     container.register(type: BookmarkCRUDUseCase.self) { container in

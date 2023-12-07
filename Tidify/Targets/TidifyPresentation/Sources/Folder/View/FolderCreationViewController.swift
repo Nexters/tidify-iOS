@@ -6,11 +6,10 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import Combine
 import TidifyDomain
 import UIKit
 
-import ReactorKit
-import RxRelay
 import SnapKit
 
 enum CreationType {
@@ -18,31 +17,71 @@ enum CreationType {
   case edit
 }
 
-final class FolderCreationViewController: UIViewController, View {
+protocol FolderCreationDelegate: AnyObject {
+  func didSuccessSave()
+}
 
-  // MARK: - Properties
-  private var titleLabel: UILabel = .init()
-  private var titleTextField: UITextField = .init()
-  private var colorLabel: UILabel = .init()
-  private var colorTextField: TidifyRightButtonTextField = .init(
-    placeholder: "라벨을 달아봐요!",
-    rightButtonImage: .init(named: "icon_arrowDown_gray")
-  )
-  private var createFolderButton: UIButton = .init()
-  private let selectedColorIndexRelay: BehaviorRelay<Int> = .init(value: -1)
-  private let tapGesture: UITapGestureRecognizer = .init()
+final class FolderCreationViewController: BaseViewController, Coordinatable, Alertable {
+
+  // MARK: Properties
+  weak var coordinator: DefaultFolderCreationCoordinator?
+  weak var saveButtonDelegate: FolderCreationDelegate?
+  private let viewModel: FolderCreationViewModel
   private let creationType: CreationType
   private let originFolder: Folder?
-  private var colorDataSource: [UIColor] = .init()
-  private let titleErrorLabel: UILabel = .init()
-  private let colorErrorLabel: UILabel = .init()
-  var disposeBag: DisposeBag = .init()
-  weak var coordinator: FolderCoordinator?
-  
-  init(creationType: CreationType, originFolder: Folder? = nil) {
+  private let textFieldView: TidifyTextFieldView
+  @Published private var selectedColor: UIColor? = nil
+
+  private let colorDataSource: [UIColor] = [
+    .t_pink(), .t_red(), .t_orange(), .t_yellow(), .t_green(),
+    .t_mint(), .t_ashBlue(), .t_purple(), .t_indigo(), .t_blue()
+  ]
+
+  private lazy var saveButton: UIButton = {
+    let button: UIButton = .init()
+    button.backgroundColor = .t_ashBlue(weight: 100)
+    button.setTitle("저장", for: .normal)
+    button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    button.titleLabel?.font = .t_SB(18)
+    button.cornerRadius(radius: 10)
+    button.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+    button.isEnabled = false
+    return button
+  }()
+
+  private let colorContainerView: UIView = {
+    let view: UIView = .init()
+    view.backgroundColor = .white
+    view.cornerRadius(radius: 15)
+    return view
+  }()
+
+  private let colorTitleLabel: UILabel = {
+    let label: UILabel = .init()
+    label.textColor = .t_ashBlue(weight: 800)
+    label.font = .t_EB(20)
+    label.text = "라벨"
+    return label
+  }()
+
+  private lazy var colorCollectionView: UICollectionView = {
+    let collectionView: UICollectionView = .init(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    collectionView.isScrollEnabled = false
+    collectionView.t_registerCellClass(cellType: FolderCreationCollectionViewCell.self)
+    collectionView.backgroundColor = .white
+    collectionView.delegate = self
+    collectionView.dataSource = self
+    return collectionView
+  }()
+
+  // MARK: Initializer
+  init(viewModel: FolderCreationViewModel, creationType: CreationType, originFolder: Folder? = nil) {
+    self.viewModel = viewModel
     self.creationType = creationType
     self.originFolder = originFolder
+    self.textFieldView = .init(type: .folderTitle)
     super.init(nibName: nil, bundle: nil)
+    title = creationType == .create ? "폴더 생성" : "폴더 편집"
   }
   
   required init?(coder: NSCoder) {
@@ -51,15 +90,13 @@ final class FolderCreationViewController: UIViewController, View {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    setupUI()
-    setupEditing()
+    setupLayoutConstraints()
+    bindState()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     registerKeyboardNotification()
-    bindExtra()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -72,265 +109,157 @@ final class FolderCreationViewController: UIViewController, View {
     super.touchesBegan(touches, with: event)
     view.endEditing(true)
   }
-  
-  func bind(reactor: FolderCreationReactor) {
-    bindAction(reactor: reactor)
+
+  override func setupViews() {
+    super.setupViews()
+
+    view.addSubview(textFieldView)
+    view.addSubview(colorContainerView)
+    colorContainerView.addSubview(colorTitleLabel)
+    colorContainerView.addSubview(colorCollectionView)
+    view.addSubview(saveButton)
+  }
+}
+
+extension FolderCreationViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return colorDataSource.count
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    let cell: FolderCreationCollectionViewCell = collectionView.t_dequeueReusableCell(indexPath: indexPath)
+    cell.configure(color: colorDataSource[indexPath.row])
+
+    if let originFolder = originFolder,
+       originFolder.color == colorDataSource[indexPath.row].toColorString() {
+      selectedColor = colorDataSource[indexPath.row]
+      textFieldView.setupText(text: originFolder.title)
+      textFieldView.textFieldSubject.send(originFolder.title)
+      cell.setSelected(isSelected: true)
+      collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
+    }
+    return cell
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let cell = collectionView.cellForItem(at: indexPath) as? FolderCreationCollectionViewCell else {
+      return
+    }
+    selectedColor = colorDataSource[indexPath.row]
+    cell.setSelected(isSelected: true)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    guard let cell = collectionView.cellForItem(at: indexPath) as? FolderCreationCollectionViewCell else {
+      return
+    }
+
+    cell.setSelected(isSelected: false)
+  }
+}
+
+extension FolderCreationViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
+    let size = collectionView.frame.height * 0.4
+    return .init(w: size, h: size)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return collectionView.frame.height * 0.185
+  }
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    return collectionView.frame.width * 0.078
   }
 }
 
 // MARK: - private
 private extension FolderCreationViewController {
-  func setupEditing() {
-    guard let originFolder = originFolder else { return }
-    
-    titleTextField.rx.text.onNext(originFolder.title)
-    colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
-    colorTextField.setColor(color: .toColor(originFolder.color))
-    
-    for (index, color) in colorDataSource.enumerated() {
-      if color.toColorString() == originFolder.color {
-        selectedColorIndexRelay.accept(index)
-      }
-    }
-  }
-  
-  func setupUI() {
-    let sidePadding: CGFloat = 20
-
-    title = creationType == .create ? "폴더 생성" : "폴더 편집"
-    view.backgroundColor = .white
-    navigationController?.navigationBar.topItem?.title = ""
-
-    view.addSubview(titleLabel)
-    view.addSubview(titleTextField)
-    view.addSubview(colorLabel)
-    view.addSubview(colorTextField)
-    view.addSubview(createFolderButton)
-    view.addSubview(titleErrorLabel)
-    view.addSubview(colorErrorLabel)
-    colorTextField.addGestureRecognizer(tapGesture)
-
-    titleLabel = setGuideLabel(titleLabel, title: "폴더 이름")
-    titleTextField = setTextField(titleTextField, placeholder: "어떤 북마크를 모을까요?")
-    colorLabel = setGuideLabel(colorLabel, title: "라벨")
-    
-    titleErrorLabel.do {
-      $0.text = "폴더 이름이 필요해요"
-      $0.textColor = .systemRed
-      $0.font = .t_SB(14)
-      $0.isHidden = true
-    }
-    
-    colorErrorLabel.do {
-      $0.text = "라벨을 달아주세요"
-      $0.textColor = .systemRed
-      $0.font = .t_SB(14)
-      $0.isHidden = true
+  func setupLayoutConstraints() {
+    textFieldView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(15)
+      $0.leading.trailing.equalToSuperview().inset(15)
+      $0.height.equalTo(Self.viewHeight * 0.13)
     }
 
-    createFolderButton.do {
-      $0.setTitle("저장", for: .normal)
-      $0.titleLabel?.font = .t_SB(18)
-      $0.setTitleColor(.systemGray2, for: .normal)
-      $0.isEnabled = false
-      $0.cornerRadius(radius: 16)
-    }
-    
-    colorDataSource = [
-      .t_pink(),
-      .t_red(),
-      .t_orange(),
-      .t_yellow(),
-      .t_green(),
-      .t_mint(),
-      .t_ashBlue(),
-      .t_purple(),
-      .t_indigo(),
-      .t_blue()
-    ]
-
-    titleLabel.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
-      $0.leading.equalToSuperview().offset(sidePadding)
-      $0.trailing.lessThanOrEqualToSuperview()
-    }
-    
-    titleErrorLabel.snp.makeConstraints {
-      $0.trailing.equalToSuperview().inset(20)
-      $0.centerY.equalTo(titleLabel)
+    colorContainerView.snp.makeConstraints {
+      $0.top.equalTo(textFieldView.snp.bottom).offset(15)
+      $0.leading.trailing.equalTo(textFieldView)
+      $0.height.equalTo(Self.viewHeight * 0.22)
     }
 
-    titleTextField.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(16)
-      $0.leading.equalToSuperview().offset(sidePadding)
-      $0.trailing.equalToSuperview().offset(-sidePadding)
-      $0.height.equalTo(Self.viewHeight * 0.067)
+    colorTitleLabel.snp.makeConstraints {
+      $0.top.leading.equalToSuperview().inset(20)
+      $0.height.equalTo(20)
     }
 
-    colorLabel.snp.makeConstraints {
-      $0.top.equalTo(titleTextField.snp.bottom).offset(40)
-      $0.leading.equalToSuperview().offset(sidePadding)
-      $0.trailing.lessThanOrEqualToSuperview()
-    }
-    
-    colorErrorLabel.snp.makeConstraints {
-      $0.trailing.equalToSuperview().inset(20)
-      $0.centerY.equalTo(colorLabel)
+    colorCollectionView.snp.makeConstraints {
+      $0.top.equalTo(colorTitleLabel.snp.bottom).offset(20)
+      $0.leading.trailing.bottom.equalToSuperview().inset(20)
     }
 
-    colorTextField.snp.makeConstraints {
-      $0.top.equalTo(colorLabel.snp.bottom).offset(16)
-      $0.leading.equalToSuperview().offset(sidePadding)
-      $0.trailing.equalToSuperview().offset(-sidePadding)
-      $0.height.equalTo(Self.viewHeight * 0.067)
-    }
-
-    createFolderButton.snp.makeConstraints {
-      $0.leading.equalToSuperview().offset(sidePadding)
-      $0.trailing.equalToSuperview().offset(-sidePadding)
-      $0.bottom.equalToSuperview().offset(-40)
-      $0.height.equalTo(Self.viewHeight * 0.068)
+    saveButton.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(25)
+      $0.bottom.equalToSuperview().offset(-50)
+      $0.height.equalTo(Self.viewHeight * 0.066)
     }
   }
 
-  func setGuideLabel(_ label: UILabel, title: String) -> UILabel {
-    label.do {
-      $0.text = title
-      $0.font = .t_EB(16)
-      $0.textColor = .black
-    }
+  func bindState() {
+    textFieldView.textFieldSubject
+      .combineLatest($selectedColor)
+      .sink(receiveValue: { [weak saveButton] text, color in
+        let isEnable = (!text.isEmpty && color.isNotNil)
+        saveButton?.isEnabled = isEnable
+        saveButton?.backgroundColor = isEnable ? .t_blue() : .t_ashBlue(weight: 100)
+        saveButton?.setTitleColor(isEnable ? .t_ashBlue(weight: 50) : .t_ashBlue(weight: 300), for: .normal)
+      })
+      .store(in: &cancellable)
 
-    return label
+    viewModel.$state
+      .map { $0.isSuccess }
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.coordinator?.didFinish()
+        self?.saveButtonDelegate?.didSuccessSave()
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.errorType }
+      .compactMap { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] error in
+        self?.presentAlert(type: .folderCreation)
+      })
+      .store(in: &cancellable)
   }
 
-  func setTextField(_ textField: UITextField, placeholder: String) -> UITextField {
-    let attrString: NSAttributedString = .init(
-      string: placeholder,
-      attributes: [.foregroundColor: UIColor.gray]
+  @objc func didTapSaveButton() {
+    guard let selectedColor = selectedColor else {
+      return
+    }
+
+    let requestDTO: FolderRequestDTO = .init(
+      title: textFieldView.textFieldSubject.value,
+      color: selectedColor.toColorString()
     )
 
-    textField.do {
-      $0.leftView = .init(frame: .init(x: 0, y: 0, width: 20, height: 0))
-      $0.leftViewMode = .always
-      $0.attributedPlaceholder = attrString
-      $0.backgroundColor = .white
-      $0.cornerRadius(radius: 16)
-      $0.font = .t_SB(16)
-      $0.textColor = .black
+    if creationType == .edit {
+      guard let originFolder = originFolder else {
+        return
+      }
+      viewModel.action(.didTapUpdateFolderButton(id: originFolder.id, requestDTO: requestDTO))
+    } else {
+      viewModel.action(.didTapCreateFolderButton(requestDTO))
     }
-
-    return textField
-  }
-  
-  //MARK: - Binding
-  var isEnableCreateFolderButtonBinder: Binder<Bool> {
-    return .init(self) { owner, isEnable in
-//      owner.createFolderButton.backgroundColor = isEnable ? .t_tidiBlue00() : .clear
-//      owner.createFolderButton.setTitleColor(isEnable ? .white : .systemGray2, for: .normal)
-//      owner.createFolderButton.layer.borderColor = isEnable ? UIColor.clear.cgColor : UIColor.t_borderColor().cgColor
-//      owner.createFolderButton.isEnabled = isEnable
-    }
-  }
-  
-  var isEnableFolderNameObservable: Observable<Bool> {
-    titleTextField.rx.text.orEmpty.map { !$0.isEmpty && $0.count <= 15 }
-  }
-  
-  var isEnableFolderColorObservable: Observable<Bool> {
-    selectedColorIndexRelay.map { $0 != -1 }
-  }
-  
-  var folderTitleObservable: Observable<String> {
-    titleTextField.rx.text.orEmpty.asObservable()
-  }
-  
-  var folderColorObservable: Observable<String> {
-    Observable.just(colorTextField.getColorString())
-  }
-  
-  func bindAction(reactor: FolderCreationReactor) {
-    typealias Action = FolderCreationReactor.Action
-
-    createFolderButton.rx.tap
-      .withUnretained(self)
-      .flatMap { owner, _ in
-        Observable.combineLatest(owner.folderTitleObservable, owner.folderColorObservable)
-      }
-      .map { [weak self] in
-        let requestDTO = FolderRequestDTO(title: $0, color: $1)
-        if self?.creationType == .edit {
-          guard let originFolder = self?.originFolder else { fatalError() }
-          return Action.didTapUpdateFolderButton(id: originFolder.id, folder: requestDTO)
-        }
-        return Action.didTapCreateFolderButton(requestDTO)
-      }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-    
-    tapGesture.rx.event
-      .asDriver()
-      .drive(onNext: { [weak self] _ in
-        self?.showBottomSheet()
-      })
-      .disposed(by: disposeBag)
-  }
-  
-  func bindExtra() {
-    Observable.combineLatest(isEnableFolderNameObservable, isEnableFolderColorObservable)
-      .filter { [weak self] _ in
-        self?.titleTextField.text != " "
-      }
-      .map { $0 && $1 }
-      .bind(to: isEnableCreateFolderButtonBinder)
-      .disposed(by: disposeBag)
-
-    titleTextField.rx.text.orEmpty
-      .filter { $0.count == 1 && $0 == " " }
-      .map { _ in "" }
-      .bind(to: titleTextField.rx.text)
-      .disposed(by: disposeBag)
-
-    titleTextField.rx.text.orEmpty
-      .asSignal(onErrorSignalWith: .empty())
-      .emit(with: self, onNext: { owner, text in
-        if text.isEmpty {
-          owner.titleErrorLabel.text = "폴더 이름이 필요해요"
-        }
-
-        if text.count > 15 {
-          owner.titleErrorLabel.text = "폴더 명은 15자가 최대에요"
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    isEnableFolderNameObservable
-      .bind(to: titleErrorLabel.rx.isHidden)
-      .disposed(by: disposeBag)
-    
-    isEnableFolderColorObservable
-      .bind(to: colorErrorLabel.rx.isHidden)
-      .disposed(by: disposeBag)
-  }
-  
-  //MARK: - BottomSheet
-  func showBottomSheet() {
-    let bottomSheet: BottomSheetViewController = .init(
-      .folder,
-      dataSource: colorDataSource,
-      selectedIndexRelay: selectedColorIndexRelay
-    )
-    bottomSheet.modalPresentationStyle = .overCurrentContext
-    present(bottomSheet, animated: true)
-    
-    selectedColorIndexRelay
-      .withUnretained(self)
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { owner, index in
-        guard index != -1 else { return }
-        owner.colorTextField.setText(text: "이 컬러의 라벨을 달았어요")
-        owner.colorTextField.setColor(color: owner.colorDataSource[index])
-      })
-      .disposed(by: disposeBag)
   }
   
   //MARK: - Keyboard
@@ -354,22 +283,21 @@ private extension FolderCreationViewController {
     NotificationCenter.default.removeObserver(self)
   }
   
-  @objc
-  func keyboardWillShow(notification: Notification) {
+  @objc func keyboardWillShow(notification: Notification) {
     guard let userInfo = notification.userInfo,
-          let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
-    else { return }
+          let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+      return
+    }
     let keyboardHeight = keyboardFrame.cgRectValue.height
     let safeAreaBottomHeight = view.safeAreaInsets.bottom
     
-    createFolderButton.transform = CGAffineTransform(
+    saveButton.transform = CGAffineTransform(
       translationX: 0,
       y: safeAreaBottomHeight - keyboardHeight
     )
   }
   
-  @objc
-  func keyboardWillHide(_ sender: Notification) {
-    createFolderButton.transform = .identity
+  @objc func keyboardWillHide(_ sender: Notification) {
+    saveButton.transform = .identity
   }
 }

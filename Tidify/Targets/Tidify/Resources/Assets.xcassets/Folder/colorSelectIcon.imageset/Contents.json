@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Tap Bar - Button.png",
+      "filename" : "check.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Tap Bar - Button@2x.png",
+      "filename" : "check@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Tap Bar - Button@3x.png",
+      "filename" : "check@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -11,27 +11,21 @@ import UIKit
 import SnapKit
 import Then
 
-final class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController, Coordinatable {
   
   // MARK: - Properties
   private let tidifyTabBar: TidifyTabBar = .init()
-  
-  // MARK: - LifeCycle
+  weak var coordinator: DefaultTabBarCoordinator?
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    setupTabBar()
+    tidifyTabBar.delegate = self
     setupUI()
   }
 }
 
 // MARK: - Methods
 private extension TabBarController {
-  func setupTabBar() {
-    tidifyTabBar.delegate = self
-    let reactor: TidifyTabBarReactor = .init()
-    tidifyTabBar.reactor = reactor
-  }
-  
   func setupUI() {
     view.addSubview(tidifyTabBar)
     
@@ -45,6 +39,11 @@ private extension TabBarController {
 
 extension TabBarController: TidifyTabBarDelegate {
   func didSelectTab(_ item: TabBarItem) {
+    if item == .bookmarkCreation {
+      coordinator?.pushBookmarkCreationScene()
+      return
+    }
+
     selectedIndex = item.index
   }
 }
