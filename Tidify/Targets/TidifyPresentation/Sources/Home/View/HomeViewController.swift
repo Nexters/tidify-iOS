@@ -20,7 +20,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate, Alertabl
 
   private lazy var searchTextField: UITextField = {
     let textField: UITextField = .init()
-    textField.attributedPlaceholder = .init(string: "북마크 찾기", attributes: [
+    textField.attributedPlaceholder = .init(string: "  북마크 찾기", attributes: [
       .font: UIFont.t_SB(14),
       .foregroundColor: UIColor.init(110, 121, 135)
     ])
