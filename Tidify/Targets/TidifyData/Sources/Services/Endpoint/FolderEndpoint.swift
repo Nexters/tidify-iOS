@@ -11,7 +11,7 @@ import TidifyDomain
 
 enum FolderEndpoint: EndpointType {
   case createFolder(request: FolderRequestDTO)
-  case fetchFolderList(start: Int, count: Int, category: Folder.FolderCategory)
+  case fetchFolderList(start: Int, count: Int, category: FolderCategory)
   case fetchBookmarkListInFolder(id: Int)
   case updateFolder(id: Int, request: FolderRequestDTO)
   case deleteFolder(id: Int)

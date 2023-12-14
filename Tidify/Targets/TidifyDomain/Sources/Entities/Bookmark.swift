@@ -8,6 +8,10 @@
 
 import Foundation
 
+public enum BookmarkCategory {
+  case normal, favorite
+}
+
 public struct Bookmark: Hashable {
 
   // MARK: - Properties
@@ -15,6 +19,7 @@ public struct Bookmark: Hashable {
   public var folderID: Int?
   public var urlString: String?
   public var name: String
+  public var star: Bool
 
   public var url: URL {
     return .init(string: urlString?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
@@ -24,12 +29,14 @@ public struct Bookmark: Hashable {
     id: Int,
     folderID: Int?,
     urlString: String?,
-    name: String
+    name: String,
+    star: Bool
   ) {
     self.id = id
     self.folderID = folderID
     self.urlString = urlString
     self.name = name
+    self.star = star
   }
 
   public static func ==(lhs: Bookmark, rhs: Bookmark) -> Bool {

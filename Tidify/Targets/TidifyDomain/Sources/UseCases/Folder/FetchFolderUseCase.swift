@@ -11,11 +11,11 @@ public typealias FetchFolderListResponse = (folders: [Folder], isLast: Bool)
 public protocol FetchFolderUseCase {
   var folderRepository: FolderRepository { get }
 
-  func fetchFolderList(start: Int, count: Int, category: Folder.FolderCategory) async throws -> FetchFolderListResponse
+  func fetchFolderList(start: Int, count: Int, category: FolderCategory) async throws -> FetchFolderListResponse
 }
 
 extension FetchFolderUseCase {
-  func fetchFolderList(start: Int, count: Int, category: Folder.FolderCategory) async throws -> FetchFolderListResponse {
+  func fetchFolderList(start: Int, count: Int, category: FolderCategory) async throws -> FetchFolderListResponse {
     try await folderRepository.fetchFolderList(start: start, count: count, category: category)
   }
 }

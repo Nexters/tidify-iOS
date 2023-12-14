@@ -23,7 +23,7 @@ final class DefaultFolderRepository: FolderRepository {
     try await networkProvider.request(endpoint: FolderEndpoint.createFolder(request: request), type: FolderCreationResponse.self)
   }
 
-  func fetchFolderList(start: Int, count: Int, category: Folder.FolderCategory) async throws -> FetchFolderListResponse {
+  func fetchFolderList(start: Int, count: Int, category: FolderCategory) async throws -> FetchFolderListResponse {
     let response = try await networkProvider.request(
       endpoint: FolderEndpoint.fetchFolderList(start: start, count: count, category: category),
       type: FolderListResponse.self

@@ -76,7 +76,7 @@ final class EmptyGuideCell: UITableViewCell {
     descLabel.text = "깔끔한 정리를 도와주는\n티디파이 가이드를 보러 가실래요?"
   }
 
-  func setupFolderGuideLabel(category: Folder.FolderCategory) {
+  func setupFolderGuideLabel(category: FolderCategory) {
     switch category {
     case .normal:
       titleLabel.text = "아직 정리된 폴더가 없어요"
@@ -93,7 +93,7 @@ final class EmptyGuideCell: UITableViewCell {
 
 private extension EmptyGuideCell {
   @objc func didTapShowGuideButton() {
-    // TODO
+    delegate?.didTapShowGuideButton()
   }
 
   func setupLayout() {
