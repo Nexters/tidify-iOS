@@ -6,10 +6,10 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-public protocol FolderDetailUseCase: DeleteBookmarkUseCase {
+public protocol FolderDetailUseCase: BookmarkListUseCase {
   var bookmarkRepository: BookmarkRepository { get }
 
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkListResponse
+  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse
 }
 
 final class DefaultFolderDetailUseCase: FolderDetailUseCase {
@@ -25,7 +25,7 @@ final class DefaultFolderDetailUseCase: FolderDetailUseCase {
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkListResponse {
+  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse {
     try await folderDetailRepository.fetchBookmarkListInFolder(id: id)
   }
 }

@@ -26,24 +26,17 @@ public struct DomainAssembly: Assemblable {
     container.register(type: FolderListUseCase.self) { container in
       return DefaultFolderListUseCase(repository: container.resolve(type: FolderRepository.self)!)
     }
-    
-    container.register(type: BookmarkCRUDUseCase.self) { container in
-      return DefaultBookmarkCRUDUseCase(
-        bookmarkRepository: container.resolve(type: BookmarkRepository.self)!,
-        folderRepository: container.resolve(type: FolderRepository.self)!
-      )
-    }
 
-    container.register(type: FetchBookmarkListUseCase.self) { container in
-      return DefaultFetchBookmarkUseCase(bookmarkRepository: container.resolve(type: BookmarkRepository.self)!)
+    container.register(type: BookmarkListUseCase.self) { container in
+      return DefaultBookmarkListUseCase(repository: container.resolve(type: BookmarkRepository.self)!)
     }
 
     container.register(type: SearchUseCase.self) { container in
       return DefaultSearchUseCase(searchRepository: container.resolve(type: SearchRepository.self)!)
     }
 
-    container.register(type: CreateBookmarkUseCase.self) { container in
-      return DefaultCreateBookmarkUseCase(
+    container.register(type: BookmarkCreationUseCase.self) { container in
+      return DefaultBookmarkCreationUseCase(
         bookmarkRepository: container.resolve(type: BookmarkRepository.self)!,
         folderRepository: container.resolve(type: FolderRepository.self)!
       )

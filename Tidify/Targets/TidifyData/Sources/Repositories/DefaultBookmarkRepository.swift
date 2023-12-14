@@ -19,10 +19,13 @@ final class DefaultBookmarkRepository: BookmarkRepository {
   }
 
   // MARK: Methods
-  func fetchBookmarkList(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse {
-    let response = try await networkProvider.request(endpoint: BookmarkEndpoint.fetchBoomarkList(request: request), type: BookmarkListResponse.self)
+  func fetchBookmarkList(request: BookmarkListRequest, category: BookmarkCategory) async throws -> FetchBookmarkResponse {
+    let response = try await networkProvider.request(
+      endpoint: BookmarkEndpoint.fetchBoomarkList(request: request, category: category),
+      type: BookmarkListResponse.self
+    )
 
-    return FetchBookmarkListResponse(
+    return FetchBookmarkResponse(
       bookmarks: response.toDomain(),
       currentPage: response.bookmarkListDTO.currentPage,
       isLastPage: response.bookmarkListDTO.isLastPage
@@ -39,5 +42,9 @@ final class DefaultBookmarkRepository: BookmarkRepository {
 
   func updateBookmark(bookmarkID: Int, request: BookmarkRequestDTO) async throws {
     try await networkProvider.request(endpoint: BookmarkEndpoint.updateBookmark(ID: bookmarkID, request: request), type: APIResponse.self)
+  }
+
+  func favoriteBookmark(bookmarkID: Int) async throws {
+    try await networkProvider.request(endpoint: BookmarkEndpoint.favoriteBookmark(ID: bookmarkID), type: BookmarkResponse.self)
   }
 }
