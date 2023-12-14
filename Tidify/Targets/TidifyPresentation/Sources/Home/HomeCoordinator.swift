@@ -10,19 +10,60 @@ import TidifyCore
 import TidifyDomain
 import UIKit
 
-import RxSwift
+protocol HomeNavigationBarDelegate: AnyObject {
+  func didTapBookmarkButton()
+  func didTapFavoriteButton()
+}
 
 protocol HomeCoordinator: Coordinator {
+
+  // MARK: Methods
   func pushWebView(bookmark: Bookmark)
   func pushSettingScene()
-  func pushBookmarkCreationScene()
   func pushEditBookmarkScene(bookmark: Bookmark)
+  func pushSearchScene()
+
+  // MARK: Properties
+  var navigationBarDelegate: HomeNavigationBarDelegate? { get set }
 }
 
 final class DefaultHomeCoordinator: HomeCoordinator {
   weak var parentCoordinator: Coordinator?
+  weak var navigationBarDelegate: HomeNavigationBarDelegate?
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
+
+  private lazy var bookmarkButton: UIButton = {
+    let button: UIButton = .init()
+    button.setTitle("북마크", for: .normal)
+    button.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+    button.titleLabel?.font = .t_EB(22)
+    button.addTarget(self, action: #selector(didTapBookmarkButton), for: .touchUpInside)
+    return button
+  }()
+
+  private lazy var favoriteButton: UIButton = {
+    let button: UIButton = .init()
+    button.setTitle("즐겨찾기", for: .normal)
+    button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    button.titleLabel?.font = .t_EB(22)
+    button.addTarget(self, action: #selector(didTapFavoriteButton), for: .touchUpInside)
+    return button
+  }()
+
+  private let leftButtonStackView: UIStackView = {
+    let stackView: UIStackView = .init()
+    stackView.distribution = .equalSpacing
+    stackView.spacing = 15
+    return stackView
+  }()
+
+  private lazy var settingButton: UIButton = {
+    let button: UIButton = .init()
+    button.setImage(.init(named: "settingButtonIcon"), for: .normal)
+    button.addTarget(self, action: #selector(pushSettingScene), for: .touchUpInside)
+    return button
+  }()
 
   // MARK: - Initializer
   init(navigationController: UINavigationController) {
@@ -30,13 +71,31 @@ final class DefaultHomeCoordinator: HomeCoordinator {
   }
 
   // MARK: - Methods
-  func start() {
-    let viewController: HomeViewController = getViewController()
-    navigationController.pushViewController(viewController, animated: true)
-  }
+  func start() {}
   
   func startPush() -> UIViewController {
-    return getViewController()
+    guard let useCase: BookmarkListUseCase = DIContainer.shared.resolve(type: BookmarkListUseCase.self) else {
+      fatalError()
+    }
+
+    [bookmarkButton, favoriteButton].forEach {
+      leftButtonStackView.addArrangedSubview($0)
+    }
+
+    let navigationBar: TidifyNavigationBar = .init(
+      leftButtonStackView: leftButtonStackView,
+      settingButton: settingButton
+    )
+
+    let viewModel: HomeViewModel = .init(useCase: useCase)
+
+    let viewController: HomeViewController = .init(
+      navigationBar: navigationBar,
+      viewModel: viewModel
+    )
+    viewController.coordinator = self
+
+    return viewController
   }
 
   func pushWebView(bookmark: Bookmark) {
@@ -50,34 +109,35 @@ final class DefaultHomeCoordinator: HomeCoordinator {
     detailWebViewCoordinator.start()
   }
 
-  func pushSettingScene() {
+  @objc func pushSettingScene() {
     guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self)
             as? DefaultSettingCoordinator else { return }
+    let settingViewController = settingCoordinator.startPush()
     settingCoordinator.parentCoordinator = self
     addChild(settingCoordinator)
 
-    settingCoordinator.start()
-  }
-
-  func pushBookmarkCreationScene() {
-    guard let bookmarkCreationCoordinator = DIContainer.shared.resolve(
-      type: BookmarkCreationCoordinator.self) as? DefaultBookmarkCreationCoordinator else { return }
-
-    bookmarkCreationCoordinator.parentCoordinator = self
-    addChild(bookmarkCreationCoordinator)
-
-    bookmarkCreationCoordinator.start()
+    navigationController.pushViewController(settingViewController, animated: true)
   }
 
   func pushEditBookmarkScene(bookmark: Bookmark) {
     guard let bookmarkCreationCoordinator = DIContainer.shared.resolve(
       type: BookmarkCreationCoordinator.self) as? DefaultBookmarkCreationCoordinator else { return }
 
+    let bookmarkEditViewController = bookmarkCreationCoordinator.startPush(type: .edit, originBookmark: bookmark)
     bookmarkCreationCoordinator.parentCoordinator = self
     addChild(bookmarkCreationCoordinator)
 
-    //TODO: 구현 예정
-//    bookmarkCreationCoordinator.pushEditBookmarkScene(with: bookmark)
+    navigationController.pushViewController(bookmarkEditViewController, animated: true)
+  }
+
+  func pushSearchScene() {
+    guard let searchCoordinator = DIContainer.shared.resolve(type: SearchCoordinator.self)
+            as? DefaultSearchCoordinator else {
+      return
+    }
+
+    let searchViewController = searchCoordinator.startPush()
+    navigationController.pushViewController(searchViewController, animated: false)
   }
 
   func didFinish() {
@@ -85,18 +145,15 @@ final class DefaultHomeCoordinator: HomeCoordinator {
   }
 }
 
-// MARK: - Private
 private extension DefaultHomeCoordinator {
-  func getViewController() -> HomeViewController {
-    guard let fetchUseCase = DIContainer.shared.resolve(type: FetchBookmarkListUseCase.self),
-          let searchUseCase = DIContainer.shared.resolve(type: SearchUseCase.self) else {
-      fatalError()
-    }
-
-    let viewModel = HomeViewModel(fetchUseCase: fetchUseCase, searchUseCase: searchUseCase)
-    let viewController = HomeViewController(viewModel: viewModel)
-    viewController.coordinator = self
-
-    return viewController
+  @objc func didTapBookmarkButton() {
+    navigationBarDelegate?.didTapBookmarkButton()
+    bookmarkButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+    favoriteButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+  }
+  @objc func didTapFavoriteButton() {
+    navigationBarDelegate?.didTapFavoriteButton()
+    bookmarkButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    favoriteButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
   }
 }

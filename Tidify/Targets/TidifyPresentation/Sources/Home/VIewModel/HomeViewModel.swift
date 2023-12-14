@@ -10,97 +10,155 @@ import Combine
 import TidifyDomain
 
 final class HomeViewModel: ViewModelType {
+  typealias UseCase = BookmarkListUseCase
 
-  enum ViewMode {
-    case bookmarkList
-    case search
-  }
-
-  enum Action {
-    case viewDidLoad
-    case fetchBookmarks
-    case search(keyword: String)
+  enum Action: Equatable {
+    case initialize
+    case didTapCategory(BookmarkCategory)
+    case didTapDelete(_ bookmarkID: Int)
+    case didTapStarButton(_ bookmarkID: Int)
+    case didScroll
   }
 
   struct State: Equatable {
     var isLoading: Bool
+    var category: BookmarkCategory
     var bookmarks: [Bookmark]
-    var searchHistory: [String]
-    var viewMode: ViewMode
+    var errorType: BookmarkListError?
   }
 
+  let useCase: UseCase
   @Published var state: State
-  private let fetchUseCase: FetchBookmarkListUseCase
-  private let searchUseCase: SearchUseCase
   private var currentPage: Int = 0
   private var isLastPage: Bool = false
 
-  init(fetchUseCase: FetchBookmarkListUseCase, searchUseCase: SearchUseCase) {
-    self.fetchUseCase = fetchUseCase
-    self.searchUseCase = searchUseCase
-    state = .init(isLoading: false, bookmarks: [], searchHistory: [], viewMode: .bookmarkList)
+  init(useCase: UseCase) {
+    self.useCase = useCase
+    state = .init(isLoading: false, category: .normal, bookmarks: [], errorType: nil)
   }
 
   func action(_ action: Action) {
     switch action {
-    case .viewDidLoad:
-      self.setInitialState()
-    case .fetchBookmarks:
-      self.fetchBookmarks()
-    case .search(let keyword):
-      self.searchBookmark(keyword)
+    case .initialize:
+      setupInitailBookmarks()
+    case .didTapCategory(let category):
+      state.category = category
+      setupInitailBookmarks()
+    case .didTapDelete(let bookmarkID):
+      deleteBookmark(bookmarkID)
+    case .didTapStarButton(let bookmarkID):
+      didTapStarButton(bookmarkID)
+    case .didScroll:
+      scrollTableView()
     }
   }
 }
 
 private extension HomeViewModel {
-  func setInitialState() {
+  func setupInitailBookmarks() {
     Task {
-      state.isLoading = true
-      let bookmarkResponse = try await fetchUseCase.fetchBookmarkList(request: .init(page: 0))
-
-      currentPage = bookmarkResponse.currentPage
-      isLastPage = bookmarkResponse.isLastPage
-      state.bookmarks = bookmarkResponse.bookmarks
-      state.isLoading = false
+      do {
+        state.isLoading = true
+        let fetchBookmarkListResponse = try await useCase.fetchBookmarkList(
+          request: .init(page: 0),
+          category: state.category
+        )
+        isLastPage = fetchBookmarkListResponse.isLastPage
+        state.bookmarks = fetchBookmarkListResponse.bookmarks
+        currentPage = 1
+        state.isLoading = false
+      } catch {
+        state.errorType = .failFetchBookmarks
+      }
     }
-    state.searchHistory = searchUseCase.fetchSearchHistory()
   }
 
-  func fetchBookmarks() {
+  func deleteBookmark(_ bookmarkID: Int) {
+    guard let index = state.bookmarks.firstIndex(where: { $0.id == bookmarkID }) else {
+      return
+    }
+
+    Task {
+      do {
+        state.isLoading = true
+        try await useCase.deleteBookmark(bookmarkID: bookmarkID)
+        state.bookmarks.remove(at: index)
+        try await addRemovedBookmark()
+        state.isLoading = false
+      } catch {
+        state.errorType = .failDeleteBookmark
+      }
+    }
+  }
+
+  func didTapStarButton(_ bookmarkID: Int) {
+    guard let index = state.bookmarks.firstIndex(where: { $0.id == bookmarkID }) else {
+      return
+    }
+
+    Task {
+      do {
+        try await useCase.favoriteBookmark(id: bookmarkID)
+
+        guard state.category == .favorite else {
+          return
+        }
+
+        state.bookmarks.remove(at: index)
+        state.isLoading = true
+        try await addRemovedBookmark()
+        state.isLoading = false
+      } catch {
+        state.errorType = .failFavoriteBookmark
+      }
+    }
+  }
+
+  func addRemovedBookmark() async throws {
+    if isLastPage {
+      return
+    }
+
+    let fetchBookmarkListResponse = try await useCase.fetchBookmarkList(
+      request: .init(page: currentPage-1, size: 12),
+      category: state.category
+    )
+    isLastPage = fetchBookmarkListResponse.isLastPage
+
+    guard let newBookmark = fetchBookmarkListResponse.bookmarks.last else {
+      return
+    }
+
+    appendBookmarks(bookmarks: [newBookmark], addPage: false)
+  }
+
+  func scrollTableView() {
     guard !isLastPage else {
-      state.isLoading = false
       return
     }
 
-    currentPage += 1
-
     Task {
-      state.isLoading = true
-      let response = try await fetchUseCase.fetchBookmarkList(request: .init(page: currentPage))
-      state.bookmarks = response.bookmarks
-      currentPage = response.currentPage
-      isLastPage = response.isLastPage
-      state.isLoading = false
+      do {
+        state.isLoading = true
+
+        let fetchBookmarkListResponse = try await useCase.fetchBookmarkList(
+          request: .init(page: currentPage, size: 12),
+          category: state.category
+        )
+        isLastPage = fetchBookmarkListResponse.isLastPage
+
+        appendBookmarks(bookmarks: fetchBookmarkListResponse.bookmarks, addPage: true)
+        state.isLoading = false
+      } catch {
+        state.errorType = .failFetchBookmarks
+      }
     }
   }
 
-  func searchBookmark(_ keyword: String) {
-    guard !keyword.isEmpty else {
-      setInitialState()
-      state.viewMode = .bookmarkList
-      return
+  func appendBookmarks(bookmarks: [Bookmark], addPage: Bool) {
+    if addPage {
+      currentPage += 1
     }
-
-    if state.viewMode != .search {
-      state.viewMode = .search
-    }
-
-    Task { @MainActor in
-      state.isLoading = true
-      let searchResponse = try await searchUseCase.fetchSearchResult(request: .init(page: currentPage, keyword: keyword))
-      state.bookmarks = searchResponse.bookmarks
-      state.isLoading = false
-    }
+    state.bookmarks += bookmarks
   }
 }

@@ -11,51 +11,65 @@ import TidifyDomain
 import UIKit
 import Combine
 
-final class HomeViewController: UIViewController, UIScrollViewDelegate, Alertable {
+final class HomeViewController: BaseViewController, Alertable, Coordinatable, LoadingIndicatable {
 
   // MARK: - Properties
-  private var navigationBar: TidifyNavigationBar!
-  private let navSettingButton: UIButton = .init()
-  private let navCreateBookmarkButton: UIButton = .init()
+  private let navigationBar: TidifyNavigationBar
+  private let viewModel: HomeViewModel
+  weak var coordinator: DefaultHomeCoordinator?
+  private var scrollWorkItem: DispatchWorkItem?
+  private var scrollOffset: CGFloat = 0
 
-  private lazy var searchTextField: UITextField = {
-    let textField: UITextField = .init()
-    textField.attributedPlaceholder = .init(string: "북마크 찾기", attributes: [
-      .font: UIFont.t_SB(14),
-      .foregroundColor: UIColor.init(110, 121, 135)
-    ])
-    textField.backgroundColor = .init(224, 227, 230)
-    textField.cornerRadius(radius: 10)
-    let leftView = UIImageView(frame: .init(x: 0, y: 0, width: 16, height: 16))
-    leftView.image = .init(named: "home_search_bookmark")
-    textField.leftView = leftView
-    textField.leftViewMode = .unlessEditing
-    textField.delegate = self
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    return textField
+  var indicatorView: UIActivityIndicatorView = {
+    let indicatorView: UIActivityIndicatorView = .init()
+    indicatorView.color = .t_blue()
+    indicatorView.hidesWhenStopped = true
+    return indicatorView
+  }()
+
+  private lazy var searchButton: UIButton = {
+    let button: UIButton = .init()
+    button.setImage(.init(named: "home_search_bookmark"), for: .normal)
+    button.setTitle("  북마크 찾기", for: .normal)
+    button.setTitleColor(.t_gray(weight: 600), for: .normal)
+    button.titleLabel?.font = .t_SB(14)
+    button.cornerRadius(radius: 10)
+    button.contentHorizontalAlignment = .left
+    button.contentEdgeInsets = .init(top: 0, left: 15, bottom: 0, right: 0)
+    button.backgroundColor = .t_gray(weight: 100)
+    button.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
+    return button
+  }()
+
+  private lazy var scrollView: UIScrollView = {
+    let scrollView: UIScrollView = .init()
+    scrollView.backgroundColor = .clear
+    scrollView.delegate = self
+    return scrollView
+  }()
+
+  private lazy var contentView: UIView = {
+    let contentView: UIView = .init()
+    contentView.backgroundColor = .clear
+    return contentView
   }()
 
   private lazy var tableView: UITableView = {
     let tableView: UITableView = .init(frame: .zero)
-    tableView.keyboardDismissMode = .onDrag
+    tableView.t_registerCellClasses([EmptyGuideCell.self, BookmarkCell.self])
+    tableView.separatorStyle = .none
+    tableView.showsVerticalScrollIndicator = false
+    tableView.backgroundColor = .white
+    tableView.cornerRadius(radius: 15)
+    tableView.isScrollEnabled = false
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.t_registerCellClasses([EmptyGuideCell.self, BookmarkCell.self, EmptyBookmarkSearchResultCell.self, SearchHistoryCell.self])
-    tableView.rowHeight = UITableView.automaticDimension
-    tableView.estimatedRowHeight = 250
-    tableView.cornerRadius([.topLeft, .topRight], radius: 15)
-    tableView.backgroundColor = .clear
-    tableView.separatorStyle = .none
-    tableView.translatesAutoresizingMaskIntoConstraints = false
     return tableView
   }()
 
-  private let viewModel: HomeViewModel
-  private var cancellable: Set<AnyCancellable> = []
-  weak var coordinator: HomeCoordinator?
-
   // MARK: - Initializer
-  init(viewModel: HomeViewModel) {
+  init(navigationBar: TidifyNavigationBar, viewModel: HomeViewModel) {
+    self.navigationBar = navigationBar
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
@@ -66,82 +80,56 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate, Alertabl
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupLayoutConstraints()
+    bindState()
+    coordinator?.navigationBarDelegate = self
+  }
 
-    setupUI()
-
-    viewModel.action(.viewDidLoad)
-
-    viewModel.$state
-      .map(\.bookmarks)
-      .receive(on: DispatchQueue.main)
-      .sink(receiveValue: { [weak tableView] _ in
-        tableView?.reloadData()
-      })
-      .store(in: &cancellable)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    viewModel.action(.initialize)
+    navigationController?.navigationBar.isHidden = true
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+    navigationController?.navigationBar.isHidden = false
+  }
 
-    coordinator?.didFinish()
+  override func setupViews() {
+    super.setupViews()
+
+    view.addSubview(indicatorView)
+    view.addSubview(navigationBar)
+    view.addSubview(searchButton)
+    view.addSubview(scrollView)
+    scrollView.addSubview(contentView)
+    contentView.addSubview(tableView)
   }
 }
 
 // MARK: - UITableViewDataSource
 extension HomeViewController: UITableViewDataSource {
-  func tableView(
-    _ tableView: UITableView,
-    numberOfRowsInSection section: Int
-  ) -> Int {
-    let bookmarksCount = viewModel.state.bookmarks.count
-
-    switch viewModel.state.viewMode {
-    case .bookmarkList:
-      return bookmarksCount == 0 ? 1 : bookmarksCount
-    case .search:
-      if (searchTextField.text?.isEmpty ?? true) {
-        return viewModel.state.searchHistory.count
-      } else {
-        return bookmarksCount == 0 ? 1 : bookmarksCount
-      }
-    }
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    let bookmarkCount: Int = viewModel.state.bookmarks.count
+    return bookmarkCount == 0 ? 1 : bookmarkCount
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    cellForRowAt indexPath: IndexPath
-  ) -> UITableViewCell {
-    switch viewModel.state.viewMode {
-    case .bookmarkList:
-      if viewModel.state.bookmarks.isEmpty {
-        let cell: EmptyGuideCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-        cell.setupBookmarkGuideLabel()
-        cell.delegate = self
-        return cell
-      }
-
-    case .search:
-      if searchTextField.text?.isEmpty ?? true {
-        let cell: SearchHistoryCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-        let searchTitle = viewModel.state.searchHistory[safe: indexPath.row] ?? ""
-        cell.configure(title: searchTitle)
-        cell.delegate = self
-         return cell
-      } else {
-        if viewModel.state.bookmarks.isEmpty {
-          let cell: EmptyBookmarkSearchResultCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-          return cell
-        }
-      }
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if viewModel.state.bookmarks.isEmpty {
+      let cell: EmptyGuideCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+      cell.setupBookmarkGuideLabel()
+      cell.delegate = self
+      return cell
     }
 
     guard let bookmark = viewModel.state.bookmarks[safe: indexPath.row] else {
-      assertionFailure("Bookamrks Index Out of range")
       return .init()
     }
 
     let cell: BookmarkCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
     cell.configure(bookmark: bookmark)
+    cell.delegate = self
 
     return cell
   }
@@ -150,19 +138,75 @@ extension HomeViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension HomeViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    if viewModel.state.bookmarks.isEmpty {
-      return viewModel.state.viewMode == .bookmarkList ? 250 : 140
-    } else {
-      return 60
-    }
+    return viewModel.state.bookmarks.isEmpty ? 254 : 60
   }
-}
 
-// MARK: - SearchHistoryCellDelegate
-extension HomeViewController: SearchHistoryCellDelegate {
-  func didTapSearchTitle(_ title: String) {
-    searchTextField.text = title
-    viewModel.action(.search(keyword: title))
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let bookmark = viewModel.state.bookmarks[safe: indexPath.row] else {
+      return
+    }
+
+    coordinator?.pushWebView(bookmark: bookmark)
+  }
+
+  func tableView(
+    _ tableView: UITableView,
+    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+  ) -> UISwipeActionsConfiguration? {
+    guard let bookmark = viewModel.state.bookmarks[safe: indexPath.row] else {
+      return .none
+    }
+
+    let editAction: UIContextualAction = {
+      let action: UIContextualAction = .init(
+        style: .normal,
+        title: "편집",
+        handler: { [weak coordinator] _, _, completion in
+          coordinator?.pushEditBookmarkScene(bookmark: bookmark)
+          completion(true)
+        })
+      action.backgroundColor = .t_blue()
+      return action
+    }()
+
+    let deleteAction: UIContextualAction = {
+      let action: UIContextualAction = .init(
+        style: .destructive,
+        title: "삭제",
+        handler: { [weak self] _, _, completion in
+          self?.presentAlert(type: .deleteBookmark, rightButtonTapHandler: {
+            self?.viewModel.action(.didTapDelete(bookmark.id))
+          })
+          completion(true)
+        })
+      action.backgroundColor = .t_red()
+      return action
+    }()
+
+    return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+  }
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let contentSizeHeight = scrollView.contentSize.height
+    let paginationY = scrollView.contentOffset.y + scrollView.frame.height
+    scrollOffset = scrollView.contentOffset.y
+
+    guard paginationY + 100 > contentSizeHeight,
+          scrollWorkItem == nil else {
+      return
+    }
+
+    viewModel.action(.didScroll)
+    let workItem = DispatchWorkItem { [weak self] in
+      self?.scrollWorkItem?.cancel()
+      self?.scrollWorkItem = nil
+      if self?.scrollOffset != scrollView.contentOffset.y {
+        self?.viewModel.action(.didScroll)
+      }
+    }
+
+    scrollWorkItem = workItem
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
   }
 }
 
@@ -172,80 +216,80 @@ extension HomeViewController: EmptyGuideCellDelegate {
     // TODO: 디자인 작업 이후 온보딩으로 이동
   }
 }
-
-// MARK: - UITextFieldDelegate
-extension HomeViewController: UITextFieldDelegate {
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    guard let text = textField.text else {
-      return false
-    }
-
-    viewModel.action(.search(keyword: text))
-    return true
-  }
-
-  func textFieldDidBeginEditing(_ textField: UITextField) {
-    if textField.text?.isEmpty ?? true {
-      viewModel.state.viewMode = .search
-      tableView.reloadData()
-    }
+// MARK: - BookmarkCellDelegate
+extension HomeViewController: BookmarkCellDelegate {
+  func didTapStarButton(bookmarkID: Int) {
+    viewModel.action(.didTapStarButton(bookmarkID))
   }
 }
 
 // MARK: - Private
 private extension HomeViewController {
-  func setupUI() {
-    [searchTextField, tableView].forEach { view.addSubview($0) }
-    view.backgroundColor = .t_background()
-
-    navSettingButton.do {
-      $0.setImage(.init(named: "profileIcon"), for: .normal)
-      $0.frame = .init(
-        x: 0,
-        y: 0,
-        width: UIViewController.viewHeight * 0.043, height: UIViewController.viewHeight * 0.049
-      )
+  func setupLayoutConstraints() {
+    indicatorView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    
+    navigationBar.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.leading.trailing.equalToSuperview()
+      $0.height.equalTo(Self.viewHeight * 0.05)
     }
 
-    navCreateBookmarkButton.do {
-      $0.setImage(.init(named: "createBookMarkIcon"), for: .normal)
-      $0.frame = .init(
-        x: 0,
-        y: 0,
-        width: UIViewController.viewWidth * 0.506,
-        height: UIViewController.viewHeight * 0.049
-      )
+    searchButton.snp.makeConstraints {
+      $0.top.equalTo(navigationBar.snp.bottom).offset(15)
+      $0.leading.trailing.equalToSuperview().inset(15)
+      $0.height.equalTo(40)
     }
 
-    // TODO: 수정 필요
-//    navigationBar = .init(.home, leftButton: navSettingButton, rightButton: navCreateBookmarkButton)
-    navigationBar = .init(leftButtonStackView: .init(), settingButton: .init())
-    navigationBar.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(navigationBar)
+    scrollView.snp.makeConstraints {
+      $0.top.equalTo(searchButton.snp.bottom).offset(15)
+      $0.leading.trailing.bottom.equalToSuperview()
+    }
 
-    NSLayoutConstraint.activate([
-      navigationBar.topAnchor.constraint(equalTo: view.topAnchor),
-      navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      navigationBar.heightAnchor.constraint(equalToConstant: Self.viewHeight * 0.182),
+    contentView.snp.makeConstraints {
+      $0.edges.width.equalToSuperview()
+      $0.height.equalToSuperview().priority(.low)
+    }
 
-      searchTextField.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 10),
-      searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-      searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-      searchTextField.heightAnchor.constraint(equalToConstant: 40),
-
-      tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 15),
-      tableView.leadingAnchor.constraint(equalTo: searchTextField.leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: searchTextField.trailingAnchor),
-      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-    ])
+    tableView.snp.makeConstraints {
+      $0.top.equalToSuperview()
+      $0.leading.trailing.equalToSuperview().inset(15)
+      $0.height.equalTo(0)
+      $0.bottom.equalToSuperview().offset(-120)
+    }
   }
-}
 
-// MARK: - Private Extension
-private extension HomeViewController {
-  func presentDeleteBookmarkAlert(deleteTargetRow: Int) {
-    // TODO: 홈 작업 완료 이후 수정
+  func bindState() {
+    viewModel.$state
+      .map { $0.isLoading }
+      .receive(on: DispatchQueue.main)
+      .removeDuplicates()
+      .sink(receiveValue: { [weak self] isLoading in
+        self?.setIndicatorView(isLoading: isLoading)
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.bookmarks }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] bookmarks in
+        self?.tableView.reloadData()
+        self?.updateConstraints(by: bookmarks)
+      })
+      .store(in: &cancellable)
+  }
+
+  func updateConstraints(by bookmarks: [Bookmark]) {
+    tableView.snp.updateConstraints {
+      $0.height.equalTo(bookmarks.count == 0 ? 254 : 60 * bookmarks.count + 20)
+    }
+
+    if bookmarks.count == 0 {
+      tableView.contentInset = .init()
+    } else {
+      tableView.contentInset = .init(top: 10, left: 0, bottom: 10, right: 0)
+    }
   }
 
   func fetchSharedBookmark() -> (url: String, title: String) {
@@ -263,5 +307,19 @@ private extension HomeViewController {
     }
 
     return sharedData
+  }
+
+  @objc func didTapSearchButton() {
+    coordinator?.pushSearchScene()
+  }
+}
+
+extension HomeViewController: HomeNavigationBarDelegate {
+  func didTapBookmarkButton() {
+    viewModel.action(.didTapCategory(.normal))
+  }
+
+  func didTapFavoriteButton() {
+    viewModel.action(.didTapCategory(.favorite))
   }
 }
