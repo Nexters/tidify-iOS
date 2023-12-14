@@ -22,6 +22,7 @@ protocol FolderCoordinator: Coordinator {
   func pushSettingScene()
   func pushDetailScene(folder: Folder)
   func pushFolderCreationScene(type: CreationType, originFolder: Folder?)
+  func pushSearchScene()
 
   // MARK: Properties
   var navigationBarDelegate: FolderNavigationBarDelegate? { get set }
@@ -110,26 +111,22 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   @objc func pushSettingScene() {
     guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self)
             as? DefaultSettingCoordinator else { return }
+    let settingViewController = settingCoordinator.startPush()
     settingCoordinator.parentCoordinator = self
     addChild(settingCoordinator)
 
-    settingCoordinator.start()
+    navigationController.pushViewController(settingViewController, animated: true)
   }
   
   func pushDetailScene(folder: Folder) {
-//    guard let useCase: FolderDetailUseCase = DIContainer.shared.resolve(type: FolderDetailUseCase.self)
-//    else { fatalError() }
-//    let reactor: FolderDetailReactor = .init(coordinator: self, useCase: useCase, folderID: folder.id)
-//    let viewController: FolderDetailViewController = .init(
-//      folder: folder,
-//      navigationBar: getDetailNavigationBar(folder: folder)
-//    )
-//    viewController.reactor = reactor
-//
-//    navigationController.pushViewController(
-//      viewController,
-//      animated: true
-//    )
+    let folderDetailCoordinator: DefaultFolderDetailCoordinator = .init(
+      navigationController: navigationController
+    )
+    let folderDetailViewController = folderDetailCoordinator.startPush(folder: folder)
+    folderDetailCoordinator.parentCoordinator = self
+    addChild(folderDetailCoordinator)
+
+    navigationController.pushViewController(folderDetailViewController, animated: true)
   }
   
   func pushFolderCreationScene(type: CreationType, originFolder: Folder?) {
@@ -140,25 +137,17 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     folderCreationCoordinator.parentCoordinator = self
     addChild(folderCreationCoordinator)
 
-    guard let tabBarController = navigationController.viewControllers[0] as? TabBarController,
-          let tabBarViewControllers = tabBarController.viewControllers,
-          let folderViewController = tabBarViewControllers[1] as? FolderViewController else {
+    navigationController.pushViewController(folderCreationViewController, animated: true)
+  }
+
+  func pushSearchScene() {
+    guard let searchCoordinator = DIContainer.shared.resolve(type: SearchCoordinator.self)
+            as? DefaultSearchCoordinator else {
       return
     }
 
-    folderCreationViewController.saveButtonDelegate = folderViewController
-    navigationController.pushViewController(folderCreationViewController, animated: true)
-  }
-  
-  func pushWebView(bookmark: Bookmark) {
-    guard let detailWebViewCoordinator = DIContainer.shared.resolve(type: DetailWebCoordinator.self)
-            as? DefaultDetailWebCoordinator else { return }
-
-    detailWebViewCoordinator.parentCoordinator = self
-    detailWebViewCoordinator.bookmark = bookmark
-    addChild(detailWebViewCoordinator)
-
-    detailWebViewCoordinator.start()
+    let searchViewController = searchCoordinator.startPush()
+    navigationController.pushViewController(searchViewController, animated: false)
   }
 
   func didFinish() {
