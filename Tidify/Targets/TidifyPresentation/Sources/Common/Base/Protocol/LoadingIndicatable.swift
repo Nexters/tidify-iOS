@@ -15,8 +15,13 @@ protocol LoadingIndicatable {
 extension LoadingIndicatable where Self: UIViewController {
   func setIndicatorView(isLoading: Bool) {
     if isLoading {
+      if indicatorView.isHidden {
+        indicatorView.isHidden = false
+      }
+
       indicatorView.startAnimating()
     } else {
+      indicatorView.stopAnimating()
       indicatorView.isHidden = true
     }
   }

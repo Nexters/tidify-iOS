@@ -42,6 +42,7 @@ final class LoginViewModel: ViewModelType {
         state.isEntered = true
       } catch {
         state.errorType = action == .tryKakaoLogin ? .failKakaoLogin : .failAppleLogin
+        state.isLoading = false
       }
     }
   }
