@@ -28,22 +28,19 @@ final class DefaultBookmarkCreationCoordinator: BookmarkCreationCoordinator {
   func start() {}
 
   func startPush(type: CreationType, originBookmark: Bookmark? = nil) -> BookmarkCreationViewController {
-    guard let useCase: BookmarkCRUDUseCase = DIContainer.shared.resolve(type: BookmarkCRUDUseCase.self) else {
+    guard let useCase: BookmarkCreationUseCase = DIContainer.shared.resolve(type: BookmarkCreationUseCase.self) else {
       fatalError()
     }
 
-//    let viewModel: BookmarkCreationViewModel = .init(useCase: useCase)
-//    let viewController: BookmarkCreationViewController = .init(
-//      viewModel: viewModel,
-//      creationType: type,
-//      originBookmark: originBookmark
-//    )
-//    viewController.coordinator = self
-//
-//    return viewController
+    let viewModel: BookmarkCreationViewModel = .init(useCase: useCase)
+    let viewController: BookmarkCreationViewController = .init(
+      viewModel: viewModel,
+      creationType: type,
+      originBookmark: originBookmark
+    )
+    viewController.coordinator = self
 
-    //TODO: 구현 예정
-    return .init(nibName: nil, bundle: nil)
+    return viewController
   }
 
   func didFinish() {

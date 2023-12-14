@@ -32,6 +32,12 @@ final class FolderTableViewCell: UITableViewCell {
     return label
   }()
 
+  private lazy var checkImageView: UIImageView = {
+    let imageView: UIImageView = .init(image: .init(named: "folderSelectIcon"))
+    imageView.isHidden = true
+    return imageView
+  }()
+
   // MARK: Initializer
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -42,11 +48,26 @@ final class FolderTableViewCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    checkImageView.isHidden = true
+  }
+
   // MARK: Methods
-  func configure(folder: Folder) {
+  func configure(folder: Folder, category: FolderCategory? = nil) {
     nameLabel.text = folder.title
     colorView.backgroundColor = .toColor(folder.color)
-    countLabel.text = folder.category == .share ? "\(folder.count)명 구독중" : "\(folder.count)개 정리됨"
+
+    if let category = category {
+      countLabel.text = category == .share ? "\(folder.count)명 구독중" : "\(folder.count)개 정리됨"
+    } else {
+      countLabel.isHidden = true
+    }
+  }
+
+  func setSelected(isSelected: Bool) {
+    checkImageView.isHidden = !isSelected
   }
 }
 
@@ -58,6 +79,7 @@ private extension FolderTableViewCell {
     contentView.addSubview(colorView)
     contentView.addSubview(nameLabel)
     contentView.addSubview(countLabel)
+    contentView.addSubview(checkImageView)
     
     colorView.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(20)
@@ -74,6 +96,12 @@ private extension FolderTableViewCell {
       $0.leading.equalTo(colorView.snp.trailing).offset(20)
       $0.trailing.lessThanOrEqualTo(countLabel.snp.trailing).inset(80)
       $0.centerY.equalToSuperview()
+    }
+
+    checkImageView.snp.makeConstraints {
+      $0.top.bottom.equalToSuperview().inset(18)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.equalTo(checkImageView.snp.height)
     }
   }
 }
