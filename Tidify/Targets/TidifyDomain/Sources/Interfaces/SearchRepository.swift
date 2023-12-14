@@ -15,5 +15,5 @@ public protocol SearchRepository: AnyObject {
   func eraseAllSearchHistory()
 
   /// @GET: 검색 쿼리에 대응되는 결과를 반환합니다.
-  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse
+  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkResponse
 }

@@ -31,8 +31,11 @@ public struct DomainAssembly: Assemblable {
       return DefaultBookmarkListUseCase(repository: container.resolve(type: BookmarkRepository.self)!)
     }
 
-    container.register(type: SearchUseCase.self) { container in
-      return DefaultSearchUseCase(searchRepository: container.resolve(type: SearchRepository.self)!)
+    container.register(type: SearchListUseCase.self) { container in
+      return DefaultSearchListUseCase(
+        searchRepository: container.resolve(type: SearchRepository.self)!,
+        bookmarkRepository: container.resolve(type: BookmarkRepository.self)!
+      )
     }
 
     container.register(type: BookmarkCreationUseCase.self) { container in

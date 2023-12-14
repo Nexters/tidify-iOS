@@ -6,333 +6,283 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import Combine
+import TidifyCore
+import TidifyDomain
 import UIKit
 
-import RxCocoa
-import ReactorKit
 import SnapKit
-import Then
 
-final class SearchViewController: UIViewController, View {
+final class SearchViewController: BaseViewController, Coordinatable {
 
-  // MARK: - Properties
-  private let searchTextField: UITextField = .init()
-  private let searchImageView: UIImageView = .init()
-  private let eraseQueryButton: UIButton = .init()
-  private let headerView: SearchHeaderView = .init()
-  private lazy var tableView: UITableView = .init(frame: .zero, style: .grouped)
-  private var willSearch: Bool = .init()
-  private let tapGestureRecognizer: UITapGestureRecognizer = .init()
-  var disposeBag: DisposeBag = .init()
+  // MARK: Properties
+  weak var coordinator: DefaultSearchCoordinator?
+  private let viewModel: SearchViewModel
+  private var scrollWorkItem: DispatchWorkItem?
+  private var scrollOffset: CGFloat = 0
+
+  private let searchTextField: UITextField = {
+    let textField: UITextField = .init()
+    textField.attributedPlaceholder = .init(string: "북마크 찾기", attributes: [
+      .font: UIFont.t_SB(14),
+      .foregroundColor: UIColor.t_gray(weight: 600)
+    ])
+    textField.backgroundColor = .t_gray(weight: 100)
+    textField.cornerRadius(radius: 10)
+    let leftView: UIView = .init(frame: .init(x: 0, y: 0, width: 40, height: 16))
+    let leftImageView: UIImageView = .init(frame: .init(x: 15, y: 0, width: 16, height: 16))
+    leftImageView.image = .init(named: "home_search_bookmark")
+    leftView.addSubview(leftImageView)
+    textField.leftView = leftView
+    textField.leftViewMode = .always
+    textField.clearButtonMode = .whileEditing
+    return textField
+  }()
+
+  private lazy var scrollView: UIScrollView = {
+    let scrollView: UIScrollView = .init()
+    scrollView.backgroundColor = .clear
+    scrollView.delegate = self
+    return scrollView
+  }()
+
+  private lazy var contentView: UIView = {
+    let contentView: UIView = .init()
+    contentView.backgroundColor = .clear
+    return contentView
+  }()
+
+  private lazy var tableView: UITableView = {
+    let tableView: UITableView = .init()
+    tableView.t_registerCellClasses([BookmarkCell.self, SearchTableViewCell.self])
+    tableView.separatorStyle = .none
+    tableView.showsVerticalScrollIndicator = false
+    tableView.backgroundColor = .white
+    tableView.cornerRadius(radius: 15)
+    tableView.isScrollEnabled = false
+    tableView.delegate = self
+    tableView.dataSource = self
+
+    if #available(iOS 15, *) {
+      tableView.sectionHeaderTopPadding = 0
+    }
+    return tableView
+  }()
+
+  private var searchHistoryTableViewHeight: Int {
+    let searchHistoryCount = UserProperties.searchHistory.count
+    return searchHistoryCount == 0 ? 0 : 70 + 50 * searchHistoryCount
+  }
+
+  private var searchResultTableViewHeight: Int {
+    let searchResultCount = viewModel.state.searchResult.count
+    return searchResultCount == 0 ? 0 : 60 * searchResultCount + 20
+  }
+
+  private var isHistoryMode: Bool {
+    searchTextField.text == ""
+  }
+
+  // MARK: Initializer
+  init(viewModel: SearchViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+    title = "검색"
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    setupUI()
+    setupLayoutConstraints()
+    bindSearchTextField()
+    bindState()
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    setupNavigationBarHidden(true)
+    searchTextField.becomeFirstResponder()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    setupNavigationBarHidden(false)
-    clearTextField()
+    coordinator?.didFinish()
   }
 
-  func bind(reactor: SearchReactor) {
-    bindAction(reactor: reactor)
-    bindState(reactor: reactor)
-    bindExtra()
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    super.touchesBegan(touches, with: event)
+    view.endEditing(true)
+  }
+
+  override func setupViews() {
+    super.setupViews()
+
+    view.addSubview(searchTextField)
+    view.addSubview(scrollView)
+    scrollView.addSubview(contentView)
+    contentView.addSubview(tableView)
   }
 }
 
 // MARK: - Private
 private extension SearchViewController {
-  func setupNavigationBarHidden(_ status: Bool) {
-    navigationController?.navigationBar.isHidden = status
-  }
-  
-  func setupUI() {
-    view.backgroundColor = .white
-    
-    view.addSubview(searchTextField)
-    view.addSubview(searchImageView)
-    view.addSubview(eraseQueryButton)
-    view.addSubview(tableView)
-    
-    searchTextField.do {
-      $0.placeholder = "어떤 것을 찾으시나요?"
-      $0.leftView = UIView.init(frame: CGRect(x: 0, y: 0, width: 56, height: 1))
-      $0.leftViewMode = .always
-//      $0.layer.borderWidth = 1
-//      $0.layer.borderColor = UIColor.t_borderColor().cgColor
-      $0.cornerRadius(radius: 20)
-    }
-    
-    searchImageView.do {
-      $0.image = .init(named: "icon_search")
-    }
-
-    eraseQueryButton.do {
-      guard let eraseQueryimage: UIImage = .init(named: "icon_searchField_erase") else { return }
-      $0.setImage(eraseQueryimage, for: .normal)
-    }
-
-    tapGestureRecognizer.do {
-      $0.cancelsTouchesInView = false
-    }
-
-    tableView.do {
-      $0.separatorStyle = .none
-      $0.backgroundColor = .white
-      $0.t_registerCellClass(cellType: SearchHistoryCell.self)
-      $0.t_registerCellClass(cellType: BookmarkCell.self)
-      $0.delegate = self
-      $0.dataSource = self
-      $0.bounces = false
-      $0.showsVerticalScrollIndicator = false
-      $0.addGestureRecognizer(tapGestureRecognizer)
-      if #available(iOS 15, *) {
-        $0.sectionHeaderTopPadding = .zero
-      }
-    }
-
+  func setupLayoutConstraints() {
     searchTextField.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide).offset(38)
-      $0.leading.trailing.equalToSuperview().inset(20)
-      $0.height.equalTo(Self.viewWidth * 0.149)
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(15)
+      $0.leading.trailing.equalToSuperview().inset(15)
+      $0.height.equalTo(40)
     }
-    
-    searchImageView.snp.makeConstraints {
-      $0.top.leading.bottom.equalTo(searchTextField).inset(16)
-      $0.height.equalTo(searchImageView.snp.width)
+
+    scrollView.snp.makeConstraints {
+      $0.top.equalTo(searchTextField.snp.bottom).offset(15)
+      $0.leading.trailing.bottom.equalToSuperview()
     }
-    
-    eraseQueryButton.snp.makeConstraints {
-      $0.top.bottom.equalTo(searchTextField).inset(16)
-      $0.trailing.equalTo(searchTextField).inset(24)
+
+    contentView.snp.makeConstraints {
+      $0.edges.width.equalToSuperview()
+      $0.height.equalToSuperview().priority(.low)
     }
 
     tableView.snp.makeConstraints {
-      $0.top.equalTo(searchTextField.snp.bottom).offset(24)
-      $0.leading.trailing.equalToSuperview()
-      $0.bottom.equalToSuperview().inset(Self.viewHeight * 0.142)
+      $0.top.equalToSuperview()
+      $0.leading.trailing.equalToSuperview().inset(15)
+      $0.height.equalTo(searchHistoryTableViewHeight)
+      $0.bottom.equalToSuperview().offset(-60)
     }
   }
 
-  func bindAction(reactor: SearchReactor) {
-    typealias Action = SearchReactor.Action
-
-    Observable.merge(rx.viewWillAppear, eraseQueryButton.rx.tap.asObservable())
-      .map { _ in Action.viewWillAppear }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    headerView.eraseAllButtonTapObservable
-      .map { Action.requestEraseAllHistory }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    searchTextField.rx.controlEvent(.editingChanged)
-      .map { Action.inputKeyword }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    searchTextField.rx.controlEvent(.editingDidEnd)
-      .withUnretained(self)
-      .filter { owner, _ in owner.willSearch }
-      .map { owner, _ -> String in
-        owner.willSearch = false
-        return owner.searchTextField.text ?? ""
-      }
-      .map { Action.searchQuery($0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
+  func bindSearchTextField() {
+    searchTextField.publisher
+      .debounce(for: 0.3, scheduler: DispatchQueue.global())
+      .sink(receiveValue: { [weak self] text in
+        self?.viewModel.action(.searchQuery(text))
+      })
+      .store(in: &cancellable)
   }
 
-  func bindState(reactor: SearchReactor) {
-    let changedViewModeDriver = reactor.state
-      .map { $0.viewMode }
-      .distinctUntilChanged()
-      .asDriver(onErrorDriveWith: .empty())
-      .map { _ in }
-
-    let changedSearchHistoryDriver = reactor.state
-      .map { $0.searchHistory }
-      .distinctUntilChanged()
-      .asDriver(onErrorDriveWith: .empty())
-      .map { _ in }
-
-    let changedSearchResultDriver = reactor.state
+  func bindState() {
+    viewModel.$state
       .map { $0.searchResult }
-      .distinctUntilChanged()
-      .asDriver(onErrorDriveWith: .empty())
-      .map { _ in }
-
-    Driver.merge(
-      changedViewModeDriver,
-      changedSearchHistoryDriver,
-      changedSearchResultDriver
-    )
-    .drive(with: self, onNext: { owner, _ in
-      owner.tableView.reloadData()
-    })
-    .disposed(by: disposeBag)
-    
-    reactor.state
-      .map { $0.viewMode }
-      .distinctUntilChanged()
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(with: self, onNext: { owner, viewMode in
-        guard owner.tableView.superview != nil else { return }
-        let isHistoryMode = viewMode == .history
-        
-        owner.tableView.snp.updateConstraints {
-          $0.top.equalTo(owner.searchTextField.snp.bottom).offset(isHistoryMode ? 24 : 56)
-          $0.leading.trailing.equalToSuperview().inset(isHistoryMode ? 0 : 20)
-        }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.updateConstraints()
       })
-      .disposed(by: disposeBag)
+      .store(in: &cancellable)
   }
 
-  func bindExtra() {
-    searchTextField.rx.text
-      .orEmpty
-      .map { $0.isEmpty }
-      .bind(to: eraseQueryButton.rx.isHidden)
-      .disposed(by: disposeBag)
-
-    eraseQueryButton.rx.tap
-      .withUnretained(self)
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(onNext: { owner, _ in
-        owner.searchTextField.text = nil
-      })
-      .disposed(by: disposeBag)
-
-    searchTextField.rx.controlEvent(.editingDidEndOnExit)
-      .bind(with: self, onNext: { owner, _ in
-        owner.willSearch = true
-      })
-      .disposed(by: disposeBag)
-
-    searchTextField.rx.text.orEmpty
-      .filter { $0.count == 1 && $0 == " " }
-      .map { _ in "" }
-      .bind(to: searchTextField.rx.text)
-      .disposed(by: disposeBag)
-
-    Driver.merge(
-      view.addTap().rx.event.asDriver(),
-      tapGestureRecognizer.rx.event.asDriver()
-    )
-    .drive(with: self, onNext: { owner, _ in
-      owner.view.endEditing(true)
-    })
-    .disposed(by: disposeBag)
-  }
-  
-  func clearTextField() {
-    searchTextField.text = nil
+  func updateConstraints() {
+    tableView.snp.updateConstraints {
+      $0.height.equalTo(isHistoryMode ? searchHistoryTableViewHeight : searchResultTableViewHeight)
+    }
+    tableView.contentInset = .init(top: isHistoryMode ? 0 : 10, left: 0, bottom: 10, right: 0)
+    tableView.reloadData()
   }
 }
 
 // MARK: - UITableViewDataSource
 extension SearchViewController: UITableViewDataSource {
-  func tableView(
-    _ tableView: UITableView,
-    numberOfRowsInSection section: Int
-  ) -> Int {
-    guard let currentState = reactor?.currentState else { return 0 }
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return isHistoryMode ? UserProperties.searchHistory.count : viewModel.state.searchResult.count
+  }
 
-    switch currentState.viewMode {
-    case .history:
-      return currentState.searchHistory.count
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if searchTextField.text == "" {
+      guard let history = UserProperties.searchHistory[safe: indexPath.row] else {
+        return .init()
+      }
+      let cell: SearchTableViewCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+      cell.configure(title: history)
+      return cell
+    } else {
+      guard let result = viewModel.state.searchResult[safe: indexPath.row] else {
+        return .init()
+      }
 
-    case .search:
-      return currentState.searchResult.count
+      let cell: BookmarkCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
+      cell.configure(bookmark: result)
+      cell.delegate = self
+
+      return cell
     }
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    cellForRowAt indexPath: IndexPath
-  ) -> UITableViewCell {
-    guard let currentState = reactor?.currentState else { return .init() }
-
-    let cell: UITableViewCell
-    switch currentState.viewMode {
-    case .history:
-      let searchHistoryCell: SearchHistoryCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-      searchHistoryCell.configure(title: currentState.searchHistory[indexPath.row])
-
-      cell = searchHistoryCell
-
-    case .search:
-      let bookmarkCell: BookmarkCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-      bookmarkCell.configure(bookmark: currentState.searchResult[indexPath.row])
-
-      cell = bookmarkCell
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard isHistoryMode else {
+      return nil
     }
 
-    return cell
+    let headerView: SearchTableViewHeaderView = .init()
+    headerView.delegate = self
+    return headerView
   }
 }
 
 // MARK: - UITableViewDelegate
 extension SearchViewController: UITableViewDelegate {
-  func tableView(
-    _ tableView: UITableView,
-    viewForHeaderInSection section: Int
-  ) -> UIView? {
-    guard reactor?.currentState.viewMode == .history else { return nil }
-    return headerView
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return isHistoryMode ? 50 : 60
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    heightForRowAt indexPath: IndexPath
-  ) -> CGFloat {
-    let rowHeight = Self.viewWidth * 0.149
-    return reactor?.currentState.viewMode == .history ? rowHeight : rowHeight + 20
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    if searchTextField.text != "" {
+      return 0
+    }
+
+    return UserProperties.searchHistory.isEmpty ? 0 : 60
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let currentState = reactor?.currentState else { return }
-    let row = indexPath.row
-    
-    switch currentState.viewMode {
-    case .history:
-      willSearch = true
-      searchTextField.becomeFirstResponder()
-      searchTextField.text = currentState.searchHistory[row]
-      searchTextField.endEditing(true)
-    case .search:
-      let action = SearchReactor.Action.didSelectBookmark(currentState.searchResult[row])
-      reactor?.action.onNext(action)
+    guard let bookmark = viewModel.state.searchResult[safe: indexPath.row] else {
+      return
     }
+
+    viewModel.action(.saveHistory(bookmark.name))
+    coordinator?.pushWebView(bookmark: bookmark)
   }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     view.endEditing(true)
-  }
+    let contentSizeHeight = scrollView.contentSize.height
+    let paginationY = scrollView.contentOffset.y + scrollView.frame.height
+    scrollOffset = scrollView.contentOffset.y
 
-  func tableView(
-    _ tableView: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt indexPath: IndexPath
-  ) {
-    guard reactor?.currentState.viewMode == .search,
-          let bookmarksCount = reactor?.currentState.searchResult.count,
-          let searchText = searchTextField.text else {
+    guard paginationY + 100 > contentSizeHeight,
+          scrollWorkItem == nil else {
       return
     }
 
-    if indexPath.row >= bookmarksCount - 5 {
-      reactor?.action.onNext(.searchQuery(searchText))
+    viewModel.action(.didScroll(searchTextField.text ?? ""))
+    let workItem = DispatchWorkItem { [weak self] in
+      self?.scrollWorkItem?.cancel()
+      self?.scrollWorkItem = nil
+      if self?.scrollOffset != scrollView.contentOffset.y {
+        self?.viewModel.action(.didScroll(self?.searchTextField.text ?? ""))
+      }
     }
+
+    scrollWorkItem = workItem
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
+  }
+}
+
+// MARK: - BookmarkCellDelegate
+extension SearchViewController: BookmarkCellDelegate {
+  func didTapStarButton(bookmarkID: Int) {
+    guard let bookmark = viewModel.state.searchResult.first(where: { $0.id == bookmarkID }) else {
+      return
+    }
+
+    viewModel.action(.saveHistory(bookmark.name))
+    viewModel.action(.didTapStarButton(bookmarkID))
+  }
+}
+
+// MARK: - EraseHistoryButtonDelegate
+extension SearchViewController: EraseHistoryButtonDelegate {
+  func didTapEraseButton() {
+    UserProperties.searchHistory = []
+    updateConstraints()
   }
 }

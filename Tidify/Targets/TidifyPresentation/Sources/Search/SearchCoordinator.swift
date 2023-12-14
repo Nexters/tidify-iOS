@@ -25,13 +25,18 @@ final class DefaultSearchCoordinator: SearchCoordinator {
   }
 
   // MARK: - Methods
-  func start() {
-    let viewController: SearchViewController = getViewController()
-    navigationController.pushViewController(viewController, animated: true)
-  }
+  func start() {}
   
-  func startPush() -> UIViewController {
-    return getViewController()
+  func startPush() -> SearchViewController {
+    guard let useCase: SearchListUseCase = DIContainer.shared.resolve(type: SearchListUseCase.self) else {
+      fatalError()
+    }
+
+    let viewModel: SearchViewModel = .init(useCase: useCase)
+    let viewController: SearchViewController = .init(viewModel: viewModel)
+    viewController.coordinator = self
+
+    return viewController
   }
   
   func pushWebView(bookmark: Bookmark) {
@@ -47,19 +52,5 @@ final class DefaultSearchCoordinator: SearchCoordinator {
 
   func didFinish() {
     parentCoordinator?.removeChild(self)
-  }
-}
-
-private extension DefaultSearchCoordinator {
-  func getViewController() -> SearchViewController {
-    guard let usecase: SearchUseCase = DIContainer.shared.resolve(type: SearchUseCase.self) else {
-      fatalError()
-    }
-
-    let reactor: SearchReactor = .init(coordinator: self, usecase: usecase)
-    let viewController: SearchViewController = .init(nibName: nil, bundle: nil)
-    viewController.reactor = reactor
-
-    return viewController
   }
 }
