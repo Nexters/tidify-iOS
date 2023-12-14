@@ -6,24 +6,70 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import Combine
 import TidifyCore
+import TidifyDomain
 import UIKit
 
-import ReactorKit
 import Kingfisher
+import SnapKit
 
-final class SettingViewController: UIViewController, View, Alertable {
+final class SettingViewController: BaseViewController, Coordinatable, Alertable {
 
-  // MARK: - Properties
-  private let tableView: UITableView = .init(frame: .zero, style: .grouped)
-  private let headerView: SettingTableHeaderView = .init(frame: .init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
+  // MARK: Properties
+  weak var coordinator: DefaultSettingCoordinator?
+  private let viewModel: SettingViewModel
 
-  private let selectedIndexPathSubject: PublishSubject<IndexPath> = .init()
-  var disposeBag: DisposeBag = .init()
+  private lazy var tableView: UITableView = {
+    let tableView: UITableView = .init(frame: .zero, style: .grouped)
+    tableView.separatorStyle = .none
+    tableView.t_registerCellClass(cellType: SettingCell.self)
+    tableView.isScrollEnabled = false
+    tableView.delegate = self
+    tableView.dataSource = self
+    return tableView
+  }()
+
+  private lazy var versionLabel: UILabel = {
+    let label: UILabel = .init()
+    label.font = .t_R(12)
+    label.textColor = .lightGray
+    label.text = "앱 버전 " + fetchAppVersionInfo()
+    return label
+  }()
+
+  enum Sections: Int, CaseIterable {
+    case accountManaging
+    case dataManaging
+
+    var numberOfRows: Int {
+      rowTitles.count
+    }
+
+    var sectionTitle: String {
+      switch self {
+      case .accountManaging:
+        return "계정"
+      case .dataManaging:
+        return "데이터 관리"
+      }
+    }
+
+    var rowTitles: [String] {
+      switch self {
+      case .accountManaging:
+        return ["로그아웃", "회원탈퇴"]
+      case .dataManaging:
+        return ["이미지 캐시 정리", "모든 캐시 정리"]
+      }
+    }
+  }
 
   // MARK: - Initializer
-  init() {
+  init(viewModel: SettingViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
+    title = "설정"
   }
   
   required init?(coder: NSCoder) {
@@ -32,72 +78,48 @@ final class SettingViewController: UIViewController, View, Alertable {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    setupUI()
+    setupLayoutConstraints()
+    bindState()
   }
 
-  func bind(reactor: SettingReactor) {
-    bindAction(reactor: reactor)
-    bindState(reactor: reactor)
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    coordinator?.didFinish()
+  }
+
+  override func setupViews() {
+    super.setupViews()
+
+    view.addSubview(tableView)
+    view.addSubview(versionLabel)
   }
 }
 
 // MARK: - Private
 private extension SettingViewController {
-  typealias Action = SettingReactor.Action
-
-  func bindAction(reactor: SettingReactor) {
-    selectedIndexPathSubject
-      .map { Action.didTapCell(indexPath: $0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-  }
-
-  func bindState(reactor: SettingReactor) {
-    reactor.state
-      .map { $0.presentAlert }
-      .asDriver(onErrorDriveWith: .empty())
-      .drive(with: self, onNext: { owner, alertType in
-        guard let alertType else {
-          return
-        }
-
-        owner.presentAlert(type: alertType)
-      })
-      .disposed(by: disposeBag)
-  }
-
-  func setupUI() {
-    view.backgroundColor = .white
-    view.addSubview(tableView)
-
-    tableView.do {
-      $0.delegate = self
-      $0.dataSource = self
-      $0.separatorColor = .clear
-      $0.t_registerCellClass(cellType: SettingCell.self)
-      $0.tableHeaderView = headerView
-      $0.isScrollEnabled = false
-    }
-
+  func setupLayoutConstraints() {
     tableView.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide)
-      $0.leading.trailing.bottom.equalToSuperview()
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(15)
+      $0.leading.trailing.equalToSuperview().inset(15)
+      $0.height.equalTo(Self.viewHeight * 0.42 + 20)
+    }
+
+    versionLabel.snp.makeConstraints {
+      $0.top.equalTo(tableView.snp.bottom)
+      $0.leading.equalToSuperview().offset(20)
     }
   }
 
-  func presentAlert(type: AlertType) {
-    var rightButtonAction: (() -> Void)? = nil
-
-    switch type {
-    case .removeAllCache: rightButtonAction = { [weak self] in self?.clearAllCache() }
-    case .removeImageCache: rightButtonAction = { KingfisherManager.shared.cache.clearMemoryCache() }
-    case .logout: rightButtonAction = { [weak self] in self?.reactor?.action.onNext(.tryLogOut) }
-    case .signOut: rightButtonAction = { [weak self] in self?.reactor?.action.onNext(.trySignOut) }
-    default: break
-    }
-
-    presentAlert(type: type, rightButtonTapHandler: rightButtonAction)
+  func bindState() {
+    viewModel.$state
+      .map { $0.isSuccess }
+      .filter { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.coordinator?.didFinish()
+        self?.coordinator?.transitionToLogin()
+      })
+      .store(in: &cancellable)
   }
 
   func clearAllCache() {
@@ -106,19 +128,32 @@ private extension SettingViewController {
     cache.clearCache()
     cache.cleanExpiredCache()
   }
+
+  func fetchAppVersionInfo() -> String {
+    guard let dictionary = Bundle.main.infoDictionary,
+          let version = dictionary["CFBundleShortVersionString"] as? String,
+          let build = dictionary["CFBundleVersion"] as? String else {
+      return ""
+    }
+
+    let versionAndBuildString: String = "\(version).\(build)"
+    return versionAndBuildString
+  }
 }
 
 // MARK: - UITableViewDataSource
 extension SettingViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return SettingReactor.Sections.allCases.count
+    return Sections.allCases.count
   }
 
   func tableView(
     _ tableView: UITableView,
     numberOfRowsInSection section: Int
   ) -> Int {
-    guard let section = SettingReactor.Sections.init(rawValue: section) else { return 0 }
+    guard let section = Sections.init(rawValue: section) else {
+      return 0
+    }
 
     return section.numberOfRows
   }
@@ -127,7 +162,9 @@ extension SettingViewController: UITableViewDataSource {
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    guard let section = SettingReactor.Sections.init(rawValue: indexPath.section) else { return .init() }
+    guard let section = Sections.init(rawValue: indexPath.section) else {
+      return .init()
+    }
 
     let cell: SettingCell = tableView.t_dequeueReusableCell(
       cellType: SettingCell.self,
@@ -135,16 +172,11 @@ extension SettingViewController: UITableViewDataSource {
     )
     
     let isLastIndex = section.numberOfRows - 1 == indexPath.row
-    if isLastIndex { cell.cornerRadius([.bottomLeft, .bottomRight], radius: 16) }
+    if isLastIndex {
+      cell.cornerRadius([.bottomLeft, .bottomRight], radius: 15)
+    }
     
     cell.configure(title: section.rowTitles[indexPath.row], isLastIndex: isLastIndex)
-    
-    guard indexPath.row == 1 else { return cell }
-    
-    let bottomBorder = CALayer()
-    bottomBorder.frame = CGRect(x: 16, y: 0, width: Self.viewWidth - 16, height: 1)
-    bottomBorder.backgroundColor = UIColor.systemGray6.cgColor
-    cell.contentView.layer.addSublayer(bottomBorder)
     return cell
   }
 
@@ -152,7 +184,9 @@ extension SettingViewController: UITableViewDataSource {
     _ tableView: UITableView,
     viewForHeaderInSection section: Int
   ) -> UIView? {
-    guard let section = SettingReactor.Sections.init(rawValue: section) else { return nil }
+    guard let section = Sections.init(rawValue: section) else {
+      return nil
+    }
 
     let sectionHeaderView: SettingSectionHeaderView = .init(section: section)
     return sectionHeaderView
@@ -162,7 +196,51 @@ extension SettingViewController: UITableViewDataSource {
     _ tableView: UITableView,
     didSelectRowAt indexPath: IndexPath
   ) {
-    selectedIndexPathSubject.onNext(indexPath)
+    switch indexPath.section {
+    case 0:
+      switch indexPath.row {
+      case 0:
+        presentAlert(
+          type: .logout,
+          leftButtonTapHandler: nil,
+          rightButtonTapHandler: { [weak coordinator] in
+            coordinator?.didFinish()
+            coordinator?.transitionToLogin()
+          }
+        )
+      case 1:
+        presentAlert(
+          type: .signOut,
+          leftButtonTapHandler: nil,
+          rightButtonTapHandler: { [weak viewModel] in
+            viewModel?.action(.didTapSignOutButton)
+          }
+        )
+      default: return
+      }
+    case 1:
+      switch indexPath.row {
+      case 0:
+        presentAlert(
+          type: .removeImageCache,
+          leftButtonTapHandler: nil,
+          rightButtonTapHandler: {
+            KingfisherManager.shared.cache.clearMemoryCache()
+          }
+        )
+      case 1:
+        presentAlert(
+          type: .removeImageCache,
+          leftButtonTapHandler: nil,
+          rightButtonTapHandler: { [weak self] in
+            self?.clearAllCache()
+          }
+        )
+      default: return
+      }
+    default:
+      return
+    }
   }
 }
 
@@ -172,6 +250,6 @@ extension SettingViewController: UITableViewDelegate {
     _ tableView: UITableView,
     heightForHeaderInSection section: Int
   ) -> CGFloat {
-    return 75
+    return 60
   }
 }

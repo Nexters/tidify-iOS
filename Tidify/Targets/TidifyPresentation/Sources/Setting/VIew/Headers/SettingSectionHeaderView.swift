@@ -11,12 +11,15 @@ import UIKit
 final class SettingSectionHeaderView: UIView {
 
   // MARK: - Properties
-  private let titleLabel: UILabel = .init()
+  private let titleLabel: UILabel = {
+    let label: UILabel = .init()
+    label.font = .t_EB(20)
+    label.textColor = .black
+    return label
+  }()
 
-  private let section: SettingReactor.Sections
-
-  init(section: SettingReactor.Sections) {
-    self.section = section
+  init(section: SettingViewController.Sections) {
+    titleLabel.text = section.sectionTitle
     super.init(frame: .zero)
 
     setupUI()
@@ -32,14 +35,7 @@ private extension SettingSectionHeaderView {
     backgroundColor = .white
     addSubview(titleLabel)
 
-    if section == .dataManaging {
-      cornerRadius([.topLeft, .topRight], radius: 16)
-    }
-
-    titleLabel.do {
-      $0.text = section.sectionTitle
-      $0.font = .t_EB(18)
-    }
+    cornerRadius([.topLeft, .topRight], radius: 15)
 
     titleLabel.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(20)
