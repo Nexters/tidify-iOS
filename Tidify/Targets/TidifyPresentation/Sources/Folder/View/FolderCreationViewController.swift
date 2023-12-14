@@ -17,15 +17,10 @@ enum CreationType {
   case edit
 }
 
-protocol FolderCreationDelegate: AnyObject {
-  func didSuccessSave()
-}
-
 final class FolderCreationViewController: BaseViewController, Coordinatable, Alertable {
 
   // MARK: Properties
   weak var coordinator: DefaultFolderCreationCoordinator?
-  weak var saveButtonDelegate: FolderCreationDelegate?
   private let viewModel: FolderCreationViewModel
   private let creationType: CreationType
   private let originFolder: Folder?
@@ -97,6 +92,7 @@ final class FolderCreationViewController: BaseViewController, Coordinatable, Ale
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     registerKeyboardNotification()
+    textFieldView.setFirstResponder()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -228,7 +224,6 @@ private extension FolderCreationViewController {
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] _ in
         self?.coordinator?.didFinish()
-        self?.saveButtonDelegate?.didSuccessSave()
       })
       .store(in: &cancellable)
 
@@ -237,7 +232,7 @@ private extension FolderCreationViewController {
       .compactMap { $0 }
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] error in
-        self?.presentAlert(type: .folderCreation)
+        self?.presentAlert(type: .folderCreationError)
       })
       .store(in: &cancellable)
   }
