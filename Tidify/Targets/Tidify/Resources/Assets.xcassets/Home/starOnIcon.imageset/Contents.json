@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Property 1=bookMark, Property 2=og.png",
+      "filename" : "starOn.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Property 1=bookMark, Property 2=og@2x.png",
+      "filename" : "starOn@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Property 1=bookMark, Property 2=og@3x.png",
+      "filename" : "starOn@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
