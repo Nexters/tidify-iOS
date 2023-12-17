@@ -89,6 +89,20 @@ final class HomeViewController: BaseViewController, Alertable, Coordinatable, Lo
     super.viewWillAppear(animated)
     viewModel.action(.initialize)
     navigationController?.navigationBar.isHidden = true
+
+    NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+      .prepend(.init(name: UIApplication.willEnterForegroundNotification))
+      .map({ [weak self] _ -> (url: String, name: String)? in
+        guard let (url, name) = self?.fetchSharedBookmark() else {
+          return nil
+        }
+        return (url, name)
+      })
+      .filter({ $0.isNotNil })
+      .sink(receiveValue: { [weak self] in
+        self?.viewModel.action(.fetchSharedExtensionsBookmark(url: $0?.url ?? "", name: $0?.name ?? ""))
+      })
+      .store(in: &cancellable)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -292,21 +306,21 @@ private extension HomeViewController {
     }
   }
 
-  func fetchSharedBookmark() -> (url: String, title: String) {
-    var sharedData: (url: String, title: String) = ("", "")
+  func fetchSharedBookmark() -> (url: String, title: String)? {
+//    var sharedData: (url: String, title: String) = ("", "")
 
     guard let userDefault: UserDefaults = .init(suiteName: "group.com.ian.Tidify.share") else {
-      return sharedData
+      return nil
     }
 
     if let url = userDefault.string(forKey: "SharedURL"),
        let text = userDefault.string(forKey: "SharedText") {
-      sharedData = (url, text)
       userDefault.removeObject(forKey: "SharedURL")
       userDefault.removeObject(forKey: "SharedText")
+      return (url, text)
     }
 
-    return sharedData
+    return nil
   }
 
   @objc func didTapSearchButton() {

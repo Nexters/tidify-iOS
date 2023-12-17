@@ -18,6 +18,7 @@ final class HomeViewModel: ViewModelType {
     case didTapDelete(_ bookmarkID: Int)
     case didTapStarButton(_ bookmarkID: Int)
     case didScroll
+    case fetchSharedExtensionsBookmark(url: String, name: String)
   }
 
   struct State: Equatable {
@@ -50,6 +51,8 @@ final class HomeViewModel: ViewModelType {
       didTapStarButton(bookmarkID)
     case .didScroll:
       scrollTableView()
+    case let .fetchSharedExtensionsBookmark(url, name):
+      createBookmark(url: url, name: name)
     }
   }
 }
@@ -69,6 +72,20 @@ private extension HomeViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFetchBookmarks
+      }
+    }
+  }
+
+  func createBookmark(url: String, name: String) {
+    Task {
+      do {
+        state.isLoading = true
+        try await useCase.createBookmark(request: .init(folderID: 0, url: url, name: name))
+        setupInitailBookmarks()
+        state.isLoading = false
+      } catch {
+        state.errorType = .failCreateBookmark
+        state.isLoading = false
       }
     }
   }
