@@ -105,11 +105,6 @@ final class HomeViewController: BaseViewController, Alertable, Coordinatable, Lo
       .store(in: &cancellable)
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.navigationBar.isHidden = false
-  }
-
   override func setupViews() {
     super.setupViews()
 

@@ -91,6 +91,7 @@ final class FolderCreationViewController: BaseViewController, Coordinatable, Ale
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    navigationController?.navigationBar.isHidden = false
     registerKeyboardNotification()
     textFieldView.setFirstResponder()
   }
@@ -167,11 +168,8 @@ extension FolderCreationViewController: UICollectionViewDelegateFlowLayout {
     return .init(w: size, h: size)
   }
 
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return collectionView.frame.height * 0.185
-  }
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    return collectionView.frame.width * 0.078
+    return collectionView.frame.width * 0.05
   }
 }
 

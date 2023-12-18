@@ -120,6 +120,7 @@ final class BookmarkCreationViewController: BaseViewController, Coordinatable, A
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    navigationController?.navigationBar.isHidden = false
     registerKeyboardNotification()
     urlTextFieldView.setFirstResponder()
   }

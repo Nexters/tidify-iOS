@@ -103,11 +103,6 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable, 
     navigationController?.navigationBar.isHidden = true
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.navigationBar.isHidden = false
-  }
-
   override func setupViews() {
     super.setupViews()
 
