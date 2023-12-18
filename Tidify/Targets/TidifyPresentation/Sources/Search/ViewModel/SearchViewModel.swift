@@ -97,7 +97,15 @@ private extension SearchViewModel {
         request: .init(page: currentPage, size: 13, keyword: query)
       )
       isLastPage = fetchSearchResponse.isLastPage
-      state.searchResult += fetchSearchResponse.bookmarks
+      let bookmarks = fetchSearchResponse.bookmarks
+
+      for bookmark in bookmarks {
+        if state.searchResult.contains(where: { $0.id == bookmark.id }) {
+          return
+        }
+        state.searchResult.append(bookmark)
+      }
+
       currentPage += 1
     }
   }

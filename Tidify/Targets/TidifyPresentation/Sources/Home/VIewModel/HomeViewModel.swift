@@ -173,9 +173,15 @@ private extension HomeViewModel {
   }
 
   func appendBookmarks(bookmarks: [Bookmark], addPage: Bool) {
+    for bookmark in bookmarks {
+      if state.bookmarks.contains(where: { $0.id == bookmark.id }) {
+        return
+      }
+      state.bookmarks.append(bookmark)
+    }
+
     if addPage {
       currentPage += 1
     }
-    state.bookmarks += bookmarks
   }
 }

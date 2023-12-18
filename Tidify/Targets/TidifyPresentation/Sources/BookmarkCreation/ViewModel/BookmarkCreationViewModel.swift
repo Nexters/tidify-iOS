@@ -88,10 +88,16 @@ private extension BookmarkCreationViewModel {
   }
 
   func appendFolders(folders: [Folder], addPage: Bool) {
+    for folder in folders {
+      if state.folders.contains(where: { $0.id == folder.id }) {
+        return
+      }
+      state.folders.append(folder)
+    }
+
     if addPage {
       currentPage += 1
     }
-    state.folders += folders
   }
 
   func createBookmark(_ requestDTO: BookmarkRequestDTO) {
