@@ -121,7 +121,7 @@ private extension SettingViewController {
       .filter { $0 }
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] _ in
-        self?.coordinator?.didFinish()
+        self?.coordinator?.resetCoordinator()
         self?.coordinator?.transitionToLogin()
       })
       .store(in: &cancellable)
@@ -209,7 +209,7 @@ extension SettingViewController: UITableViewDataSource {
           type: .logout,
           leftButtonTapHandler: nil,
           rightButtonTapHandler: { [weak coordinator] in
-            coordinator?.didFinish()
+            coordinator?.resetCoordinator()
             coordinator?.transitionToLogin()
           }
         )

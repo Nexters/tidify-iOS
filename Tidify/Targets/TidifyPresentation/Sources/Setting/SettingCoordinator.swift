@@ -42,4 +42,12 @@ final class DefaultSettingCoordinator: SettingCoordinator {
   func didFinish() {
     parentCoordinator?.removeChild(self)
   }
+
+  func resetCoordinator() {
+    guard !(parentCoordinator is MainCoordinator) else {
+      return
+    }
+    parentCoordinator = parentCoordinator?.parentCoordinator
+    resetCoordinator()
+  }
 }
