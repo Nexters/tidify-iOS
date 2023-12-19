@@ -18,7 +18,6 @@ protocol HomeNavigationBarDelegate: AnyObject {
 protocol HomeCoordinator: Coordinator {
 
   // MARK: Methods
-  func pushWebView(bookmark: Bookmark)
   func pushSettingScene()
   func pushEditBookmarkScene(bookmark: Bookmark)
   func pushSearchScene()
@@ -96,17 +95,6 @@ final class DefaultHomeCoordinator: HomeCoordinator {
     viewController.coordinator = self
 
     return viewController
-  }
-
-  func pushWebView(bookmark: Bookmark) {
-    guard let detailWebViewCoordinator = DIContainer.shared.resolve(type: DetailWebCoordinator.self)
-            as? DefaultDetailWebCoordinator else { return }
-
-    detailWebViewCoordinator.parentCoordinator = self
-    detailWebViewCoordinator.bookmark = bookmark
-    addChild(detailWebViewCoordinator)
-
-    detailWebViewCoordinator.start()
   }
 
   @objc func pushSettingScene() {

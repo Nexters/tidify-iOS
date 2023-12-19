@@ -12,7 +12,6 @@ import TidifyDomain
 import UIKit
 
 protocol FolderDetailCoordinator: Coordinator {
-  func pushWebView(bookmark: Bookmark)
   func pushEditBookmarkScene(bookmark: Bookmark)
 }
 
@@ -41,17 +40,6 @@ final class DefaultFolderDetailCoordinator: FolderDetailCoordinator {
     viewController.coordinator = self
 
     return viewController
-  }
-
-  func pushWebView(bookmark: Bookmark) {
-    guard let detailWebViewCoordinator = DIContainer.shared.resolve(type: DetailWebCoordinator.self)
-            as? DefaultDetailWebCoordinator else { return }
-
-    detailWebViewCoordinator.parentCoordinator = self
-    detailWebViewCoordinator.bookmark = bookmark
-    addChild(detailWebViewCoordinator)
-
-    detailWebViewCoordinator.start()
   }
 
   func pushEditBookmarkScene(bookmark: Bookmark) {

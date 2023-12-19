@@ -103,6 +103,7 @@ final class SearchViewController: BaseViewController, Coordinatable {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    navigationController?.navigationBar.isHidden = false
     searchTextField.becomeFirstResponder()
   }
   
@@ -239,7 +240,7 @@ extension SearchViewController: UITableViewDelegate {
     }
 
     viewModel.action(.saveHistory(bookmark.name))
-    coordinator?.pushWebView(bookmark: bookmark)
+    bookmark.openURL()
   }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {

@@ -6,7 +6,7 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public enum BookmarkCategory {
   case normal, favorite
@@ -57,6 +57,19 @@ public extension Bookmark {
     self.name = requestDTO.name
     self.urlString = requestDTO.url
     self.folderID = requestDTO.folderID
+  }
+
+  func openURL() {
+    var urlString: String = urlString ?? ""
+    if !(urlString.contains("http://") || urlString.contains("https://")) {
+      urlString = "https://" + urlString
+    }
+
+    guard let url = URL(string: urlString) else {
+      return
+    }
+
+    UIApplication.shared.open(url)
   }
 }
 

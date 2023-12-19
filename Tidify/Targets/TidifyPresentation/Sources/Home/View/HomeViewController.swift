@@ -155,7 +155,7 @@ extension HomeViewController: UITableViewDelegate {
       return
     }
 
-    coordinator?.pushWebView(bookmark: bookmark)
+    bookmark.openURL()
   }
 
   func tableView(
