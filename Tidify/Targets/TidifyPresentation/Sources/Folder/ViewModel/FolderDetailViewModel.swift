@@ -33,6 +33,8 @@ final class FolderDetailViewModel: ViewModelType {
   }
 
   func action(_ action: Action) {
+    state.errorType = nil
+
     switch action {
     case .initialize(let folderID):
       setupInitailBookmarks(folderID: folderID)
@@ -54,6 +56,7 @@ private extension FolderDetailViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFetchBookmarks
+        state.isLoading = false
       }
     }
   }

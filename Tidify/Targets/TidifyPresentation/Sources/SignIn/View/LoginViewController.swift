@@ -97,6 +97,7 @@ final class LoginViewController: BaseViewController, Alertable, Coordinatable, L
     view.addSubview(loginMethodStackView)
     loginMethodStackView.addArrangedSubview(kakaoSignInButton)
     loginMethodStackView.addArrangedSubview(appleSignInButton)
+    view.bringSubviewToFront(indicatorView)
   }
 
   override func viewDidLoad() {

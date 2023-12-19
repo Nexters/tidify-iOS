@@ -39,6 +39,8 @@ final class HomeViewModel: ViewModelType {
   }
 
   func action(_ action: Action) {
+    state.errorType = nil
+
     switch action {
     case .initialize:
       setupInitailBookmarks()
@@ -72,6 +74,7 @@ private extension HomeViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFetchBookmarks
+        state.isLoading = false
       }
     }
   }
@@ -104,6 +107,7 @@ private extension HomeViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failDeleteBookmark
+        state.isLoading = false
       }
     }
   }
@@ -127,6 +131,7 @@ private extension HomeViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFavoriteBookmark
+        state.isLoading = false
       }
     }
   }
@@ -168,6 +173,7 @@ private extension HomeViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFetchBookmarks
+        state.isLoading = false
       }
     }
   }

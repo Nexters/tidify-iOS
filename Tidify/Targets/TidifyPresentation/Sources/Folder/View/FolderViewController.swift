@@ -113,6 +113,7 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable, 
     scrollView.addSubview(contentView)
     contentView.addSubview(tableView)
     contentView.addSubview(folderCreationButton)
+    view.bringSubviewToFront(indicatorView)
   }
 }
 
@@ -175,6 +176,16 @@ private extension FolderViewController {
       .sink(receiveValue: { [weak self] folders in
         self?.tableView.reloadData()
         self?.updateConstraints(by: folders)
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.errorType }
+      .compactMap { $0 }
+      .filter { $0 == .failFetchFolderList }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.presentAlert(type: .folderFetchError)
       })
       .store(in: &cancellable)
   }

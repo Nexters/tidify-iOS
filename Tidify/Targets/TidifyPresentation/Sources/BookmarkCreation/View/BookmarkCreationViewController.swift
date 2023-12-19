@@ -144,6 +144,7 @@ final class BookmarkCreationViewController: BaseViewController, Coordinatable, A
     view.addSubview(topEffectView)
     view.addSubview(bottomEffectView)
     view.addSubview(saveButton)
+    view.bringSubviewToFront(indicatorView)
   }
 }
 
@@ -247,10 +248,21 @@ private extension BookmarkCreationViewController {
 
     viewModel.$state
       .map { $0.bookmarkError }
+      .removeDuplicates()
       .compactMap { $0 }
       .receive(on: DispatchQueue.main)
-      .sink(receiveValue: { [weak self] error in
+      .sink(receiveValue: { [weak self] _ in
         self?.presentAlert(type: .bookmarkCreationError)
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.folderError }
+      .removeDuplicates()
+      .compactMap { $0 }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.presentAlert(type: .folderFetchError)
       })
       .store(in: &cancellable)
   }

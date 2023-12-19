@@ -40,7 +40,7 @@ public struct Bookmark: Hashable {
   }
 
   public static func ==(lhs: Bookmark, rhs: Bookmark) -> Bool {
-    lhs.id == rhs.id && lhs.folderID == rhs.folderID && lhs.urlString == rhs.urlString && lhs.name == rhs.name
+    lhs.id == rhs.id && lhs.folderID == rhs.folderID && lhs.urlString == rhs.urlString && lhs.name == rhs.name && lhs.star == rhs.star
   }
 }
 

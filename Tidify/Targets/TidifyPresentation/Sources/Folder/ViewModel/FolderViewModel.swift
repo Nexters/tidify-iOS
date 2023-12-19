@@ -37,6 +37,8 @@ final class FolderViewModel: ViewModelType {
   }
 
   func action(_ action: Action) {
+    state.errorType = nil
+
     switch action {
     case .initialize:
       setupInitailFolders()
@@ -63,6 +65,7 @@ private extension FolderViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFetchFolderList
+        state.isLoading = false
       }
     }
   }
@@ -93,6 +96,7 @@ private extension FolderViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failDeleteFolder
+        state.isLoading = false
       }
     }
   }
@@ -113,6 +117,7 @@ private extension FolderViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFetchFolderList
+        state.isLoading = false
       }
     }
   }

@@ -12,8 +12,10 @@ import UIKit
 
 protocol FolderNavigationBarDelegate: AnyObject {
   func didTapFolderButton()
-  func didTapSubscribeButton()
-  func didTapShareButton()
+
+  //TODO: - 추후 구현
+//  func didTapSubscribeButton()
+//  func didTapShareButton()
 }
 
 protocol FolderCoordinator: Coordinator {
@@ -48,7 +50,9 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     button.setTitle("구독", for: .normal)
     button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
     button.titleLabel?.font = .t_EB(22)
-    button.addTarget(self, action: #selector(didTapSubscribeButton), for: .touchUpInside)
+
+    //TODO: - 추후 구현
+//    button.addTarget(self, action: #selector(didTapSubscribeButton), for: .touchUpInside)
     return button
   }()
 
@@ -57,7 +61,9 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     button.setTitle("공유중", for: .normal)
     button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
     button.titleLabel?.font = .t_EB(22)
-    button.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+
+    //TODO: - 추후 구현
+//    button.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
     return button
   }()
 
@@ -88,9 +94,10 @@ final class DefaultFolderCoordinator: FolderCoordinator {
       fatalError()
     }
 
-    [folderButton, subscribeButton, shareButton].forEach {
-      leftButtonStackView.addArrangedSubview($0)
-    }
+    leftButtonStackView.addArrangedSubview(folderButton)
+//    [folderButton, subscribeButton, shareButton].forEach {
+//      leftButtonStackView.addArrangedSubview($0)
+//    }
 
     let navigationBar: TidifyNavigationBar = .init(
       leftButtonStackView: leftButtonStackView,
@@ -162,16 +169,18 @@ private extension DefaultFolderCoordinator {
     subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
     shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
   }
-  @objc func didTapSubscribeButton() {
-    navigationBarDelegate?.didTapSubscribeButton()
-    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-    subscribeButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
-    shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-  }
-  @objc func didTapShareButton() {
-    navigationBarDelegate?.didTapShareButton()
-    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-    subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-    shareButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
-  }
+
+  //TODO: - 추후 구현
+//  @objc func didTapSubscribeButton() {
+//    navigationBarDelegate?.didTapSubscribeButton()
+//    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+//    subscribeButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+//    shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+//  }
+//  @objc func didTapShareButton() {
+//    navigationBarDelegate?.didTapShareButton()
+//    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+//    subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+//    shareButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+//  }
 }

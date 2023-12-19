@@ -114,6 +114,7 @@ final class HomeViewController: BaseViewController, Alertable, Coordinatable, Lo
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     contentView.addSubview(tableView)
+    view.bringSubviewToFront(indicatorView)
   }
 }
 
@@ -282,9 +283,21 @@ private extension HomeViewController {
     viewModel.$state
       .map { $0.bookmarks }
       .receive(on: DispatchQueue.main)
+      .removeDuplicates()
       .sink(receiveValue: { [weak self] bookmarks in
         self?.tableView.reloadData()
         self?.updateConstraints(by: bookmarks)
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.errorType }
+      .removeDuplicates()
+      .compactMap { $0 }
+      .filter { $0 == .failFetchBookmarks }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.presentAlert(type: .bookmarkFetchError)
       })
       .store(in: &cancellable)
   }

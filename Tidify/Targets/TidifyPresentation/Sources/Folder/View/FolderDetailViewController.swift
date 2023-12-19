@@ -96,6 +96,7 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
     scrollView.addSubview(contentView)
     contentView.addSubview(tableView)
     view.addSubview(topEffectView)
+    view.bringSubviewToFront(indicatorView)
   }
 }
 
@@ -144,10 +145,21 @@ private extension FolderDetailViewController {
 
     viewModel.$state
       .map { $0.bookmarks }
+      .removeDuplicates()
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] bookmarks in
         self?.tableView.reloadData()
         self?.updateConstraints(by: bookmarks)
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.errorType }
+      .compactMap { $0 }
+      .filter { $0 == .failFetchBookmarks }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.presentAlert(type: .bookmarkFetchError)
       })
       .store(in: &cancellable)
   }

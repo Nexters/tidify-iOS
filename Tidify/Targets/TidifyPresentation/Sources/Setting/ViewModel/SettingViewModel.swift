@@ -30,6 +30,8 @@ final class SettingViewModel: ViewModelType {
   }
 
   func action(_ action: Action) {
+    state.error = nil
+    
     switch action {
     case .didTapSignOutButton:
       signOut()

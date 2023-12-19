@@ -38,6 +38,9 @@ final class BookmarkCreationViewModel: ViewModelType {
   }
 
   func action(_ action: Action) {
+    state.bookmarkError = nil
+    state.folderError = nil
+
     switch action {
     case .viewDidLoad:
       setupInitailFolders()
@@ -63,6 +66,7 @@ private extension BookmarkCreationViewModel {
         state.isLoading = false
       } catch {
         state.folderError = .failFetchFolderList
+        state.isLoading = false
       }
     }
   }
@@ -83,6 +87,7 @@ private extension BookmarkCreationViewModel {
         state.isLoading = false
       } catch {
         state.folderError = .failFetchFolderList
+        state.isLoading = false
       }
     }
   }

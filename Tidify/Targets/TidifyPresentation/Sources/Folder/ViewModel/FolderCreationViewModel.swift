@@ -31,6 +31,8 @@ final class FolderCreationViewModel: ViewModelType {
   }
 
   func action(_ action: Action) {
+    state.errorType = nil
+
     switch action {
     case .didTapCreateFolderButton(let requestDTO):
       createFolder(requestDTO)
