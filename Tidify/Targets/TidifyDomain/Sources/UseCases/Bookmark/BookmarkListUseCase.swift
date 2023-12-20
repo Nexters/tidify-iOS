@@ -6,12 +6,13 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-public typealias BookmarkListUseCase = FetchBookmarkUseCase & DeleteBookmarkUseCase & FavoriteBookmarkUseCase
+public typealias BookmarkListUseCase = FetchBookmarkUseCase & DeleteBookmarkUseCase & FavoriteBookmarkUseCase & CreateBookmarkUseCase
 
 public enum BookmarkListError: Error {
   case failFetchBookmarks
   case failDeleteBookmark
   case failFavoriteBookmark
+  case failCreateBookmark
 }
 
 final class DefaultBookmarkListUseCase: BookmarkListUseCase {
