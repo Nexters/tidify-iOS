@@ -10,7 +10,9 @@ import TidifyCore
 import TidifyDomain
 import UIKit
 
-protocol SearchCoordinator: Coordinator {}
+protocol SearchCoordinator: Coordinator {
+  func startWebView(bookmark: Bookmark)
+}
 
 final class DefaultSearchCoordinator: SearchCoordinator {
   weak var parentCoordinator: Coordinator?
@@ -35,6 +37,12 @@ final class DefaultSearchCoordinator: SearchCoordinator {
     viewController.coordinator = self
 
     return viewController
+  }
+
+  func startWebView(bookmark: Bookmark) {
+    let webViewController: WebViewController = .init(bookmark: bookmark)
+    webViewController.modalPresentationStyle = .fullScreen
+    navigationController.present(webViewController, animated: false)
   }
 
   func didFinish() {

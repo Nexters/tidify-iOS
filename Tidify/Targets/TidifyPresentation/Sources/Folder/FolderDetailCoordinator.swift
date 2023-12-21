@@ -13,6 +13,7 @@ import UIKit
 
 protocol FolderDetailCoordinator: Coordinator {
   func pushEditBookmarkScene(bookmark: Bookmark)
+  func startWebView(bookmark: Bookmark)
 }
 
 final class DefaultFolderDetailCoordinator: FolderDetailCoordinator {
@@ -51,6 +52,12 @@ final class DefaultFolderDetailCoordinator: FolderDetailCoordinator {
     addChild(bookmarkCreationCoordinator)
 
     navigationController.pushViewController(bookmarkEditViewController, animated: true)
+  }
+
+  func startWebView(bookmark: Bookmark) {
+    let webViewController: WebViewController = .init(bookmark: bookmark)
+    webViewController.modalPresentationStyle = .fullScreen
+    navigationController.present(webViewController, animated: false)
   }
 
   func didFinish() {

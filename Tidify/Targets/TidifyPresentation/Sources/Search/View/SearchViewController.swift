@@ -240,7 +240,7 @@ extension SearchViewController: UITableViewDelegate {
     }
 
     viewModel.action(.saveHistory(bookmark.name))
-    bookmark.openURL()
+    coordinator?.startWebView(bookmark: bookmark)
   }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {

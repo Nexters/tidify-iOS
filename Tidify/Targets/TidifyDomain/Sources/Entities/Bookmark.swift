@@ -58,19 +58,6 @@ public extension Bookmark {
     self.urlString = requestDTO.url
     self.folderID = requestDTO.folderID
   }
-
-  func openURL() {
-    var urlString: String = urlString ?? ""
-    if !(urlString.contains("http://") || urlString.contains("https://")) {
-      urlString = "https://" + urlString
-    }
-
-    guard let url = URL(string: urlString) else {
-      return
-    }
-
-    UIApplication.shared.open(url)
-  }
 }
 
 public struct BookmarkList {

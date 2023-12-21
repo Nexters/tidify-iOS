@@ -206,7 +206,7 @@ extension FolderDetailViewController: UITableViewDelegate {
       return
     }
 
-    bookmark.openURL()
+    coordinator?.startWebView(bookmark: bookmark)
   }
 
   func tableView(
