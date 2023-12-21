@@ -17,15 +17,10 @@ enum CreationType {
   case edit
 }
 
-protocol FolderCreationDelegate: AnyObject {
-  func didSuccessSave()
-}
-
 final class FolderCreationViewController: BaseViewController, Coordinatable, Alertable {
 
   // MARK: Properties
   weak var coordinator: DefaultFolderCreationCoordinator?
-  weak var saveButtonDelegate: FolderCreationDelegate?
   private let viewModel: FolderCreationViewModel
   private let creationType: CreationType
   private let originFolder: Folder?
@@ -96,7 +91,9 @@ final class FolderCreationViewController: BaseViewController, Coordinatable, Ale
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    navigationController?.navigationBar.isHidden = false
     registerKeyboardNotification()
+    textFieldView.setFirstResponder()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -171,11 +168,8 @@ extension FolderCreationViewController: UICollectionViewDelegateFlowLayout {
     return .init(w: size, h: size)
   }
 
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return collectionView.frame.height * 0.185
-  }
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    return collectionView.frame.width * 0.078
+    return collectionView.frame.width * 0.05
   }
 }
 
@@ -228,7 +222,6 @@ private extension FolderCreationViewController {
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] _ in
         self?.coordinator?.didFinish()
-        self?.saveButtonDelegate?.didSuccessSave()
       })
       .store(in: &cancellable)
 
@@ -236,8 +229,8 @@ private extension FolderCreationViewController {
       .map { $0.errorType }
       .compactMap { $0 }
       .receive(on: DispatchQueue.main)
-      .sink(receiveValue: { [weak self] error in
-        self?.presentAlert(type: .folderCreation)
+      .sink(receiveValue: { [weak self] _ in
+        self?.presentAlert(type: .folderCreationError)
       })
       .store(in: &cancellable)
   }

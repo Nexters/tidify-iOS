@@ -98,6 +98,11 @@ final class TidifyTextFieldView: UIView {
 
   func setupText(text: String) {
     textField.text = text
+    textFieldSubject.send(text)
+  }
+
+  func setFirstResponder() {
+    textField.becomeFirstResponder()
   }
 }
 
@@ -132,10 +137,6 @@ private extension TidifyTextFieldView {
   }
 
   func setupErrorLabel() {
-    if textFieldViewType == .bookmarkTitle {
-      return
-    }
-
     textField.publisher
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] text in

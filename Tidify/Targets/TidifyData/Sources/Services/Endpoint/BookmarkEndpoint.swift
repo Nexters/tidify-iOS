@@ -10,10 +10,11 @@ import TidifyCore
 import TidifyDomain
 
 enum BookmarkEndpoint: EndpointType {
-  case fetchBoomarkList(request: BookmarkListRequest)
+  case fetchBoomarkList(request: BookmarkListRequest, category: BookmarkCategory)
   case createBookmark(request: BookmarkRequestDTO)
   case deleteBookmark(ID: Int)
   case updateBookmark(ID: Int, request: BookmarkRequestDTO)
+  case favoriteBookmark(ID: Int)
 }
 
 extension BookmarkEndpoint {
@@ -23,12 +24,17 @@ extension BookmarkEndpoint {
 
   var fullPath: String {
     switch self {
-    case .fetchBoomarkList(let request):
-      return AppProperties.baseURL + (request.keyword.isNil ? baseRouthPath : baseRouthPath + "/search")
+    case .fetchBoomarkList(let request, let category):
+      if request.keyword.isNotNil {
+        return AppProperties.baseURL + baseRouthPath + "/search"
+      }
+      return AppProperties.baseURL + (category == .normal ? baseRouthPath : baseRouthPath + "/star")
     case .createBookmark:
       return AppProperties.baseURL + baseRouthPath
     case .deleteBookmark(let id), .updateBookmark(let id, _):
-      return AppProperties.baseURL + baseRouthPath + "\(id)"
+      return AppProperties.baseURL + baseRouthPath + "/\(id)"
+    case .favoriteBookmark(let id):
+      return AppProperties.baseURL + baseRouthPath + "/star/\(id)"
     }
   }
 
@@ -36,7 +42,7 @@ extension BookmarkEndpoint {
     switch self {
     case .fetchBoomarkList:
       return .get
-    case .createBookmark:
+    case .createBookmark, .favoriteBookmark:
       return .post
     case .deleteBookmark:
       return .delete
@@ -47,7 +53,7 @@ extension BookmarkEndpoint {
 
   var parameters: [String : String]? {
     switch self {
-    case .fetchBoomarkList(let request):
+    case .fetchBoomarkList(let request, _):
       var params: [String: String] = [
         "size": "\(request.size)",
         "page": "\(request.page)"
@@ -72,7 +78,7 @@ extension BookmarkEndpoint {
         "name": request.name
       ]
 
-    case .deleteBookmark:
+    case .deleteBookmark, .favoriteBookmark:
       return nil
     }
   }

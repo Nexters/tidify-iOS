@@ -12,13 +12,37 @@ import UIKit
 import Kingfisher
 import OpenGraph
 
+protocol BookmarkCellDelegate: AnyObject {
+  func didTapStarButton(bookmarkID: Int)
+}
+
 final class BookmarkCell: UITableViewCell {
 
   // MARK: - Properties
-  private let bookmarkImageView: UIImageView = .init()
-  private let bookmarkNameLabel: UILabel = .init()
-  private let editButton: UIButton = .init()
+  private let bookmarkImageView: UIImageView = {
+    let imageView: UIImageView = .init(image: .symbolImage)
+    imageView.contentMode = .scaleAspectFit
+    imageView.cornerRadius(radius: 4)
+    return imageView
+  }()
 
+  private let bookmarkNameLabel: UILabel = {
+    let label: UILabel = .init()
+    label.font = .t_B(15)
+    label.textColor = .t_ashBlue(weight: 800)
+    return label
+  }()
+
+  private lazy var starButton: UIButton = {
+    let button: UIButton = .init()
+    button.addTarget(self, action: #selector(didTapStarButton), for: .touchUpInside)
+    return button
+  }()
+
+  weak var delegate: BookmarkCellDelegate?
+  private var bookmark: Bookmark?
+
+  // MARK: Initializer
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -32,30 +56,22 @@ final class BookmarkCell: UITableViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
 
-    if !(bookmarkImageView.image?.isSame(with: .symbolImage) ?? true) {
-      bookmarkImageView.image = .symbolImage
-    }
+    bookmarkImageView.image = .symbolImage
+    starButton.setImage(.init(named: "starOffIcon"), for: .normal)
+    bookmark = nil
+    delegate = nil
   }
 
   // MARK: - Methods
   func configure(bookmark: Bookmark) {
+    self.bookmark = bookmark
     updateUI(bookmark: bookmark)
-  }
-
-  func preDownloadImage(url: URL) {
-    setOpenGraphImage(url: url)
   }
 }
 
 private extension BookmarkCell {
   func updateUI(bookmark: Bookmark) {
     var bookmarkName: String = bookmark.name
-
-    if bookmarkImageView.image?.isSame(with: .symbolImage) ?? true {
-      DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-        self?.setOpenGraphImage(url: bookmark.url)
-      }
-    }
 
     OpenGraph.fetch(url: bookmark.url) { [weak self] result in
       switch result {
@@ -64,66 +80,56 @@ private extension BookmarkCell {
           bookmarkName = openGraph[.title] ?? ""
         }
 
+        if let urlString = openGraph[.image] {
+          DispatchQueue.main.async { [weak self] in
+            self?.bookmarkImageView.setImage(with: urlString)
+          }
+        }
       case .failure(let error):
         DispatchQueue.main.async {
-          self?.bookmarkImageView.image = .init(named: "icon_symbol")
+          self?.bookmarkImageView.image = .symbolImage
         }
         print("❌ \(#file) - \(#line): \(#function) - Fail: \(error.localizedDescription)")
       }
     }
 
     bookmarkNameLabel.text = bookmarkName
+    starButton.setImage(.init(named: bookmark.star ? "starOnIcon" : "starOffIcon"), for: .normal)
   }
 
   func setupUI() {
     backgroundColor = .white
     selectionStyle = .none
-
-    contentView.cornerRadius(radius: 8)
-    contentView.layer.borderWidth = 1
-    contentView.layer.borderColor = UIColor.t_background().cgColor
-
-    bookmarkNameLabel.do {
-      $0.font = .t_B(16)
-      contentView.addSubview($0)
-    }
-
-    bookmarkImageView.do {
-      $0.image = .init(named: "icon_symbol")
-      $0.contentMode = .scaleAspectFit
-      $0.cornerRadius(radius: 6)
-      contentView.addSubview($0)
-    }
+    contentView.addSubview(bookmarkImageView)
+    contentView.addSubview(bookmarkNameLabel)
+    contentView.addSubview(starButton)
 
     bookmarkImageView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(8)
-      $0.leading.equalToSuperview().offset(10)
-      $0.bottom.equalToSuperview().offset(-8)
-      $0.width.equalTo(52)
+      $0.top.bottom.equalToSuperview().inset(10)
+      $0.leading.equalToSuperview().offset(20)
+      $0.width.equalTo(bookmarkImageView.snp.height)
+    }
+
+    starButton.snp.makeConstraints {
+      $0.top.trailing.bottom.equalToSuperview().inset(20)
+      $0.width.equalTo(starButton.snp.height)
     }
 
     bookmarkNameLabel.snp.makeConstraints {
-      $0.leading.equalTo(bookmarkImageView.snp.trailing).offset(16)
-      $0.trailing.lessThanOrEqualToSuperview().offset(-10)
+      $0.leading.equalTo(bookmarkImageView.snp.trailing).offset(20)
+      $0.trailing.lessThanOrEqualTo(starButton.snp.trailing).inset(80)
       $0.centerY.equalTo(bookmarkImageView)
     }
   }
 
-  func setOpenGraphImage(url: URL) {
-    OpenGraph.fetch(url: url) { result in
-      switch result {
-      case .success(let openGraph):
-        if let urlString = openGraph[.image] {
-          DispatchQueue.main.async { [weak self] in
-            self?.bookmarkImageView.setImage(with: urlString)
-          }
-        }
+  @objc func didTapStarButton() {
+    bookmark?.star.toggle()
 
-      case .failure:
-        DispatchQueue.main.async { [weak self] in
-          self?.bookmarkImageView.image = .init(named: "icon_symbol")
-        }
-      }
+    guard let bookmark = bookmark else {
+      return
     }
+
+    starButton.setImage(.init(named: bookmark.star ? "starOnIcon" : "starOffIcon"), for: .normal)
+    delegate?.didTapStarButton(bookmarkID: bookmark.id)
   }
 }

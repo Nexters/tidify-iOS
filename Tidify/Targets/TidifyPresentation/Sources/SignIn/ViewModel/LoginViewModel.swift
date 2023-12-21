@@ -33,6 +33,8 @@ final class LoginViewModel: ViewModelType {
   }
 
   func action(_ action: Action) {
+    state.errorType = nil
+
     Task {
       do {
         state.isLoading = true

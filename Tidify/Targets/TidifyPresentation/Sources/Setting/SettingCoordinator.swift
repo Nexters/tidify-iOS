@@ -25,27 +25,29 @@ final class DefaultSettingCoordinator: SettingCoordinator {
   }
 
   // MARK: - Methods
-  func start() {
-    let viewController: SettingViewController = getViewController()
-    navigationController.pushViewController(viewController, animated: true)
+  func start() {}
+
+  func startPush() -> SettingViewController{
+    guard let useCase: UserUseCase = DIContainer.shared.resolve(type: UserUseCase.self) else {
+      fatalError()
+    }
+
+    let viewModel: SettingViewModel = .init(useCase: useCase)
+    let viewController: SettingViewController = .init(viewModel: viewModel)
+    viewController.coordinator = self
+
+    return viewController
   }
 
   func didFinish() {
     parentCoordinator?.removeChild(self)
   }
-}
 
-private extension DefaultSettingCoordinator {
-  func getViewController() -> SettingViewController {
-//    navigationController.navigationBar.topItem?.title = ""
-//    guard let useCase: SettingUseCase = DIContainer.shared.resolve(type: SettingUseCase.self) else {
-//      fatalError()
-//    }
-//    let reactor: SettingReactor = .init(useCase: useCase, coordinator: self)
-//    let viewController: SettingViewController = .init()
-//    viewController.reactor = reactor
-//
-//    return viewController
-    return .init()
+  func resetCoordinator() {
+    guard !(parentCoordinator is MainCoordinator) else {
+      return
+    }
+    parentCoordinator = parentCoordinator?.parentCoordinator
+    resetCoordinator()
   }
 }

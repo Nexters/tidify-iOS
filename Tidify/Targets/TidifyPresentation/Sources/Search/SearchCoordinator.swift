@@ -11,7 +11,7 @@ import TidifyDomain
 import UIKit
 
 protocol SearchCoordinator: Coordinator {
-  func pushWebView(bookmark: Bookmark)
+  func startWebView(bookmark: Bookmark)
 }
 
 final class DefaultSearchCoordinator: SearchCoordinator {
@@ -25,41 +25,27 @@ final class DefaultSearchCoordinator: SearchCoordinator {
   }
 
   // MARK: - Methods
-  func start() {
-    let viewController: SearchViewController = getViewController()
-    navigationController.pushViewController(viewController, animated: true)
-  }
+  func start() {}
   
-  func startPush() -> UIViewController {
-    return getViewController()
+  func startPush() -> SearchViewController {
+    guard let useCase: SearchListUseCase = DIContainer.shared.resolve(type: SearchListUseCase.self) else {
+      fatalError()
+    }
+
+    let viewModel: SearchViewModel = .init(useCase: useCase)
+    let viewController: SearchViewController = .init(viewModel: viewModel)
+    viewController.coordinator = self
+
+    return viewController
   }
-  
-  func pushWebView(bookmark: Bookmark) {
-    guard let detailWebViewCoordinator = DIContainer.shared.resolve(type: DetailWebCoordinator.self)
-            as? DefaultDetailWebCoordinator else { return }
 
-    detailWebViewCoordinator.parentCoordinator = self
-    detailWebViewCoordinator.bookmark = bookmark
-    addChild(detailWebViewCoordinator)
-
-    detailWebViewCoordinator.start()
+  func startWebView(bookmark: Bookmark) {
+    let webViewController: WebViewController = .init(bookmark: bookmark)
+    webViewController.modalPresentationStyle = .fullScreen
+    navigationController.present(webViewController, animated: false)
   }
 
   func didFinish() {
     parentCoordinator?.removeChild(self)
-  }
-}
-
-private extension DefaultSearchCoordinator {
-  func getViewController() -> SearchViewController {
-    guard let usecase: SearchUseCase = DIContainer.shared.resolve(type: SearchUseCase.self) else {
-      fatalError()
-    }
-
-    let reactor: SearchReactor = .init(coordinator: self, usecase: usecase)
-    let viewController: SearchViewController = .init(nibName: nil, bundle: nil)
-    viewController.reactor = reactor
-
-    return viewController
   }
 }

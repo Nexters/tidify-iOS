@@ -19,10 +19,10 @@ final class DefaultFolderDetailRepository: FolderDetailRepository {
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkListResponse {
+  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse {
     let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchBookmarkListInFolder(id: id), type: BookmarkListResponse.self)
 
-    return FetchBookmarkListResponse(
+    return FetchBookmarkResponse(
       bookmarks: response.toDomain(),
       currentPage: response.bookmarkListDTO.currentPage,
       isLastPage: response.bookmarkListDTO.isLastPage

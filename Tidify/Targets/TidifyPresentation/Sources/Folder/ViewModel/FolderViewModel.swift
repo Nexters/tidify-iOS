@@ -7,23 +7,21 @@
 //
 
 import Combine
-import TidifyCore
 import TidifyDomain
 
 final class FolderViewModel: ViewModelType {
   typealias UseCase = FolderListUseCase
 
   enum Action: Equatable {
-    case viewDidLoad
-    case didTapCategory(Folder.FolderCategory)
-    case didSelectFolder(_ folder: Folder)
+    case initialize
+    case didTapCategory(FolderCategory)
     case didTapDelete(_ folder: Folder)
     case didScroll
   }
 
   struct State: Equatable {
     var isLoading: Bool
-    var category: Folder.FolderCategory
+    var category: FolderCategory
     var folders: [Folder]
     var errorType: FolderListError?
   }
@@ -39,14 +37,14 @@ final class FolderViewModel: ViewModelType {
   }
 
   func action(_ action: Action) {
+    state.errorType = nil
+
     switch action {
-    case .viewDidLoad:
+    case .initialize:
       setupInitailFolders()
     case .didTapCategory(let category):
       state.category = category
       setupInitailFolders()
-    case .didSelectFolder(let folder):
-      print("didSelectFolder: \(folder)")
     case .didTapDelete(let folder):
       deleteFolder(folder)
     case .didScroll:
@@ -67,6 +65,7 @@ private extension FolderViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFetchFolderList
+        state.isLoading = false
       }
     }
   }
@@ -97,6 +96,7 @@ private extension FolderViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failDeleteFolder
+        state.isLoading = false
       }
     }
   }
@@ -117,14 +117,21 @@ private extension FolderViewModel {
         state.isLoading = false
       } catch {
         state.errorType = .failFetchFolderList
+        state.isLoading = false
       }
     }
   }
 
   func appendFolders(folders: [Folder], addPage: Bool) {
+    for folder in folders {
+      if state.folders.contains(where: { $0.id == folder.id }) {
+        return
+      }
+      state.folders.append(folder)
+    }
+
     if addPage {
       currentPage += 1
     }
-    state.folders += folders
   }
 }

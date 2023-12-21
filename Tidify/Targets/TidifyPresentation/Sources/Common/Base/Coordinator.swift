@@ -35,9 +35,10 @@ public extension Coordinator {
   }
 
   func transitionToLogin() {
-    childCoordinators = .init()
     let loginCoordinator: LoginCoordinator = DIContainer.shared.resolve(type: LoginCoordinator.self)!
+    loginCoordinator.parentCoordinator = parentCoordinator
     addChild(loginCoordinator)
+    KeyChain.deleteAll()
     loginCoordinator.start()
   }
 

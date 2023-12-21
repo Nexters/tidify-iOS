@@ -26,7 +26,7 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable, 
     return indicatorView
   }()
 
-  private let searchButton: UIButton = {
+  private lazy var searchButton: UIButton = {
     let button: UIButton = .init()
     button.setImage(.init(named: "home_search_bookmark"), for: .normal)
     button.setTitle("  북마크 찾기", for: .normal)
@@ -36,6 +36,7 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable, 
     button.contentHorizontalAlignment = .left
     button.contentEdgeInsets = .init(top: 0, left: 15, bottom: 0, right: 0)
     button.backgroundColor = .t_gray(weight: 100)
+    button.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
     return button
   }()
 
@@ -58,7 +59,6 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable, 
     tableView.separatorStyle = .none
     tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .white
-    tableView.contentInset = .init(top: 10, left: 0, bottom: 10, right: 0)
     tableView.cornerRadius(radius: 15)
     tableView.isScrollEnabled = false
     tableView.delegate = self
@@ -91,7 +91,6 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable, 
   }
 
   override func viewDidLoad() {
-    viewModel.action(.viewDidLoad)
     super.viewDidLoad()
     setupLayoutConstraints()
     bindState()
@@ -100,24 +99,20 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable, 
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    viewModel.action(.initialize)
     navigationController?.navigationBar.isHidden = true
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.navigationBar.isHidden = false
   }
 
   override func setupViews() {
     super.setupViews()
 
-    view.addSubview(indicatorView)
     view.addSubview(navigationBar)
     view.addSubview(searchButton)
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     contentView.addSubview(tableView)
     contentView.addSubview(folderCreationButton)
+    view.addSubview(indicatorView)
   }
 }
 
@@ -147,13 +142,14 @@ private extension FolderViewController {
 
     contentView.snp.makeConstraints {
       $0.edges.width.equalToSuperview()
-      $0.height.equalTo(Self.viewHeight - 40 - Self.viewHeight * 0.05)
+      $0.height.equalToSuperview().priority(.low)
     }
 
     tableView.snp.makeConstraints {
       $0.top.equalToSuperview()
       $0.leading.trailing.equalToSuperview().inset(15)
       $0.height.equalTo(0)
+      $0.bottom.equalToSuperview().offset(-190)
     }
 
     folderCreationButton.snp.makeConstraints {
@@ -181,25 +177,27 @@ private extension FolderViewController {
         self?.updateConstraints(by: folders)
       })
       .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.errorType }
+      .compactMap { $0 }
+      .filter { $0 == .failFetchFolderList }
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _ in
+        self?.presentAlert(type: .folderFetchError)
+      })
+      .store(in: &cancellable)
   }
 
   func updateConstraints(by folders: [Folder]) {
-    if folders.count == 0 {
-      tableView.snp.updateConstraints {
-        $0.height.equalTo(254)
-      }
-      contentView.snp.updateConstraints {
-        $0.height.equalTo(269 + Self.viewHeight * 0.06)
-      }
-    } else {
-      let updatedHeight = 60 * folders.count
+    tableView.snp.updateConstraints {
+      $0.height.equalTo(folders.count == 0 ? 254 : 60 * folders.count + 20)
+    }
 
-      tableView.snp.updateConstraints {
-        $0.height.equalTo(updatedHeight)
-      }
-      contentView.snp.updateConstraints {
-        $0.height.equalTo(updatedHeight + 190)
-      }
+    if folders.count == 0 {
+      tableView.contentInset = .zero
+    } else {
+      tableView.contentInset = .init(top: 10, left: 0, bottom: 10, right: 0)
     }
   }
 
@@ -209,12 +207,6 @@ private extension FolderViewController {
 }
 
 // MARK: - Extension
-extension FolderViewController: FolderCreationDelegate {
-  func didSuccessSave() {
-    viewModel.action(.viewDidLoad)
-  }
-}
-
 extension FolderViewController: FolderNavigationBarDelegate {
   func didTapFolderButton() {
     viewModel.action(.didTapCategory(.normal))
@@ -238,13 +230,7 @@ extension FolderViewController: EmptyGuideCellDelegate {
 extension FolderViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     let folderCount: Int = viewModel.state.folders.count
-
-    if folderCount == 0 {
-      tableView.contentInset = .zero
-      return 1
-    } else {
-      return folderCount
-    }
+    return folderCount == 0 ? 1 : folderCount
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -260,7 +246,7 @@ extension FolderViewController: UITableViewDataSource {
     }
 
     let cell: FolderTableViewCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-    cell.configure(folder: folder)
+    cell.configure(folder: folder, category: viewModel.state.category)
 
     return cell
   }
@@ -276,7 +262,7 @@ extension FolderViewController: UITableViewDelegate {
       return
     }
 
-    viewModel.action(.didSelectFolder(folder))
+    coordinator?.pushDetailScene(folder: folder)
   }
 
   func tableView(
@@ -337,5 +323,9 @@ extension FolderViewController: UITableViewDelegate {
 
     scrollWorkItem = workItem
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
+  }
+
+  @objc func didTapSearchButton() {
+    coordinator?.pushSearchScene()
   }
 }

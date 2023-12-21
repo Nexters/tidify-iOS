@@ -12,8 +12,10 @@ import UIKit
 
 protocol FolderNavigationBarDelegate: AnyObject {
   func didTapFolderButton()
-  func didTapSubscribeButton()
-  func didTapShareButton()
+
+  //TODO: - 추후 구현
+//  func didTapSubscribeButton()
+//  func didTapShareButton()
 }
 
 protocol FolderCoordinator: Coordinator {
@@ -22,6 +24,7 @@ protocol FolderCoordinator: Coordinator {
   func pushSettingScene()
   func pushDetailScene(folder: Folder)
   func pushFolderCreationScene(type: CreationType, originFolder: Folder?)
+  func pushSearchScene()
 
   // MARK: Properties
   var navigationBarDelegate: FolderNavigationBarDelegate? { get set }
@@ -47,7 +50,9 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     button.setTitle("구독", for: .normal)
     button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
     button.titleLabel?.font = .t_EB(22)
-    button.addTarget(self, action: #selector(didTapSubscribeButton), for: .touchUpInside)
+
+    //TODO: - 추후 구현
+//    button.addTarget(self, action: #selector(didTapSubscribeButton), for: .touchUpInside)
     return button
   }()
 
@@ -56,7 +61,9 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     button.setTitle("공유중", for: .normal)
     button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
     button.titleLabel?.font = .t_EB(22)
-    button.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+
+    //TODO: - 추후 구현
+//    button.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
     return button
   }()
 
@@ -87,9 +94,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
       fatalError()
     }
 
-    [folderButton, subscribeButton, shareButton].forEach {
-      leftButtonStackView.addArrangedSubview($0)
-    }
+    leftButtonStackView.addArrangedSubview(folderButton)
 
     let navigationBar: TidifyNavigationBar = .init(
       leftButtonStackView: leftButtonStackView,
@@ -110,26 +115,22 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   @objc func pushSettingScene() {
     guard let settingCoordinator = DIContainer.shared.resolve(type: SettingCoordinator.self)
             as? DefaultSettingCoordinator else { return }
+    let settingViewController = settingCoordinator.startPush()
     settingCoordinator.parentCoordinator = self
     addChild(settingCoordinator)
 
-    settingCoordinator.start()
+    navigationController.pushViewController(settingViewController, animated: true)
   }
   
   func pushDetailScene(folder: Folder) {
-//    guard let useCase: FolderDetailUseCase = DIContainer.shared.resolve(type: FolderDetailUseCase.self)
-//    else { fatalError() }
-//    let reactor: FolderDetailReactor = .init(coordinator: self, useCase: useCase, folderID: folder.id)
-//    let viewController: FolderDetailViewController = .init(
-//      folder: folder,
-//      navigationBar: getDetailNavigationBar(folder: folder)
-//    )
-//    viewController.reactor = reactor
-//
-//    navigationController.pushViewController(
-//      viewController,
-//      animated: true
-//    )
+    let folderDetailCoordinator: DefaultFolderDetailCoordinator = .init(
+      navigationController: navigationController
+    )
+    let folderDetailViewController = folderDetailCoordinator.startPush(folder: folder)
+    folderDetailCoordinator.parentCoordinator = self
+    addChild(folderDetailCoordinator)
+
+    navigationController.pushViewController(folderDetailViewController, animated: true)
   }
   
   func pushFolderCreationScene(type: CreationType, originFolder: Folder?) {
@@ -140,25 +141,17 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     folderCreationCoordinator.parentCoordinator = self
     addChild(folderCreationCoordinator)
 
-    guard let tabBarController = navigationController.viewControllers[0] as? TabBarController,
-          let tabBarViewControllers = tabBarController.viewControllers,
-          let folderViewController = tabBarViewControllers[1] as? FolderViewController else {
+    navigationController.pushViewController(folderCreationViewController, animated: true)
+  }
+
+  func pushSearchScene() {
+    guard let searchCoordinator = DIContainer.shared.resolve(type: SearchCoordinator.self)
+            as? DefaultSearchCoordinator else {
       return
     }
 
-    folderCreationViewController.saveButtonDelegate = folderViewController
-    navigationController.pushViewController(folderCreationViewController, animated: true)
-  }
-  
-  func pushWebView(bookmark: Bookmark) {
-    guard let detailWebViewCoordinator = DIContainer.shared.resolve(type: DetailWebCoordinator.self)
-            as? DefaultDetailWebCoordinator else { return }
-
-    detailWebViewCoordinator.parentCoordinator = self
-    detailWebViewCoordinator.bookmark = bookmark
-    addChild(detailWebViewCoordinator)
-
-    detailWebViewCoordinator.start()
+    let searchViewController = searchCoordinator.startPush()
+    navigationController.pushViewController(searchViewController, animated: false)
   }
 
   func didFinish() {
@@ -173,16 +166,18 @@ private extension DefaultFolderCoordinator {
     subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
     shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
   }
-  @objc func didTapSubscribeButton() {
-    navigationBarDelegate?.didTapSubscribeButton()
-    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-    subscribeButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
-    shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-  }
-  @objc func didTapShareButton() {
-    navigationBarDelegate?.didTapShareButton()
-    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-    subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-    shareButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
-  }
+
+  //TODO: - 추후 구현
+//  @objc func didTapSubscribeButton() {
+//    navigationBarDelegate?.didTapSubscribeButton()
+//    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+//    subscribeButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+//    shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+//  }
+//  @objc func didTapShareButton() {
+//    navigationBarDelegate?.didTapShareButton()
+//    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+//    subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+//    shareButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+//  }
 }

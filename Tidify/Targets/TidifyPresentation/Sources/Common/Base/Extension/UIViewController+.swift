@@ -26,6 +26,13 @@ public extension UIViewController {
     }
     return window.screen.bounds.width
   }
+
+  static var topPadding: CGFloat {
+    guard let window = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+      return 0
+    }
+    return window.windows.first?.safeAreaInsets.top ?? 0
+  }
 }
 
 public extension Reactive where Base: UIViewController {

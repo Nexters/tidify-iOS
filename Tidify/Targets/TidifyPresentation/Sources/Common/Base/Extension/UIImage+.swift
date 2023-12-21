@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImage {
   static var symbolImage: UIImage {
-    return .init(named: "icon_symbol")!
+    return .init(named: "ogIcon")!
   }
 
   func isSame(with image: UIImage) -> Bool {

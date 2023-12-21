@@ -48,10 +48,6 @@ public struct PresentationAssembly: Assemblable {
       DefaultBookmarkCreationCoordinator(navigationController: navigationController)
     }
 
-    container.register(type: DetailWebCoordinator.self) { _ in
-      DefaultDetailWebCoordinator(navigationController: navigationController)
-    }
-
     container.register(type: SearchCoordinator.self) { _ in
       DefaultSearchCoordinator(navigationController: navigationController)
     }

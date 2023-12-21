@@ -39,8 +39,8 @@ final class DefaultLoginCoordinator: LoginCoordinator {
   func didSuccessLogin() {
     guard let tabBarCoordinator = DIContainer.shared.resolve(type: TabBarCoordinator.self)
             as? DefaultTabBarCoordinator else { return }
-    addChild(tabBarCoordinator)
-    didFinish()
+    tabBarCoordinator.parentCoordinator = parentCoordinator
+    parentCoordinator?.addChild(tabBarCoordinator)
     tabBarCoordinator.start()
   }
 }

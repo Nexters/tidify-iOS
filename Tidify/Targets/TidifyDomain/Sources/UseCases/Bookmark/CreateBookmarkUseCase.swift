@@ -6,34 +6,32 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+public enum BookmarkCreationError: Error {
+  case failCreateBookmark
+  case failUpdateBookmark
+}
+
 public protocol CreateBookmarkUseCase {
-
   var bookmarkRepository: BookmarkRepository { get }
-  var folderRepository: FolderRepository { get }
 
-  /// 북마크를 생성합니다.
   func createBookmark(request: BookmarkRequestDTO) async throws
-
-  /// 본인 소유의 폴더를 가져옵니다.
-  func fetchFolders() async throws -> [Folder]
 }
 
 extension CreateBookmarkUseCase {
   func createBookmark(request: BookmarkRequestDTO) async throws {
     try await bookmarkRepository.createBookmark(request: request)
   }
-
-  func fetchFolders() async throws -> [Folder] {
-    return []
-  }
 }
 
-final class DefaultCreateBookmarkUseCase: CreateBookmarkUseCase, UpdateBookmarkUseCase {
+public typealias BookmarkCreationUseCase = CreateBookmarkUseCase & UpdateBookmarkUseCase & FetchFolderUseCase
 
-  // MARK: - Properties
-  let bookmarkRepository: BookmarkRepository
+final class DefaultBookmarkCreationUseCase: BookmarkCreationUseCase {
+
+  // MARK: Properties
   let folderRepository: FolderRepository
+  let bookmarkRepository: BookmarkRepository
 
+  // MARK: Initializer
   init(
     bookmarkRepository: BookmarkRepository,
     folderRepository: FolderRepository

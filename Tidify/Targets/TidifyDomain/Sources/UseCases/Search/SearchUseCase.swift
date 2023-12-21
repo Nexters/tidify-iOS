@@ -8,43 +8,49 @@
 
 import TidifyCore
 
-import RxSwift
-
 public enum SearchError: Error {
   case failEraseAllSearchHistory
   case emptySearchQuery
 }
 
 public protocol SearchUseCase {
+  var searchRepository: SearchRepository { get }
+
   /// 최근 검색내역을 반환합니다.
   func fetchSearchHistory() -> [String]
 
   /// 검색 쿼리에 대응되는 결과를 반환합니다.
-  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse
+  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkResponse
 
   /// 검색내역을 초기화합니다.
   func eraseAllSearchHistory()
 }
 
-final class DefaultSearchUseCase: SearchUseCase {
-
-  // MARK: - Properties
-  private let searchRepository: SearchRepository
-
-  // MARK: Initializer
-  public init(searchRepository: SearchRepository) {
-    self.searchRepository = searchRepository
-  }
-
+extension SearchUseCase {
   func fetchSearchHistory() -> [String] {
     searchRepository.fetchSearchHistory()
   }
 
-  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkListResponse {
+  func fetchSearchResult(request: BookmarkListRequest) async throws -> FetchBookmarkResponse {
     try await searchRepository.fetchSearchResult(request: request)
   }
 
   func eraseAllSearchHistory() {
     searchRepository.eraseAllSearchHistory()
+  }
+}
+
+public typealias SearchListUseCase = SearchUseCase & FetchBookmarkUseCase & FavoriteBookmarkUseCase
+
+final class DefaultSearchListUseCase: SearchListUseCase {
+
+  // MARK: Properties
+  let searchRepository: SearchRepository
+  let bookmarkRepository: BookmarkRepository
+
+  // MARK: Initializer
+  public init(searchRepository: SearchRepository, bookmarkRepository: BookmarkRepository) {
+    self.searchRepository = searchRepository
+    self.bookmarkRepository = bookmarkRepository
   }
 }

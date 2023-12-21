@@ -90,13 +90,13 @@ final class LoginViewController: BaseViewController, Alertable, Coordinatable, L
   override func setupViews() {
     super.setupViews()
 
-    view.addSubview(indicatorView)
     view.addSubview(logoImageView)
     view.addSubview(titleLabel)
     view.addSubview(subTitleLabel)
     view.addSubview(loginMethodStackView)
     loginMethodStackView.addArrangedSubview(kakaoSignInButton)
     loginMethodStackView.addArrangedSubview(appleSignInButton)
+    view.addSubview(indicatorView)
   }
 
   override func viewDidLoad() {

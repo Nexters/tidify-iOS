@@ -11,7 +11,12 @@ import UIKit
 final class SettingCell: UITableViewCell {
 
   // MARK: - Properties
-  private let titleLabel: UILabel = .init()
+  private let titleLabel: UILabel = {
+    let label: UILabel = .init()
+    label.font = .t_B(15)
+    label.textColor = .t_ashBlue(weight: 800)
+    return label
+  }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,20 +30,12 @@ final class SettingCell: UITableViewCell {
 
   // MARK: - Methods
   func configure(title: String, isLastIndex: Bool) {
-    if title == "앱 버전" {
-      DispatchQueue.main.async { [weak self] in
-        self?.titleLabel.font = .systemFont(ofSize: 12)
-        self?.titleLabel.textColor = .lightGray
-        self?.titleLabel.text = title + " " + (self?.fetchAppVersionInfo() ?? "")
-      }
-    }
-
     titleLabel.text = title
     
     titleLabel.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(20)
-      $0.top.equalToSuperview().offset(20)
-      $0.bottom.equalToSuperview().inset(isLastIndex ? 36 : 20)
+      $0.top.equalToSuperview().inset(17)
+      $0.bottom.equalToSuperview().inset(isLastIndex ? 27 : 17)
     }
   }
 }
@@ -50,18 +47,5 @@ private extension SettingCell {
     backgroundColor = .white
 
     contentView.addSubview(titleLabel)
-
-    titleLabel.do {
-      $0.font = .systemFont(ofSize: 16)
-    }
-  }
-
-  func fetchAppVersionInfo() -> String {
-    guard let dictionary = Bundle.main.infoDictionary,
-          let version = dictionary["CFBundleShortVersionString"] as? String,
-          let build = dictionary["CFBundleVersion"] as? String else { return "" }
-
-    let versionAndBuildString: String = "\(version).\(build)"
-    return versionAndBuildString
   }
 }

@@ -34,6 +34,6 @@ struct FolderCreationDTO: Decodable {
 
 extension FolderCreationDTO {
   public func toDomain() -> Folder {
-    .init(id: folderID, title: folderName, color: color, count: 0, category: .normal)
+    .init(id: folderID, title: folderName, color: color, count: 0)
   }
 }
