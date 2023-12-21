@@ -95,9 +95,6 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     }
 
     leftButtonStackView.addArrangedSubview(folderButton)
-//    [folderButton, subscribeButton, shareButton].forEach {
-//      leftButtonStackView.addArrangedSubview($0)
-//    }
 
     let navigationBar: TidifyNavigationBar = .init(
       leftButtonStackView: leftButtonStackView,

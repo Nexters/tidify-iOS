@@ -112,6 +112,7 @@ private extension BookmarkCreationViewModel {
         state.isSuccess = true
       } catch {
         state.bookmarkError = .failCreateBookmark
+        state.isSuccess = false
       }
     }
   }
@@ -123,6 +124,7 @@ private extension BookmarkCreationViewModel {
         state.isSuccess = true
       } catch {
         state.bookmarkError = .failUpdateBookmark
+        state.isSuccess = false
       }
     }
   }

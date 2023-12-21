@@ -59,7 +59,7 @@ final class FolderTableViewCell: UITableViewCell {
     nameLabel.text = folder.title
     colorView.backgroundColor = .toColor(folder.color)
 
-    if let category = category {
+    if let category {
       countLabel.text = category == .share ? "\(folder.count)명 구독중" : "\(folder.count)개 정리됨"
     } else {
       countLabel.isHidden = true

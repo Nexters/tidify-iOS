@@ -108,13 +108,12 @@ final class HomeViewController: BaseViewController, Alertable, Coordinatable, Lo
   override func setupViews() {
     super.setupViews()
 
-    view.addSubview(indicatorView)
     view.addSubview(navigationBar)
     view.addSubview(searchButton)
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     contentView.addSubview(tableView)
-    view.bringSubviewToFront(indicatorView)
+    view.addSubview(indicatorView)
   }
 }
 
@@ -308,7 +307,7 @@ private extension HomeViewController {
     }
 
     if bookmarks.count == 0 {
-      tableView.contentInset = .init()
+      tableView.contentInset = .zero
     } else {
       tableView.contentInset = .init(top: 10, left: 0, bottom: 10, right: 0)
     }

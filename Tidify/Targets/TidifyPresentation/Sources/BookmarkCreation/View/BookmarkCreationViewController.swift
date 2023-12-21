@@ -134,7 +134,6 @@ final class BookmarkCreationViewController: BaseViewController, Coordinatable, A
   override func setupViews() {
     super.setupViews()
 
-    view.addSubview(indicatorView)
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     contentView.addSubview(urlTextFieldView)
@@ -144,7 +143,7 @@ final class BookmarkCreationViewController: BaseViewController, Coordinatable, A
     view.addSubview(topEffectView)
     view.addSubview(bottomEffectView)
     view.addSubview(saveButton)
-    view.bringSubviewToFront(indicatorView)
+    view.addSubview(indicatorView)
   }
 }
 

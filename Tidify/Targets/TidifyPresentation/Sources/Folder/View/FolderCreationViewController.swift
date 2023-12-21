@@ -229,7 +229,7 @@ private extension FolderCreationViewController {
       .map { $0.errorType }
       .compactMap { $0 }
       .receive(on: DispatchQueue.main)
-      .sink(receiveValue: { [weak self] error in
+      .sink(receiveValue: { [weak self] _ in
         self?.presentAlert(type: .folderCreationError)
       })
       .store(in: &cancellable)

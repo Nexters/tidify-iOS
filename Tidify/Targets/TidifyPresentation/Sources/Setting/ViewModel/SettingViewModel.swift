@@ -47,6 +47,7 @@ private extension SettingViewModel {
         state.isSuccess = true
       } catch {
         state.error = .failSignOut
+        state.isSuccess = false
       }
     }
   }

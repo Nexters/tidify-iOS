@@ -50,6 +50,7 @@ private extension FolderCreationViewModel {
         state.isSuccess = true
       } catch {
         state.errorType = .failCreateFolder
+        state.isSuccess = false
       }
     }
   }
@@ -61,6 +62,7 @@ private extension FolderCreationViewModel {
         state.isSuccess = true
       } catch {
         state.errorType = .failUpdateFolder
+        state.isSuccess = false
       }
     }
   }
