@@ -235,12 +235,21 @@ extension SearchViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let bookmark = viewModel.state.searchResult[safe: indexPath.row] else {
-      return
-    }
+    if isHistoryMode {
+      guard let history = UserProperties.searchHistory[safe: indexPath.row] else {
+        return
+      }
 
-    viewModel.action(.saveHistory(bookmark.name))
-    coordinator?.startWebView(bookmark: bookmark)
+      searchTextField.text = history
+      viewModel.action(.searchQuery(history))
+    } else {
+      guard let bookmark = viewModel.state.searchResult[safe: indexPath.row] else {
+        return
+      }
+
+      viewModel.action(.saveHistory(bookmark.name))
+      coordinator?.startWebView(bookmark: bookmark)
+    }
   }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
