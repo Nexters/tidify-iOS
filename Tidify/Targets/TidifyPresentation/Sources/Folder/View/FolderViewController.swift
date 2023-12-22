@@ -223,7 +223,7 @@ extension FolderViewController: FolderNavigationBarDelegate {
 
 extension FolderViewController: EmptyGuideCellDelegate {
   func didTapShowGuideButton() {
-    // TODO: 디자인 작업 이후 온보딩으로 이동
+    coordinator?.pushOnboarding()
   }
 }
 

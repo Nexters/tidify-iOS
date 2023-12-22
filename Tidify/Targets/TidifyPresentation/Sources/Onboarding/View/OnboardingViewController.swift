@@ -6,74 +6,79 @@
 //  Copyright © 2022 Tidify. All rights reserved.
 //
 
+import Combine
+import TidifyDomain
 import UIKit
 
-import ReactorKit
 import SnapKit
-import Then
 
-final class OnboardingViewController: UIViewController, View {
+final class OnboardingViewController: UIViewController {
+  weak var coordinator: DefaultOnboardingCoordinator?
+  private let contents: [Onboarding] = [
+    .init(imageName: "onboardingImage_0", buttonTitle: "다음"),
+    .init(imageName: "onboardingImage_1", buttonTitle: "다음"),
+    .init(imageName: "onboardingImage_2", buttonTitle: "시작")
+  ]
+  private var contentIndex: Int = 0
+  private var cancellable: Set<AnyCancellable> = []
 
   // MARK: UI Components
-  private var pageControl: UIPageControl = .init().then {
-    $0.currentPageIndicatorTintColor = .t_blue()
-    $0.pageIndicatorTintColor = .systemGray
-    $0.currentPage = 0
-    $0.numberOfPages = 3
-    $0.transform = .init(scaleX: 2.0, y: 2.0)
-  }
+  private let pageControl: UIPageControl = {
+    let pageConrol: UIPageControl = .init()
+    pageConrol.currentPageIndicatorTintColor = .t_blue()
+    pageConrol.pageIndicatorTintColor = .systemGray
+    pageConrol.currentPage = 0
+    pageConrol.numberOfPages = 3
+    pageConrol.transform = .init(scaleX: 2.0, y: 2.0)
+    return pageConrol
+  }()
 
-  private lazy var collectionView: UICollectionView = .init(
-    frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
-      $0.scrollDirection = .horizontal
-      $0.sectionInset = .zero
-      $0.minimumLineSpacing = .zero
-      $0.minimumInteritemSpacing = .zero
-      $0.itemSize = UICollectionViewFlowLayout.automaticSize
-    }).then {
-      $0.isPagingEnabled = true
-      $0.showsHorizontalScrollIndicator = false
-      $0.t_registerCellClass(cellType: OnboardingCollectionViewCell.self)
-      $0.backgroundColor = .white
-      $0.delegate = self
-    }
+  private lazy var collectionView: UICollectionView = {
+    let flowLayout: UICollectionViewFlowLayout = .init()
+    flowLayout.scrollDirection = .horizontal
+    flowLayout.sectionInset = .zero
+    flowLayout.minimumLineSpacing = .zero
+    flowLayout.minimumInteritemSpacing = .zero
+    flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
 
-  private var nextButton: UIButton = .init().then {
-    $0.backgroundColor = .t_blue()
-    $0.titleLabel?.font = .t_B(16)
-    $0.setTitleColor(.white, for: .normal)
-    $0.titleLabel?.textColor = .white
-    $0.cornerRadius(radius: 16)
-  }
+    let collectionView: UICollectionView = .init(frame: .zero, collectionViewLayout: flowLayout)
+    collectionView.isPagingEnabled = true
+    collectionView.showsHorizontalScrollIndicator = false
+    collectionView.t_registerCellClass(cellType: OnboardingCollectionViewCell.self)
+    collectionView.backgroundColor = .white
+    collectionView.delegate = self
+    collectionView.dataSource = self
+    return collectionView
+  }()
 
-  var disposeBag: DisposeBag = .init()
+  private let nextButton: UIButton = {
+    let button: UIButton = .init()
+    button.backgroundColor = .t_blue()
+    button.titleLabel?.font = .t_B(16)
+    button.setTitleColor(.white, for: .normal)
+    button.cornerRadius(radius: 16)
+    return button
+  }()
 
-  // MARK: - Methods
+  // MARK: Initializer
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupUI()
-  }
-
-  func bind(reactor: OnboardingReactor) {
-    bindAction(reactor: reactor)
-    bindState(reactor: reactor)
+    setContent()
+    bindAction()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-
-    navigationController?.navigationBar.isHidden = false
+    coordinator?.didFinish()
   }
 }
 
 private extension OnboardingViewController {
-  typealias Action = OnboardingReactor.Action
-
   func setupUI() {
     view.backgroundColor = .white
     navigationController?.navigationBar.isHidden = true
-
     view.addSubview(pageControl)
     view.addSubview(collectionView)
     view.addSubview(nextButton)
@@ -97,49 +102,53 @@ private extension OnboardingViewController {
     }
   }
 
-  func bindAction(reactor: OnboardingReactor) {
-    nextButton.rx.tap
-      .map { Action.showNextContent }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-
-    collectionView.rx.willEndDragging
-      .map { [weak self] (_, targetContentOffset: UnsafeMutablePointer<CGPoint>) in
-        let index = self?.calculatePageIndex(targetOffset: targetContentOffset) ?? 0
-        return Action.willEndDragging(index: index)
-      }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
+  func bindAction() {
+    nextButton.tapPublisher
+      .sink(receiveValue: { [weak self] in
+        self?.didTapNextButton()
+        self?.setContent()
+      })
+      .store(in: &cancellable)
   }
 
-  func bindState(reactor: OnboardingReactor) {
-    reactor.state
-      .map { $0.contents }
-      .bind(to: collectionView.rx.items(
-        cellIdentifier: OnboardingCollectionViewCell.identifer, cellType: OnboardingCollectionViewCell.self)
-      ) { _, contents, cell in
-        cell.configure(contents)
-      }
-      .disposed(by: disposeBag)
+  func didTapNextButton() {
+    if contentIndex == contents.count - 1 {
+      coordinator?.showNextScene()
+    } else {
+      contentIndex += 1
+    }
+  }
 
-    reactor.state
-      .map { $0.contentIndex }
-      .do(onNext: { [weak self] index in
-        let buttonTitle: String = reactor.initialState.contents[index].buttonTitle
+  func setContent() {
+    let buttonTitle: String = contents[contentIndex].buttonTitle
 
-        self?.collectionView.scrollToItem(
-          at: .init(item: index, section: 0),
-          at: .centeredHorizontally,
-          animated: true)
-
-        self?.nextButton.setTitle(buttonTitle, for: .normal)
-      })
-        .bind(to: pageControl.rx.currentPage)
-        .disposed(by: disposeBag)
-        }
+    collectionView.scrollToItem(
+      at: .init(item: contentIndex, section: 0),
+      at: .centeredHorizontally,
+      animated: true)
+    pageControl.currentPage = contentIndex
+    nextButton.setTitle(buttonTitle, for: .normal)
+  }
 
   func calculatePageIndex(targetOffset: UnsafeMutablePointer<CGPoint>) -> Int {
     return Int(targetOffset.pointee.x / collectionView.frame.width)
+  }
+}
+
+extension OnboardingViewController: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return contents.count
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let content = contents[safe: indexPath.row] else {
+      return .init()
+    }
+
+    let cell: OnboardingCollectionViewCell = collectionView.t_dequeueReusableCell(indexPath: indexPath)
+    cell.configure(content)
+
+    return cell
   }
 }
 
@@ -150,4 +159,9 @@ extension OnboardingViewController: UICollectionViewDelegateFlowLayout, UICollec
     sizeForItemAt indexPath: IndexPath) -> CGSize {
       return .init(w: collectionView.frame.width, h: collectionView.frame.height - 100)
     }
+
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    contentIndex = calculatePageIndex(targetOffset: targetContentOffset)
+    setContent()
+  }
 }

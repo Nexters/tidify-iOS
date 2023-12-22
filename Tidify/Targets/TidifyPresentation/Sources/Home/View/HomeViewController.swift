@@ -222,7 +222,7 @@ extension HomeViewController: UITableViewDelegate {
 // MARK: - EmptyBookmarkGuideCellDelegate
 extension HomeViewController: EmptyGuideCellDelegate {
   func didTapShowGuideButton() {
-    // TODO: 디자인 작업 이후 온보딩으로 이동
+    coordinator?.pushOnboarding()
   }
 }
 // MARK: - BookmarkCellDelegate

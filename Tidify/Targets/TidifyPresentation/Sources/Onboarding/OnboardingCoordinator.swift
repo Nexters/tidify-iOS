@@ -12,6 +12,7 @@ protocol OnboardingCoordinator: Coordinator {
   var parentCoordinator: Coordinator? { get set }
 
   func showNextScene()
+  func startEmptyGuide()
 }
 
 final class DefaultOnboardingCoordinator: OnboardingCoordinator {
@@ -20,6 +21,7 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
+  private var isEmptyGuide: Bool = false
 
   // MARK: - Initialize
   init(navigationController: UINavigationController) {
@@ -31,25 +33,33 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator {
     navigationController.pushViewController(getViewController(), animated: true)
   }
 
+  func startEmptyGuide() {
+    isEmptyGuide = true
+    start()
+  }
+
   func showNextScene() {
+    if isEmptyGuide {
+      navigationController.popViewController(animated: true)
+      return
+    }
     let loginCoordinator: DefaultLoginCoordinator = .init(
       navigationController: navigationController
     )
-    loginCoordinator.parentCoordinator = self
-    addChild(loginCoordinator)
+    loginCoordinator.parentCoordinator = parentCoordinator
+    parentCoordinator?.addChild(loginCoordinator)
     loginCoordinator.start()
   }
 
   func didFinish() {
-    parentCoordinator?.didFinish()
+    parentCoordinator?.removeChild(self)
   }
 }
 
 private extension DefaultOnboardingCoordinator {
   func getViewController() -> OnboardingViewController {
-    let reactor: OnboardingReactor = .init(coordinator: self)
     let viewController: OnboardingViewController = .init(nibName: nil, bundle: nil)
-    viewController.reactor = reactor
+    viewController.coordinator = self
 
     return viewController
   }

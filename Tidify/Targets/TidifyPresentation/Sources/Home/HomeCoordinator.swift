@@ -22,6 +22,7 @@ protocol HomeCoordinator: Coordinator {
   func pushEditBookmarkScene(bookmark: Bookmark)
   func pushSearchScene()
   func startWebView(bookmark: Bookmark)
+  func pushOnboarding()
 
   // MARK: Properties
   var navigationBarDelegate: HomeNavigationBarDelegate? { get set }
@@ -125,6 +126,8 @@ final class DefaultHomeCoordinator: HomeCoordinator {
       return
     }
 
+    searchCoordinator.parentCoordinator = self
+    addChild(searchCoordinator)
     let searchViewController = searchCoordinator.startPush()
     navigationController.pushViewController(searchViewController, animated: false)
   }
@@ -133,6 +136,17 @@ final class DefaultHomeCoordinator: HomeCoordinator {
     let webViewController: WebViewController = .init(bookmark: bookmark)
     webViewController.modalPresentationStyle = .fullScreen
     navigationController.present(webViewController, animated: false)
+  }
+
+  func pushOnboarding() {
+    guard let onboardingCoordinator = DIContainer.shared.resolve(type: OnboardingCoordinator.self) else {
+      return
+    }
+
+    onboardingCoordinator.parentCoordinator = self
+    addChild(onboardingCoordinator)
+
+    onboardingCoordinator.startEmptyGuide()
   }
 
   func didFinish() {
