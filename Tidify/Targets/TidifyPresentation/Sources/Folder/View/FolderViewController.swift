@@ -70,10 +70,10 @@ final class FolderViewController: BaseViewController, Alertable, Coordinatable, 
     let button: UIButton = .init()
     button.setImage(.init(named: "plusIcon"), for: .normal)
     button.cornerRadius(radius: 10)
-    button.backgroundColor = .t_ashBlue(weight: 100)
+    button.backgroundColor = .white
     button.setTitle("폴더 추가  ", for: .normal)
     button.titleLabel?.font = .t_B(18)
-    button.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+    button.setTitleColor(.t_blue(), for: .normal)
     button.addTarget(self, action: #selector(didTapFolderCreationButton), for: .touchUpInside)
     button.semanticContentAttribute = .forceRightToLeft
     return button
@@ -223,7 +223,7 @@ extension FolderViewController: FolderNavigationBarDelegate {
 
 extension FolderViewController: EmptyGuideCellDelegate {
   func didTapShowGuideButton() {
-    // TODO: 디자인 작업 이후 온보딩으로 이동
+    coordinator?.pushOnboarding()
   }
 }
 

@@ -42,6 +42,7 @@ public final class DefaultMainCoordinator: MainCoordinator {
       UserProperties.isFirstLaunch = false
       KeyChain.deleteAll()
       startOnboarding()
+      return
     }
 
     if KeyChain.load(key: .accessToken) != nil {

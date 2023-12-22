@@ -25,6 +25,7 @@ protocol FolderCoordinator: Coordinator {
   func pushDetailScene(folder: Folder)
   func pushFolderCreationScene(type: CreationType, originFolder: Folder?)
   func pushSearchScene()
+  func pushOnboarding()
 
   // MARK: Properties
   var navigationBarDelegate: FolderNavigationBarDelegate? { get set }
@@ -150,8 +151,21 @@ final class DefaultFolderCoordinator: FolderCoordinator {
       return
     }
 
+    searchCoordinator.parentCoordinator = self
+    addChild(searchCoordinator)
     let searchViewController = searchCoordinator.startPush()
     navigationController.pushViewController(searchViewController, animated: false)
+  }
+
+  func pushOnboarding() {
+    guard let onboardingCoordinator = DIContainer.shared.resolve(type: OnboardingCoordinator.self) else {
+      return
+    }
+
+    onboardingCoordinator.parentCoordinator = self
+    addChild(onboardingCoordinator)
+
+    onboardingCoordinator.startEmptyGuide()
   }
 
   func didFinish() {
