@@ -80,11 +80,12 @@ private extension BookmarkCell {
           bookmarkName = openGraph[.title] ?? ""
         }
 
-        if let urlString = openGraph[.image] {
-          DispatchQueue.main.async { [weak self] in
-            self?.bookmarkImageView.setImage(with: urlString)
-          }
-        }
+        //TODO: - 이슈 해결 후 적용 예정
+//        if let urlString = openGraph[.image] {
+//          DispatchQueue.main.async { [weak self] in
+//            self?.bookmarkImageView.setImage(with: urlString)
+//          }
+//        }
       case .failure(let error):
         DispatchQueue.main.async {
           self?.bookmarkImageView.image = .symbolImage
