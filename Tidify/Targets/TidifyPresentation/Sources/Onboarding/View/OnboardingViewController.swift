@@ -17,7 +17,7 @@ final class OnboardingViewController: UIViewController {
   private let contents: [Onboarding] = [
     .init(imageName: "onboardingImage_0", buttonTitle: "다음"),
     .init(imageName: "onboardingImage_1", buttonTitle: "다음"),
-    .init(imageName: "onboardingImage_2", buttonTitle: "시작")
+    .init(imageName: "onboardingImage_2", buttonTitle: "간편한 북마킹 시작")
   ]
   private var contentIndex: Int = 0
   private var cancellable: Set<AnyCancellable> = []
