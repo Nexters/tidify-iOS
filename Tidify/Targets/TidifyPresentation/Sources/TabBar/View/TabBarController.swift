@@ -9,7 +9,6 @@
 import UIKit
 
 import SnapKit
-import Then
 
 final class TabBarController: UITabBarController, Coordinatable {
   

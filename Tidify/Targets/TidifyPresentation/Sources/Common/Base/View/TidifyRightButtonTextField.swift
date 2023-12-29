@@ -45,14 +45,14 @@ extension TidifyRightButtonTextField {
   func setText(text: String) {
     textField.text = text
   }
-  
+
   func setColor(color: UIColor) {
     textField.textColor = color
   }
-  
+
   func getColorString() -> String {
     guard let textColor = textField.textColor else { return .init() }
-    
+
     return textColor.toColorString()
   }
 }
@@ -63,31 +63,22 @@ private extension TidifyRightButtonTextField {
     addSubview(textField)
     addSubview(rightButton)
 
-    textField.do {
-      let attrString: NSAttributedString = .init(
-        string: placeholder,
-        attributes: [.foregroundColor: UIColor.gray]
-      )
+    textField.leftView = .init(frame: .init(x: 0, y: 0, width: 20, height: 0))
+    textField.leftViewMode = .always
+    textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.gray])
+    textField.backgroundColor = .white
+    textField.cornerRadius(radius: 16)
+    textField.font = .t_SB(16)
+    textField.textColor = .black
+    textField.isUserInteractionEnabled = false
 
-      $0.leftView = .init(frame: .init(x: 0, y: 0, width: 20, height: 0))
-      $0.leftViewMode = .always
-      $0.attributedPlaceholder = attrString
-      $0.backgroundColor = .white
-//      $0.layer.borderWidth = 1
-//      $0.layer.borderColor = UIColor.t_borderColor().cgColor
-      $0.cornerRadius(radius: 16)
-      $0.font = .t_SB(16)
-      $0.textColor = .black
-      $0.isUserInteractionEnabled = false
+    if let rightButtonImage {
+      rightButton.setImage(rightButtonImage, for: .normal)
+      rightButton.imageView?.contentMode = .scaleAspectFill
+
     }
 
-    rightButton.do {
-      if let rightButtonImage = rightButtonImage {
-        $0.setImage(rightButtonImage, for: .normal)
-        $0.imageView?.contentMode = .scaleAspectFit
-      }
-      $0.backgroundColor = .clear
-    }
+    rightButton.backgroundColor = .clear
 
     textField.snp.makeConstraints {
       $0.edges.equalToSuperview()

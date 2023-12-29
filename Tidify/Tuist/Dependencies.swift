@@ -9,8 +9,6 @@ let dependencies = Dependencies(
       .remote(url: "https://github.com/onevcat/Kingfisher.git", requirement: .upToNextMinor(from: "6.3.0")),
       .remote(url: "https://github.com/Moya/Moya.git", requirement: .upToNextMinor(from: "15.0.0")),
       .remote(url: "https://github.com/ReactorKit/ReactorKit.git", requirement: .upToNextMinor(from: "3.2.0")),
-      .remote(url: "https://github.com/devxoul/Then", requirement: .upToNextMinor(from: "2.7.0")),
-      .remote(url: "https://github.com/satoshi-takano/OpenGraph.git", requirement: .upToNextMajor(from: "1.5.0")),
       .remote(url: "https://github.com/RxSwiftCommunity/RxNimble.git", requirement: .upToNextMajor(from: "5.0.0")),
       .remote(url: "https://github.com/airbnb/lottie-ios.git", requirement: .upToNextMajor(from: "4.1.0"))
     ]
