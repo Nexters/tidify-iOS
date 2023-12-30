@@ -166,7 +166,7 @@ private extension SearchViewController {
   func bindState() {
     viewModel.$state
       .map { $0.searchResult }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.updateConstraints()
       })

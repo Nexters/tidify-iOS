@@ -138,7 +138,7 @@ private extension TidifyTextFieldView {
 
   func setupErrorLabel() {
     textField.publisher
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] text in
         self?.errorLabel.isHidden = !text.isEmpty
         self?.textFieldSubject.send(text)

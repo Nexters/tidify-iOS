@@ -119,7 +119,7 @@ private extension SettingViewController {
     viewModel.$state
       .map { $0.isSuccess }
       .filter { $0 }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.coordinator?.resetCoordinator()
         self?.coordinator?.transitionToLogin()

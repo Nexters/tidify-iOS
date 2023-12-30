@@ -219,7 +219,7 @@ private extension FolderCreationViewController {
     viewModel.$state
       .map { $0.isSuccess }
       .filter { $0 }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.coordinator?.didFinish()
       })
@@ -228,7 +228,7 @@ private extension FolderCreationViewController {
     viewModel.$state
       .map { $0.errorType }
       .compactMap { $0 }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.presentAlert(type: .folderCreationError)
       })
