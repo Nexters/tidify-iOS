@@ -116,12 +116,24 @@ final class BookmarkCreationViewController: BaseViewController, Coordinatable, A
     setupLayoutConstraints()
     bindState()
     setupOriginBookmark()
+
+    scrollView.tapPublisher
+      .receiveOnMain()
+      .withUnretained(self)
+      .sink { owner, _ in
+        owner.view.endEditing(true)
+      }
+      .store(in: &cancellable)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = false
     registerKeyboardNotification()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     urlTextFieldView.setFirstResponder()
   }
 
