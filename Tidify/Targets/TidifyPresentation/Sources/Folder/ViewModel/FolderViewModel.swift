@@ -82,6 +82,7 @@ private extension FolderViewModel {
         state.folders.remove(at: index)
 
         if isLastPage {
+          state.isLoading = false
           return
         }
 
