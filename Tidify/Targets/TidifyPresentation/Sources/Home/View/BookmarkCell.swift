@@ -9,9 +9,6 @@
 import TidifyDomain
 import UIKit
 
-import Kingfisher
-import OpenGraph
-
 protocol BookmarkCellDelegate: AnyObject {
   func didTapStarButton(bookmarkID: Int)
 }
@@ -70,31 +67,15 @@ final class BookmarkCell: UITableViewCell {
 }
 
 private extension BookmarkCell {
+  @MainActor
   func updateUI(bookmark: Bookmark) {
-    var bookmarkName: String = bookmark.name
-
-    OpenGraph.fetch(url: bookmark.url) { [weak self] result in
-      switch result {
-      case .success(let openGraph):
-        if bookmark.name.isEmpty {
-          bookmarkName = openGraph[.title] ?? ""
-        }
-
-        //TODO: - 이슈 해결 후 적용 예정
-//        if let urlString = openGraph[.image] {
-//          DispatchQueue.main.async { [weak self] in
-//            self?.bookmarkImageView.setImage(with: urlString)
-//          }
-//        }
-      case .failure(let error):
-        DispatchQueue.main.async {
-          self?.bookmarkImageView.image = .symbolImage
-        }
-        print("❌ \(#file) - \(#line): \(#function) - Fail: \(error.localizedDescription)")
-      }
+    if let ogImageURLString = bookmark.ogImageURLString {
+      bookmarkImageView.setImage(with: ogImageURLString)
+    } else {
+      bookmarkImageView.image = .symbolImage
     }
 
-    bookmarkNameLabel.text = bookmarkName
+    bookmarkNameLabel.text = bookmark.name
     starButton.setImage(.init(named: bookmark.star ? "starOnIcon" : "starOffIcon"), for: .normal)
   }
 

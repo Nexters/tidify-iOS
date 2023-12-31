@@ -167,11 +167,9 @@ let project: Project = .init(
       dependencies: [
         .target(name: Layer.domain.layerName),
         .external(name: "SnapKit"),
-        .external(name: "Then"),
         .external(name: "RxCocoa"),
         .external(name: "ReactorKit"),
         .external(name: "Kingfisher"),
-        .external(name: "OpenGraph"),
         .external(name: "Lottie")
       ]),
     makeTidifyFrameworkTargets(

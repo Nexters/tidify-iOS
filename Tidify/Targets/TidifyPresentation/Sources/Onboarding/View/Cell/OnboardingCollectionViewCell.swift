@@ -10,7 +10,6 @@ import TidifyDomain
 import UIKit
 
 import SnapKit
-import Then
 
 final class OnboardingCollectionViewCell: UICollectionViewCell {
 
@@ -44,10 +43,13 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
 
 private extension OnboardingCollectionViewCell {
   func setupViews() {
-    self.imageView = UIImageView().then {
-      $0.contentMode = .scaleAspectFill
-      contentView.addSubview($0)
-    }
+    imageView = {
+      let imageView: UIImageView = .init()
+      imageView.contentMode = .scaleAspectFill
+      return imageView
+    }()
+
+    contentView.addSubview(imageView)
   }
 
   func setupLayoutConstraints() {

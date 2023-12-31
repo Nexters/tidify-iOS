@@ -44,12 +44,10 @@ private extension SplashViewController {
   func setupAnimationView() {
     view.backgroundColor = .white
 
-    animationView.do {
-      $0.contentMode = .scaleAspectFit
-      $0.loopMode = .repeat(1)
-      $0.isHidden = true
-      view.addSubview($0)
-    }
+    animationView.contentMode = .scaleAspectFit
+    animationView.loopMode = .repeat(1)
+    animationView.isHidden = true
+    view.addSubview(animationView)
 
     animationView.snp.makeConstraints {
       $0.width.equalTo(view.frame.width * 0.533)

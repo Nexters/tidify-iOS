@@ -20,6 +20,7 @@ public struct Bookmark: Hashable {
   public var urlString: String?
   public var name: String
   public var star: Bool
+  public let ogImageURLString: String?
 
   public var url: URL {
     return .init(string: urlString?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
@@ -30,17 +31,19 @@ public struct Bookmark: Hashable {
     folderID: Int?,
     urlString: String?,
     name: String,
-    star: Bool
+    star: Bool,
+    ogImageURLString: String?
   ) {
     self.id = id
     self.folderID = folderID
     self.urlString = urlString
     self.name = name
     self.star = star
+    self.ogImageURLString = ogImageURLString
   }
 
   public static func ==(lhs: Bookmark, rhs: Bookmark) -> Bool {
-    lhs.id == rhs.id && lhs.folderID == rhs.folderID && lhs.urlString == rhs.urlString && lhs.name == rhs.name && lhs.star == rhs.star
+    lhs.id == rhs.id && lhs.folderID == rhs.folderID && lhs.urlString == rhs.urlString && lhs.name == rhs.name && lhs.star == rhs.star && lhs.ogImageURLString == rhs.ogImageURLString
   }
 }
 

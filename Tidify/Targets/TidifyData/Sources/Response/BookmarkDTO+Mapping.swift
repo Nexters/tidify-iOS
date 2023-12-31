@@ -28,11 +28,13 @@ public struct BookmarkDTO: Decodable {
   let urlString: String?
   let name: String
   let star: Bool
+  let ogImageURLString: String?
 
   enum CodingKeys: String, CodingKey {
     case id = "bookmarkId"
     case folderID = "folderId"
     case urlString = "url"
+    case ogImageURLString = "ogImage"
     case name, star
   }
 }
@@ -44,7 +46,8 @@ extension BookmarkDTO {
       folderID: folderID,
       urlString: urlString,
       name: name,
-      star: star
+      star: star,
+      ogImageURLString: ogImageURLString
     )
   }
 }
