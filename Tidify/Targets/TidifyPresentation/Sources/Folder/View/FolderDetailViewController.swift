@@ -135,7 +135,7 @@ private extension FolderDetailViewController {
   func bindState() {
     viewModel.$state
       .map { $0.isLoading }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isLoading in
         self?.setIndicatorView(isLoading: isLoading)
@@ -145,7 +145,7 @@ private extension FolderDetailViewController {
     viewModel.$state
       .map { $0.bookmarks }
       .removeDuplicates()
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] bookmarks in
         self?.tableView.reloadData()
         self?.updateConstraints(by: bookmarks)
@@ -156,7 +156,7 @@ private extension FolderDetailViewController {
       .map { $0.errorType }
       .compactMap { $0 }
       .filter { $0 == .failFetchBookmarks }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.presentAlert(type: .bookmarkFetchError)
       })

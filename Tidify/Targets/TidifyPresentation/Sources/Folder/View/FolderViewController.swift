@@ -162,7 +162,7 @@ private extension FolderViewController {
   func bindState() {
     viewModel.$state
       .map { $0.isLoading }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isLoading in
         self?.setIndicatorView(isLoading: isLoading)
@@ -171,7 +171,7 @@ private extension FolderViewController {
 
     viewModel.$state
       .map { $0.folders }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] folders in
         self?.tableView.reloadData()
         self?.updateConstraints(by: folders)
@@ -182,7 +182,7 @@ private extension FolderViewController {
       .map { $0.errorType }
       .compactMap { $0 }
       .filter { $0 == .failFetchFolderList }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.presentAlert(type: .folderFetchError)
       })

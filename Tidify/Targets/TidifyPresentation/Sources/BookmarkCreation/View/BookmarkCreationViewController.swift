@@ -116,12 +116,24 @@ final class BookmarkCreationViewController: BaseViewController, Coordinatable, A
     setupLayoutConstraints()
     bindState()
     setupOriginBookmark()
+
+    scrollView.tapPublisher
+      .receiveOnMain()
+      .withUnretained(self)
+      .sink { owner, _ in
+        owner.view.endEditing(true)
+      }
+      .store(in: &cancellable)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = false
     registerKeyboardNotification()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     urlTextFieldView.setFirstResponder()
   }
 
@@ -211,7 +223,7 @@ private extension BookmarkCreationViewController {
   func bindState() {
     viewModel.$state
       .map { $0.isLoading }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isLoading in
         self?.setIndicatorView(isLoading: isLoading)
@@ -220,7 +232,7 @@ private extension BookmarkCreationViewController {
 
     viewModel.$state
       .map { $0.folders }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] folders in
         self?.folderTableView.reloadData()
         self?.updateConstraints(by: folders)
@@ -239,7 +251,7 @@ private extension BookmarkCreationViewController {
     viewModel.$state
       .map { $0.isSuccess }
       .filter { $0 }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.coordinator?.didFinish()
       })
@@ -249,7 +261,7 @@ private extension BookmarkCreationViewController {
       .map { $0.bookmarkError }
       .removeDuplicates()
       .compactMap { $0 }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.presentAlert(type: .bookmarkCreationError)
       })
@@ -259,7 +271,7 @@ private extension BookmarkCreationViewController {
       .map { $0.folderError }
       .removeDuplicates()
       .compactMap { $0 }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.presentAlert(type: .folderFetchError)
       })

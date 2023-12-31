@@ -180,7 +180,7 @@ private extension LoginViewController {
   func bindState() {
     viewModel.$state
       .map { $0.isLoading }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isLoading in
         self?.setIndicatorView(isLoading: isLoading)
@@ -190,7 +190,7 @@ private extension LoginViewController {
     viewModel.$state
       .map { $0.isEntered }
       .filter { $0 }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak coordinator] _ in
         coordinator?.didSuccessLogin()
       })
@@ -199,7 +199,7 @@ private extension LoginViewController {
     viewModel.$state
       .map { $0.errorType }
       .compactMap { $0 }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] error in
         self?.presentAlert(type: .loginError)
       })

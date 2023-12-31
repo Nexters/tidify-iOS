@@ -272,7 +272,7 @@ private extension HomeViewController {
   func bindState() {
     viewModel.$state
       .map { $0.isLoading }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isLoading in
         self?.setIndicatorView(isLoading: isLoading)
@@ -281,7 +281,7 @@ private extension HomeViewController {
 
     viewModel.$state
       .map { $0.bookmarks }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .removeDuplicates()
       .sink(receiveValue: { [weak self] bookmarks in
         self?.tableView.reloadData()
@@ -294,7 +294,7 @@ private extension HomeViewController {
       .removeDuplicates()
       .compactMap { $0 }
       .filter { $0 == .failFetchBookmarks }
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] _ in
         self?.presentAlert(type: .bookmarkFetchError)
       })

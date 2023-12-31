@@ -172,7 +172,7 @@ private extension WebViewController {
       .store(in: &cancellable)
 
     shareButton.tapPublisher
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] in
         guard let self = self else {
           return
@@ -182,7 +182,7 @@ private extension WebViewController {
       .store(in: &cancellable)
 
     closeButton.tapPublisher
-      .receive(on: DispatchQueue.main)
+      .receiveOnMain()
       .sink(receiveValue: { [weak self] in
         self?.dismiss(animated: false)
       })
