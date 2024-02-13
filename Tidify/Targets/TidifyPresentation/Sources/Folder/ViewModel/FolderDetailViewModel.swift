@@ -16,6 +16,10 @@ final class FolderDetailViewModel: ViewModelType {
     case initialize(folderID: Int)
     case didTapDelete(_ bookmarkID: Int)
     case didTapStarButton(_ bookmarkID: Int)
+    case didTapShareButton
+    case didTapStopSharingButton(_ folderID: Int)
+    case didTapSubscribeButton(_ folderID: Int)
+    case didTapStopSubscriptionButton(_ folderID: Int)
   }
 
   struct State: Equatable {
@@ -42,6 +46,15 @@ final class FolderDetailViewModel: ViewModelType {
       deleteBookmark(bookmarkID)
     case .didTapStarButton(let bookmarkID):
       didTapStarButton(bookmarkID)
+    case .didTapShareButton:
+      //TODO: 구현 예정
+      print("didTapShareButton")
+    case .didTapStopSharingButton(let folderID):
+      didTapStopSharingButton(folderID)
+    case .didTapSubscribeButton(let folderID):
+      didTapSubscribeButton(folderID)
+    case .didTapStopSubscriptionButton(let folderID):
+      didTapStopSubscriptionButton(folderID)
     }
   }
 }
@@ -83,6 +96,24 @@ private extension FolderDetailViewModel {
       } catch {
         state.errorType = .failFavoriteBookmark
       }
+    }
+  }
+
+  func didTapStopSharingButton(_ folderID: Int) {
+    Task {
+      try await useCase.stopSharingFolder(id: folderID)
+    }
+  }
+
+  func didTapSubscribeButton(_ folderID: Int) {
+    Task {
+      try await useCase.subscribeFolder(id: folderID)
+    }
+  }
+
+  func didTapStopSubscriptionButton(_ folderID: Int) {
+    Task {
+      try await useCase.stopSubscription(id: folderID)
     }
   }
 }

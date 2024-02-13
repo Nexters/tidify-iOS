@@ -18,6 +18,14 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   weak var coordinator: DefaultFolderDetailCoordinator?
   private let viewModel: FolderDetailViewModel
   private let folder: Folder
+  private var viewMode: ViewMode
+
+  enum ViewMode {
+    case ownerFirstEnter
+    case owner
+    case subscriberFirstEnter
+    case subscriber
+  }
 
   var indicatorView: UIActivityIndicatorView = {
     let indicatorView: UIActivityIndicatorView = .init()
@@ -46,6 +54,8 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
     return contentView
   }()
 
+  private let shareButtonStackView: FolderShareButtonStackView = .init()
+
   private lazy var tableView: UITableView = {
     let tableView: UITableView = .init(frame: .zero)
     tableView.t_registerCellClass(cellType: BookmarkCell.self)
@@ -60,9 +70,11 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   }()
   
   // MARK: Initializer
-  init(viewModel: FolderDetailViewModel, folder: Folder) {
+  init(viewModel: FolderDetailViewModel, folder: Folder, viewMode: ViewMode) {
     self.viewModel = viewModel
     self.folder = folder
+    self.shareButtonStackView.setupStackView(viewMode: viewMode)
+    self.viewMode = viewMode
     super.init(nibName: nil, bundle: nil)
     title = folder.title
   }
@@ -76,6 +88,7 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
     super.viewDidLoad()
     setupLayoutConstraints()
     bindState()
+    shareButtonStackView.delegate = self
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +106,7 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
 
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
+    contentView.addSubview(shareButtonStackView)
     contentView.addSubview(tableView)
     view.addSubview(topEffectView)
     view.addSubview(indicatorView)
@@ -124,9 +138,15 @@ private extension FolderDetailViewController {
       $0.height.equalToSuperview().priority(.low)
     }
 
-    tableView.snp.makeConstraints {
+    shareButtonStackView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(Self.topPadding + navigationBarHeight + 15)
       $0.leading.trailing.equalToSuperview().inset(15)
+      $0.height.equalTo(45)
+    }
+
+    tableView.snp.makeConstraints {
+      $0.top.equalTo(shareButtonStackView.snp.bottom).offset(15)
+      $0.leading.trailing.equalTo(shareButtonStackView)
       $0.height.equalTo(0)
       $0.bottom.equalToSuperview().offset(-60)
     }
@@ -213,6 +233,10 @@ extension FolderDetailViewController: UITableViewDelegate {
     _ tableView: UITableView,
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
   ) -> UISwipeActionsConfiguration? {
+    guard viewMode == .owner || viewMode == .ownerFirstEnter else {
+      return .none
+    }
+
     guard let bookmark = viewModel.state.bookmarks[safe: indexPath.row] else {
       return .none
     }
@@ -253,3 +277,33 @@ extension FolderDetailViewController: BookmarkCellDelegate {
     viewModel.action(.didTapStarButton(bookmarkID))
   }
 }
+
+// MARK: - FolderShareButtonDelegate
+extension FolderDetailViewController: FolderShareButtonDelegate {
+  func didTapLeftButton() {
+    switch viewMode {
+    case .owner:
+      viewModel.action(.didTapStopSharingButton(folder.id))
+      viewMode = .ownerFirstEnter
+      shareButtonStackView.setupStackView(viewMode: viewMode)
+    case .subscriber:
+      viewModel.action(.didTapStopSubscriptionButton(folder.id))
+      viewMode = .subscriberFirstEnter
+      shareButtonStackView.setupStackView(viewMode: viewMode)
+    default: return
+    }
+  }
+
+  func didTapRightButton() {
+    switch viewMode {
+    case .owner, .ownerFirstEnter:
+      viewModel.action(.didTapShareButton)
+    case .subscriberFirstEnter:
+      viewModel.action(.didTapSubscribeButton(folder.id))
+      viewMode = .subscriber
+      shareButtonStackView.setupStackView(viewMode: viewMode)
+    default: return
+    }
+  }
+}
+

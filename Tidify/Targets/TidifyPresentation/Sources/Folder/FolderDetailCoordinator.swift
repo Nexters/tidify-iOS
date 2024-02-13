@@ -31,13 +31,13 @@ final class DefaultFolderDetailCoordinator: FolderDetailCoordinator {
   // MARK: - Methods
   func start() {}
 
-  func startPush(folder: Folder) -> FolderDetailViewController {
+  func startPush(folder: Folder, viewMode: FolderDetailViewController.ViewMode) -> FolderDetailViewController {
     guard let useCase: FolderDetailUseCase = DIContainer.shared.resolve(type: FolderDetailUseCase.self) else {
       fatalError()
     }
 
     let viewModel: FolderDetailViewModel = .init(useCase: useCase)
-    let viewController: FolderDetailViewController = .init(viewModel: viewModel, folder: folder)
+    let viewController: FolderDetailViewController = .init(viewModel: viewModel, folder: folder, viewMode: viewMode)
     viewController.coordinator = self
 
     return viewController
