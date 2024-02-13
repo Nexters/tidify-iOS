@@ -12,10 +12,8 @@ import UIKit
 
 protocol FolderNavigationBarDelegate: AnyObject {
   func didTapFolderButton()
-
-  //TODO: - 추후 구현
-//  func didTapSubscribeButton()
-//  func didTapShareButton()
+  func didTapSubscribeButton()
+  func didTapShareButton()
 }
 
 protocol FolderCoordinator: Coordinator {
@@ -36,6 +34,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   weak var navigationBarDelegate: FolderNavigationBarDelegate?
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
+  private var viewMode: FolderDetailViewController.ViewMode?
 
   private lazy var folderButton: UIButton = {
     let button: UIButton = .init()
@@ -51,9 +50,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     button.setTitle("구독", for: .normal)
     button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
     button.titleLabel?.font = .t_EB(22)
-
-    //TODO: - 추후 구현
-//    button.addTarget(self, action: #selector(didTapSubscribeButton), for: .touchUpInside)
+    button.addTarget(self, action: #selector(didTapSubscribeButton), for: .touchUpInside)
     return button
   }()
 
@@ -62,9 +59,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     button.setTitle("공유중", for: .normal)
     button.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
     button.titleLabel?.font = .t_EB(22)
-
-    //TODO: - 추후 구현
-//    button.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+    button.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
     return button
   }()
 
@@ -96,6 +91,8 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     }
 
     leftButtonStackView.addArrangedSubview(folderButton)
+    leftButtonStackView.addArrangedSubview(subscribeButton)
+    leftButtonStackView.addArrangedSubview(shareButton)
 
     let navigationBar: TidifyNavigationBar = .init(
       leftButtonStackView: leftButtonStackView,
@@ -124,10 +121,14 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushDetailScene(folder: Folder) {
+    guard let viewMode = viewMode else {
+      return
+    }
+
     let folderDetailCoordinator: DefaultFolderDetailCoordinator = .init(
       navigationController: navigationController
     )
-    let folderDetailViewController = folderDetailCoordinator.startPush(folder: folder)
+    let folderDetailViewController = folderDetailCoordinator.startPush(folder: folder, viewMode: viewMode)
     folderDetailCoordinator.parentCoordinator = self
     addChild(folderDetailCoordinator)
 
@@ -171,6 +172,10 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   func didFinish() {
     parentCoordinator?.removeChild(self)
   }
+
+  func setViewMode(_ viewMode: FolderDetailViewController.ViewMode) {
+    self.viewMode = viewMode
+  }
 }
 
 private extension DefaultFolderCoordinator {
@@ -181,17 +186,17 @@ private extension DefaultFolderCoordinator {
     shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
   }
 
-  //TODO: - 추후 구현
-//  @objc func didTapSubscribeButton() {
-//    navigationBarDelegate?.didTapSubscribeButton()
-//    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-//    subscribeButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
-//    shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-//  }
-//  @objc func didTapShareButton() {
-//    navigationBarDelegate?.didTapShareButton()
-//    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-//    subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
-//    shareButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
-//  }
+  @objc func didTapSubscribeButton() {
+    navigationBarDelegate?.didTapSubscribeButton()
+    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    subscribeButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+    shareButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+  }
+
+  @objc func didTapShareButton() {
+    navigationBarDelegate?.didTapShareButton()
+    folderButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    subscribeButton.setTitleColor(.t_ashBlue(weight: 300), for: .normal)
+    shareButton.setTitleColor(.t_ashBlue(weight: 800), for: .normal)
+  }
 }

@@ -262,6 +262,12 @@ extension FolderViewController: UITableViewDelegate {
       return
     }
 
+    switch viewModel.state.category {
+    case .subscribe: coordinator?.setViewMode(.subscriber)
+    case .normal: coordinator?.setViewMode(folder.shared ? .owner : .ownerFirstEnter)
+    case .share: coordinator?.setViewMode(.owner)
+    }
+
     coordinator?.pushDetailScene(folder: folder)
   }
 
@@ -269,6 +275,10 @@ extension FolderViewController: UITableViewDelegate {
     _ tableView: UITableView,
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
   ) -> UISwipeActionsConfiguration? {
+    guard viewModel.state.category != .subscribe else {
+      return .none
+    }
+
     guard let folder = viewModel.state.folders[safe: indexPath.row] else {
       return .none
     }

@@ -62,6 +62,11 @@ private extension FolderViewModel {
         isLastPage = fetchFolderListResponse.isLast
         state.folders = fetchFolderListResponse.folders
         currentPage = 1
+
+        if state.category == .normal {
+          try await updateFolderSharingState()
+        }
+
         state.isLoading = false
       } catch {
         state.errorType = .failFetchFolderList
@@ -133,6 +138,14 @@ private extension FolderViewModel {
 
     if addPage {
       currentPage += 1
+    }
+  }
+
+  func updateFolderSharingState() async throws {
+    let sharedFolderListResponse = try await useCase.fetchFolderList(start: 0, count: state.folders.count, category: .share)
+
+    for index in state.folders.indices {
+      state.folders[index].shared = sharedFolderListResponse.folders.contains(state.folders[index])
     }
   }
 }
