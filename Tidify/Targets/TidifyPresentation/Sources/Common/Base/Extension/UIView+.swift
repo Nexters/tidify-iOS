@@ -100,6 +100,7 @@ fileprivate extension UIView {
     override init(target: Any?, action: Selector?) {
       super.init(target: target, action: action)
       addTarget(self, action: #selector(tap))
+      cancelsTouchesInView = false
     }
 
     @objc private func tap(sender: UITapGestureRecognizer) {
