@@ -15,6 +15,9 @@ enum FolderEndpoint: EndpointType {
   case fetchBookmarkListInFolder(id: Int)
   case updateFolder(id: Int, request: FolderRequestDTO)
   case deleteFolder(id: Int)
+  case subscribeFolder(id: Int)
+  case stopSubscription(id: Int)
+  case stopSharingFolder(id: Int)
 }
 
 extension FolderEndpoint {
@@ -38,12 +41,18 @@ extension FolderEndpoint {
       return AppProperties.baseURL + baseRouthPath + "/\(id)/bookmarks"
     case .deleteFolder(let id), .updateFolder(let id, _):
       return AppProperties.baseURL + baseRouthPath + "/\(id)"
+    case .subscribeFolder(let id):
+      return AppProperties.baseURL + baseRouthPath + "/subscribed/\(id)"
+    case .stopSubscription(let id):
+      return AppProperties.baseURL + baseRouthPath + "/un-subscribed/\(id)"
+    case .stopSharingFolder(let id):
+      return AppProperties.baseURL + baseRouthPath + "/\(id)/share-suspending"
     }
   }
 
   var method: HTTPMethod {
     switch self {
-    case .createFolder:
+    case .createFolder, .subscribeFolder, .stopSubscription, .stopSharingFolder:
       return .post
     case .fetchFolderList, .fetchBookmarkListInFolder:
       return .get
@@ -71,8 +80,7 @@ extension FolderEndpoint {
         "label": request.color
       ]
 
-    case .deleteFolder, .fetchBookmarkListInFolder:
-      return nil
+    default: return nil
     }
   }
 }

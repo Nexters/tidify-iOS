@@ -15,12 +15,17 @@ public struct Folder: Equatable {
   public var title: String
   public var color: String
   public let count: Int
+  public var shared: Bool = false
   
   public init(id: Int, title: String, color: String, count: Int) {
     self.id = id
     self.title = title
     self.color = color
     self.count = count
+  }
+
+  public static func ==(lhs: Folder, rhs: Folder) -> Bool {
+    lhs.id == rhs.id && lhs.title == rhs.title && lhs.color == rhs.color
   }
 }
 

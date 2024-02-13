@@ -28,4 +28,16 @@ final class DefaultFolderDetailRepository: FolderDetailRepository {
       isLastPage: response.bookmarkListDTO.isLastPage
     )
   }
+
+  func subscribeFolder(id: Int) async throws {
+    try await networkProvider.request(endpoint: FolderEndpoint.subscribeFolder(id: id), type: APIResponse.self)
+  }
+
+  func stopSubscription(id: Int) async throws {
+    try await networkProvider.request(endpoint: FolderEndpoint.stopSubscription(id: id), type: APIResponse.self)
+  }
+
+  func stopSharingFolder(id: Int) async throws {
+    try await networkProvider.request(endpoint: FolderEndpoint.stopSharingFolder(id: id), type: APIResponse.self)
+  }
 }
