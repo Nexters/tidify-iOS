@@ -9,7 +9,7 @@
 public protocol FolderDetailRepository: AnyObject {
 
   /// 특정 폴더 ID에 포함된 북마크 리스트를 반환합니다.
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse
+  func fetchBookmarkListInFolder(id: Int, subscribe: Bool) async throws -> FetchBookmarkResponse
 
   /// 특정 폴더를 구독합니다.
   func subscribeFolder(id: Int) async throws

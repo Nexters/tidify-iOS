@@ -9,7 +9,7 @@
 public protocol FolderDetailUseCase: BookmarkListUseCase {
   var bookmarkRepository: BookmarkRepository { get }
 
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse
+  func fetchBookmarkListInFolder(id: Int, subscribe: Bool) async throws -> FetchBookmarkResponse
   func subscribeFolder(id: Int) async throws
   func stopSubscription(id: Int) async throws
   func stopSharingFolder(id: Int) async throws
@@ -28,8 +28,8 @@ final class DefaultFolderDetailUseCase: FolderDetailUseCase {
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse {
-    try await folderDetailRepository.fetchBookmarkListInFolder(id: id)
+  func fetchBookmarkListInFolder(id: Int, subscribe: Bool) async throws -> FetchBookmarkResponse {
+    try await folderDetailRepository.fetchBookmarkListInFolder(id: id, subscribe: subscribe)
   }
 
   func subscribeFolder(id: Int) async throws {

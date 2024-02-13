@@ -19,6 +19,9 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   private let viewModel: FolderDetailViewModel
   private let folder: Folder
   private var viewMode: ViewMode
+  private var isSubscribing: Bool {
+    viewMode == .subscriber || viewMode == .subscriberFirstEnter
+  }
 
   enum ViewMode {
     case ownerFirstEnter
@@ -84,7 +87,8 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   }
 
   override func viewDidLoad() {
-    viewModel.action(.initialize(folderID: folder.id))
+    viewModel.action(.initialize(folderID: folder.id, subscribe: isSubscribing))
+
     super.viewDidLoad()
     setupLayoutConstraints()
     bindState()
@@ -208,7 +212,7 @@ extension FolderDetailViewController: UITableViewDataSource {
     }
 
     let cell: BookmarkCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-    cell.configure(bookmark: bookmark)
+    cell.configure(bookmark: bookmark, isSubscribing: isSubscribing)
     cell.delegate = self
 
     return cell

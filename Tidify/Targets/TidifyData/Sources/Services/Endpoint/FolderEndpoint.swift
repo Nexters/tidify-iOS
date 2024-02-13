@@ -12,7 +12,7 @@ import TidifyDomain
 enum FolderEndpoint: EndpointType {
   case createFolder(request: FolderRequestDTO)
   case fetchFolderList(start: Int, count: Int, category: FolderCategory)
-  case fetchBookmarkListInFolder(id: Int)
+  case fetchBookmarkListInFolder(id: Int, subscribe: Bool)
   case updateFolder(id: Int, request: FolderRequestDTO)
   case deleteFolder(id: Int)
   case subscribeFolder(id: Int)
@@ -37,8 +37,12 @@ extension FolderEndpoint {
       case .subscribe: return path + "/subscribed"
       case .share: return path + "/subscribing"
       }
-    case .fetchBookmarkListInFolder(let id):
-      return AppProperties.baseURL + baseRouthPath + "/\(id)/bookmarks"
+    case .fetchBookmarkListInFolder(let id, let subscribe):
+      var finalPath = AppProperties.baseURL + baseRouthPath + "/\(id)/bookmarks"
+      if subscribe {
+        finalPath += "/shared"
+      }
+      return finalPath
     case .deleteFolder(let id), .updateFolder(let id, _):
       return AppProperties.baseURL + baseRouthPath + "/\(id)"
     case .subscribeFolder(let id):

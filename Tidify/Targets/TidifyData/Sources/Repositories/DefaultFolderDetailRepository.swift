@@ -19,8 +19,8 @@ final class DefaultFolderDetailRepository: FolderDetailRepository {
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse {
-    let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchBookmarkListInFolder(id: id), type: BookmarkListResponse.self)
+  func fetchBookmarkListInFolder(id: Int, subscribe: Bool) async throws -> FetchBookmarkResponse {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchBookmarkListInFolder(id: id, subscribe: subscribe), type: BookmarkListResponse.self)
 
     return FetchBookmarkResponse(
       bookmarks: response.toDomain(),

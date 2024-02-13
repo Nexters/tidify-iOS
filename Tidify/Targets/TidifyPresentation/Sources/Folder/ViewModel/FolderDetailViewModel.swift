@@ -13,7 +13,7 @@ final class FolderDetailViewModel: ViewModelType {
   typealias UseCase = FolderDetailUseCase
 
   enum Action {
-    case initialize(folderID: Int)
+    case initialize(folderID: Int, subscribe: Bool)
     case didTapDelete(_ bookmarkID: Int)
     case didTapStarButton(_ bookmarkID: Int)
     case didTapShareButton
@@ -40,8 +40,8 @@ final class FolderDetailViewModel: ViewModelType {
     state.errorType = nil
 
     switch action {
-    case .initialize(let folderID):
-      setupInitailBookmarks(folderID: folderID)
+    case .initialize(let folderID, let subscribe):
+      setupInitailBookmarks(folderID: folderID, subscribe: subscribe)
     case .didTapDelete(let bookmarkID):
       deleteBookmark(bookmarkID)
     case .didTapStarButton(let bookmarkID):
@@ -60,11 +60,11 @@ final class FolderDetailViewModel: ViewModelType {
 }
 
 private extension FolderDetailViewModel {
-  func setupInitailBookmarks(folderID: Int) {
+  func setupInitailBookmarks(folderID: Int, subscribe: Bool) {
     Task {
       do {
         state.isLoading = true
-        let fetchBookmarkListResponse = try await useCase.fetchBookmarkListInFolder(id: folderID)
+        let fetchBookmarkListResponse = try await useCase.fetchBookmarkListInFolder(id: folderID, subscribe: subscribe)
         state.bookmarks = fetchBookmarkListResponse.bookmarks
         state.isLoading = false
       } catch {
