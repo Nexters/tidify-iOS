@@ -29,6 +29,7 @@ final class DefaultUserRepository: UserRepository {
     return response.toDomain()
   }
 
+  @MainActor
   func kakaoLogin() async throws -> UserToken {
     try await withCheckedThrowingContinuation { continuation in
       if UserApi.isKakaoTalkLoginAvailable() {
