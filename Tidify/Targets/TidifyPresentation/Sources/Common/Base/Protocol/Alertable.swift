@@ -21,6 +21,7 @@ internal enum AlertType: CaseIterable {
   case folderFetchError
   case bookmarkCreationError
   case bookmarkFetchError
+  case copiedShareFolderScheme
 
   var title: String {
     switch self {
@@ -35,6 +36,7 @@ internal enum AlertType: CaseIterable {
     case .folderFetchError: return "폴더를 불러올 수 없습니다"
     case .bookmarkCreationError: return "저장에 실패했습니다"
     case .bookmarkFetchError: return "북마크를 불러올 수 없습니다"
+    case .copiedShareFolderScheme: return "폴더 공유"
     }
   }
 
@@ -50,6 +52,7 @@ internal enum AlertType: CaseIterable {
     case .folderCreationError: return "네트워크 연결상태 혹은 폴더 제목을 확인해주세요"
     case .folderFetchError, .bookmarkFetchError: return "네트워크 연결상태를 확인 후 다시 접속해주세요"
     case .bookmarkCreationError: return "네트워크 연결상태 혹은 URL을 확인해주세요"
+    case .copiedShareFolderScheme: return "URL을 복사했어요"
     }
   }
 

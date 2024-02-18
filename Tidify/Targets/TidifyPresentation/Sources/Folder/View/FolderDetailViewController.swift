@@ -301,7 +301,8 @@ extension FolderDetailViewController: FolderShareButtonDelegate {
   func didTapRightButton() {
     switch viewMode {
     case .owner, .ownerFirstEnter:
-      viewModel.action(.didTapShareButton)
+      UIPasteboard.general.string = AppScheme.shareFolder(id: folder.id).fullScheme
+      presentAlert(type: .copiedShareFolderScheme)
     case .subscriberFirstEnter:
       viewModel.action(.didTapSubscribeButton(folder.id))
       viewMode = .subscriber
@@ -310,4 +311,3 @@ extension FolderDetailViewController: FolderShareButtonDelegate {
     }
   }
 }
-
