@@ -76,6 +76,10 @@ func makeTidifyAppTarget(
         [
           "CFBundleTypeRole": "Editor",
           "CFBundleURLSchemes": ["kakao${KAKAO_NATIVE_APP_KEY}"]
+        ],
+        [
+          "CFBundleTypeRole": "Editor",
+          "CFBundleURLSchemes": ["tidify"]
         ]
       ],
       "KAKAO_NATIVE_APP_KEY": "${KAKAO_NATIVE_APP_KEY}",
