@@ -43,9 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey : Any] = [:]
   ) -> Bool {
+    if AppScheme.isOwnScheme(url) {
+      AppScheme.handleScheme(url)
+    }
+
     if AuthApi.isKakaoTalkLoginUrl(url) {
       return AuthController.handleOpenUrl(url: url, options: options)
     }
+
     return false
   }
 }
