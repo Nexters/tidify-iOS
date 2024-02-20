@@ -18,7 +18,7 @@ enum BookmarkEndpoint: EndpointType {
 }
 
 extension BookmarkEndpoint {
-  var baseRouthPath: String {
+  var baseRoutePath: String {
     return "/app/bookmarks"
   }
 
@@ -26,15 +26,15 @@ extension BookmarkEndpoint {
     switch self {
     case .fetchBoomarkList(let request, let category):
       if request.keyword.isNotNil {
-        return AppProperties.baseURL + baseRouthPath + "/search"
+        return AppProperties.baseURL + baseRoutePath + "/search"
       }
-      return AppProperties.baseURL + (category == .normal ? baseRouthPath : baseRouthPath + "/star")
+      return AppProperties.baseURL + (category == .normal ? baseRoutePath : baseRoutePath + "/star")
     case .createBookmark:
-      return AppProperties.baseURL + baseRouthPath
+      return AppProperties.baseURL + baseRoutePath
     case .deleteBookmark(let id), .updateBookmark(let id, _):
-      return AppProperties.baseURL + baseRouthPath + "/\(id)"
+      return AppProperties.baseURL + baseRoutePath + "/\(id)"
     case .favoriteBookmark(let id):
-      return AppProperties.baseURL + baseRouthPath + "/star/\(id)"
+      return AppProperties.baseURL + baseRoutePath + "/star/\(id)"
     }
   }
 

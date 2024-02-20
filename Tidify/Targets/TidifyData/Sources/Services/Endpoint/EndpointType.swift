@@ -10,7 +10,7 @@ import Foundation
 import TidifyCore
 
 protocol EndpointType {
-  var baseRouthPath: String { get }
+  var baseRoutePath: String { get }
   var fullPath: String { get }
   var method: HTTPMethod { get }
   var parameters: [String: String]? { get }
