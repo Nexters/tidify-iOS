@@ -145,7 +145,7 @@ private extension FolderViewModel {
     let sharedFolderListResponse = try await useCase.fetchFolderList(start: 0, count: state.folders.count, category: .share)
 
     for index in state.folders.indices {
-      state.folders[index].shared = sharedFolderListResponse.folders.contains(state.folders[index])
+      state.folders[index].isShared = sharedFolderListResponse.folders.contains(state.folders[index])
     }
   }
 }

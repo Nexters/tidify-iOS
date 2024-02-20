@@ -15,7 +15,7 @@ public struct Folder: Equatable {
   public var title: String
   public var color: String
   public let count: Int
-  public var shared: Bool = false
+  public var isShared: Bool = false
   
   public init(id: Int, title: String, color: String, count: Int) {
     self.id = id

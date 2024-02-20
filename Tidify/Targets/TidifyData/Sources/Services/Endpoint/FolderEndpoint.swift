@@ -22,15 +22,15 @@ enum FolderEndpoint: EndpointType {
 
 extension FolderEndpoint {
   var baseRoutePath: String {
-    return "/app/folders"
+    return AppProperties.baseURL + "/app/folders"
   }
 
   var fullPath: String {
     switch self {
     case .createFolder:
-      return AppProperties.baseURL + baseRoutePath
+      return baseRoutePath
     case .fetchFolderList(_, _, let category):
-      let path: String = AppProperties.baseURL + baseRoutePath
+      let path: String = baseRoutePath
 
       switch category {
       case .normal: return path
@@ -38,19 +38,19 @@ extension FolderEndpoint {
       case .share: return path + "/subscribing"
       }
     case .fetchBookmarkListInFolder(let id, let subscribe):
-      var finalPath = AppProperties.baseURL + baseRoutePath + "/\(id)/bookmarks"
+      var finalPath = baseRoutePath + "/\(id)/bookmarks"
       if subscribe {
         finalPath += "/shared"
       }
       return finalPath
     case .deleteFolder(let id), .updateFolder(let id, _):
-      return AppProperties.baseURL + baseRoutePath + "/\(id)"
+      return baseRoutePath + "/\(id)"
     case .subscribeFolder(let id):
-      return AppProperties.baseURL + baseRoutePath + "/subscribed/\(id)"
+      return baseRoutePath + "/subscribed/\(id)"
     case .stopSubscription(let id):
-      return AppProperties.baseURL + baseRoutePath + "/un-subscribed/\(id)"
+      return baseRoutePath + "/un-subscribed/\(id)"
     case .stopSharingFolder(let id):
-      return AppProperties.baseURL + baseRoutePath + "/\(id)/share-suspending"
+      return baseRoutePath + "/\(id)/share-suspending"
     }
   }
 

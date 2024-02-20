@@ -121,7 +121,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushDetailScene(folder: Folder) {
-    guard let viewMode = viewMode else {
+    guard let viewMode else {
       return
     }
 
