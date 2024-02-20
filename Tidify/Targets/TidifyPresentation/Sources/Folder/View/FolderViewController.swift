@@ -208,16 +208,8 @@ private extension FolderViewController {
 
 // MARK: - Extension
 extension FolderViewController: FolderNavigationBarDelegate {
-  func didTapFolderButton() {
-    viewModel.action(.didTapCategory(.normal))
-  }
-
-  func didTapSubscribeButton() {
-    viewModel.action(.didTapCategory(.subscribe))
-  }
-
-  func didTapShareButton() {
-    viewModel.action(.didTapCategory(.share))
+  func didTapCategoryButton(category: FolderCategory) {
+    viewModel.action(.didTapCategory(category))
   }
 }
 
