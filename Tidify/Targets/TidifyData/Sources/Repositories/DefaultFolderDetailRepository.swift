@@ -30,14 +30,26 @@ final class DefaultFolderDetailRepository: FolderDetailRepository {
   }
 
   func subscribeFolder(id: Int) async throws {
-    try await networkProvider.request(endpoint: FolderEndpoint.subscribeFolder(id: id), type: APIResponse.self)
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.subscribeFolder(id: id), type: APIResponse.self)
+
+    if !response.isSuccess {
+      throw FolderSubscriptionError.failSubscribe
+    }
   }
 
   func stopSubscription(id: Int) async throws {
-    try await networkProvider.request(endpoint: FolderEndpoint.stopSubscription(id: id), type: APIResponse.self)
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.stopSubscription(id: id), type: APIResponse.self)
+
+    if !response.isSuccess {
+      throw FolderSubscriptionError.failStopSubscription
+    }
   }
 
   func stopSharingFolder(id: Int) async throws {
-    try await networkProvider.request(endpoint: FolderEndpoint.stopSharingFolder(id: id), type: APIResponse.self)
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.stopSharingFolder(id: id), type: APIResponse.self)
+
+    if !response.isSuccess {
+      throw FolderSubscriptionError.failStopSharing
+    }
   }
 }
