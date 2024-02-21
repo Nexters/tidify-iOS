@@ -34,7 +34,7 @@ final class FolderDetailViewModel: ViewModelType {
 
   init(useCase: UseCase) {
     self.useCase = useCase
-    state = .init(isLoading: false, bookmarks: [], viewMode: .ownerFirstEnter)
+    state = .init(isLoading: false, bookmarks: [], viewMode: .ownerNotSharing)
   }
 
   func action(_ action: Action) {
@@ -104,11 +104,11 @@ private extension FolderDetailViewModel {
         switch state.viewMode {
         case .owner:
           try await useCase.stopSharingFolder(id: folderID)
-          state.viewMode = .ownerFirstEnter
+          state.viewMode = .ownerNotSharing
 
         case .subscriber:
           try await useCase.stopSubscription(id: folderID)
-          state.viewMode = .subscriberFirstEnter
+          state.viewMode = .subscribeNotSubscribe
 
         default: return
         }
@@ -130,11 +130,11 @@ private extension FolderDetailViewModel {
     Task {
       do {
         switch state.viewMode {
-        case .owner, .ownerFirstEnter:
+        case .owner, .ownerNotSharing:
           //TODO: 구현 예정
           print("didTapShareButton")
 
-        case .subscriberFirstEnter:
+        case .subscribeNotSubscribe:
           try await useCase.subscribeFolder(id: folderID)
           state.viewMode = .subscriber
 
@@ -142,11 +142,11 @@ private extension FolderDetailViewModel {
         }
       } catch {
         switch state.viewMode {
-        case .ownerFirstEnter:
+        case .ownerNotSharing:
           //TODO: 구현 예정
           print("folderSharingError")
 
-        case .subscriberFirstEnter:
+        case .subscribeNotSubscribe:
           state.folderSubscriptionErrorType = .failSubscribe
 
         default: return

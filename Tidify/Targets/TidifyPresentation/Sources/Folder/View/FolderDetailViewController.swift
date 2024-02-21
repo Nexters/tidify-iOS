@@ -19,7 +19,7 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   private let viewModel: FolderDetailViewModel
   private let folder: Folder
   private var isSubscribing: Bool {
-    viewModel.state.viewMode == .subscriber || viewModel.state.viewMode == .subscriberFirstEnter
+    viewModel.state.viewMode == .subscriber || viewModel.state.viewMode == .subscribeNotSubscribe
   }
 
   var indicatorView: UIActivityIndicatorView = {
@@ -255,7 +255,7 @@ extension FolderDetailViewController: UITableViewDelegate {
     _ tableView: UITableView,
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
   ) -> UISwipeActionsConfiguration? {
-    guard viewModel.state.viewMode == .owner || viewModel.state.viewMode == .ownerFirstEnter else {
+    guard viewModel.state.viewMode == .owner || viewModel.state.viewMode == .ownerNotSharing else {
       return .none
     }
 

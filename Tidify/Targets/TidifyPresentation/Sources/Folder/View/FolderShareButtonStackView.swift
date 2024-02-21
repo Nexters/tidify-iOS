@@ -54,7 +54,7 @@ final class FolderShareButtonStackView: UIStackView {
 
   func setupStackView(viewMode: FolderDetailViewMode) {
     switch viewMode {
-    case .ownerFirstEnter:
+    case .ownerNotSharing:
       rightButton.setTitle("공유하기", for: .normal)
       leftButton.alpha = 0
       rightButton.alpha = 1
@@ -63,7 +63,7 @@ final class FolderShareButtonStackView: UIStackView {
       rightButton.setTitle("공유하기", for: .normal)
       leftButton.alpha = 1
       rightButton.alpha = 1
-    case .subscriberFirstEnter:
+    case .subscribeNotSubscribe:
       rightButton.setTitle("구독하기", for: .normal)
       leftButton.alpha = 0
       rightButton.alpha = 1

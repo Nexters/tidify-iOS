@@ -17,9 +17,9 @@ protocol FolderDetailCoordinator: Coordinator {
 }
 
 enum FolderDetailViewMode {
-  case ownerFirstEnter
+  case ownerNotSharing
   case owner
-  case subscriberFirstEnter
+  case subscribeNotSubscribe
   case subscriber
 }
 
