@@ -15,6 +15,13 @@ public protocol FolderDetailUseCase: BookmarkListUseCase {
   func stopSharingFolder(id: Int) async throws
 }
 
+public enum FolderSubscriptionError: Error {
+  case failStopSharing
+  case failStopSubscription
+  case failSharing
+  case failSubscribe
+}
+
 final class DefaultFolderDetailUseCase: FolderDetailUseCase {
 
   // MARK: - Properties

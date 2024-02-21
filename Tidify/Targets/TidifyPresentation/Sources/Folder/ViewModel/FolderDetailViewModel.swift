@@ -16,16 +16,17 @@ final class FolderDetailViewModel: ViewModelType {
     case initialize(folderID: Int, subscribe: Bool)
     case didTapDelete(_ bookmarkID: Int)
     case didTapStarButton(_ bookmarkID: Int)
-    case didTapShareButton
-    case didTapStopSharingButton(_ folderID: Int)
-    case didTapSubscribeButton(_ folderID: Int)
-    case didTapStopSubscriptionButton(_ folderID: Int)
+    case didTapLeftButton(_ folderID: Int)
+    case didTapRightButton(_ folderID: Int)
+    case setViewMode(_ viewMode: FolderDetailViewMode)
   }
 
   struct State: Equatable {
     var isLoading: Bool
     var bookmarks: [Bookmark]
-    var errorType: BookmarkListError?
+    var bookmarkErrorType: BookmarkListError?
+    var folderSubscriptionErrorType: FolderSubscriptionError?
+    var viewMode: FolderDetailViewMode
   }
 
   let useCase: UseCase
@@ -33,11 +34,12 @@ final class FolderDetailViewModel: ViewModelType {
 
   init(useCase: UseCase) {
     self.useCase = useCase
-    state = .init(isLoading: false, bookmarks: [])
+    state = .init(isLoading: false, bookmarks: [], viewMode: .ownerFirstEnter)
   }
 
   func action(_ action: Action) {
-    state.errorType = nil
+    state.bookmarkErrorType = nil
+    state.folderSubscriptionErrorType = nil
 
     switch action {
     case .initialize(let folderID, let subscribe):
@@ -46,15 +48,12 @@ final class FolderDetailViewModel: ViewModelType {
       deleteBookmark(bookmarkID)
     case .didTapStarButton(let bookmarkID):
       didTapStarButton(bookmarkID)
-    case .didTapShareButton:
-      //TODO: 구현 예정
-      print("didTapShareButton")
-    case .didTapStopSharingButton(let folderID):
-      didTapStopSharingButton(folderID)
-    case .didTapSubscribeButton(let folderID):
-      didTapSubscribeButton(folderID)
-    case .didTapStopSubscriptionButton(let folderID):
-      didTapStopSubscriptionButton(folderID)
+    case .didTapLeftButton(let folderID):
+      didTapLeftButton(folderID)
+    case .didTapRightButton(let folderID):
+      didTapRightButton(folderID)
+    case .setViewMode(viewMode: let viewMode):
+      state.viewMode = viewMode
     }
   }
 }
@@ -68,7 +67,7 @@ private extension FolderDetailViewModel {
         state.bookmarks = fetchBookmarkListResponse.bookmarks
         state.isLoading = false
       } catch {
-        state.errorType = .failFetchBookmarks
+        state.bookmarkErrorType = .failFetchBookmarks
         state.isLoading = false
       }
     }
@@ -84,7 +83,7 @@ private extension FolderDetailViewModel {
         try await useCase.deleteBookmark(bookmarkID: bookmarkID)
         state.bookmarks.remove(at: index)
       } catch {
-        state.errorType = .failDeleteBookmark
+        state.bookmarkErrorType = .failDeleteBookmark
       }
     }
   }
@@ -94,26 +93,65 @@ private extension FolderDetailViewModel {
       do {
         try await useCase.favoriteBookmark(id: bookmarkID)
       } catch {
-        state.errorType = .failFavoriteBookmark
+        state.bookmarkErrorType = .failFavoriteBookmark
       }
     }
   }
 
-  func didTapStopSharingButton(_ folderID: Int) {
+  func didTapLeftButton(_ folderID: Int) {
     Task {
-      try await useCase.stopSharingFolder(id: folderID)
+      do {
+        switch state.viewMode {
+        case .owner:
+          try await useCase.stopSharingFolder(id: folderID)
+          state.viewMode = .ownerFirstEnter
+
+        case .subscriber:
+          try await useCase.stopSubscription(id: folderID)
+          state.viewMode = .subscriberFirstEnter
+
+        default: return
+        }
+      } catch {
+        switch state.viewMode {
+        case .owner:
+          state.folderSubscriptionErrorType = .failStopSharing
+
+        case .subscriber:
+          state.folderSubscriptionErrorType = .failStopSubscription
+
+        default: return
+        }
+      }
     }
   }
 
-  func didTapSubscribeButton(_ folderID: Int) {
+  func didTapRightButton(_ folderID: Int) {
     Task {
-      try await useCase.subscribeFolder(id: folderID)
-    }
-  }
+      do {
+        switch state.viewMode {
+        case .owner, .ownerFirstEnter:
+          //TODO: 구현 예정
+          print("didTapShareButton")
 
-  func didTapStopSubscriptionButton(_ folderID: Int) {
-    Task {
-      try await useCase.stopSubscription(id: folderID)
+        case .subscriberFirstEnter:
+          try await useCase.subscribeFolder(id: folderID)
+          state.viewMode = .subscriber
+
+        default: return
+        }
+      } catch {
+        switch state.viewMode {
+        case .ownerFirstEnter:
+          //TODO: 구현 예정
+          print("folderSharingError")
+
+        case .subscriberFirstEnter:
+          state.folderSubscriptionErrorType = .failSubscribe
+
+        default: return
+        }
+      }
     }
   }
 }

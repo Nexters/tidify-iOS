@@ -52,7 +52,7 @@ final class FolderShareButtonStackView: UIStackView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func setupStackView(viewMode: FolderDetailViewController.ViewMode) {
+  func setupStackView(viewMode: FolderDetailViewMode) {
     switch viewMode {
     case .ownerFirstEnter:
       rightButton.setTitle("공유하기", for: .normal)

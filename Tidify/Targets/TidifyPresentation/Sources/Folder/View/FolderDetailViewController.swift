@@ -18,16 +18,8 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   weak var coordinator: DefaultFolderDetailCoordinator?
   private let viewModel: FolderDetailViewModel
   private let folder: Folder
-  private var viewMode: ViewMode
   private var isSubscribing: Bool {
-    viewMode == .subscriber || viewMode == .subscriberFirstEnter
-  }
-
-  enum ViewMode {
-    case ownerFirstEnter
-    case owner
-    case subscriberFirstEnter
-    case subscriber
+    viewModel.state.viewMode == .subscriber || viewModel.state.viewMode == .subscriberFirstEnter
   }
 
   var indicatorView: UIActivityIndicatorView = {
@@ -73,11 +65,11 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   }()
   
   // MARK: Initializer
-  init(viewModel: FolderDetailViewModel, folder: Folder, viewMode: ViewMode) {
+  init(viewModel: FolderDetailViewModel, folder: Folder, viewMode: FolderDetailViewMode) {
     self.viewModel = viewModel
+    self.viewModel.action(.setViewMode(viewMode))
     self.folder = folder
     self.shareButtonStackView.setupStackView(viewMode: viewMode)
-    self.viewMode = viewMode
     super.init(nibName: nil, bundle: nil)
     title = folder.title
   }
@@ -177,12 +169,38 @@ private extension FolderDetailViewController {
       .store(in: &cancellable)
 
     viewModel.$state
-      .map { $0.errorType }
+      .map { $0.bookmarkErrorType }
       .compactMap { $0 }
-      .filter { $0 == .failFetchBookmarks }
       .receiveOnMain()
-      .sink(receiveValue: { [weak self] _ in
-        self?.presentAlert(type: .bookmarkFetchError)
+      .sink(receiveValue: { [weak self] errorType in
+        switch errorType {
+        case .failFetchBookmarks: self?.presentAlert(type: .bookmarkFetchError)
+        case .failDeleteBookmark: self?.presentAlert(type: .bookmarkDeleteError)
+        case .failFavoriteBookmark: self?.presentAlert(type: .bookmarkFavoriteError)
+        default: return
+        }
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.folderSubscriptionErrorType }
+      .compactMap { $0 }
+      .receiveOnMain()
+      .sink(receiveValue: { [weak self] errorType in
+        switch errorType {
+        case .failStopSharing: self?.presentAlert(type: .stopFolderSharingError)
+        case .failStopSubscription: self?.presentAlert(type: .stopFolderSubscriptionError)
+        case .failSubscribe: self?.presentAlert(type: .subscribeFolderError)
+        default: return
+        }
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.viewMode }
+      .receiveOnMain()
+      .sink(receiveValue: { [weak self] viewMode in
+        self?.shareButtonStackView.setupStackView(viewMode: viewMode)
       })
       .store(in: &cancellable)
   }
@@ -237,7 +255,7 @@ extension FolderDetailViewController: UITableViewDelegate {
     _ tableView: UITableView,
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
   ) -> UISwipeActionsConfiguration? {
-    guard viewMode == .owner || viewMode == .ownerFirstEnter else {
+    guard viewModel.state.viewMode == .owner || viewModel.state.viewMode == .ownerFirstEnter else {
       return .none
     }
 
@@ -285,29 +303,11 @@ extension FolderDetailViewController: BookmarkCellDelegate {
 // MARK: - FolderShareButtonDelegate
 extension FolderDetailViewController: FolderShareButtonDelegate {
   func didTapLeftButton() {
-    switch viewMode {
-    case .owner:
-      viewModel.action(.didTapStopSharingButton(folder.id))
-      viewMode = .ownerFirstEnter
-      shareButtonStackView.setupStackView(viewMode: viewMode)
-    case .subscriber:
-      viewModel.action(.didTapStopSubscriptionButton(folder.id))
-      viewMode = .subscriberFirstEnter
-      shareButtonStackView.setupStackView(viewMode: viewMode)
-    default: return
-    }
+    viewModel.action(.didTapLeftButton(folder.id))
   }
 
   func didTapRightButton() {
-    switch viewMode {
-    case .owner, .ownerFirstEnter:
-      viewModel.action(.didTapShareButton)
-    case .subscriberFirstEnter:
-      viewModel.action(.didTapSubscribeButton(folder.id))
-      viewMode = .subscriber
-      shareButtonStackView.setupStackView(viewMode: viewMode)
-    default: return
-    }
+    viewModel.action(.didTapRightButton(folder.id))
   }
 }
 

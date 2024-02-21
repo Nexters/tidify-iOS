@@ -33,7 +33,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   weak var navigationBarDelegate: FolderNavigationBarDelegate?
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
-  private var viewMode: FolderDetailViewController.ViewMode?
+  private var viewMode: FolderDetailViewMode?
 
   private let folderButton: FolderCategoryButton = .init(category: .normal)
   private let subscribeButton: FolderCategoryButton = .init(category: .subscribe)
@@ -165,7 +165,7 @@ final class DefaultFolderCoordinator: FolderCoordinator {
     parentCoordinator?.removeChild(self)
   }
 
-  func setViewMode(_ viewMode: FolderDetailViewController.ViewMode) {
+  func setViewMode(_ viewMode: FolderDetailViewMode) {
     self.viewMode = viewMode
   }
 }

@@ -16,6 +16,13 @@ protocol FolderDetailCoordinator: Coordinator {
   func startWebView(bookmark: Bookmark)
 }
 
+enum FolderDetailViewMode {
+  case ownerFirstEnter
+  case owner
+  case subscriberFirstEnter
+  case subscriber
+}
+
 final class DefaultFolderDetailCoordinator: FolderDetailCoordinator {
 
   // MARK: - Properties
@@ -31,7 +38,7 @@ final class DefaultFolderDetailCoordinator: FolderDetailCoordinator {
   // MARK: - Methods
   func start() {}
 
-  func startPush(folder: Folder, viewMode: FolderDetailViewController.ViewMode) -> FolderDetailViewController {
+  func startPush(folder: Folder, viewMode: FolderDetailViewMode) -> FolderDetailViewController {
     guard let useCase: FolderDetailUseCase = DIContainer.shared.resolve(type: FolderDetailUseCase.self) else {
       fatalError()
     }
