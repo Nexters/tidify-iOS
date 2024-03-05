@@ -21,6 +21,11 @@ internal enum AlertType: CaseIterable {
   case folderFetchError
   case bookmarkCreationError
   case bookmarkFetchError
+  case bookmarkFavoriteError
+  case bookmarkDeleteError
+  case stopFolderSharingError
+  case stopFolderSubscriptionError
+  case subscribeFolderError
 
   var title: String {
     switch self {
@@ -35,6 +40,11 @@ internal enum AlertType: CaseIterable {
     case .folderFetchError: return "폴더를 불러올 수 없습니다"
     case .bookmarkCreationError: return "저장에 실패했습니다"
     case .bookmarkFetchError: return "북마크를 불러올 수 없습니다"
+    case .bookmarkDeleteError: return "북마크를 삭제할 수 없습니다"
+    case .bookmarkFavoriteError: return "북마크 즐겨찾기를 할 수 없습니다"
+    case .stopFolderSharingError: return "공유 중단에 실패했습니다."
+    case .stopFolderSubscriptionError: return "구독 취소에 실패했습니다"
+    case .subscribeFolderError: return "구독에 실패했습니다"
     }
   }
 
@@ -49,7 +59,9 @@ internal enum AlertType: CaseIterable {
     case .loginError: return "네트워크 연결상태 혹은 선택한 플랫폼을 확인해주세요"
     case .folderCreationError: return "네트워크 연결상태 혹은 폴더 제목을 확인해주세요"
     case .folderFetchError, .bookmarkFetchError: return "네트워크 연결상태를 확인 후 다시 접속해주세요"
+    case .bookmarkFavoriteError, .bookmarkDeleteError: return "네트워크 연결상태 혹은 북마크 상태를 확인해주세요"
     case .bookmarkCreationError: return "네트워크 연결상태 혹은 URL을 확인해주세요"
+    case .stopFolderSharingError, .stopFolderSubscriptionError, .subscribeFolderError: return "네트워크 연결상태 혹은 폴더 상태를 확인해주세요"
     }
   }
 

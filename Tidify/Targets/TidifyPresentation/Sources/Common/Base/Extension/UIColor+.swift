@@ -111,17 +111,17 @@ public extension UIColor {
 
   static func toColor(_ colorString: String) -> UIColor {
     switch colorString {
-    case LabelColors.ASHBLUE.colorString: return .t_ashBlue()
+    case LabelColors.ASHBLUE.colorString, "BLACK": return .t_ashBlue()
     case LabelColors.BLUE.colorString: return .t_blue()
     case LabelColors.PURPLE.colorString: return .t_purple()
     case LabelColors.GREEN.colorString: return .t_green()
     case LabelColors.YELLOW.colorString: return .t_yellow()
     case LabelColors.ORANGE.colorString: return .t_orange()
     case LabelColors.RED.colorString: return .t_red()
-    case LabelColors.MINT.colorString: return .t_mint()
+    case LabelColors.MINT.colorString, "SKYBLUE": return .t_mint()
     case LabelColors.INDIGO.colorString: return t_indigo()
     case LabelColors.PINK.colorString: return .t_pink()
-    default: return .init()
+    default: return .t_ashBlue()
     }
   }
 

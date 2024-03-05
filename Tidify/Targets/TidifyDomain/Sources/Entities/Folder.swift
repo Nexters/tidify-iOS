@@ -22,6 +22,10 @@ public struct Folder: Equatable {
     self.color = color
     self.count = count
   }
+
+  public static func ==(lhs: Folder, rhs: Folder) -> Bool {
+    lhs.id == rhs.id && lhs.title == rhs.title && lhs.color == rhs.color
+  }
 }
 
 public extension Folder {

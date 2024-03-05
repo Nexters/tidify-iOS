@@ -17,7 +17,10 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   // MARK: Properties
   weak var coordinator: DefaultFolderDetailCoordinator?
   private let viewModel: FolderDetailViewModel
-  private let folder: Folder
+  private let folderID: Int
+  private var isSubscribing: Bool {
+    viewModel.state.viewMode == .subscriber || viewModel.state.viewMode == .subscribeNotSubscribe
+  }
 
   var indicatorView: UIActivityIndicatorView = {
     let indicatorView: UIActivityIndicatorView = .init()
@@ -46,6 +49,8 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
     return contentView
   }()
 
+  private let shareButtonStackView: FolderShareButtonStackView = .init()
+
   private lazy var tableView: UITableView = {
     let tableView: UITableView = .init(frame: .zero)
     tableView.t_registerCellClass(cellType: BookmarkCell.self)
@@ -60,11 +65,11 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   }()
   
   // MARK: Initializer
-  init(viewModel: FolderDetailViewModel, folder: Folder) {
+  init(viewModel: FolderDetailViewModel, folderID: Int, title: String) {
     self.viewModel = viewModel
-    self.folder = folder
+    self.folderID = folderID
     super.init(nibName: nil, bundle: nil)
-    title = folder.title
+    self.title = title
   }
 
   required init?(coder: NSCoder) {
@@ -72,10 +77,13 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   }
 
   override func viewDidLoad() {
-    viewModel.action(.initialize(folderID: folder.id))
+    viewModel.action(.initialize(folderID: folderID, subscribe: isSubscribing))
+    shareButtonStackView.setupStackView(viewMode: viewModel.state.viewMode)
+
     super.viewDidLoad()
     setupLayoutConstraints()
     bindState()
+    shareButtonStackView.delegate = self
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +101,7 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
 
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
+    contentView.addSubview(shareButtonStackView)
     contentView.addSubview(tableView)
     view.addSubview(topEffectView)
     view.addSubview(indicatorView)
@@ -124,9 +133,15 @@ private extension FolderDetailViewController {
       $0.height.equalToSuperview().priority(.low)
     }
 
-    tableView.snp.makeConstraints {
+    shareButtonStackView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(Self.topPadding + navigationBarHeight + 15)
       $0.leading.trailing.equalToSuperview().inset(15)
+      $0.height.equalTo(45)
+    }
+
+    tableView.snp.makeConstraints {
+      $0.top.equalTo(shareButtonStackView.snp.bottom).offset(15)
+      $0.leading.trailing.equalTo(shareButtonStackView)
       $0.height.equalTo(0)
       $0.bottom.equalToSuperview().offset(-60)
     }
@@ -153,12 +168,38 @@ private extension FolderDetailViewController {
       .store(in: &cancellable)
 
     viewModel.$state
-      .map { $0.errorType }
+      .map { $0.bookmarkErrorType }
       .compactMap { $0 }
-      .filter { $0 == .failFetchBookmarks }
       .receiveOnMain()
-      .sink(receiveValue: { [weak self] _ in
-        self?.presentAlert(type: .bookmarkFetchError)
+      .sink(receiveValue: { [weak self] errorType in
+        switch errorType {
+        case .failFetchBookmarks: self?.presentAlert(type: .bookmarkFetchError)
+        case .failDeleteBookmark: self?.presentAlert(type: .bookmarkDeleteError)
+        case .failFavoriteBookmark: self?.presentAlert(type: .bookmarkFavoriteError)
+        default: return
+        }
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.folderSubscriptionErrorType }
+      .compactMap { $0 }
+      .receiveOnMain()
+      .sink(receiveValue: { [weak self] errorType in
+        switch errorType {
+        case .failStopSharing: self?.presentAlert(type: .stopFolderSharingError)
+        case .failStopSubscription: self?.presentAlert(type: .stopFolderSubscriptionError)
+        case .failSubscribe: self?.presentAlert(type: .subscribeFolderError)
+        default: return
+        }
+      })
+      .store(in: &cancellable)
+
+    viewModel.$state
+      .map { $0.viewMode }
+      .receiveOnMain()
+      .sink(receiveValue: { [weak self] viewMode in
+        self?.shareButtonStackView.setupStackView(viewMode: viewMode)
       })
       .store(in: &cancellable)
   }
@@ -188,7 +229,7 @@ extension FolderDetailViewController: UITableViewDataSource {
     }
 
     let cell: BookmarkCell = tableView.t_dequeueReusableCell(indexPath: indexPath)
-    cell.configure(bookmark: bookmark)
+    cell.configure(bookmark: bookmark, isSubscribing: isSubscribing)
     cell.delegate = self
 
     return cell
@@ -213,6 +254,10 @@ extension FolderDetailViewController: UITableViewDelegate {
     _ tableView: UITableView,
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
   ) -> UISwipeActionsConfiguration? {
+    guard viewModel.state.viewMode == .owner || viewModel.state.viewMode == .ownerNotSharing else {
+      return .none
+    }
+
     guard let bookmark = viewModel.state.bookmarks[safe: indexPath.row] else {
       return .none
     }
@@ -253,3 +298,15 @@ extension FolderDetailViewController: BookmarkCellDelegate {
     viewModel.action(.didTapStarButton(bookmarkID))
   }
 }
+
+// MARK: - FolderShareButtonDelegate
+extension FolderDetailViewController: FolderShareButtonDelegate {
+  func didTapLeftButton() {
+    viewModel.action(.didTapLeftButton(folderID))
+  }
+
+  func didTapRightButton() {
+    viewModel.action(.didTapRightButton(folderID))
+  }
+}
+

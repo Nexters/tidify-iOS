@@ -19,13 +19,37 @@ final class DefaultFolderDetailRepository: FolderDetailRepository {
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse {
-    let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchBookmarkListInFolder(id: id), type: BookmarkListResponse.self)
+  func fetchBookmarkListInFolder(id: Int, subscribe: Bool) async throws -> FetchBookmarkResponse {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.fetchBookmarkListInFolder(id: id, subscribe: subscribe), type: BookmarkListResponse.self)
 
     return FetchBookmarkResponse(
       bookmarks: response.toDomain(),
       currentPage: response.bookmarkListDTO.currentPage,
       isLastPage: response.bookmarkListDTO.isLastPage
     )
+  }
+
+  func subscribeFolder(id: Int) async throws {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.subscribeFolder(id: id), type: APIResponse.self)
+
+    if !response.isSuccess {
+      throw FolderSubscriptionError.failSubscribe
+    }
+  }
+
+  func stopSubscription(id: Int) async throws {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.stopSubscription(id: id), type: APIResponse.self)
+
+    if !response.isSuccess {
+      throw FolderSubscriptionError.failStopSubscription
+    }
+  }
+
+  func stopSharingFolder(id: Int) async throws {
+    let response = try await networkProvider.request(endpoint: FolderEndpoint.stopSharingFolder(id: id), type: APIResponse.self)
+
+    if !response.isSuccess {
+      throw FolderSubscriptionError.failStopSharing
+    }
   }
 }

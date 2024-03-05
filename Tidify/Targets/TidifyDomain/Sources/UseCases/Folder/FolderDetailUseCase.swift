@@ -6,10 +6,20 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-public protocol FolderDetailUseCase: BookmarkListUseCase {
+public protocol FolderDetailUseCase: BookmarkListUseCase & FetchFolderUseCase  {
   var bookmarkRepository: BookmarkRepository { get }
 
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse
+  func fetchBookmarkListInFolder(id: Int, subscribe: Bool) async throws -> FetchBookmarkResponse
+  func subscribeFolder(id: Int) async throws
+  func stopSubscription(id: Int) async throws
+  func stopSharingFolder(id: Int) async throws
+}
+
+public enum FolderSubscriptionError: Error {
+  case failStopSharing
+  case failStopSubscription
+  case failSharing
+  case failSubscribe
 }
 
 final class DefaultFolderDetailUseCase: FolderDetailUseCase {
@@ -17,15 +27,33 @@ final class DefaultFolderDetailUseCase: FolderDetailUseCase {
   // MARK: - Properties
   private let folderDetailRepository: FolderDetailRepository
   let bookmarkRepository: BookmarkRepository
+  let folderRepository: FolderRepository
 
   // MARK: - Initializer
-  init(folderDetailRepository: FolderDetailRepository, bookmarkRepository: BookmarkRepository) {
+  init(
+    folderDetailRepository: FolderDetailRepository,
+    bookmarkRepository: BookmarkRepository,
+    folderRepository: FolderRepository
+  ) {
     self.folderDetailRepository = folderDetailRepository
     self.bookmarkRepository = bookmarkRepository
+    self.folderRepository = folderRepository
   }
 
   // MARK: - Methods
-  func fetchBookmarkListInFolder(id: Int) async throws -> FetchBookmarkResponse {
-    try await folderDetailRepository.fetchBookmarkListInFolder(id: id)
+  func fetchBookmarkListInFolder(id: Int, subscribe: Bool) async throws -> FetchBookmarkResponse {
+    try await folderDetailRepository.fetchBookmarkListInFolder(id: id, subscribe: subscribe)
+  }
+
+  func subscribeFolder(id: Int) async throws {
+    try await folderDetailRepository.subscribeFolder(id: id)
+  }
+
+  func stopSubscription(id: Int) async throws {
+    try await folderDetailRepository.stopSubscription(id: id)
+  }
+
+  func stopSharingFolder(id: Int) async throws {
+    try await folderDetailRepository.stopSharingFolder(id: id)
   }
 }

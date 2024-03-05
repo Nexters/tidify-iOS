@@ -20,16 +20,16 @@ enum UserEndpoint: EndpointType {
 }
 
 extension UserEndpoint {
-  var baseRouthPath: String {
+  var baseRoutePath: String {
     return "/oauth2"
   }
 
   var fullPath: String {
     switch self {
     case .signIn:
-      return AppProperties.baseURL + baseRouthPath + "/login"
+      return AppProperties.baseURL + baseRoutePath + "/login"
     case .signOut:
-      return AppProperties.baseURL + baseRouthPath + "/withdrawal"
+      return AppProperties.baseURL + baseRoutePath + "/withdrawal"
     }
   }
 

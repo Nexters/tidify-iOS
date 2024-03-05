@@ -16,6 +16,13 @@ protocol FolderDetailCoordinator: Coordinator {
   func startWebView(bookmark: Bookmark)
 }
 
+enum FolderDetailViewMode {
+  case ownerNotSharing
+  case owner
+  case subscribeNotSubscribe
+  case subscriber
+}
+
 final class DefaultFolderDetailCoordinator: FolderDetailCoordinator {
 
   // MARK: - Properties
@@ -37,7 +44,7 @@ final class DefaultFolderDetailCoordinator: FolderDetailCoordinator {
     }
 
     let viewModel: FolderDetailViewModel = .init(useCase: useCase)
-    let viewController: FolderDetailViewController = .init(viewModel: viewModel, folder: folder)
+    let viewController: FolderDetailViewController = .init(viewModel: viewModel, folderID: folder.id, title: folder.title)
     viewController.coordinator = self
 
     return viewController

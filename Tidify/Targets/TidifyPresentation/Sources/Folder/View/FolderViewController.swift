@@ -208,16 +208,8 @@ private extension FolderViewController {
 
 // MARK: - Extension
 extension FolderViewController: FolderNavigationBarDelegate {
-  func didTapFolderButton() {
-    viewModel.action(.didTapCategory(.normal))
-  }
-
-  func didTapSubscribeButton() {
-    viewModel.action(.didTapCategory(.subscribe))
-  }
-
-  func didTapShareButton() {
-    viewModel.action(.didTapCategory(.share))
+  func didTapCategoryButton(category: FolderCategory) {
+    viewModel.action(.didTapCategory(category))
   }
 }
 
@@ -269,6 +261,10 @@ extension FolderViewController: UITableViewDelegate {
     _ tableView: UITableView,
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
   ) -> UISwipeActionsConfiguration? {
+    guard viewModel.state.category != .subscribe else {
+      return .none
+    }
+
     guard let folder = viewModel.state.folders[safe: indexPath.row] else {
       return .none
     }

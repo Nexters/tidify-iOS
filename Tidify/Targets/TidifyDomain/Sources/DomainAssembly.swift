@@ -48,7 +48,8 @@ public struct DomainAssembly: Assemblable {
     container.register(type: FolderDetailUseCase.self) { container in
       return DefaultFolderDetailUseCase(
         folderDetailRepository: container.resolve(type: FolderDetailRepository.self)!,
-        bookmarkRepository: container.resolve(type: BookmarkRepository.self)!
+        bookmarkRepository: container.resolve(type: BookmarkRepository.self)!,
+        folderRepository: container.resolve(type: FolderRepository.self)!
       )
     }
   }

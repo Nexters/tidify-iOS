@@ -60,9 +60,10 @@ final class BookmarkCell: UITableViewCell {
   }
 
   // MARK: - Methods
-  func configure(bookmark: Bookmark) {
+  func configure(bookmark: Bookmark, isSubscribing: Bool = false) {
     self.bookmark = bookmark
     updateUI(bookmark: bookmark)
+    starButton.isHidden = isSubscribing
   }
 }
 
