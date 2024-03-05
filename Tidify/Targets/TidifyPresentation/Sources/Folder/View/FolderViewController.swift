@@ -254,12 +254,6 @@ extension FolderViewController: UITableViewDelegate {
       return
     }
 
-    switch viewModel.state.category {
-    case .subscribe: coordinator?.setViewMode(.subscriber)
-    case .normal: coordinator?.setViewMode(folder.isShared ? .owner : .ownerNotSharing)
-    case .share: coordinator?.setViewMode(.owner)
-    }
-
     coordinator?.pushDetailScene(folder: folder)
   }
 

@@ -33,7 +33,6 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   weak var navigationBarDelegate: FolderNavigationBarDelegate?
   var childCoordinators: [Coordinator] = []
   var navigationController: UINavigationController
-  private var viewMode: FolderDetailViewMode?
 
   private let folderButton: FolderCategoryButton = .init(category: .normal)
   private let subscribeButton: FolderCategoryButton = .init(category: .subscribe)
@@ -113,14 +112,11 @@ final class DefaultFolderCoordinator: FolderCoordinator {
   }
   
   func pushDetailScene(folder: Folder) {
-    guard let viewMode else {
-      return
-    }
-
     let folderDetailCoordinator: DefaultFolderDetailCoordinator = .init(
       navigationController: navigationController
     )
-    let folderDetailViewController = folderDetailCoordinator.startPush(folder: folder, viewMode: viewMode)
+
+    let folderDetailViewController = folderDetailCoordinator.startPush(folder: folder)
     folderDetailCoordinator.parentCoordinator = self
     addChild(folderDetailCoordinator)
 
@@ -163,9 +159,5 @@ final class DefaultFolderCoordinator: FolderCoordinator {
 
   func didFinish() {
     parentCoordinator?.removeChild(self)
-  }
-
-  func setViewMode(_ viewMode: FolderDetailViewMode) {
-    self.viewMode = viewMode
   }
 }

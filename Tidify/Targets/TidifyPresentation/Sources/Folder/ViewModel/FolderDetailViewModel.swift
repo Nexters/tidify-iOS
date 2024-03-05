@@ -18,7 +18,6 @@ final class FolderDetailViewModel: ViewModelType {
     case didTapStarButton(_ bookmarkID: Int)
     case didTapLeftButton(_ folderID: Int)
     case didTapRightButton(_ folderID: Int)
-    case setViewMode(_ viewMode: FolderDetailViewMode)
   }
 
   struct State: Equatable {
@@ -43,6 +42,7 @@ final class FolderDetailViewModel: ViewModelType {
 
     switch action {
     case .initialize(let folderID, let subscribe):
+      setupViewMode(folderID: folderID)
       setupInitailBookmarks(folderID: folderID, subscribe: subscribe)
     case .didTapDelete(let bookmarkID):
       deleteBookmark(bookmarkID)
@@ -52,13 +52,53 @@ final class FolderDetailViewModel: ViewModelType {
       didTapLeftButton(folderID)
     case .didTapRightButton(let folderID):
       didTapRightButton(folderID)
-    case .setViewMode(viewMode: let viewMode):
-      state.viewMode = viewMode
     }
   }
 }
 
 private extension FolderDetailViewModel {
+  func setupViewMode(folderID: Int) {
+    Task {
+      do {
+        state.isLoading = true
+        let fetchFolderListResponse = try await useCase.fetchFolderList(start: 0, count: 0, category: .normal)
+
+        for folder in fetchFolderListResponse.folders where folder.id == folderID {
+          try await fetchSharingFolderList(folderID: folderID)
+          return
+        }
+
+        try await fetchSubscribingFolderList(folderID: folderID)
+        state.isLoading = false
+      } catch {
+        state.bookmarkErrorType = .failFetchBookmarks
+        state.isLoading = false
+      }
+    }
+  }
+
+  func fetchSharingFolderList(folderID: Int) async throws {
+    let fetchSharingFolderListResponse = try await useCase.fetchFolderList(start: 0, count: 0, category: .share)
+
+    for folder in fetchSharingFolderListResponse.folders where folder.id == folderID {
+      state.viewMode = .owner
+      return
+    }
+
+    state.viewMode = .ownerNotSharing
+  }
+
+  func fetchSubscribingFolderList(folderID: Int) async throws {
+    let fetchSubscribingFolderListResponse = try await useCase.fetchFolderList(start: 0, count: 0, category: .subscribe)
+
+    for folder in fetchSubscribingFolderListResponse.folders where folder.id == folderID {
+      state.viewMode = .subscriber
+      return
+    }
+
+    state.viewMode = .subscribeNotSubscribe
+  }
+
   func setupInitailBookmarks(folderID: Int, subscribe: Bool) {
     Task {
       do {

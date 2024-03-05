@@ -17,7 +17,7 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   // MARK: Properties
   weak var coordinator: DefaultFolderDetailCoordinator?
   private let viewModel: FolderDetailViewModel
-  private let folder: Folder
+  private let folderID: Int
   private var isSubscribing: Bool {
     viewModel.state.viewMode == .subscriber || viewModel.state.viewMode == .subscribeNotSubscribe
   }
@@ -65,13 +65,11 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   }()
   
   // MARK: Initializer
-  init(viewModel: FolderDetailViewModel, folder: Folder, viewMode: FolderDetailViewMode) {
+  init(viewModel: FolderDetailViewModel, folderID: Int, title: String) {
     self.viewModel = viewModel
-    self.viewModel.action(.setViewMode(viewMode))
-    self.folder = folder
-    self.shareButtonStackView.setupStackView(viewMode: viewMode)
+    self.folderID = folderID
     super.init(nibName: nil, bundle: nil)
-    title = folder.title
+    self.title = title
   }
 
   required init?(coder: NSCoder) {
@@ -79,7 +77,8 @@ final class FolderDetailViewController: BaseViewController, Coordinatable, Alert
   }
 
   override func viewDidLoad() {
-    viewModel.action(.initialize(folderID: folder.id, subscribe: isSubscribing))
+    viewModel.action(.initialize(folderID: folderID, subscribe: isSubscribing))
+    shareButtonStackView.setupStackView(viewMode: viewModel.state.viewMode)
 
     super.viewDidLoad()
     setupLayoutConstraints()
@@ -303,11 +302,11 @@ extension FolderDetailViewController: BookmarkCellDelegate {
 // MARK: - FolderShareButtonDelegate
 extension FolderDetailViewController: FolderShareButtonDelegate {
   func didTapLeftButton() {
-    viewModel.action(.didTapLeftButton(folder.id))
+    viewModel.action(.didTapLeftButton(folderID))
   }
 
   func didTapRightButton() {
-    viewModel.action(.didTapRightButton(folder.id))
+    viewModel.action(.didTapRightButton(folderID))
   }
 }
 

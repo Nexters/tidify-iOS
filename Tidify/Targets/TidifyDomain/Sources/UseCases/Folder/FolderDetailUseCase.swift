@@ -6,7 +6,7 @@
 //  Copyright © 2023 Tidify. All rights reserved.
 //
 
-public protocol FolderDetailUseCase: BookmarkListUseCase {
+public protocol FolderDetailUseCase: BookmarkListUseCase & FetchFolderUseCase  {
   var bookmarkRepository: BookmarkRepository { get }
 
   func fetchBookmarkListInFolder(id: Int, subscribe: Bool) async throws -> FetchBookmarkResponse
@@ -27,11 +27,17 @@ final class DefaultFolderDetailUseCase: FolderDetailUseCase {
   // MARK: - Properties
   private let folderDetailRepository: FolderDetailRepository
   let bookmarkRepository: BookmarkRepository
+  let folderRepository: FolderRepository
 
   // MARK: - Initializer
-  init(folderDetailRepository: FolderDetailRepository, bookmarkRepository: BookmarkRepository) {
+  init(
+    folderDetailRepository: FolderDetailRepository,
+    bookmarkRepository: BookmarkRepository,
+    folderRepository: FolderRepository
+  ) {
     self.folderDetailRepository = folderDetailRepository
     self.bookmarkRepository = bookmarkRepository
+    self.folderRepository = folderRepository
   }
 
   // MARK: - Methods
